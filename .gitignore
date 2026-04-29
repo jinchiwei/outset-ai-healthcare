@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.ipynb_checkpoints/
+
+# Data (never commit)
+datasets/raw/
+datasets/processed/
+*.npz
+*.h5
+*.pt
+*.pth
+*.onnx
+*.dcm
+*.nii
+*.nii.gz
+
+# Models / artifacts
+checkpoints/
+runs/
+wandb/
+mlruns/
+
+# Notebook outputs
+*.ipynb~
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Slides build outputs
+slides/build/
+*.pptx.bak
+
+# Secrets
+.env
+*.key

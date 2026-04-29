@@ -1,0 +1,42 @@
+# Outset AI in Healthcare — local prototyping env (conda env: outset, py 3.12.8)
+# Install: pip install -r requirements.txt
+# Students run on Colab; this file mirrors what the notebooks will need.
+
+# Core scientific stack
+numpy
+pandas
+scipy
+scikit-learn
+matplotlib
+seaborn
+pillow
+
+# Deep learning (CPU prototyping; Colab swaps in GPU torch)
+torch
+torchvision
+
+# Medical / domain
+medmnist
+pydicom
+
+# LLM / multimodal (D2)
+transformers
+huggingface_hub
+datasets
+sentencepiece
+anthropic
+
+# Notebooks
+jupyter
+notebook
+ipykernel
+ipywidgets
+nbformat
+
+# Slides
+python-pptx
+
+# Utilities
+tqdm
+requests
+python-dotenv
