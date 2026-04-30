@@ -14,10 +14,16 @@ pillow
 # Deep learning (CPU prototyping; Colab swaps in GPU torch)
 torch
 torchvision
+timm
+
+# Classical ML for the D1 ladder
+xgboost
 
 # Medical / domain
 medmnist
 pydicom
+pyradiomics
+SimpleITK
 
 # LLM / multimodal (D2)
 transformers
@@ -25,6 +31,10 @@ huggingface_hub
 datasets
 sentencepiece
 anthropic
+tabpfn
+
+# Kaggle data download (APTOS, HAM10000)
+kaggle
 
 # Notebooks
 jupyter
