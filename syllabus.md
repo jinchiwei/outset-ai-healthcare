@@ -4,98 +4,99 @@
 
 ## Course promise
 
-Three afternoons. By Wednesday, every student will have built six different machine-learning models on real medical images, used a foundation model on real clinical text, and shipped a capstone project they can put on GitHub. Each tier does *real* work, not a watered-down version. Students who arrive having never written Python leave understanding what an AI model actually is and why it works.
+Three afternoons. By Wednesday, every student will have built five different machine-learning models on real medical images, used a foundation model on real clinical text, and shipped a capstone project they can put on GitHub. Students who arrive having never written Python leave understanding what an AI model actually is and why it works.
 
 ## How the days fit together
 
 | Day | Pitch | What you build |
 |-----|-------|----------------|
-| Mon Jul 6 | "What is an image, what is learning, and how did we get from logistic regression to vision transformers?" | A 6-model ladder on diabetic retinopathy: logreg → boosting → MLP → CNN → ResNet → ViT |
-| Tue Jul 7 | "Transformers aren't just for images. Here's how they read clinical text, and how to combine three signals at once." | A multimodal predictor: PyRadiomics features + LLM-extracted text features + demographics → TabPFN |
+| Mon Jul 6 | "What is an image, what is learning, and how did we get from logistic regression to vision transformers?" | A 5-model ladder on diabetic retinopathy: logreg → MLP → CNN → ResNet → ViT |
+| Tue Jul 7 | "Transformers aren't just for images. Here's how they read clinical text, and how to combine three signals at once." | A multimodal predictor on chest X-ray: PyRadiomics features + LLM-extracted text features + demographics → TabPFN |
 | Wed Jul 8 | "Pick a problem, build something, present it." | A capstone you can show to anyone, in pairs, with a 3-minute presentation |
 
-The progression is intentional. D1 ends with a vision transformer. D2 opens with: *transformers aren't just for images, they're how LLMs work too.* D2 ends with a multimodal stack. D3 lets students pick which thread to pull on.
+The progression is intentional. D1 ends with a vision transformer. D2 opens with: *transformers aren't just for images, they're how LLMs work too.* The dataset shifts from fundus (where end-to-end deep learning crushes it) to chest X-ray (where the workflow is different — clinicians have notes, radiomics is on-domain, and a foundation model on tabular data can compete).
 
-## Audience and tracks
+## Audience and pace
 
-High school students, mixed coding background. Each lab ships in three variants. Students self-place at the start of D1 and may switch tracks between days.
-
-| Track | Profile | What their notebook looks like |
-|-------|---------|-------------------------------|
-| Track A — Predict & Compare | Never coded, or new to ML | All cells run end-to-end. Their work is to **predict the accuracy of each model before running it**, write down why, then check. At the saliency-map step, find one weird case and explain it. *Real ML skill: error analysis and intuition building.* |
-| Track B — Implement | Comfortable with Python, may not know ML | Notebook has implementation gaps. Students write the MLP forward pass, the CNN training loop, the saliency function. Helper functions are provided. |
-| Track C — Build | Can use Claude Code, wants to design | A spec, a dataset path, and a target metric. Students implement the whole ladder themselves. Encouraged to use Claude Code as a pair programmer. |
-
-Same end goal across tracks: every student goes through the full pedagogical arc and leaves with the same conceptual understanding. Tracks differ in *what kind of work* the student does, not in ambition. Track A's "predict-then-run + error analysis" is real ML work, not consolation. Track A's share-back is the highlight slot, not the throwaway.
+High school students, mixed coding background. **Everyone builds the same notebook.** Students who arrive with zero coding experience get help one-on-one from the instructor; students fluent with Claude Code can blast through the main path and pick up stretch goals. No tier system, no labels, no pre-course placement. The notebook itself is the leveler: the first two-thirds is the main path, the last third is stretch material for fast finishers.
 
 ## Day 1 — Mon Jul 6: from pixels to vision transformers
 **Anchor: APTOS-2019 diabetic retinopathy (color fundus photos, 5-class severity). The first AI in medicine deployed at scale.**
 
 | Time | Block | What happens |
 |------|-------|-------------|
-| 2:30 – 2:45 | Welcome + track self-pick | Three tracks described in plain language; students pick one. They can switch tomorrow. |
-| 2:45 – 3:30 | Lecture: what is an image, what is learning | Clinical motivation (Google's DR screening in India). Pixels → numbers → arrays → channels. What a classifier is. High-altitude tour: logreg → boosting → MLP → CNN → ResNet → ViT, with the *why* of each. |
+| 2:30 – 2:45 | Welcome + course shape | What we'll do over 3 days, how to ask for help, Colab setup check. |
+| 2:45 – 3:30 | Lecture: what is an image, what is learning | Clinical motivation (Google's DR screening in India). Pixels → numbers → arrays → channels. What a classifier is. High-altitude tour: logreg → MLP → CNN → ResNet → ViT, with the *why* of each. |
 | 3:30 – 3:40 | Break | |
-| 3:40 – 4:50 | Lab: the ladder | Same dataset, six models, all trained live on Colab GPU. Each tier walks through the whole ladder. See section below. |
-| 4:50 – 5:00 | Share-back + bridge to D2 | One finding per track. Bridge: "ViT eats images, LLM eats words, same architecture. See you tomorrow." |
+| 3:40 – 4:50 | Lab: the ladder | Same dataset, five models, all trained live on Colab T4 GPU. Everyone runs the same notebook. | 
+| 4:50 – 5:00 | Share-back + bridge to D2 | A few volunteer findings. Then a 5-min walkthrough of the ViT-as-LLM bridge: image patch → patch embedding → attention vs. word → token embedding → attention. Same architecture, different modality. See you tomorrow. |
 
 **The Ladder Notebook (lab structure):**
 
 | # | Model | What students see | Approx live time |
 |---|-------|-------------------|------------------|
 | 0 | Look at the data | Fundus images. RGB channel split. Pixel histograms. Augmentation effects (rotation, flip, brightness, normalization) shown side-by-side. | 5 min |
-| 1 | Logistic regression | Flatten image → ~150K features → logreg. Baseline accuracy. "Simple models can't see structure." | 5 min |
-| 2 | Gradient boosting | Same flat features, XGBoost or LightGBM. Modest improvement. "Trees model nonlinearity but still don't see space." | 5 min |
-| 3 | MLP | Same flat features, 2-3 hidden layers. Slight improvement, plateau. "Neural nets without the right inductive bias still struggle." | 8 min |
-| 4 | Small CNN from scratch | Raw image as input now. Big jump. "Convolutions encode spatial structure." Visualize early-layer filters. | 12 min |
-| 5 | ResNet50 finetune | ImageNet-pretrained backbone, finetuned on DR. Another big jump. "Standing on ImageNet's shoulders." | 15 min |
-| 6 | ViT-Base finetune | Vision Transformer, same task. Comparable or better. *Bridge to D2: this same architecture eats words too.* | 18 min |
-| 7 | What did it learn? | Saliency / Grad-CAM on the ResNet. Where is the model looking? Any shortcut-learning red flags? | 10 min |
+| 1 | Logistic regression | Subsampled images (64×64, ~12K features) for speed. Flatten → logreg. Baseline accuracy. "Simple linear models can't see structure." | 6 min |
+| 2 | MLP | Same subsampled flat features, 2-3 hidden layers. Slight improvement, plateau. "Neural nets without the right inductive bias still struggle." | 8 min |
+| 3 | Small CNN from scratch | Raw images at 224×224 now. Big jump. "Convolutions encode spatial structure." Visualize early-layer filters. | 12 min |
+| 4 | ResNet50 finetune | ImageNet-pretrained backbone, finetuned on DR. Another big jump. "Standing on ImageNet's shoulders." | 15 min |
+| 5 | ViT-Base finetune | Vision Transformer, same task. Comparable or better. Saliency / Grad-CAM on the ViT to close out: where is it looking? | 18 min |
 
-All training happens live on Colab T4. No pre-cached weights. Students see loss curves, hear GPU fans (metaphorically), watch numbers improve.
+All training happens live on Colab T4. No pre-cached weights (a pre-class warmup notebook downloads ResNet + ViT weights to populate the HF cache so the lab doesn't stall on a 330MB download). Students see loss curves, watch numbers improve.
+
+**Stretch (for fast finishers):** find one image where the ViT was confidently wrong and the ResNet was confidently right (or vice versa). What's different about it?
 
 **Learning outcomes**:
 - Explain what an image is at the pixel/array level.
-- Articulate why each architectural step exists (logreg → boosting → MLP → CNN → ResNet → ViT).
+- Articulate why each architectural step exists (logreg → MLP → CNN → ResNet → ViT).
 - Read a confusion matrix; explain why accuracy alone is misleading in healthcare.
 - Find one failure mode visually using a saliency map.
 
 **Datasets**: APTOS-2019 (Kaggle, free, no credentialing).
 
 ## Day 2 — Tue Jul 7: LLMs and multimodal medical AI
-**Anchor: a multimodal predictor combining image features, LLM-extracted text features, and demographics.**
+**Anchor: Open-i Indiana University chest X-ray, with real radiologist reports.**
+
+The dataset shift from D1 is intentional. Fundus is where end-to-end deep learning is the right hammer. Chest X-ray is where the historical workflow looked very different — clinicians have written reports, radiologists used handcrafted measurements, and a modern multimodal stack has to combine them. Today we build that stack.
 
 | Time | Block | What happens |
 |------|-------|-------------|
 | 2:30 – 3:00 | Lecture | Transformers, recap. What an LLM is — tokens, context, completion. Why text matters in clinical care (notes, reports, history). Hallucination and clinical safety. Foundation models everywhere. |
-| 3:00 – 3:20 | Live demo | Anthropic API extracting structured findings from a free-text report. Tool use. Cost discipline. |
+| 3:00 – 3:20 | Live demo | Anthropic API extracting structured findings from a real Open-i report. Tool use. Cost discipline. *(See "LLM access" below — this is the only live API call of the day.)* |
 | 3:20 – 3:30 | Break | |
-| 3:30 – 4:50 | Lab: multimodal stack | PyRadiomics features (image) + Anthropic API features (text) + demographics → TabPFN. Compare to D1 image-only. | 
-| 4:50 – 5:00 | Share-back + capstone preview | One pair shares their best multimodal vs. unimodal delta. Capstone options revealed. |
+| 3:30 – 4:50 | Lab: multimodal stack | PyRadiomics features (CXR image) + cached LLM features (real reports) + demographics → TabPFN. Compare to image-only baseline. | 
+| 4:50 – 5:00 | Share-back + capstone preview | One volunteer shares their best multimodal vs. unimodal delta. Capstone options revealed. |
 
 **The Multimodal Stack:**
 
 The lab teaches one big idea: **everything becomes a tabular row, then a foundation model handles it.**
 
-1. **Image features** — PyRadiomics extracts handcrafted features (intensity, shape, texture statistics). Output: a fixed-length vector per image.
-2. **Text features** — Anthropic API parses an associated report (or structured grading rubric for fundus DR) into a structured JSON of findings. Convert to a fixed-length vector.
-3. **Demographics** — age, prior diagnoses, structured clinical info. Tabular.
+1. **Image features** — PyRadiomics extracts handcrafted features (intensity, shape, texture statistics) from the chest X-ray. Output: a fixed-length vector per patient. Radiomics on grayscale CXR is on-domain; this is what radiologists historically did with these images, formalized.
+2. **Text features** — Anthropic API has parsed an associated report (real Open-i radiology report) into a structured JSON of findings (effusion present, opacity location, etc.). **Pre-cached by the instructor — students load JSON, no API key needed.**
+3. **Demographics** — age, sex, comorbidities. Tabular.
 4. **Concatenate** the three → one wide tabular row per patient.
-5. **TabPFN** — a 2023+ foundation model for tabular data. No traditional training. Run inference, compare to the D1 unimodal baseline.
+5. **TabPFN** — a 2023+ foundation model for tabular data. No traditional training. Run inference, compare to a CXR-image-only baseline (e.g., a pretrained ResNet head on the same images).
 
-Track-specific work:
-- *Track A:* notebook runs end-to-end. Their job is **human-vs-model labeling on D1's outputs**. First, label 20 fundus images themselves using the rubric. Then look at the D1 model's predictions. Notebook auto-computes "your accuracy vs. model accuracy on the same set." Find the most surprising disagreement.
-- *Track B:* implement the feature concatenation and TabPFN integration. Helpers provided for PyRadiomics + Anthropic API calls.
-- *Track C:* build the whole multimodal pipeline. Beat the image-only D1 baseline by ≥3 points on the metric of their choice.
+**Honest discussion at the end:** the LLM-extracted features from a radiology report can leak the answer (the report often *names* the finding we're trying to predict). This is a real problem in clinical ML — what counts as data, what counts as a label, what's a clinician's note that postdates the imaging. We'll surface this and discuss what a fair evaluation would look like.
+
+**Stretch:** try predicting a finding the report doesn't directly mention (e.g., predict patient age bin from imaging features alone, or predict a comorbidity).
 
 **Learning outcomes**:
 - Explain what an LLM does at the token level.
-- Use the Anthropic API to extract structured features from clinical text.
+- Read a structured-extraction prompt and an LLM JSON output.
 - Articulate the "everything becomes tabular" insight.
 - Use a foundation model for tabular prediction (TabPFN) and explain why it's different from gradient boosting.
-- Name one risk specific to LLMs in clinical contexts.
+- Recognize a target-leakage failure mode in clinical ML.
 
-**Datasets**: APTOS-2019 (extending D1) plus structured grading rubric and synthetic demographic data. Open-i CXR available as a stretch dataset.
+**Datasets**: Open-i Indiana University CXR (free, no credentialing). Pre-cached LLM extractions committed to repo.
+
+## LLM access (D2)
+
+Anthropic API costs money. Students are on free Colab and don't have API keys. The course handles this in three layers:
+
+1. **Pre-cached LLM outputs.** Instructor pre-runs the structured-extraction prompt over all D2 lab reports using their own API key. The JSON outputs are committed to the repo (`datasets/openi_llm_extractions.json`). Students load the JSON in the lab notebook. Zero student-side API cost. Deterministic.
+2. **One live demo cell** during the lecture portion uses the instructor's key (loaded from a Colab secret, hard-capped at one call per session). Students see the actual API round-trip happen once, then use cached for the rest.
+3. **Optional advanced section** for students who want to try LLM inference themselves: load a small open-source instruction-tuned model (e.g., Qwen 2.5 7B Instruct) on the Colab T4 GPU and run extraction locally. Free, no key needed, slower. This is stretch material.
 
 ## Day 3 — Wed Jul 8: capstone
 **Format: pairs, open-ended, presentations at 4:30.**
@@ -108,18 +109,15 @@ Track-specific work:
 | 4:30 – 4:55 | Presentations | 3 min/pair: what you built, one finding, one limitation. |
 | 4:55 – 5:00 | Closing | "What now?" — concrete next projects, papers to read, ways to keep learning. |
 
-**Capstone options (5):**
+**Capstone options (3):**
 
 1. **Pneumonia chest X-ray** — RSNA dataset, full resolution. Build a classifier; measure performance across patient subgroups.
 2. **Skin lesion triage** — HAM10000. Melanoma vs. benign. Stretch: run on a phone-camera photo and see what happens.
-3. **ECG arrhythmia detection** — PTB-XL subset. 12-lead ECG as time series; classify rhythm.
-4. **MedMNIST cross-modality** — pick any sub-dataset (organ, tissue, retina, derma, blood, path). Ship a baseline + one principled improvement.
-5. **Multimodal extension** — extend the D2 stack to a new dataset (Open-i CXR or your own). Beat unimodal.
+3. **MedMNIST cross-modality** — pick any sub-dataset (organ, tissue, retina, derma, blood, path). Ship a baseline + one principled improvement.
 
-**Track expectations**:
-- *Track A:* starter-kit notebook with a working baseline pre-trained. Goal: characterize one failure mode they didn't expect, plus one principled comparison.
-- *Track B:* spec sheet + scaffolded data loading. Goal: build a model from scratch and analyze it honestly.
-- *Track C:* problem statement only. Encouraged to use Claude Code. Goal: clean implementation, principled evaluation choice, defended design decisions.
+Pairs that want to go off-menu (ECG, multimodal extension, their own dataset) can propose at 2:30; if the instructor green-lights it, they go.
+
+Each option ships with a starter notebook that has data loading, a working baseline, and "improve me" markers. Pairs decide how deep to go.
 
 **Presentation rubric (5 points, 1 each):**
 
@@ -138,15 +136,14 @@ Track-specific work:
 ## Materials Outset gets
 
 - Slides per session (`.pptx`, generated via python-pptx).
-- All notebooks (Track A/B/C + solutions) in the course repo.
+- All notebooks and starter kits in the course repo.
 - Syllabus, capstone options, rubric.
 - Optional: a short demo-reel video of student capstone presentations (with consent).
 
 ## Risks and mitigations
 
 - **Colab GPU lottery** — free-tier Colab usually gives a T4; sometimes it doesn't. Mitigation: instructor uses Colab Pro for the day to share GPU runtimes if a student lands CPU-only. Pre-class warmup notebook downloads pretrained ResNet/ViT weights to populate the HF cache.
-- **Wide skill range** — three tracks, with track mobility between days. Track A is reframed as *different* work, not less work — error analysis and prediction are real ML skills.
-- **API costs (D2)** — instructor distributes a single shared Anthropic key with a hard usage cap; expensive cells can be pre-cached if needed.
-- **Datasets requiring auth** — APTOS and HAM10000 use Kaggle (free account). PTB-XL needs a free PhysioNet account, doable. Open-i needs nothing.
-- **D1 lab time pressure** — six models in 70 min. Mitigation: hard time-box each step. Instructor pre-validates total compute time on Colab T4 the night before.
+- **D1 lab time pressure** — five models in 70 min. Mitigation: instructor pre-validates total wall-clock on free-tier T4 (not Pro) the week before. Subsampled images for the flat-feature steps. Hard time-box per step.
+- **D2 LLM cost** — solved by pre-caching extractions. Single live demo cell uses instructor key, hard-capped.
+- **Datasets requiring auth** — APTOS and HAM10000 use Kaggle (free account). Open-i needs nothing. PTB-XL (capstone alternative if a pair proposes ECG) needs a free PhysioNet account.
 - **D3 time overruns** — strict 4:25 stop. Presentations are 3 min hard.

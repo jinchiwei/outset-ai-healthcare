@@ -1,26 +1,21 @@
-# Outset AI in Healthcare — Build Plan (v2)
+# Outset AI in Healthcare — Build Plan (v3)
 
-> **For agentic workers:** Use the standard subagent-driven-development pattern to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking. Adapted from a software-TDD plan template for an educational product: "test" = "artifact runs end-to-end and produces expected output."
+> **For agentic workers:** Use the standard subagent-driven-development pattern to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking. "Test" = "artifact runs end-to-end and produces expected output."
 
-**Goal:** Build all course materials (slides, tracked notebooks, capstone kits) for the 3-session AI in Healthcare course defined in `syllabus.md`, ready for delivery Mon Jul 6 – Wed Jul 8, 2026.
+**Goal:** Build all course materials (slides, notebooks, capstone kits) for the 3-session AI in Healthcare course defined in `syllabus.md`, ready for delivery Mon Jul 6 – Wed Jul 8, 2026.
 
-**Architecture:** Each day ships a `python-pptx`-generated slide deck and a set of Track A/B/C + solution notebooks. D1 is the 6-model ladder (logreg → ViT) on APTOS-2019 fundus DR. D2 is PyRadiomics + Anthropic API + demographics → TabPFN. D3 is open-ended capstone with starter kits. Notebooks share a per-day `common.py` for data loading, eval, and plotting. A smoke-test script runs every executable notebook headless.
+**Architecture:** Each day ships one slide deck (`.pptx` via python-pptx) and **one main notebook**. No tier system. D1 is a 5-model ladder (logreg → ViT) on APTOS-2019 fundus DR. D2 is PyRadiomics + cached LLM features + demographics → TabPFN, on Open-i chest X-ray. D3 ships 3 capstone starter kits. A smoke-test script runs every executable notebook headless.
 
-**Tech Stack:** Python 3.12 (conda env `outset`), python-pptx, jupyter/nbformat, torch + torchvision, timm (for ViT), scikit-learn, xgboost, pyradiomics, transformers, tabpfn, anthropic, matplotlib.
+**v3 deltas from v2:**
+- Track A/B/C system removed. One notebook per day, everyone builds.
+- D1 dropped XGBoost (5 models now: logreg, MLP, CNN, ResNet, ViT).
+- D1 flat-feature steps use subsampled images (64×64) for speed.
+- D2 anchor swapped from APTOS to Open-i chest X-ray (real images + real reports, no synthetic-report leakage).
+- D2 LLM access via pre-cached extractions (instructor pre-runs Anthropic API, commits JSON).
+- Capstone kits cut from 5 to 3 (pneumonia, skin, MedMNIST).
+- Removed: tier-quiz materials, Anthropic safety demo (modern models handle most adversarial cases reasonably).
 
----
-
-## Naming convention update
-
-Three notebook variants, framed as **tracks** (not tiers — no hierarchy):
-
-| Track | Filename suffix | Profile |
-|-------|----------------|---------|
-| A — Predict & Compare | `_track_a.ipynb` | No code experience. Predict accuracy before each cell, run it, find one weird saliency case. |
-| B — Implement | `_track_b.ipynb` | Some Python. Fill implementation gaps (forward passes, training loops, saliency function). |
-| C — Build | `_track_c.ipynb` | Claude Code capable. Spec-only. |
-
-Solution notebook stays `_solution.ipynb`.
+**Tech Stack:** Python 3.12 (conda env `outset`), python-pptx, jupyter/nbformat, torch + torchvision, timm, scikit-learn, pyradiomics + SimpleITK, transformers, tabpfn, anthropic, matplotlib.
 
 ---
 
@@ -28,19 +23,19 @@ Solution notebook stays `_solution.ipynb`.
 
 ```
 outset-ai-healthcare/
-  syllabus.md                          # done (v2)
-  README.md                            # done
-  requirements.txt                     # update with timm/pyradiomics/tabpfn/xgboost
+  syllabus.md                          # done (v3)
+  README.md                            # done; refresh at end
+  requirements.txt                     # done (v2 deps still apply)
   .gitignore                           # done
   prep/
-    hours.md                           # done
-    build-plan.md                      # this file (v2)
+    hours.md                           # tracking
+    build-plan.md                      # this file (v3)
 
   scripts/
     smoke_notebooks.py                 # run every executable .ipynb headless
+    nbutil.py                          # notebook construction helpers
     build_all_slides.py                # invokes day1/day2/day3 builders
-    nbutil.py                          # helpers
-    pretrain_warmup.py                 # standalone: pre-download HF weights to populate Colab cache
+    cache_openi_llm.py                 # one-shot: instructor runs to populate cache
 
   slides/
     theme.py                           # brand: Geist, palette, layout helpers
@@ -51,43 +46,39 @@ outset-ai-healthcare/
 
   notebooks/
     _shared/
-      colab_setup.py                   # one-cell pip install + GPU check
+      colab_setup.py                   # pip install + GPU check
+      pretrain_warmup.ipynb            # pre-class: warm HF cache for ResNet+ViT
     day1_ladder/
       common.py                        # APTOS loader, model factories, eval, viz
-      solution.ipynb                   # full 6-model ladder, instructor reference
-      track_a.ipynb                    # predict-then-run + saliency analysis
-      track_b.ipynb                    # implementation gaps to fill
-      track_c.ipynb                    # spec only
+      day1.ipynb                       # the lab notebook (everyone runs this)
     day2_multimodal/
-      common.py                        # PyRadiomics extractor, Anthropic helper, TabPFN wrapper
-      solution.ipynb
-      track_a.ipynb                    # human-vs-model labeling + multimodal compare
-      track_b.ipynb
-      track_c.ipynb
+      common.py                        # Open-i loader, PyRadiomics, cached-LLM helper, TabPFN wrapper
+      day2.ipynb
     day3_capstone/
       project_options.md
       rubric.md
       starter_kits/
         pneumonia_rsna/
-          starter_a.ipynb
-          starter_b.ipynb
-          spec_c.md
+          starter.ipynb                # working baseline + improve-me markers
+          README.md
         skin_ham10000/
-        ecg_ptbxl/
+          starter.ipynb
+          README.md
         medmnist_choose/
-        multimodal_extension/
+          starter.ipynb
+          README.md
 
   datasets/
-    README.md                          # done; update for APTOS
+    README.md                          # done; update for v3 datasets
     download_aptos.py
-    download_openi.py                  # for D3 multimodal extension
-    grading_rubric.json                # synthetic-but-realistic rubric for D2 text features
-    synthetic_demographics.csv         # synthetic demographics for D2
+    download_openi.py
+    openi_llm_extractions.json         # pre-cached LLM output, committed
+    synthetic_demographics.csv         # for Open-i (Open-i lacks demographics)
 ```
 
 ---
 
-## Phase 0 — Foundations (unchanged from v1)
+## Phase 0 — Foundations
 
 Reusable across all three days. Build first.
 
@@ -95,7 +86,7 @@ Reusable across all three days. Build first.
 
 **Files:** `slides/theme.py`, `slides/test_theme.py`
 
-Same as v1 — Geist + turquoise/deeppink/amber/blueviolet palette + python-pptx layout helpers (`title_slide`, `content_slide`, `section_divider`). See v1 plan or just port directly.
+Same as v1/v2 — Geist + turquoise/deeppink/amber/blueviolet palette + python-pptx layout helpers (`title_slide`, `content_slide`, `section_divider`).
 
 - [ ] Build theme.py with palette, helpers
 - [ ] Smoke test
@@ -105,7 +96,7 @@ Same as v1 — Geist + turquoise/deeppink/amber/blueviolet palette + python-pptx
 
 **Files:** `scripts/smoke_notebooks.py`, `scripts/nbutil.py`
 
-Same as v1. Smoke runner skips track_a/track_b/track_c/spec_c notebooks (intentionally non-runnable).
+With Track A/B/C gone, the smoke runner runs *every* `.ipynb` in `notebooks/**` (no skip patterns needed for student variants). Capstone starter notebooks should also run end-to-end with a working baseline.
 
 - [ ] Build nbutil + smoke runner
 - [ ] Verify it runs (no notebooks present yet → exit 0)
@@ -115,26 +106,29 @@ Same as v1. Smoke runner skips track_a/track_b/track_c/spec_c notebooks (intenti
 
 **Files:** `notebooks/_shared/colab_setup.py`
 
-Idempotent pip install. Update package list to include `timm`, `pyradiomics`, `tabpfn`, `xgboost`. Add a GPU-check function that prints whether CUDA is available; if not, warn the student to use Runtime → Change runtime type.
-
 ```python
 # notebooks/_shared/colab_setup.py
 import subprocess, sys, importlib
 
 REQUIRED = [
     "torch", "torchvision", "timm",
-    "scikit-learn", "xgboost", "matplotlib", "seaborn", "pillow",
+    "scikit-learn", "matplotlib", "seaborn", "pillow",
     "tqdm", "pandas", "numpy",
-    "transformers", "anthropic", "tabpfn",
+    "transformers", "tabpfn",
     "pyradiomics", "SimpleITK",
 ]
+
+# Map pip name -> import name when they differ
+IMPORT_NAMES = {
+    "scikit-learn": "sklearn",
+    "pillow": "PIL",
+    "pyradiomics": "radiomics",
+}
 
 def ensure(*pkgs):
     missing = []
     for p in (pkgs or REQUIRED):
-        mod = p.replace("-", "_").lower()
-        # Special-case modules whose package and import names differ
-        import_name = {"scikit-learn": "sklearn", "pillow": "PIL"}.get(p, mod)
+        import_name = IMPORT_NAMES.get(p, p.replace("-", "_").lower())
         try:
             importlib.import_module(import_name)
         except ImportError:
@@ -154,18 +148,20 @@ def gpu_check():
         print("torch not installed yet — run ensure() first")
 ```
 
+(Notice: dropped `xgboost` and `anthropic` from REQUIRED. Anthropic is only used by the *instructor's* one-shot caching script, not by student notebooks. Students use cached JSON.)
+
 - [ ] Write helper
 - [ ] Smoke test locally
 - [ ] Commit `Add Colab setup with GPU check`
 
-### Task 3.5: Pretrained-weights warmup script (NEW)
+### Task 4: Pre-class warmup notebook
 
-**Files:** `scripts/pretrain_warmup.py`, `notebooks/_shared/pretrain_warmup.ipynb`
+**Files:** `notebooks/_shared/pretrain_warmup.ipynb`
 
-Send students a notebook the day before D1 that downloads ResNet50 (~100MB) and ViT-Base (~330MB) into the Colab cache. Avoids 30-60s download stalls during the live lab.
+Send students this notebook 1-2 days before D1. Downloads ResNet50 and ViT-Base into the HF/torchvision cache so the live lab doesn't stall on weight downloads.
 
 ```python
-# notebooks/_shared/pretrain_warmup.ipynb (one cell)
+# pretrain_warmup.ipynb (one cell)
 import torchvision.models as tvm
 from transformers import ViTModel, ViTImageProcessor
 
@@ -174,24 +170,22 @@ _ = tvm.resnet50(weights=tvm.ResNet50_Weights.IMAGENET1K_V2)
 print("downloading ViT-Base (patch16-224, ImageNet)...")
 _ = ViTModel.from_pretrained("google/vit-base-patch16-224")
 _ = ViTImageProcessor.from_pretrained("google/vit-base-patch16-224")
-print("done. weights cached.")
+print("done. weights cached. see you Monday.")
 ```
 
 - [ ] Write the notebook
-- [ ] Verify timings
-- [ ] Commit `Add pretrained weight warmup notebook for students`
+- [ ] Verify weights pull on a fresh Colab session
+- [ ] Commit `Add pre-class warmup notebook for students`
 
 ---
 
-## Phase 1 — Day 1: The Ladder (REWRITTEN)
+## Phase 1 — Day 1: The Ladder
 
-D1 anchor is APTOS-2019 diabetic retinopathy. Same dataset across all 6 models. Live training on Colab T4.
+D1 anchor is APTOS-2019 diabetic retinopathy. Same dataset across all 5 models. Live training on Colab T4. **One notebook for everyone.**
 
-### Task 4: APTOS dataset loader + download script
+### Task 5: APTOS dataset loader + download script
 
 **Files:** `datasets/download_aptos.py`, `notebooks/day1_ladder/common.py`
-
-APTOS-2019 is on Kaggle. Students will need a Kaggle API token. Document the friction.
 
 - [ ] **Step 1: Download script with Kaggle API**
 
@@ -200,7 +194,6 @@ APTOS-2019 is on Kaggle. Students will need a Kaggle API token. Document the fri
 """Download APTOS-2019 from Kaggle. Requires KAGGLE_USERNAME and KAGGLE_KEY env vars
 (or a ~/.kaggle/kaggle.json file). Free Kaggle account required.
 """
-import os
 import subprocess
 from pathlib import Path
 
@@ -217,7 +210,6 @@ def main():
         "-c", "aptos2019-blindness-detection",
         "-p", str(ROOT),
     ])
-    # unzip
     for z in ROOT.glob("*.zip"):
         subprocess.check_call(["unzip", "-q", "-o", str(z), "-d", str(ROOT)])
     print("done.")
@@ -226,286 +218,80 @@ if __name__ == "__main__":
     main()
 ```
 
-- [ ] **Step 2: common.py — loader, transforms, splits**
+- [ ] **Step 2: common.py — loader, transforms, splits, model factories**
 
-```python
-# notebooks/day1_ladder/common.py
-"""Day 1 helpers: APTOS DR data loading, model factories, eval, visualization.
+Two loaders in `common.py`:
+- `get_loaders_full(batch_size, val_frac)` → 224×224 RGB tensors, used for CNN/ResNet/ViT
+- `get_loaders_subsampled(batch_size, val_frac, size=64)` → 64×64 RGB tensors, used for logreg/MLP
 
-Shared across solution + track_a + track_b + track_c.
-"""
-from __future__ import annotations
-from pathlib import Path
-from typing import Optional
-import numpy as np
-import pandas as pd
-import torch
-import torch.nn as nn
-from torch.utils.data import Dataset, DataLoader
-import torchvision.transforms as T
-from PIL import Image
+Plus: `flatten_for_classical(loader)` returns (X, y) numpy arrays for sklearn. Transforms include normalization and (train-only) augmentation.
 
-APTOS_ROOT = Path(__file__).resolve().parents[2] / "datasets/raw/aptos"
+Model factories:
+- `make_mlp(in_features, num_classes=5, hidden=(256, 128))`
+- `make_small_cnn(num_classes=5)`
+- `make_resnet50(num_classes=5, pretrained=True)`
+- `make_vit_base(num_classes=5, pretrained=True)` (uses timm)
 
-NUM_CLASSES = 5
-IMG_SIZE = 224
+Eval helper: `evaluate_classifier(predict_fn, loader, device)` → dict with accuracy, confusion matrix, per-class accuracy, predictions, labels.
 
-NORM_MEAN = [0.485, 0.456, 0.406]
-NORM_STD = [0.229, 0.224, 0.225]
+Viz helpers:
+- `show_rgb_split(image)` — shows R/G/B channels separately
+- `show_pixel_histogram(image)` — three histograms for the three channels
+- `show_augmentations(image)` — original + rotated + flipped + brightness-shifted side-by-side
+- `show_first_layer_filters(model)` — visualize learned conv filters
+- `gradcam(model, image, target_class)` — saliency map for a CNN/ResNet
+- `attention_rollout(vit_model, image)` — attention-based saliency for ViT
 
-
-class APTOSDataset(Dataset):
-    """APTOS 2019 diabetic retinopathy dataset.
-
-    Returns (image_tensor, label_int). label is 0-4 severity grade.
-    """
-    def __init__(self, csv_path: Path, img_dir: Path, transform=None):
-        self.df = pd.read_csv(csv_path)
-        self.img_dir = Path(img_dir)
-        self.transform = transform or default_transform()
-
-    def __len__(self):
-        return len(self.df)
-
-    def __getitem__(self, idx):
-        row = self.df.iloc[idx]
-        img = Image.open(self.img_dir / f"{row['id_code']}.png").convert("RGB")
-        img = self.transform(img)
-        return img, int(row["diagnosis"])
-
-
-def default_transform(train: bool = False):
-    if train:
-        return T.Compose([
-            T.Resize((IMG_SIZE, IMG_SIZE)),
-            T.RandomHorizontalFlip(),
-            T.RandomRotation(15),
-            T.ToTensor(),
-            T.Normalize(NORM_MEAN, NORM_STD),
-        ])
-    return T.Compose([
-        T.Resize((IMG_SIZE, IMG_SIZE)),
-        T.ToTensor(),
-        T.Normalize(NORM_MEAN, NORM_STD),
-    ])
-
-
-def get_loaders(batch_size: int = 32, val_frac: float = 0.15, seed: int = 0):
-    """Split APTOS train.csv into train/val. Returns (train_loader, val_loader)."""
-    csv = APTOS_ROOT / "train.csv"
-    img_dir = APTOS_ROOT / "train_images"
-    df = pd.read_csv(csv)
-    rng = np.random.RandomState(seed)
-    idx = rng.permutation(len(df))
-    n_val = int(len(df) * val_frac)
-    val_idx, train_idx = idx[:n_val], idx[n_val:]
-    df.iloc[train_idx].to_csv(APTOS_ROOT / "_train_split.csv", index=False)
-    df.iloc[val_idx].to_csv(APTOS_ROOT / "_val_split.csv", index=False)
-
-    train_ds = APTOSDataset(APTOS_ROOT / "_train_split.csv", img_dir, default_transform(train=True))
-    val_ds   = APTOSDataset(APTOS_ROOT / "_val_split.csv", img_dir, default_transform(train=False))
-
-    return (
-        DataLoader(train_ds, batch_size=batch_size, shuffle=True, num_workers=2),
-        DataLoader(val_ds, batch_size=batch_size, num_workers=2),
-    )
-
-
-def flatten_loader(loader, max_n: Optional[int] = None):
-    """Flatten images to (N, H*W*C) for non-CNN models.
-    Returns (X, y) numpy arrays. Subsample to max_n if given.
-    """
-    Xs, ys = [], []
-    for xb, yb in loader:
-        Xs.append(xb.numpy().reshape(xb.size(0), -1))
-        ys.append(yb.numpy())
-        if max_n and sum(x.shape[0] for x in Xs) >= max_n:
-            break
-    X = np.concatenate(Xs)[:max_n]
-    y = np.concatenate(ys)[:max_n]
-    return X, y
-
-
-def evaluate_classifier(predict_fn, loader, device="cpu"):
-    """Generic eval for any model with a predict_fn(batch_of_images) -> labels."""
-    ys, ps = [], []
-    for xb, yb in loader:
-        if hasattr(xb, "to"):
-            xb_dev = xb.to(device)
-        else:
-            xb_dev = xb
-        pred = predict_fn(xb_dev)
-        if hasattr(pred, "cpu"):
-            pred = pred.cpu().numpy()
-        ys.append(yb.numpy() if hasattr(yb, "numpy") else yb)
-        ps.append(pred)
-    y = np.concatenate(ys); p = np.concatenate(ps)
-    return {
-        "accuracy": float((y == p).mean()),
-        "y": y,
-        "pred": p,
-    }
-```
-
-Add CNN, ResNet, ViT factory functions to `common.py` (kept short here; engineer expands):
-
-```python
-def make_small_cnn(num_classes=NUM_CLASSES):
-    return nn.Sequential(
-        nn.Conv2d(3, 32, 3, padding=1), nn.ReLU(), nn.MaxPool2d(2),
-        nn.Conv2d(32, 64, 3, padding=1), nn.ReLU(), nn.MaxPool2d(2),
-        nn.Conv2d(64, 128, 3, padding=1), nn.ReLU(), nn.AdaptiveAvgPool2d(1),
-        nn.Flatten(), nn.Linear(128, num_classes),
-    )
-
-def make_resnet50(num_classes=NUM_CLASSES, pretrained=True):
-    import torchvision.models as tvm
-    weights = tvm.ResNet50_Weights.IMAGENET1K_V2 if pretrained else None
-    m = tvm.resnet50(weights=weights)
-    m.fc = nn.Linear(m.fc.in_features, num_classes)
-    return m
-
-def make_vit_base(num_classes=NUM_CLASSES, pretrained=True):
-    import timm
-    return timm.create_model("vit_base_patch16_224", pretrained=pretrained, num_classes=num_classes)
-```
-
-Plus `train_one_model(model, train_loader, val_loader, epochs, lr, device)` and `show_filters(model)`, `gradcam(model, image, target_class)` helpers.
-
-- [ ] Write all factories + helpers
-- [ ] Write `test_common.py` smoke tests (subset, batch=4, 1 epoch each)
+- [ ] Write common.py with all helpers
+- [ ] Write `test_common.py` smoke tests (subset, batch=4, 1 epoch each model)
 - [ ] Run smoke
 - [ ] Commit `Add Day 1 common module: APTOS loader, model factories, eval, viz`
 
-### Task 5: Day 1 solution notebook (the ladder)
+### Task 6: Day 1 lab notebook (the ladder)
 
-**Files:** `scripts/build_day1_solution.py`, `notebooks/day1_ladder/solution.ipynb`
+**Files:** `scripts/build_day1.py`, `notebooks/day1_ladder/day1.ipynb`
 
-The notebook is the instructor reference. Walks through all 6 models in order on APTOS DR.
+This is THE notebook everyone runs. Walks through all 5 models in order on APTOS DR, with viz between steps and stretch goals at the end.
 
-Notebook structure (cells):
+Notebook outline:
 
-1. Markdown: course intro, "today we build six models on the same data"
+1. Markdown: course intro, "today we build five models on the same data and watch each one improve"
 2. Code: `import colab_setup; colab_setup.ensure(); colab_setup.gpu_check()`
 3. Code: imports + load data + show batch
-4. Markdown: "Step 0 — Look at the data"
-5. Code: RGB channel split visualization
-6. Code: pixel histogram per channel
-7. Code: augmentation effects (rotation, flip, normalization side-by-side)
-8. Markdown: "Step 1 — Logistic regression"
-9. Code: flatten train + val, fit `sklearn.linear_model.LogisticRegression(max_iter=200)`, report accuracy
-10. Markdown: "Step 2 — Gradient boosting"
-11. Code: same flat features, `xgboost.XGBClassifier`, report
-12. Markdown: "Step 3 — MLP"
-13. Code: small MLP on flat features, train 5 epochs, report
-14. Markdown: "Step 4 — CNN from scratch"
-15. Code: `make_small_cnn()`, train 5 epochs on raw images, report. Show first-layer filter visualizations.
-16. Markdown: "Step 5 — ResNet50 (transfer learning)"
-17. Code: `make_resnet50(pretrained=True)`, finetune 3 epochs, report
-18. Markdown: "Step 6 — Vision Transformer"
-19. Code: `make_vit_base(pretrained=True)`, finetune 3 epochs, report
-20. Markdown: "Step 7 — What did it learn?"
-21. Code: Grad-CAM on the ResNet over 6 sample images
-22. Markdown: leaderboard table + bridge to D2
+4. Markdown: **Step 0 — Look at the data**
+5. Code: RGB channel split, pixel histogram, augmentation effects
+6. Markdown: **Step 1 — Logistic regression**
+7. Code: subsampled (64×64) flatten + sklearn `LogisticRegression(max_iter=500, solver='saga')`. Print accuracy + confusion matrix.
+8. Markdown: **Step 2 — MLP**
+9. Code: same subsampled features → MLP, train 5 epochs, report.
+10. Markdown: **Step 3 — Small CNN from scratch**
+11. Code: full 224×224 images → `make_small_cnn()`, train 5 epochs. Show first-layer filter visualizations.
+12. Markdown: **Step 4 — ResNet50 (transfer learning)**
+13. Code: `make_resnet50(pretrained=True)`, finetune 3 epochs, report. Run Grad-CAM on 4 sample images.
+14. Markdown: **Step 5 — Vision Transformer**
+15. Code: `make_vit_base(pretrained=True)`, finetune 3 epochs, report. Run attention-rollout viz on 4 images.
+16. Markdown: **Leaderboard**
+17. Code: bar chart of all 5 model accuracies side-by-side.
+18. Markdown: **Bridge to Day 2** — image patch → patch embedding → attention vs. word → token embedding → attention. (One markdown cell with both ASCII diagrams.)
+19. Markdown: **Stretch — find a disagreement**
+20. Code: find images where ResNet and ViT disagree confidently. Show 4 examples with both predictions and saliency maps.
 
-- [ ] Build notebook programmatically (mirror v1 pattern)
-- [ ] Run on a Colab-equivalent local GPU or mark deferred to Jinchi's local validation
-- [ ] Commit `Add Day 1 solution notebook (the ladder)`
+- [ ] Build notebook programmatically (mirror v1 nbutil pattern)
+- [ ] Run end-to-end on a Colab-equivalent local GPU (or mark deferred to Jinchi's local validation week before course)
+- [ ] Commit `Add Day 1 ladder notebook`
 
-### Task 6: Day 1 Track B notebook (implement)
-
-**Files:** `scripts/build_day1_track_b.py`, `notebooks/day1_ladder/track_b.ipynb`
-
-Track B keeps the structure of solution.ipynb but blanks specific implementation cells. Helper functions in `common.py` are still available.
-
-Cells to blank with `# YOUR CODE` markers:
-- Step 3 (MLP): blank the forward pass; provide skeleton class
-- Step 4 (CNN): blank the training loop body (zero_grad / forward / loss / backward / step)
-- Step 7 (Grad-CAM): blank the saliency function; provide signature and one-line description
-
-Add markdown cells before each blank with hints (1-2 sentences, not the full answer).
-
-- [ ] Write builder
-- [ ] Build, eyeball
-- [ ] Commit `Add Day 1 Track B notebook (implement gaps)`
-
-### Task 7: Day 1 Track A notebook (predict & compare)
-
-**Files:** `scripts/build_day1_track_a.py`, `notebooks/day1_ladder/track_a.ipynb`
-
-Track A runs everything end-to-end. Their work is *prediction* before each cell + *analysis* after each cell.
-
-Structure:
-- Same data + augmentation cells as solution.
-- Before each model cell, insert a markdown cell: **"PREDICT: what accuracy do you think this model will reach on validation? Write your guess in the cell below as a comment, then run."**
-- Add a Python cell with `# my_guess_step_N = ___  # write your guess here`.
-- After each model cell, insert markdown: **"How close was your guess? What surprised you?"** + a markdown cell for the student's note.
-- At Step 7 (Grad-CAM): they look at 6 saliency maps and write down which one looks most suspicious and why.
-- At end: a "what would you tell the doctor about this model" reflection cell.
-
-No code blanks. Track A is about reasoning, not implementation.
-
-- [ ] Write builder
-- [ ] Build, eyeball
-- [ ] Commit `Add Day 1 Track A notebook (predict & compare)`
-
-### Task 8: Day 1 Track C notebook (build)
-
-**Files:** `scripts/build_day1_track_c.py`, `notebooks/day1_ladder/track_c.ipynb`
-
-Track C is mostly markdown spec. Two code cells: imports + a final empty cell.
-
-```markdown
-# Day 1 Track C — The Ladder, your build
-
-You're at the "I can use Claude Code" track. Here's the spec.
-
-## Goal
-Build six classifiers on APTOS-2019 DR, in this order:
-1. Logistic regression on flattened pixels
-2. Gradient boosting on flattened pixels
-3. Small MLP on flattened pixels
-4. Small CNN trained from scratch on raw images
-5. ResNet50 with ImageNet pretrained weights, finetuned
-6. ViT-Base with ImageNet pretrained weights, finetuned
-
-For each model, report validation accuracy. Plot a leaderboard at the end.
-
-## Constraints
-- Use Colab T4 GPU.
-- The whole notebook must run end-to-end in under 60 minutes.
-- Use `notebooks/day1_ladder/common.py` helpers if it saves time.
-- No pre-cached weights — train everything live.
-
-## Stretch
-- Visualize first-layer CNN filters.
-- Run Grad-CAM on the ResNet, find one suspicious-looking saliency case.
-- Try unfreezing the ResNet and full-finetuning vs. linear-head only. Compare.
-
-## Allowed
-- Claude Code is encouraged. Treat it like a pair programmer, not autocomplete.
-- The instructor's `solution.ipynb` is off-limits until after share-back.
-
-## Done means
-- Notebook runs end-to-end on a fresh Colab kernel.
-- A markdown cell at the end answers: "Pick the architectural step where you saw the biggest accuracy jump. Why did it help?"
-```
-
-- [ ] Write builder + spec
-- [ ] Commit `Add Day 1 Track C spec notebook`
-
-### Task 9: Day 1 slide deck
+### Task 7: Day 1 slide deck
 
 **Files:** `slides/day1.py`
 
-Slide outline (~25 slides, ~45 min lecture):
+Slide outline (~22 slides, ~45 min lecture):
 
 1. Title — AI in Healthcare, Day 1
-2. Today's plan — three blocks
-3. Tracks A/B/C explained, pick now
+2. Today's plan — three blocks (lecture, lab, share-back)
+3. How to ask for help — instructor circulates, no shame in asking
 4. **Section: Why does this matter?**
-5. Real deployed medical AI: 3 examples
-6. Real deployed: things that go wrong
+5. Real deployed medical AI: 3 examples (DR screening, mammo triage, sepsis warning)
+6. Real deployed: things that go wrong (shortcut learning, distribution shift)
 7. Today's anchor — diabetic retinopathy, the first AI screening deployed at scale
 8. **Section: What is an image?**
 9. Pixels → grid of numbers
@@ -515,211 +301,324 @@ Slide outline (~25 slides, ~45 min lecture):
 13. Augmentation effects visualized
 14. **Section: What is "learning"?**
 15. A classifier is a function: numbers → label
-16. The ladder we'll build, all six on one slide
+16. The ladder we'll build, all five on one slide
 17. Logistic regression — the dumbest model that still works
-18. Boosting — trees, but better
-19. MLP — neural net basics
-20. CNN — encoding spatial structure
-21. ResNet — deep + transfer learning
-22. ViT — attention on patches
-23. The one-slide bridge: ViT eats images, LLM eats words
-24. **Section: Lab plan**
-25. Time-box per step + how to use Claude Code well
-26. **Section: Share-back**
-27. Closing: the leaderboard you just built, and what changed at each step
+18. MLP — neural net basics
+19. CNN — encoding spatial structure
+20. ResNet — deep + transfer learning
+21. ViT — attention on patches
+22. **Section: Lab plan**
+23. Time-box per step + how to ask for help
+24. **Section: Share-back & bridge**
+25. The leaderboard you just built
+26. **The bridge**: image patches vs. words. Side-by-side. Same architecture, different modality. *This slide gets 5 minutes, not one sentence.*
+27. See you tomorrow
 
-- [ ] Write `slides/day1.py` with all 25-27 slides
+- [ ] Write `slides/day1.py` with all slides
 - [ ] Build + eyeball
 - [ ] Commit `Add Day 1 slide deck builder`
 
 ---
 
-## Phase 2 — Day 2: Multimodal stack (REWRITTEN)
+## Phase 2 — Day 2: Multimodal stack on chest X-ray
 
-PyRadiomics + Anthropic API + demographics → TabPFN.
+D2 anchor pivots to **Open-i Indiana University CXR**. Real chest X-ray images + real radiologist reports + MeSH labels. No PhysioNet credentialing. PyRadiomics is on-domain on grayscale CXR.
 
-### Task 10: D2 common module
+### Task 8: Open-i loader + cached LLM extractions + demographics
 
-**Files:** `notebooks/day2_multimodal/common.py`, `datasets/grading_rubric.json`, `datasets/synthetic_demographics.csv`
+**Files:** `datasets/download_openi.py`, `notebooks/day2_multimodal/common.py`, `scripts/cache_openi_llm.py`, `datasets/openi_llm_extractions.json`, `datasets/synthetic_demographics.csv`
 
-- [ ] **Step 1: PyRadiomics feature extractor**
+- [ ] **Step 1: Download script for Open-i**
+
+Open-i has a public XML+image archive (~1.5GB images, ~50MB reports). Download once, cache locally.
+
+```python
+# datasets/download_openi.py
+"""Download Open-i Indiana University CXR. No PhysioNet, no Kaggle, no auth."""
+import urllib.request, tarfile
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1] / "datasets/raw/openi"
+IMAGES_URL = "https://openi.nlm.nih.gov/imgs/collections/NLMCXR_png.tgz"
+REPORTS_URL = "https://openi.nlm.nih.gov/imgs/collections/NLMCXR_reports.tgz"
+
+def fetch(url, dest):
+    if dest.exists(): return
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    urllib.request.urlretrieve(url, dest)
+
+def extract(archive, into):
+    if (into / ".extracted").exists(): return
+    into.mkdir(parents=True, exist_ok=True)
+    with tarfile.open(archive) as tf:
+        tf.extractall(into)
+    (into / ".extracted").touch()
+
+def main():
+    fetch(IMAGES_URL,  ROOT / "NLMCXR_png.tgz")
+    fetch(REPORTS_URL, ROOT / "NLMCXR_reports.tgz")
+    extract(ROOT / "NLMCXR_png.tgz",     ROOT / "images")
+    extract(ROOT / "NLMCXR_reports.tgz", ROOT / "reports")
+
+if __name__ == "__main__":
+    main()
+```
+
+- [ ] **Step 2: common.py — image loader, report parser, PyRadiomics helper, TabPFN wrapper**
 
 ```python
 # notebooks/day2_multimodal/common.py
-"""Day 2 helpers: extract image features (PyRadiomics), text features (Anthropic),
-demographics. Concat into one tabular row per patient. Hand to TabPFN.
+"""Day 2 helpers: Open-i CXR loader, PyRadiomics extractor, cached LLM features,
+demographics, TabPFN integration.
 """
 from __future__ import annotations
 from pathlib import Path
-from typing import Iterable
+import json, xml.etree.ElementTree as ET
 import numpy as np
 import pandas as pd
-import json
 
-APTOS_ROOT = Path(__file__).resolve().parents[2] / "datasets/raw/aptos"
-RUBRIC_PATH = Path(__file__).resolve().parents[2] / "datasets/grading_rubric.json"
+OPENI_ROOT = Path(__file__).resolve().parents[2] / "datasets/raw/openi"
+LLM_CACHE_PATH = Path(__file__).resolve().parents[2] / "datasets/openi_llm_extractions.json"
 DEMO_PATH = Path(__file__).resolve().parents[2] / "datasets/synthetic_demographics.csv"
 
 
-def extract_radiomics_features(image_path: Path) -> dict:
-    """Extract PyRadiomics features from a 2D image.
+def parse_report(xml_path: Path) -> dict:
+    root = ET.parse(xml_path).getroot()
+    abstract = root.find(".//Abstract")
+    text = {}
+    if abstract is not None:
+        for at in abstract.findall("AbstractText"):
+            label = at.get("Label", "").lower()
+            text[label] = (at.text or "").strip()
+    images = [img.get("id") for img in root.findall(".//parentImage")]
+    mesh_majors = []
+    mesh_node = root.find(".//MeSH")
+    if mesh_node is not None:
+        for m in mesh_node.findall(".//major"):
+            if m.text: mesh_majors.append(m.text.strip())
+    return {
+        "findings": text.get("findings", ""),
+        "impression": text.get("impression", ""),
+        "images": images,
+        "mesh_majors": mesh_majors,
+    }
 
-    Returns a flat dict of feature_name -> float. Roughly 100 features.
+
+def list_cases(target_label: str = "Cardiomegaly", n: int | None = None):
+    """Yield (case_id, image_path, report_dict, label) triples.
+    label = 1 if target_label appears in MeSH majors (positive case).
+    """
+    reports_dir = OPENI_ROOT / "reports/ecgen-radiology"
+    images_dir = OPENI_ROOT / "images/NLMCXR_png"
+    cases = []
+    for xml in sorted(reports_dir.glob("*.xml")):
+        rec = parse_report(xml)
+        if not rec["images"]: continue
+        img = images_dir / f"{rec['images'][0]}.png"
+        if not img.exists(): continue
+        label = int(any(target_label.lower() in m.lower() for m in rec["mesh_majors"]))
+        cases.append((xml.stem, img, rec, label))
+        if n and len(cases) >= n: break
+    return cases
+
+
+def extract_radiomics(image_path: Path) -> dict:
+    """PyRadiomics features on a 2D grayscale CXR. Whole-image mask.
+    Drops constant features. Returns flat dict.
     """
     import SimpleITK as sitk
     from radiomics import featureextractor
     from PIL import Image as PILImage
 
-    pil = PILImage.open(image_path).convert("L")  # grayscale; PyRadiomics is happier with single-channel
+    pil = PILImage.open(image_path).convert("L")
     arr = np.array(pil, dtype=np.float32)
     sitk_img = sitk.GetImageFromArray(arr)
-    mask_arr = np.ones_like(arr, dtype=np.uint8)  # whole-image mask
-    sitk_mask = sitk.GetImageFromArray(mask_arr)
+    sitk_mask = sitk.GetImageFromArray(np.ones_like(arr, dtype=np.uint8))
 
-    extractor = featureextractor.RadiomicsFeatureExtractor()
-    extractor.disableAllFeatures()
-    extractor.enableFeatureClassByName("firstorder")
-    extractor.enableFeatureClassByName("glcm")
-    extractor.enableFeatureClassByName("glrlm")
-    extractor.enableFeatureClassByName("shape2D")
+    ex = featureextractor.RadiomicsFeatureExtractor()
+    ex.disableAllFeatures()
+    ex.enableFeatureClassByName("firstorder")
+    ex.enableFeatureClassByName("glcm")
+    ex.enableFeatureClassByName("glrlm")
 
-    out = extractor.execute(sitk_img, sitk_mask)
-    return {k: float(v) for k, v in out.items() if not k.startswith("diagnostics_")}
+    out = ex.execute(sitk_img, sitk_mask)
+    return {k: float(v) for k, v in out.items()
+            if not k.startswith("diagnostics_") and not isinstance(v, (tuple, list))}
 
 
-def llm_extract_findings(report_text: str, model: str = "claude-haiku-4-5-20251001") -> dict:
-    """Use Anthropic API to extract structured findings from a free-text report.
+def load_cached_llm_features(case_id: str) -> dict:
+    """Load pre-cached LLM extraction for a case. Returns flat dict of features."""
+    cache = json.loads(LLM_CACHE_PATH.read_text())
+    rec = cache.get(case_id, {})
+    # Convert booleans to ints, severity words to ordinals
+    severity_map = {"none": 0, "mild": 1, "moderate": 2, "severe": 3}
+    feats = {}
+    for k, v in rec.items():
+        if isinstance(v, bool): feats[f"llm_{k}"] = int(v)
+        elif isinstance(v, str): feats[f"llm_{k}_ord"] = severity_map.get(v.lower(), 0)
+        elif isinstance(v, (int, float)): feats[f"llm_{k}"] = v
+    return feats
 
-    Returns dict like:
-      {"hemorrhages_present": bool, "exudates_present": bool, "severity_word": str, ...}
-    """
-    import anthropic, os
-    client = anthropic.Anthropic()  # uses ANTHROPIC_API_KEY env var
-    schema_hint = (
-        '{"hemorrhages_present": bool, "exudates_present": bool, '
-        '"microaneurysms_present": bool, "macular_edema_present": bool, '
-        '"severity_word": "none|mild|moderate|severe|proliferative"}'
-    )
+
+def load_demographics(case_id: str) -> dict:
+    df = pd.read_csv(DEMO_PATH).set_index("case_id")
+    if case_id in df.index:
+        row = df.loc[case_id]
+        return {
+            "age": int(row["age"]),
+            "sex_male": int(row["sex"] == "M"),
+            "smoker": int(row["smoker"]),
+        }
+    return {"age": 50, "sex_male": 0, "smoker": 0}
+
+
+def build_feature_row(case_id: str, image_path: Path) -> pd.Series:
+    img = extract_radiomics(image_path)
+    txt = load_cached_llm_features(case_id)
+    demo = load_demographics(case_id)
+    return pd.Series({**img, **txt, **demo})
+```
+
+- [ ] **Step 3: Synthetic demographics generator**
+
+Open-i doesn't include patient demographics. Generate plausible synthetic demographics (age, sex, smoking history) per case_id with mild correlation to common findings (e.g., older + smoker → higher cardiomegaly prevalence). Commit as `datasets/synthetic_demographics.csv`. Document the generation process in a comment header so it's transparent it's synthetic.
+
+- [ ] **Step 4: Instructor caching script (`scripts/cache_openi_llm.py`)**
+
+One-shot script the instructor runs *once* with their own API key. Iterates over Open-i reports, extracts structured findings using Anthropic API, writes to `datasets/openi_llm_extractions.json`.
+
+```python
+# scripts/cache_openi_llm.py
+"""Instructor one-shot: pre-cache Anthropic LLM extractions on Open-i reports.
+Run with ANTHROPIC_API_KEY set. Costs ~$1-2 for ~200 reports with Haiku 4.5.
+"""
+import json, os, sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from notebooks.day2_multimodal.common import list_cases, LLM_CACHE_PATH
+
+import anthropic
+client = anthropic.Anthropic()
+
+SCHEMA = (
+    '{"cardiomegaly_present": bool, "effusion_present": bool, '
+    '"opacity_present": bool, "atelectasis_present": bool, '
+    '"pneumothorax_present": bool, "severity_word": "none|mild|moderate|severe"}'
+)
+
+def extract(report_text: str) -> dict:
     msg = client.messages.create(
-        model=model,
+        model="claude-haiku-4-5-20251001",
         max_tokens=300,
         system=(
-            "You are extracting structured findings from a fundus exam report. "
-            f"Return ONLY valid JSON matching this schema: {schema_hint}"
+            "You are extracting structured findings from a chest X-ray radiology report. "
+            f"Return ONLY valid JSON matching: {SCHEMA}"
         ),
         messages=[{"role": "user", "content": report_text}],
     )
     return json.loads(msg.content[0].text)
 
+def main(target_label="Cardiomegaly", n=200):
+    cache = {}
+    for case_id, img_path, rec, label in list_cases(target_label, n=n):
+        report_text = f"FINDINGS: {rec['findings']}\nIMPRESSION: {rec['impression']}"
+        try:
+            cache[case_id] = extract(report_text)
+        except Exception as e:
+            print(f"failed {case_id}: {e}")
+    LLM_CACHE_PATH.write_text(json.dumps(cache, indent=2))
+    print(f"cached {len(cache)} extractions to {LLM_CACHE_PATH}")
 
-def build_feature_row(image_path: Path, report_text: str, demographics: dict) -> pd.Series:
-    """Combine image radiomics + text features + demographics into one row."""
-    img_feats = extract_radiomics_features(image_path)
-    text_feats = llm_extract_findings(report_text)
-    # convert booleans to ints, severity_word to ordinal
-    severity_map = {"none": 0, "mild": 1, "moderate": 2, "severe": 3, "proliferative": 4}
-    text_feats["severity_ord"] = severity_map.get(text_feats.pop("severity_word", "none"), 0)
-    text_feats = {k: int(v) if isinstance(v, bool) else v for k, v in text_feats.items()}
-
-    row = {**img_feats, **{f"txt_{k}": v for k, v in text_feats.items()}, **demographics}
-    return pd.Series(row)
-
-
-def load_synthetic_reports_and_demographics():
-    """Returns DataFrame with columns id_code, report_text, age, sex, diabetes_years, diagnosis."""
-    return pd.read_csv(DEMO_PATH)
+if __name__ == "__main__":
+    main()
 ```
 
-- [ ] **Step 2: synthetic grading rubric + demographics**
+**Note:** instructor runs this *once* before D2, commits the resulting JSON to the repo. Students never call the API.
 
-Generate `grading_rubric.json` (template language for fundus reports), then a script that walks APTOS train.csv and generates a plausible report per image based on its 0-4 grade. Demographics randomized but correlated with diagnosis (older + longer diabetes duration = higher grade probability).
-
-- [ ] **Step 3: TabPFN integration test**
+- [ ] **Step 5: Smoke test the multimodal pipeline**
 
 ```python
 # scripts/smoke_d2.py
-import pandas as pd
+import numpy as np, pandas as pd
 from tabpfn import TabPFNClassifier
-from notebooks.day2_multimodal.common import build_feature_row, APTOS_ROOT, load_synthetic_reports_and_demographics
+from notebooks.day2_multimodal.common import list_cases, build_feature_row
 
-df = load_synthetic_reports_and_demographics()
-X_rows = []
-ys = []
-for _, row in df.head(100).iterrows():
-    img_path = APTOS_ROOT / "train_images" / f"{row['id_code']}.png"
-    feat_row = build_feature_row(img_path, row["report_text"], {
-        "age": row["age"], "sex_male": int(row["sex"] == "M"),
-        "diabetes_years": row["diabetes_years"],
-    })
-    X_rows.append(feat_row)
-    ys.append(row["diagnosis"])
-X = pd.DataFrame(X_rows).fillna(0).values
+cases = list_cases("Cardiomegaly", n=80)
+rows, ys = [], []
+for case_id, img_path, _, label in cases:
+    rows.append(build_feature_row(case_id, img_path))
+    ys.append(label)
+X = pd.DataFrame(rows).fillna(0).values
 y = np.array(ys)
 clf = TabPFNClassifier()
-clf.fit(X[:80], y[:80])
-print("test accuracy:", (clf.predict(X[80:]) == y[80:]).mean())
+clf.fit(X[:60], y[:60])
+print("smoke acc:", (clf.predict(X[60:]) == y[60:]).mean())
 ```
 
-- [ ] **Step 4: smoke run, eyeball**
-- [ ] **Step 5: commit** `Add Day 2 multimodal common module + synthetic data`
+- [ ] Write all common helpers + caching script + demographics
+- [ ] Run smoke (instructor pre-runs Anthropic caching first)
+- [ ] Commit `Add Day 2 multimodal common module + Open-i loader + cached LLM extractions`
 
-### Task 11: D2 solution notebook
+### Task 9: Day 2 lab notebook
 
-Walks through:
-1. What's an LLM (warmup)
-2. Anthropic API live demo on a sample report
-3. Pick 200 APTOS images, extract PyRadiomics features (cache to disk for speed)
-4. For the same 200, extract LLM features from the synthetic reports
-5. Stack with demographics → tabular
-6. Hand to TabPFN, report accuracy
-7. Compare to D1's image-only baseline (load result from D1 leaderboard)
-8. Discussion: when does multimodal help?
+**Files:** `scripts/build_day2.py`, `notebooks/day2_multimodal/day2.ipynb`
 
-- [ ] Build solution notebook
+Notebook outline:
+
+1. Markdown: D2 intro — "yesterday: end-to-end deep learning. Today: handcrafted features + foundation model on tabular."
+2. Code: `colab_setup.ensure(); gpu_check()`
+3. Markdown: **What's an LLM?** Show tokenization in code, walk through one prompt+completion in cells.
+4. Markdown: **Live demo (the only API call of the day)**
+5. Code: load instructor's API key from Colab secret, run *one* extraction on a sample Open-i report. (Hard-capped at 1 call. If the secret isn't available, fall back to showing the cached output for that report.)
+6. Markdown: **Now we use cached extractions for everyone**
+7. Code: load `openi_llm_extractions.json`, show one entry.
+8. Markdown: **Image features (PyRadiomics)**
+9. Code: extract radiomics features from one CXR image, show the feature vector.
+10. Markdown: **Demographics**
+11. Code: load synthetic demographics for the same case.
+12. Markdown: **Combine: everything becomes a tabular row**
+13. Code: build feature rows for ~150 cases, show DataFrame head.
+14. Markdown: **TabPFN**
+15. Code: train/test split, fit TabPFN on train, predict on test, report accuracy.
+16. Markdown: **Compare to image-only baseline**
+17. Code: a small pretrained ResNet head trained on the same train/test split as a unimodal baseline. Compare numbers.
+18. Markdown: **Honest discussion: target leakage**
+19. Code: a simple ablation — drop the LLM features, just radiomics + demographics. How does accuracy change? Discuss what the gap means.
+20. Markdown: **Stretch — predict something the report doesn't directly mention** (e.g., synthetic age bin from imaging features alone). Show that's harder.
+21. Markdown: capstone preview — what you'll pick tomorrow.
+
+- [ ] Build notebook
 - [ ] Smoke test
-- [ ] Commit `Add Day 2 solution notebook (multimodal stack)`
+- [ ] Commit `Add Day 2 multimodal notebook`
 
-### Task 12: D2 Track A/B/C notebooks
-
-- **Track A (predict & compare + human-vs-model labeler):**
-  Notebook runs end-to-end. Their work: label 20 fundus images themselves using the rubric (rubric.md provided). Then look at the D1 model's predictions on the same 20. Compute "your accuracy vs. the D1 model's accuracy on the same set." Find the most surprising disagreement. Write it up.
-- **Track B (implement):**
-  Blanked: `build_feature_row` integration, the demographic encoding, the TabPFN call. Helpers visible.
-- **Track C (build):**
-  Spec only. "Build a multimodal predictor that beats D1's image-only baseline by ≥3 points. Use any combination of PyRadiomics, LLM, demographics, TabPFN."
-
-- [ ] Build all three
-- [ ] Eyeball
-- [ ] Commit `Add Day 2 Track A/B/C notebooks`
-
-### Task 13: D2 slide deck
+### Task 10: Day 2 slide deck
 
 **Files:** `slides/day2.py`
 
-Outline (~22 slides):
+Outline (~20 slides):
 
 1. Recap: what we built D1
 2. **Section: What is an LLM?**
 3. Tokens, context, completion
-4. The transformer block (one-slide visualization)
-5. Why text matters in healthcare (notes, history, demographics)
-6. Hallucination + clinical safety
-7. **Section: The Anthropic API live demo**
-8. Anthropic API on a real report → JSON
-9. Tool use briefly
-10. **Section: Multimodal medical AI**
-11. Modality 1: image features (PyRadiomics)
-12. Modality 2: text features (LLM-extracted)
-13. Modality 3: demographics (tabular)
-14. The big idea: everything becomes a tabular row
-15. **Section: TabPFN**
-16. Foundation model for tabular data
-17. No traditional training, just inference
-18. **Section: Lab plan**
-19. Track-specific work
-20. Cost discipline (don't burn the API budget)
-21. **Section: Share-back**
-22. Capstone preview
+4. The transformer block (visualization)
+5. The bridge from yesterday: ViT patches vs. LLM tokens, side-by-side
+6. Why text matters in clinical care (notes, history, demographics)
+7. Hallucination + clinical safety (one slide; surface but don't dwell)
+8. Foundation models everywhere
+9. **Section: Today's dataset shift**
+10. Why we move from fundus (D1) to chest X-ray (D2)
+11. Open-i — real images, real reports
+12. **Section: The multimodal stack**
+13. Modality 1: image features (PyRadiomics on grayscale CXR — radiomics is on-domain here)
+14. Modality 2: text features (LLM-extracted from real reports)
+15. Modality 3: demographics (synthetic for Open-i)
+16. The big idea: everything becomes a tabular row
+17. **Section: TabPFN**
+18. Foundation model for tabular data
+19. **Section: Lab plan**
+20. Cost discipline: why we pre-cached the LLM outputs (one slide, brief)
+21. Lab time-box
+22. **Closing**: capstone preview
 
 - [ ] Write deck builder
 - [ ] Build + eyeball
@@ -729,49 +628,52 @@ Outline (~22 slides):
 
 ## Phase 3 — Day 3: capstone
 
-### Task 14: project_options.md + rubric.md
+### Task 11: project_options.md + rubric.md
 
-Document each of the 5 options:
+**Files:** `notebooks/day3_capstone/project_options.md`, `notebooks/day3_capstone/rubric.md`
+
+Document the 3 options:
 1. **Pneumonia chest X-ray** (RSNA dataset)
 2. **Skin lesion** (HAM10000)
-3. **ECG arrhythmia** (PTB-XL)
-4. **MedMNIST cross-modality** (any sub-dataset)
-5. **Multimodal extension** (Open-i CXR, extend the D2 stack)
+3. **MedMNIST cross-modality** (any sub-dataset)
 
-For each: dataset URL + size, baseline goal, stretch goal, Track A/B/C expectations, one "watch out for" caveat. Pull from syllabus.md.
+For each: dataset URL + size, baseline goal, stretch goal, one "watch out for" caveat. Note that pairs can propose off-menu options at 2:30 (ECG, multimodal extension, their own dataset) and the instructor will green-light if reasonable.
 
-Rubric.md codifies the 5-point rubric with example presentations at score 1, 3, 5.
+`rubric.md` codifies the 5-point rubric with example presentations at score 1, 3, 5.
 
 - [ ] Write both
 - [ ] Commit `Add capstone project options and rubric`
 
-### Task 15: capstone starter kits
+### Task 12: Capstone starter kits (3)
 
-Five folders: `pneumonia_rsna/`, `skin_ham10000/`, `ecg_ptbxl/`, `medmnist_choose/`, `multimodal_extension/`.
+Three folders: `pneumonia_rsna/`, `skin_ham10000/`, `medmnist_choose/`.
 
 Per kit:
-- `starter_a.ipynb` — fully runnable baseline (a working but improvable model)
-- `starter_b.ipynb` — data loading + eval scaffolding, model is the gap
-- `spec_c.md` — short spec for Track C builders
+- `starter.ipynb` — fully runnable baseline (a working but improvable model). Clear "improve me" markdown markers (e.g., "try data augmentation here," "can you add class weighting?").
+- `README.md` — one-page: dataset description, what the baseline does, suggested improvements, gotchas.
 
-Build effort: ~5 hr per kit, ~25 hr total. Worth it given Outset's quality bar.
+Build effort: ~5 hr per kit, ~15 hr total. Less than v2 because we cut from 5 to 3.
 
-- [ ] Build 5 kits (one builder script per kit)
-- [ ] Smoke test all `starter_a.ipynb`
-- [ ] Commit `Add 5 capstone starter kits`
+- [ ] Build 3 kits (one builder script per kit)
+- [ ] Smoke test all 3 starter notebooks
+- [ ] Commit `Add 3 capstone starter kits`
 
-### Task 16: D3 slide deck
+### Task 13: Day 3 slide deck
 
-Short — ~12 slides, mostly work time.
+**Files:** `slides/day3.py`
+
+Short — ~10 slides, mostly work time.
 
 1. Recap D1+D2
-2. Capstone format: pairs, options, rubric
-3-7. The 5 options (one per slide)
-8. Using Claude Code well — 3 tips
-9. Time-boxing the sprint
-10. Presentation format (3 min, 5-point rubric)
-11. What now? Where to keep learning.
-12. Closing.
+2. Capstone format: pairs, 3 options (or propose your own), rubric
+3. Option 1: Pneumonia RSNA
+4. Option 2: Skin HAM10000
+5. Option 3: MedMNIST
+6. Using Claude Code well — 3 tips
+7. Time-boxing the sprint (2:50-4:25 build, 4:30 present)
+8. Presentation format (3 min, 5-point rubric)
+9. What now? Where to keep learning.
+10. Closing.
 
 - [ ] Build + eyeball + commit `Add Day 3 slide deck builder`
 
@@ -779,7 +681,7 @@ Short — ~12 slides, mostly work time.
 
 ## Phase 4 — Polish
 
-### Task 17: Final smoke + README refresh
+### Task 14: Final smoke + README refresh
 
 - [ ] Run full smoke: every executable notebook end-to-end
 - [ ] Build all 3 decks
@@ -787,39 +689,42 @@ Short — ~12 slides, mostly work time.
 - [ ] Update prep/hours.md
 - [ ] Commit `Polish: full smoke + README refresh`
 
-### Task 18: Pre-class warmup notebook (NEW)
+### Task 15: D1 wall-clock validation on free-tier T4
 
-Single notebook to send students 1-2 days before D1. Contains:
-- Colab account check
-- Pip install warmup
-- HF cache warmup (downloads ResNet + ViT)
-- Optional: a tiny "look at one fundus image" cell as a teaser
+**Critical pre-class check, not in materials.**
 
-- [ ] Write notebook
-- [ ] Commit `Add pre-class warmup notebook`
+Instructor runs the D1 ladder notebook end-to-end on a free-tier Colab T4 (not Pro), times each step, and confirms the lab fits in 70 min. If it doesn't, knobs to turn:
+- Reduce ResNet/ViT epochs from 3 → 2
+- Subsample further (224 → 192 for ResNet/ViT)
+- Drop the final viz step
+
+Run this the *week before* July 6, not the night before.
+
+- [ ] Schedule the wall-clock test (suggest: Thu Jul 2)
+- [ ] Document actual timings in `prep/hours.md`
+- [ ] If overrun, apply mitigations + re-test
 
 ---
 
 ## Self-review checklist
 
 **Spec coverage:**
-- [x] D1: 6-model ladder on APTOS DR (Tasks 4-9)
-- [x] D2: PyRadiomics + LLM + TabPFN (Tasks 10-13)
-- [x] D3: 5 capstone kits (Tasks 14-16)
-- [x] Track A (predict & compare): D1 Task 7, D2 Task 12
-- [x] Track B (implement): D1 Task 6, D2 Task 12
-- [x] Track C (spec): D1 Task 8, D2 Task 12, D3 Task 14
-- [x] Slides via python-pptx: Tasks 9, 13, 16
+- [x] D1: 5-model ladder on APTOS DR (Tasks 5-7)
+- [x] D2: PyRadiomics + cached LLM + TabPFN on Open-i CXR (Tasks 8-10)
+- [x] D3: 3 capstone kits + slides (Tasks 11-13)
+- [x] No tier system: one notebook per day for everyone
+- [x] Slides via python-pptx: Tasks 7, 10, 13
 - [x] Brand theme: Task 1
 - [x] Smoke testing: Task 2
-- [x] Datasets without PhysioNet credentialing: APTOS (Kaggle), Open-i (free), HAM10000 (Kaggle), MedMNIST (pip)
-- [x] Pre-class warmup: Tasks 3.5, 18
-- [x] No pre-course tier quiz (per instructor decision)
+- [x] Pre-class warmup: Task 4
+- [x] Real ViT→LLM bridge slide (5 min): Task 7 slide 26 + Task 9 cell 18 + Task 10 slide 5
+- [x] D2 LLM access via pre-cached extractions, one live demo cell: Task 8 step 4 + Task 9 cell 5
+- [x] D1 wall-clock pre-validation: Task 15
+- [x] Capstone cuts: 5 → 3 (Task 12)
 
 **Type / API consistency:**
-- `common.evaluate_classifier(predict_fn, loader)` is the eval signature for D1.
-- `common.build_feature_row(image_path, report_text, demographics)` is the D2 row builder.
+- `common.evaluate_classifier(predict_fn, loader)` (D1) and `common.build_feature_row(case_id, image_path)` (D2) are the eval/feature-row signatures.
 - `nbutil.{md, code, save, new_nb}` is the notebook construction API everywhere.
 - `theme.{title_slide, content_slide, section_divider}` used by all three slide builders.
 
-**Prep budget:** This v2 is more ambitious than v1. Rough estimate: 35-50 hr total. Instructor said "don't worry about cap, want quality" — proceed.
+**Prep budget v3:** ~25-35 hr total (down from v2's 35-50 because no tier variants). Instructor said "don't worry about cap, want quality" — proceed.

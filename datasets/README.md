@@ -9,18 +9,18 @@ No raw data is committed to this repo (see `.gitignore`). This directory holds *
   - Requires a free Kaggle account + API token (`~/.kaggle/kaggle.json`).
   - Download: `python datasets/download_aptos.py` (after Kaggle auth).
 
-## D2 — Multimodal (PyRadiomics + LLM + TabPFN)
+## D2 — Multimodal (PyRadiomics + cached LLM + TabPFN)
 
-D2 extends APTOS-2019 with synthetic-but-plausible radiology-style reports and demographics. Files in this directory:
+D2 anchor: **Open-i Indiana University CXR** — real chest X-ray images with real radiologist reports. No credentialing required.
 
-- `grading_rubric.json` — fundus DR grading rubric (template for synthetic report generation).
-- `synthetic_demographics.csv` — generated demographics + reports per APTOS image, correlated with severity.
-- `download_openi.py` — Open-i Indiana University Chest X-ray (paired images + reports), used as a **stretch dataset** for D2 Track C and the D3 multimodal extension. No PhysioNet credentialing.
+- `download_openi.py` — fetches images and reports from Open-i.
+- `openi_llm_extractions.json` — **pre-cached** Anthropic API output. Instructor runs `scripts/cache_openi_llm.py` once before D2; students load this JSON in the lab notebook (zero student-side API cost).
+- `synthetic_demographics.csv` — Open-i lacks demographics, so we generate plausible synthetic ones (age, sex, smoking history) per case_id, mildly correlated with common findings. Header documents the generation process.
 
-## D3 — Capstone options
+## D3 — Capstone options (3)
 
 - **Pneumonia chest X-ray (RSNA)**: https://www.kaggle.com/competitions/rsna-pneumonia-detection-challenge (Kaggle, free)
 - **Skin lesion (HAM10000)**: https://www.kaggle.com/datasets/kmader/skin-cancer-mnist-ham10000 (Kaggle, free)
-- **ECG arrhythmia (PTB-XL)**: https://physionet.org/content/ptb-xl/ (requires free PhysioNet account, no credentialing)
 - **MedMNIST** (cross-modality variety): pip-installable, no auth.
-- **Multimodal extension**: extend the D2 stack to Open-i CXR.
+
+Pairs may propose off-menu options at the start of D3 (e.g., ECG arrhythmia on PTB-XL, multimodal extension). Instructor green-lights if reasonable.
