@@ -40,3 +40,6 @@ slides/build/
 # Secrets
 .env
 *.key
+
+# accidental nested clones from notebook setup cells
+**/outset-ai-healthcare/
