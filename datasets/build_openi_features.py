@@ -35,7 +35,7 @@ def main():
     ap.add_argument("--n-samples", type=int, default=3, help="sample CXRs to bundle for the demo")
     args = ap.parse_args()
 
-    cases = common.list_cases(args.target, n=args.n)
+    cases = common.list_cases(args.target, balanced=True)
     rows = []
     for i, (case_id, img_path, _rec, label) in enumerate(tqdm(cases, desc="features")):
         row = common.build_feature_row(case_id, img_path, use_text=True).to_dict()

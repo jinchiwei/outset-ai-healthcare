@@ -33,7 +33,12 @@ def should_run(p: Path) -> bool:
 
 def run_one(path: Path) -> tuple[bool, str]:
     nb = nbformat.read(path, as_version=4)
-    client = NotebookClient(nb, timeout=900, kernel_name="python3")
+    # Run each notebook with its own folder as the working directory, so the
+    # relative paths in setup cells (../_shared, ../../datasets) resolve.
+    client = NotebookClient(
+        nb, timeout=1800, kernel_name="python3",
+        resources={"metadata": {"path": str(path.parent)}},
+    )
     try:
         client.execute()
     except Exception as e:  # noqa: BLE001 - report any cell failure

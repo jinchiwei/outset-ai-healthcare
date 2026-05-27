@@ -31,7 +31,7 @@ def main():
 
     rng = np.random.RandomState(SEED)
     rows = []
-    for case_id, _img, _rec, label in common.list_cases(args.target, n=args.n):
+    for case_id, _img, _rec, label in common.list_cases(args.target, balanced=True):
         # Positive cases skew older, more likely smokers (mild, synthetic signal).
         base_age = 62 if label else 50
         age = int(np.clip(rng.normal(base_age, 12), 18, 92))

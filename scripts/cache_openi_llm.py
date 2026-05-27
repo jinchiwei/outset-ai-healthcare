@@ -77,7 +77,7 @@ def main():
 
     extract = extract_anthropic if args.mode == "anthropic" else extract_rules
     cache = {}
-    for case_id, _img, rec, _label in common.list_cases(args.target, n=args.n):
+    for case_id, _img, rec, _label in common.list_cases(args.target, balanced=True):
         report_text = f"FINDINGS: {rec['findings']}\nIMPRESSION: {rec['impression']}"
         try:
             cache[case_id] = extract(report_text)

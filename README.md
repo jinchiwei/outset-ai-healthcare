@@ -46,7 +46,38 @@ Students use Google Colab; the local env exists for prototyping and the one-shot
 ## Build commands
 
 ```
-python scripts/smoke_notebooks.py   # runs every executable .ipynb headless
-python -m slides.day1               # builds slides/build/day1.pptx
-python scripts/cache_openi_llm.py   # instructor only, one-shot, requires ANTHROPIC_API_KEY
+# regenerate notebooks from source (lab + solution)
+python scripts/build_day1.py
+python scripts/build_day2.py
+python scripts/build_capstone.py
+
+# build slide decks (-> slides/build/*.pptx)
+python -m slides.day1
+python -m slides.day2
+python -m slides.day3
+
+# run every solution + starter notebook headless (skips blanked labs)
+python scripts/smoke_notebooks.py
 ```
+
+## Instructor one-time data prep
+
+Students never download raw datasets. The instructor builds small artifacts once:
+
+```
+# Day 1: APTOS subset -> HuggingFace (students load dreamxjei/aptos-mini)
+KAGGLE_USERNAME=... KAGGLE_KEY=... python datasets/download_aptos.py
+HF_TOKEN=... python datasets/prep_aptos_subset.py --per-class 400 --push
+
+# Day 2: Open-i feature table (committed to repo; students load datasets/openi_features.csv)
+python datasets/download_openi.py
+ANTHROPIC_API_KEY=... python scripts/cache_openi_llm.py --mode anthropic   # or --mode rules
+python datasets/make_synthetic_demographics.py
+python datasets/build_openi_features.py
+```
+
+## Validated results (local, Apple MPS)
+
+- **D1 ladder**: logreg 0.53 -> mlp 0.48 -> cnn 0.55 -> resnet 0.58 -> vit 0.64 (transfer learning is the jump)
+- **D2 multimodal**: image+text+demo 0.89 vs image+demo only 0.64; leakage surfaced (report names the diagnosis, corr 0.81)
+- **D3 pneumonia kit**: baseline test 0.795, improvable
