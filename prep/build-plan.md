@@ -287,6 +287,8 @@ Notebook outline (same cells in both; TODO blanks marked):
 
 Keep TODOs to ~2-3 per model step. Each blank is one concept, not a whole cell. Earlier steps blank more (teach the basics); later steps blank less (the pattern is established, and the interesting part is the architecture swap, which is a one-line factory call).
 
+**Reflective prompts (JHU 6.S191 pattern):** after each model's accuracy prints, add a short markdown cell with a predict-then-observe question — e.g., before Step 3: "What accuracy do you expect the CNN to hit vs. the MLP? Write a guess." After: "Why did the CNN beat the MLP? What did convolutions buy us?" These cost nothing, make everyone do the "predict & compare" thinking, and replace the old Track-A-only framing now that there are no tiers. ~1 reflection per model step.
+
 - [ ] Add `code_with_todos` to nbutil
 - [ ] Build both notebooks from `build_day1.py`
 - [ ] Smoke-test `day1_solution.ipynb` end-to-end (the lab notebook is intentionally non-runnable; smoke skips it)
@@ -602,6 +604,8 @@ Notebook outline (TODO blanks marked):
 19. Code, **TODO**: students write the ablation — drop the LLM features, refit TabPFN on radiomics + demographics only, compare. Filling this in *is* how they discover the leakage gap themselves.
 20. Markdown: **Stretch — predict something the report doesn't directly mention** (e.g., synthetic age bin from imaging features alone).
 21. Markdown: capstone preview.
+
+**Reflective prompts (same as D1):** interleave predict-then-observe markdown — e.g., before the leakage ablation (cell 19): "Predict: how much will accuracy drop when we remove the text features? Why?" After: "What does the size of that gap tell you about whether this is a fair test?"
 
 - [ ] Build both notebooks from `build_day2.py`
 - [ ] Smoke-test `day2_solution.ipynb` (lab notebook skipped — non-runnable with blanks)
