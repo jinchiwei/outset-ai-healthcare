@@ -122,11 +122,14 @@ def make_mlp(in_features: int, num_classes: int = NUM_CLASSES, hidden=(256, 128)
 
 
 def make_small_cnn(num_classes: int = NUM_CLASSES):
+    # BatchNorm after each conv: from-scratch CNNs train much more reliably with it,
+    # which matters on the small medical dataset used in class.
     return nn.Sequential(
-        nn.Conv2d(3, 32, 3, padding=1), nn.ReLU(), nn.MaxPool2d(2),
-        nn.Conv2d(32, 64, 3, padding=1), nn.ReLU(), nn.MaxPool2d(2),
-        nn.Conv2d(64, 128, 3, padding=1), nn.ReLU(), nn.AdaptiveAvgPool2d(1),
-        nn.Flatten(), nn.Linear(128, num_classes),
+        nn.Conv2d(3, 32, 3, padding=1), nn.BatchNorm2d(32), nn.ReLU(), nn.MaxPool2d(2),
+        nn.Conv2d(32, 64, 3, padding=1), nn.BatchNorm2d(64), nn.ReLU(), nn.MaxPool2d(2),
+        nn.Conv2d(64, 128, 3, padding=1), nn.BatchNorm2d(128), nn.ReLU(), nn.MaxPool2d(2),
+        nn.Conv2d(128, 128, 3, padding=1), nn.BatchNorm2d(128), nn.ReLU(), nn.AdaptiveAvgPool2d(1),
+        nn.Flatten(), nn.Dropout(0.3), nn.Linear(128, num_classes),
     )
 
 
@@ -141,9 +144,15 @@ def make_resnet50(num_classes: int = NUM_CLASSES, pretrained: bool = True, freez
     return m
 
 
-def make_vit_base(num_classes: int = NUM_CLASSES, pretrained: bool = True):
+def make_vit_base(num_classes: int = NUM_CLASSES, pretrained: bool = True, freeze_backbone: bool = True):
     import timm
-    return timm.create_model("vit_base_patch16_224", pretrained=pretrained, num_classes=num_classes)
+    m = timm.create_model("vit_base_patch16_224", pretrained=pretrained, num_classes=num_classes)
+    if freeze_backbone:
+        for p in m.parameters():
+            p.requires_grad = False
+        for p in m.get_classifier().parameters():  # train only the new head
+            p.requires_grad = True
+    return m
 
 
 # --------------------------------------------------------------------------- #

@@ -47,7 +47,12 @@ fastest, it's to understand why each model does better than the one before.
 """))
 
 both(code("""
-import sys
+# Setup: on Colab, grab the course files. Locally (already in the repo) this is a no-op.
+import os, sys
+if not os.path.exists("common.py"):
+    os.system("git clone -q https://github.com/jinchiwei/outset-ai-healthcare.git")
+    os.chdir("outset-ai-healthcare/notebooks/day1_ladder")
+sys.path.insert(0, ".")
 sys.path.insert(0, "../_shared")
 import colab_setup
 colab_setup.ensure()
@@ -56,8 +61,7 @@ colab_setup.gpu_check()
 
 both(code("""
 import torch
-sys.path.insert(0, "..")
-from day1_ladder import common
+import common
 
 device = "cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu")
 print("device:", device)
@@ -173,7 +177,7 @@ todo(
 tr224, va224 = common.get_loaders(size=224, batch_size=32)
 
 cnn = common.make_small_cnn()
-history = common.train_model(cnn, tr224, va224, epochs=5, lr=1e-3, device=device)
+history = common.train_model(cnn, tr224, va224, epochs=15, lr=1e-3, device=device)
 results["cnn"] = history[-1][1]
 print(f"cnn val accuracy: {history[-1][1]:.3f}")
 
@@ -181,7 +185,7 @@ common.show_first_layer_filters(cnn)
 """,
     [
         ("cnn = common.make_small_cnn()", "build the CNN with common.make_small_cnn()"),
-        ("history = common.train_model(cnn", "train it for 5 epochs at lr=1e-3 on the 224px loaders"),
+        ("history = common.train_model(cnn", "train it for 15 epochs at lr=1e-3 on the 224px loaders"),
     ],
 )
 
@@ -236,13 +240,13 @@ just patches instead of words. (More on that tomorrow.)
 todo(
     """
 vit = common.make_vit_base(pretrained=True)
-history = common.train_model(vit, tr224, va224, epochs=3, lr=1e-3, device=device)
+history = common.train_model(vit, tr224, va224, epochs=5, lr=1e-3, device=device)
 results["vit"] = history[-1][1]
 print(f"vit val accuracy: {history[-1][1]:.3f}")
 """,
     [
         ("vit = common.make_vit_base", "build a pretrained ViT with common.make_vit_base(pretrained=True)"),
-        ("history = common.train_model(vit", "finetune for 3 epochs at lr=1e-3 on the 224px loaders"),
+        ("history = common.train_model(vit", "train the head for 5 epochs at lr=1e-3 on the 224px loaders"),
     ],
 )
 
