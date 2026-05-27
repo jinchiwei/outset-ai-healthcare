@@ -270,7 +270,10 @@ def gradcam(model, img_tensor, target_class: Optional[int] = None, device: str =
     h1 = last_conv.register_forward_hook(fwd_hook)
     h2 = last_conv.register_full_backward_hook(bwd_hook)
     try:
-        x = img_tensor.unsqueeze(0).to(device)
+        # requires_grad on the input forces autograd to build the full backward
+        # graph through the conv layers even when the backbone is frozen, so the
+        # gradient hook on the last conv actually fires.
+        x = img_tensor.unsqueeze(0).to(device).requires_grad_(True)
         logits = model(x)
         cls = int(logits.argmax(1)) if target_class is None else target_class
         model.zero_grad()
