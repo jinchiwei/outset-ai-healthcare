@@ -41,7 +41,7 @@ def build_dataframe(per_class: int) -> pd.DataFrame:
 
 
 def to_hf_dataset(df: pd.DataFrame):
-    from datasets import Dataset, DatasetDict, Features, Image as HFImage, ClassLabel
+    from datasets import Dataset, DatasetDict, Features, Image as HFImage, ClassLabel, Value
 
     img_dir = RAW / "train_images"
 
@@ -54,7 +54,7 @@ def to_hf_dataset(df: pd.DataFrame):
     features = Features({
         "image": HFImage(),
         "diagnosis": ClassLabel(names=["No DR", "Mild", "Moderate", "Severe", "Proliferative"]),
-        "id_code": "string",
+        "id_code": Value("string"),
     })
     full = Dataset.from_generator(gen, features=features)
     split = full.train_test_split(test_size=VAL_FRAC, seed=SEED, stratify_by_column="diagnosis")
