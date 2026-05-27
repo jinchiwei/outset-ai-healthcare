@@ -17,16 +17,15 @@ DAY1 = [
     "scikit-learn", "matplotlib", "seaborn", "pillow",
     "tqdm", "pandas", "numpy", "datasets",
 ]
-DAY2 = ["pandas", "numpy", "scikit-learn", "matplotlib", "tabpfn", "pyradiomics", "SimpleITK"]
+DAY2 = ["pandas", "numpy", "scipy", "scikit-learn", "scikit-image", "matplotlib", "pillow", "tabpfn"]
 
 REQUIRED = DAY1  # default = the Day 1 set
 
 # pip name -> import name, when they differ
 IMPORT_NAMES = {
     "scikit-learn": "sklearn",
+    "scikit-image": "skimage",
     "pillow": "PIL",
-    "pyradiomics": "radiomics",
-    "SimpleITK": "SimpleITK",
     "huggingface_hub": "huggingface_hub",
 }
 
