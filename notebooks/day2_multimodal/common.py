@@ -52,14 +52,22 @@ def parse_report(xml_path: Path) -> dict:
     }
 
 
-def list_cases(target_label: str = "Cardiomegaly", n: int | None = None):
+def list_cases(target_label: str = "Cardiomegaly", n: int | None = None,
+               balanced: bool = False, seed: int = 0):
     """Return (case_id, image_path, report_dict, label) tuples.
 
     label = 1 if `target_label` appears in the report's MeSH major topics.
+
+    balanced=True: scan all reports, keep every positive case and an equal number of
+    randomly-chosen negatives (deterministic given seed), so the binary task isn't
+    swamped by the majority class. All pipeline scripts call this the same way, so
+    they select the identical set of cases.
     """
+    import random
+
     reports_dir = OPENI_ROOT / "reports/ecgen-radiology"
-    images_dir = OPENI_ROOT / "images/NLMCXR_png"
-    out = []
+    images_dir = OPENI_ROOT / "images"
+    scanned = []
     for xml in sorted(reports_dir.glob("*.xml")):
         rec = parse_report(xml)
         if not rec["images"]:
@@ -68,10 +76,22 @@ def list_cases(target_label: str = "Cardiomegaly", n: int | None = None):
         if not img.exists():
             continue
         label = int(any(target_label.lower() in m.lower() for m in rec["mesh_majors"]))
-        out.append((xml.stem, img, rec, label))
-        if n and len(out) >= n:
+        scanned.append((xml.stem, img, rec, label))
+        if not balanced and n and len(scanned) >= n:
             break
-    return out
+
+    if not balanced:
+        return scanned
+
+    pos = [c for c in scanned if c[3] == 1]
+    neg = [c for c in scanned if c[3] == 0]
+    random.Random(seed).shuffle(neg)
+    k = min(len(pos), len(neg))
+    if n:
+        k = min(k, n // 2)
+    sel = pos[:k] + neg[:k]
+    random.Random(seed).shuffle(sel)
+    return sel
 
 
 # --------------------------------------------------------------------------- #
