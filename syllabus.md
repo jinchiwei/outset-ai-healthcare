@@ -18,7 +18,20 @@ The progression is intentional. D1 ends with a vision transformer. D2 opens with
 
 ## Audience and pace
 
-High school students, mixed coding background. **Everyone builds the same notebook.** Students who arrive with zero coding experience get help one-on-one from the instructor; students fluent with Claude Code can blast through the main path and pick up stretch goals. No tier system, no labels, no pre-course placement. The notebook itself is the leveler: the first two-thirds is the main path, the last third is stretch material for fast finishers.
+High school students, mixed coding background. Every student has a Claude Pro subscription.
+
+**Each day is one lab notebook with `# TODO` blanks to fill in, plus a paired solution notebook** released after the session. This is the standard ML-lab format (MIT 6.S191, fast.ai). Students fill in the missing pieces: define the conv layer, write the training loop, complete the eval call. Each blank is small, specific, and calibrated to teach one concept. Nobody stares at an empty cell with no idea where to start.
+
+No tier system, no labels, no pre-course placement. The format self-levels: a confident student fills blanks fast and moves to stretch goals; a true beginner leans on Claude and the instructor and still gets through, understanding each piece.
+
+## How we use Claude
+
+Every student has Claude Pro. We treat it as what it is in the real world: an auto-programming tool that takes you from an idea to a working result. Not the subject of the course, not a crutch that writes everything. The tool a working ML engineer reaches for when stuck.
+
+- **D1 and D2** are scaffolded TODO labs. Claude is your pair programmer when a blank stumps you. Early on D1, the instructor spends ~3 minutes modeling *good* Claude use on one TODO: how to ask, how to sanity-check the answer, why you should understand what you paste. Then gets out of the way.
+- **D3 capstone** is where Claude becomes the full deployment tool: here's a dataset and a goal, build the whole thing. The real workflow.
+
+The rule we say out loud: *use Claude freely, but always be able to explain what your code does.* The D3 rubric checks for it.
 
 ## Day 1 — Mon Jul 6: from pixels to vision transformers
 **Anchor: APTOS-2019 diabetic retinopathy (color fundus photos, 5-class severity). The first AI in medicine deployed at scale.**
@@ -28,12 +41,12 @@ High school students, mixed coding background. **Everyone builds the same notebo
 | 2:30 – 2:45 | Welcome + course shape | What we'll do over 3 days, how to ask for help, Colab setup check. |
 | 2:45 – 3:30 | Lecture: what is an image, what is learning | Clinical motivation (Google's DR screening in India). Pixels → numbers → arrays → channels. What a classifier is. High-altitude tour: logreg → MLP → CNN → ResNet → ViT, with the *why* of each. |
 | 3:30 – 3:40 | Break | |
-| 3:40 – 4:50 | Lab: the ladder | Same dataset, five models, all trained live on Colab T4 GPU. Everyone runs the same notebook. | 
+| 3:40 – 4:50 | Lab: the ladder | Same dataset, five models, trained live on Colab T4 GPU. One TODO-blank notebook; fill in the missing pieces of each model. | 
 | 4:50 – 5:00 | Share-back + bridge to D2 | A few volunteer findings. Then a 5-min walkthrough of the ViT-as-LLM bridge: image patch → patch embedding → attention vs. word → token embedding → attention. Same architecture, different modality. See you tomorrow. |
 
-**The Ladder Notebook (lab structure):**
+**The Ladder Notebook (lab structure):** one notebook, `# TODO` blanks at each step (define the conv layer, write the training loop body, complete the eval call), paired with a `_solution.ipynb` released after class.
 
-| # | Model | What students see | Approx live time |
+| # | Model | What students see + fill in | Approx live time |
 |---|-------|-------------------|------------------|
 | 0 | Look at the data | Fundus images. RGB channel split. Pixel histograms. Augmentation effects (rotation, flip, brightness, normalization) shown side-by-side. | 5 min |
 | 1 | Logistic regression | Subsampled images (64×64, ~12K features) for speed. Flatten → logreg. Baseline accuracy. "Simple linear models can't see structure." | 6 min |
@@ -64,7 +77,7 @@ The dataset shift from D1 is intentional. Fundus is where end-to-end deep learni
 | 2:30 – 3:00 | Lecture | Transformers, recap. What an LLM is — tokens, context, completion. Why text matters in clinical care (notes, reports, history). Hallucination and clinical safety. Foundation models everywhere. |
 | 3:00 – 3:20 | Live demo | Anthropic API extracting structured findings from a real Open-i report. Tool use. Cost discipline. *(See "LLM access" below — this is the only live API call of the day.)* |
 | 3:20 – 3:30 | Break | |
-| 3:30 – 4:50 | Lab: multimodal stack | PyRadiomics features (CXR image) + cached LLM features (real reports) + demographics → TabPFN. Compare to image-only baseline. | 
+| 3:30 – 4:50 | Lab: multimodal stack | TODO-blank notebook: fill in the feature concatenation, the TabPFN fit/predict, the baseline comparison. PyRadiomics features (CXR image) + cached LLM features (real reports) + demographics → TabPFN. | 
 | 4:50 – 5:00 | Share-back + capstone preview | One volunteer shares their best multimodal vs. unimodal delta. Capstone options revealed. |
 
 **The Multimodal Stack:**
@@ -129,14 +142,14 @@ Each option ships with a starter notebook that has data loading, a working basel
 
 ## Materials students leave with
 
-- Three notebooks they ran end-to-end (D1 ladder, D2 multimodal, capstone).
+- Three notebooks they filled in and ran end-to-end (D1 ladder, D2 multimodal, capstone), plus the solution notebooks.
 - A capstone they can put on GitHub.
 - A "what's next" page: 3 concrete next projects, links to Kaggle competitions, recommended papers, instructor's preferred contact for follow-up.
 
 ## Materials Outset gets
 
 - Slides per session (`.pptx`, generated via python-pptx).
-- All notebooks and starter kits in the course repo.
+- All lab notebooks (TODO-blank) + solution notebooks + capstone starter kits in the course repo.
 - Syllabus, capstone options, rubric.
 - Optional: a short demo-reel video of student capstone presentations (with consent).
 

@@ -16,7 +16,7 @@ Three-session "AI in Healthcare" course for high school students, taught for Out
 
 ## Course structure
 
-Everyone runs the same notebook each day. No tier system. Students who arrive with zero coding get help one-on-one; students fluent with Claude Code blast through the main path and pick up stretch goals at the end.
+Each day is one lab notebook with `# TODO` blanks to fill in, plus a paired solution notebook released after the session (MIT 6.S191 pattern). No tier system. Every student has Claude Pro and uses it as an ambient pair programmer when stuck. D1/D2 are scaffolded; D3 capstone is build-from-a-goal with Claude as the full deployment tool.
 
 ## Repo layout
 
@@ -26,8 +26,8 @@ prep/build-plan.md                 task-by-task implementation plan
 slides/                            python-pptx generators per session
 notebooks/
   _shared/                         colab setup, pre-class warmup
-  day1_ladder/                     APTOS DR + 5-model ladder
-  day2_multimodal/                 Open-i CXR + PyRadiomics + LLM + TabPFN
+  day1_ladder/                     APTOS DR + 5-model ladder (lab + solution)
+  day2_multimodal/                 Open-i CXR + PyRadiomics + LLM + TabPFN (lab + solution)
   day3_capstone/                   3 starter kits + project options + rubric
 datasets/                          download scripts, pre-cached LLM JSON, no raw data
 scripts/                           smoke runner, deck builder, instructor caching script

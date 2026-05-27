@@ -1,19 +1,24 @@
-# Outset AI in Healthcare — Build Plan (v3)
+# Outset AI in Healthcare — Build Plan (v3.1)
 
 > **For agentic workers:** Use the standard subagent-driven-development pattern to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking. "Test" = "artifact runs end-to-end and produces expected output."
 
 **Goal:** Build all course materials (slides, notebooks, capstone kits) for the 3-session AI in Healthcare course defined in `syllabus.md`, ready for delivery Mon Jul 6 – Wed Jul 8, 2026.
 
-**Architecture:** Each day ships one slide deck (`.pptx` via python-pptx) and **one main notebook**. No tier system. D1 is a 5-model ladder (logreg → ViT) on APTOS-2019 fundus DR. D2 is PyRadiomics + cached LLM features + demographics → TabPFN, on Open-i chest X-ray. D3 ships 3 capstone starter kits. A smoke-test script runs every executable notebook headless.
+**Architecture:** Each day ships one slide deck (`.pptx` via python-pptx) and **one lab notebook with `# TODO` blanks plus a paired solution notebook** (MIT 6.S191 pattern). No tier system. Students fill the blanks; Claude Pro is their ambient pair programmer. D1 is a 5-model ladder (logreg → ViT) on APTOS-2019 fundus DR. D2 is PyRadiomics + cached LLM features + demographics → TabPFN, on Open-i chest X-ray. D3 ships 3 capstone starter kits. A smoke-test script runs the solution notebooks headless.
 
-**v3 deltas from v2:**
-- Track A/B/C system removed. One notebook per day, everyone builds.
-- D1 dropped XGBoost (5 models now: logreg, MLP, CNN, ResNet, ViT).
+**v3.1 deltas (from v3):**
+- Adopted MIT-style structure: each lab notebook has `# TODO` blanks + a paired `_solution.ipynb`. One builder per day emits both from a single source via `nbutil.code_with_todos`.
+- Claude framing: ambient pair programmer (D1/D2) and full build tool (D3), not the subject of the course. Instructor models good Claude use once on D1, then steps back.
+- Smoke runner now runs solution notebooks, skips the blanked lab notebooks.
+
+**v3 deltas (from v2):**
+- Track A/B/C system removed. One notebook per day.
+- D1 dropped XGBoost (5 models: logreg, MLP, CNN, ResNet, ViT).
 - D1 flat-feature steps use subsampled images (64×64) for speed.
 - D2 anchor swapped from APTOS to Open-i chest X-ray (real images + real reports, no synthetic-report leakage).
 - D2 LLM access via pre-cached extractions (instructor pre-runs Anthropic API, commits JSON).
 - Capstone kits cut from 5 to 3 (pneumonia, skin, MedMNIST).
-- Removed: tier-quiz materials, Anthropic safety demo (modern models handle most adversarial cases reasonably).
+- Removed: tier-quiz materials, Anthropic safety demo.
 
 **Tech Stack:** Python 3.12 (conda env `outset`), python-pptx, jupyter/nbformat, torch + torchvision, timm, scikit-learn, pyradiomics + SimpleITK, transformers, tabpfn, anthropic, matplotlib.
 
@@ -50,10 +55,12 @@ outset-ai-healthcare/
       pretrain_warmup.ipynb            # pre-class: warm HF cache for ResNet+ViT
     day1_ladder/
       common.py                        # APTOS loader, model factories, eval, viz
-      day1.ipynb                       # the lab notebook (everyone runs this)
+      day1.ipynb                       # lab notebook with # TODO blanks
+      day1_solution.ipynb              # paired solution (blanks filled), released after class
     day2_multimodal/
       common.py                        # Open-i loader, PyRadiomics, cached-LLM helper, TabPFN wrapper
-      day2.ipynb
+      day2.ipynb                       # lab notebook with # TODO blanks
+      day2_solution.ipynb              # paired solution
     day3_capstone/
       project_options.md
       rubric.md
@@ -96,7 +103,7 @@ Same as v1/v2 — Geist + turquoise/deeppink/amber/blueviolet palette + python-p
 
 **Files:** `scripts/smoke_notebooks.py`, `scripts/nbutil.py`
 
-With Track A/B/C gone, the smoke runner runs *every* `.ipynb` in `notebooks/**` (no skip patterns needed for student variants). Capstone starter notebooks should also run end-to-end with a working baseline.
+The smoke runner executes the **solution notebooks** (`*_solution.ipynb`) and capstone `starter.ipynb` files end-to-end. It **skips the TODO-blank lab notebooks** (`day1.ipynb`, `day2.ipynb`) — those are intentionally non-runnable until a student fills the blanks. Skip pattern: a lab notebook is skipped if a sibling `<name>_solution.ipynb` exists. (So `day1.ipynb` is skipped because `day1_solution.ipynb` exists; the solution carries the smoke coverage.)
 
 - [ ] Build nbutil + smoke runner
 - [ ] Verify it runs (no notebooks present yet → exit 0)
@@ -247,38 +254,44 @@ Viz helpers:
 - [ ] Run smoke
 - [ ] Commit `Add Day 1 common module: APTOS loader, model factories, eval, viz`
 
-### Task 6: Day 1 lab notebook (the ladder)
+### Task 6: Day 1 lab notebook + solution (the ladder)
 
-**Files:** `scripts/build_day1.py`, `notebooks/day1_ladder/day1.ipynb`
+**Files:** `scripts/build_day1.py`, `notebooks/day1_ladder/day1.ipynb`, `notebooks/day1_ladder/day1_solution.ipynb`
 
-This is THE notebook everyone runs. Walks through all 5 models in order on APTOS DR, with viz between steps and stretch goals at the end.
+**One builder produces both notebooks.** The builder defines each cell's *complete* (solution) source plus a list of `# TODO` blanks per cell. It emits `day1_solution.ipynb` with everything filled in, and `day1.ipynb` with the blanked lines replaced by `# TODO: <hint>`. This MIT-style pattern keeps lab and solution in sync from a single source of truth — never hand-edit two notebooks.
 
-Notebook outline:
+`nbutil` helper to add: `code_with_todos(solution_src, blanks)` where `blanks` is a list of `(line_substring, hint)`. The solution keeps `line_substring`; the lab replaces it with `# TODO: hint`.
 
-1. Markdown: course intro, "today we build five models on the same data and watch each one improve"
-2. Code: `import colab_setup; colab_setup.ensure(); colab_setup.gpu_check()`
-3. Code: imports + load data + show batch
+Notebook outline (same cells in both; TODO blanks marked):
+
+1. Markdown: course intro, "today we build five models on the same data and watch each one improve. Fill in the TODOs. Stuck? Ask Claude, then make sure you understand what it gives you."
+2. Code (no TODO): `import colab_setup; colab_setup.ensure(); colab_setup.gpu_check()`
+3. Code (no TODO): imports + load data + show batch
 4. Markdown: **Step 0 — Look at the data**
-5. Code: RGB channel split, pixel histogram, augmentation effects
+5. Code (no TODO): RGB channel split, pixel histogram, augmentation effects (these are `common.py` calls; viewing, not implementing)
 6. Markdown: **Step 1 — Logistic regression**
-7. Code: subsampled (64×64) flatten + sklearn `LogisticRegression(max_iter=500, solver='saga')`. Print accuracy + confusion matrix.
+7. Code, **TODO**: students complete the flatten + `LogisticRegression(...)` call. Blank the `solver`/`max_iter` args and the `.fit()` line. Print accuracy + confusion matrix (given).
 8. Markdown: **Step 2 — MLP**
-9. Code: same subsampled features → MLP, train 5 epochs, report.
+9. Code, **TODO**: students define the MLP layers (`make_mlp` is in common.py, but here they write the forward-pass `nn.Sequential` inline) and the training loop body (zero_grad / forward / loss / backward / step).
 10. Markdown: **Step 3 — Small CNN from scratch**
-11. Code: full 224×224 images → `make_small_cnn()`, train 5 epochs. Show first-layer filter visualizations.
+11. Code, **TODO**: students define the conv layers (`self.conv1 = # TODO`) and complete the train call. Show first-layer filter visualizations (given).
 12. Markdown: **Step 4 — ResNet50 (transfer learning)**
-13. Code: `make_resnet50(pretrained=True)`, finetune 3 epochs, report. Run Grad-CAM on 4 sample images.
+13. Code, **TODO**: students complete `make_resnet50(pretrained=True)` call + the finetune-only-head freeze logic. Grad-CAM on 4 images (given).
 14. Markdown: **Step 5 — Vision Transformer**
-15. Code: `make_vit_base(pretrained=True)`, finetune 3 epochs, report. Run attention-rollout viz on 4 images.
+15. Code, **TODO**: students complete the `make_vit_base` call + finetune. Attention-rollout viz (given).
 16. Markdown: **Leaderboard**
-17. Code: bar chart of all 5 model accuracies side-by-side.
-18. Markdown: **Bridge to Day 2** — image patch → patch embedding → attention vs. word → token embedding → attention. (One markdown cell with both ASCII diagrams.)
+17. Code (no TODO): bar chart of all 5 model accuracies.
+18. Markdown: **Bridge to Day 2** — image patch → patch embedding → attention vs. word → token embedding → attention (ASCII diagrams).
 19. Markdown: **Stretch — find a disagreement**
-20. Code: find images where ResNet and ViT disagree confidently. Show 4 examples with both predictions and saliency maps.
+20. Code (no TODO, open-ended): find images where ResNet and ViT disagree confidently.
 
-- [ ] Build notebook programmatically (mirror v1 nbutil pattern)
-- [ ] Run end-to-end on a Colab-equivalent local GPU (or mark deferred to Jinchi's local validation week before course)
-- [ ] Commit `Add Day 1 ladder notebook`
+Keep TODOs to ~2-3 per model step. Each blank is one concept, not a whole cell. Earlier steps blank more (teach the basics); later steps blank less (the pattern is established, and the interesting part is the architecture swap, which is a one-line factory call).
+
+- [ ] Add `code_with_todos` to nbutil
+- [ ] Build both notebooks from `build_day1.py`
+- [ ] Smoke-test `day1_solution.ipynb` end-to-end (the lab notebook is intentionally non-runnable; smoke skips it)
+- [ ] Run solution end-to-end on a Colab-equivalent GPU (or defer to Jinchi's wall-clock validation, Task 15)
+- [ ] Commit `Add Day 1 ladder notebook + solution`
 
 ### Task 7: Day 1 slide deck
 
@@ -308,8 +321,9 @@ Slide outline (~22 slides, ~45 min lecture):
 20. ResNet — deep + transfer learning
 21. ViT — attention on patches
 22. **Section: Lab plan**
-23. Time-box per step + how to ask for help
-24. **Section: Share-back & bridge**
+23. How the lab works: fill in the `# TODO` blanks. Stuck? Ask Claude, then *understand the answer*.
+24. **Modeling good Claude use** (instructor does this live, ~3 min): take one TODO, show how to ask Claude, how to sanity-check what it returns, why you don't paste blindly. One slide as the backdrop; the real content is the live demo.
+25. **Section: Share-back & bridge**
 25. The leaderboard you just built
 26. **The bridge**: image patches vs. words. Side-by-side. Same architecture, different modality. *This slide gets 5 minutes, not one sentence.*
 27. See you tomorrow
@@ -559,11 +573,13 @@ print("smoke acc:", (clf.predict(X[60:]) == y[60:]).mean())
 - [ ] Run smoke (instructor pre-runs Anthropic caching first)
 - [ ] Commit `Add Day 2 multimodal common module + Open-i loader + cached LLM extractions`
 
-### Task 9: Day 2 lab notebook
+### Task 9: Day 2 lab notebook + solution
 
-**Files:** `scripts/build_day2.py`, `notebooks/day2_multimodal/day2.ipynb`
+**Files:** `scripts/build_day2.py`, `notebooks/day2_multimodal/day2.ipynb`, `notebooks/day2_multimodal/day2_solution.ipynb`
 
-Notebook outline:
+**One builder produces both** (same `code_with_todos` pattern as Task 6). TODO blanks for D2 sit on: the feature concatenation (cell 13), the TabPFN `.fit()` / `.predict()` calls (cell 15), and the leakage ablation (cell 19). The LLM/PyRadiomics/demographics loading cells are given (they're `common.py` calls, not the lesson). The lesson is the *assembly* and the *evaluation*, so that's what students fill in.
+
+Notebook outline (TODO blanks marked):
 
 1. Markdown: D2 intro — "yesterday: end-to-end deep learning. Today: handcrafted features + foundation model on tabular."
 2. Code: `colab_setup.ensure(); gpu_check()`
@@ -577,19 +593,19 @@ Notebook outline:
 10. Markdown: **Demographics**
 11. Code: load synthetic demographics for the same case.
 12. Markdown: **Combine: everything becomes a tabular row**
-13. Code: build feature rows for ~150 cases, show DataFrame head.
+13. Code, **TODO**: students write the concatenation — call `build_feature_row` over ~150 cases and assemble the DataFrame. Blank the `pd.concat` / row-assembly line.
 14. Markdown: **TabPFN**
-15. Code: train/test split, fit TabPFN on train, predict on test, report accuracy.
+15. Code, **TODO**: students write the train/test split + `TabPFNClassifier().fit(...)` + `.predict(...)`. Report accuracy (given).
 16. Markdown: **Compare to image-only baseline**
-17. Code: a small pretrained ResNet head trained on the same train/test split as a unimodal baseline. Compare numbers.
+17. Code (no TODO): a small pretrained ResNet head as a unimodal baseline. Compare numbers.
 18. Markdown: **Honest discussion: target leakage**
-19. Code: a simple ablation — drop the LLM features, just radiomics + demographics. How does accuracy change? Discuss what the gap means.
-20. Markdown: **Stretch — predict something the report doesn't directly mention** (e.g., synthetic age bin from imaging features alone). Show that's harder.
-21. Markdown: capstone preview — what you'll pick tomorrow.
+19. Code, **TODO**: students write the ablation — drop the LLM features, refit TabPFN on radiomics + demographics only, compare. Filling this in *is* how they discover the leakage gap themselves.
+20. Markdown: **Stretch — predict something the report doesn't directly mention** (e.g., synthetic age bin from imaging features alone).
+21. Markdown: capstone preview.
 
-- [ ] Build notebook
-- [ ] Smoke test
-- [ ] Commit `Add Day 2 multimodal notebook`
+- [ ] Build both notebooks from `build_day2.py`
+- [ ] Smoke-test `day2_solution.ipynb` (lab notebook skipped — non-runnable with blanks)
+- [ ] Commit `Add Day 2 multimodal notebook + solution`
 
 ### Task 10: Day 2 slide deck
 
@@ -693,7 +709,7 @@ Short — ~10 slides, mostly work time.
 
 **Critical pre-class check, not in materials.**
 
-Instructor runs the D1 ladder notebook end-to-end on a free-tier Colab T4 (not Pro), times each step, and confirms the lab fits in 70 min. If it doesn't, knobs to turn:
+Instructor runs the D1 **solution** notebook end-to-end on a free-tier Colab T4 (not Pro), times each step, and confirms the lab fits in 70 min (allowing extra for students filling TODOs, which is slower than running pre-written cells). If it doesn't, knobs to turn:
 - Reduce ResNet/ViT epochs from 3 → 2
 - Subsample further (224 → 192 for ResNet/ViT)
 - Drop the final viz step
@@ -712,19 +728,21 @@ Run this the *week before* July 6, not the night before.
 - [x] D1: 5-model ladder on APTOS DR (Tasks 5-7)
 - [x] D2: PyRadiomics + cached LLM + TabPFN on Open-i CXR (Tasks 8-10)
 - [x] D3: 3 capstone kits + slides (Tasks 11-13)
-- [x] No tier system: one notebook per day for everyone
+- [x] No tier system: TODO-blank lab + solution per day (Tasks 6, 9)
+- [x] MIT-style TODO/solution structure via `nbutil.code_with_todos` (Task 6)
+- [x] Claude as ambient pair programmer; instructor models good use (Task 7 slide 24)
 - [x] Slides via python-pptx: Tasks 7, 10, 13
 - [x] Brand theme: Task 1
-- [x] Smoke testing: Task 2
+- [x] Smoke testing (solutions only; blanked labs skipped): Task 2
 - [x] Pre-class warmup: Task 4
-- [x] Real ViT→LLM bridge slide (5 min): Task 7 slide 26 + Task 9 cell 18 + Task 10 slide 5
+- [x] Real ViT→LLM bridge slide (5 min): Task 7 + Task 9 cell 18 + Task 10 slide 5
 - [x] D2 LLM access via pre-cached extractions, one live demo cell: Task 8 step 4 + Task 9 cell 5
 - [x] D1 wall-clock pre-validation: Task 15
 - [x] Capstone cuts: 5 → 3 (Task 12)
 
 **Type / API consistency:**
 - `common.evaluate_classifier(predict_fn, loader)` (D1) and `common.build_feature_row(case_id, image_path)` (D2) are the eval/feature-row signatures.
-- `nbutil.{md, code, save, new_nb}` is the notebook construction API everywhere.
+- `nbutil.{md, code, save, new_nb, code_with_todos}` is the notebook construction API. `code_with_todos(solution_src, blanks)` emits solution + blanked-lab cell pairs.
 - `theme.{title_slide, content_slide, section_divider}` used by all three slide builders.
 
-**Prep budget v3:** ~25-35 hr total (down from v2's 35-50 because no tier variants). Instructor said "don't worry about cap, want quality" — proceed.
+**Prep budget v3.1:** ~25-35 hr total. The TODO/solution split adds little (one builder emits both). Instructor said "don't worry about cap, want quality" — proceed.
