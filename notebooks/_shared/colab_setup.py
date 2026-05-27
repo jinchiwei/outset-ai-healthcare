@@ -10,13 +10,16 @@ import importlib
 import subprocess
 import sys
 
-REQUIRED = [
+# Package groups per day. Most are preinstalled on Colab; ensure() only installs
+# what's actually missing, so on Colab this is fast (often just timm / tabpfn).
+DAY1 = [
     "torch", "torchvision", "timm",
     "scikit-learn", "matplotlib", "seaborn", "pillow",
-    "tqdm", "pandas", "numpy",
-    "transformers", "tabpfn",
-    "pyradiomics", "SimpleITK",
+    "tqdm", "pandas", "numpy", "datasets",
 ]
+DAY2 = ["pandas", "numpy", "scikit-learn", "matplotlib", "tabpfn", "pyradiomics", "SimpleITK"]
+
+REQUIRED = DAY1  # default = the Day 1 set
 
 # pip name -> import name, when they differ
 IMPORT_NAMES = {
@@ -24,6 +27,7 @@ IMPORT_NAMES = {
     "pillow": "PIL",
     "pyradiomics": "radiomics",
     "SimpleITK": "SimpleITK",
+    "huggingface_hub": "huggingface_hub",
 }
 
 
