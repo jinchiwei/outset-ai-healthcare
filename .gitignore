@@ -8,6 +8,8 @@ __pycache__/
 # Data (never commit)
 datasets/raw/
 datasets/processed/
+datasets/aptos_mini/
+kaggle.json
 *.npz
 *.h5
 *.pt

@@ -22,7 +22,7 @@ from torch.utils.data import DataLoader, Dataset
 import torchvision.transforms as T
 
 NUM_CLASSES = 5
-HF_DATASET = "jinchiwei/aptos-mini"  # instructor-hosted pre-resized subset
+HF_DATASET = "dreamxjei/aptos-mini"  # instructor-hosted pre-resized subset
 NORM_MEAN = (0.485, 0.456, 0.406)
 NORM_STD = (0.229, 0.224, 0.225)
 GRADE_NAMES = ["No DR", "Mild", "Moderate", "Severe", "Proliferative"]
