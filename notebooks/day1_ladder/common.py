@@ -21,11 +21,16 @@ import torch.nn as nn
 from torch.utils.data import DataLoader, Dataset
 import torchvision.transforms as T
 
-NUM_CLASSES = 5
-HF_DATASET = "dreamxjei/aptos-mini"  # instructor-hosted pre-resized subset
+# Binary "referable DR" task: does this eye need to see a doctor?
+# Grades 0-1 (none/mild) = not referable; grades 2-4 (moderate+) = referable.
+# This is the task actually deployed in clinics, and far more learnable (and
+# motivating) than 5-class severity grading.
+NUM_CLASSES = 2
+REFERABLE_THRESHOLD = 2
+HF_DATASET = "dreamxjei/aptos-mini"  # instructor-hosted pre-resized subset (labels 0-4)
 NORM_MEAN = (0.485, 0.456, 0.406)
 NORM_STD = (0.229, 0.224, 0.225)
-GRADE_NAMES = ["No DR", "Mild", "Moderate", "Severe", "Proliferative"]
+GRADE_NAMES = ["not referable", "referable"]
 
 
 # --------------------------------------------------------------------------- #
@@ -44,7 +49,8 @@ class _HFImageDataset(Dataset):
     def __getitem__(self, idx):
         row = self.ds[idx]
         img = row["image"].convert("RGB")
-        return self.transform(img), int(row["diagnosis"])
+        label = int(row["diagnosis"] >= REFERABLE_THRESHOLD)  # binary: referable DR
+        return self.transform(img), label
 
 
 def _transform(size: int, train: bool):

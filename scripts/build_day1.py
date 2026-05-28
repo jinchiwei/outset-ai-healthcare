@@ -37,9 +37,10 @@ both(md("""
 Today we build **five models** on the same medical images and watch each one beat
 the last: logistic regression -> MLP -> CNN -> ResNet -> Vision Transformer.
 
-The dataset is **APTOS-2019**: color photos of the back of the eye (fundus), graded
-0-4 for diabetic retinopathy. This was the first AI screening tool deployed at scale
-in real clinics.
+The dataset is **APTOS-2019**: color photos of the back of the eye (fundus). Our task is
+the one actually deployed in clinics: **referable diabetic retinopathy**. Does this eye
+show enough disease that the person needs to see a doctor? Yes or no. This kind of AI
+screening is running in real clinics today.
 
 **How this works:** fill in the `# TODO` lines. Stuck on one? Ask Claude -- then make
 sure you understand what it gives you before moving on. The point isn't to finish
@@ -104,7 +105,7 @@ both(md("""
 The simplest classifier there is. We flatten each image into one long row of numbers
 and fit a linear model. We use small 64x64 images here so it runs fast.
 
-**Predict first:** there are 5 grades. Random guessing would be ~20%. How well do you
+**Predict first:** this is a yes/no question, so a coin flip gets ~50%. How well do you
 think a linear model on raw pixels will do? Write your guess.
 """))
 

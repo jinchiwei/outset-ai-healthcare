@@ -47,9 +47,9 @@ def build():
     ])
     content_slide(prs, title="Today's data: the eye", bullets=[
         "APTOS-2019: color photos of the retina (the back of the eye)",
-        "Graded 0 to 4 for diabetic retinopathy severity",
-        "Diabetic retinopathy screening was the first medical AI deployed at scale",
-        "You will train models that grade these images.",
+        "Our task: referable diabetic retinopathy. Does this eye need a doctor? Yes/no.",
+        "This is the actual screening task running in clinics today",
+        "You will train models to make that call.",
     ], accent=AMBER)
 
     # --- What is an image? ------------------------------------------------- #
@@ -84,7 +84,7 @@ def build():
     section_divider(prs, label="What is 'learning'?", accent=BLUEVIOLET)
     content_slide(prs, title="A classifier is a function", bullets=[
         "Input: a pile of numbers (the image)",
-        "Output: a label (DR grade 0-4)",
+        "Output: a label (refer to a doctor, or not)",
         "'Learning' = adjusting the function until its answers match the truth",
     ])
     content_slide(prs, title="The ladder we'll build", bullets=[
@@ -96,7 +96,7 @@ def build():
     ])
     content_slide(prs, title="1. Logistic regression", bullets=[
         "Flatten the image into one long row of numbers",
-        "Draw straight-line boundaries between the grades",
+        "Draw a straight-line boundary: refer or not",
         "Treats every pixel as independent. No idea pixels form shapes.",
     ])
     content_slide(prs, title="2. MLP (multi-layer perceptron)", bullets=[
@@ -150,7 +150,7 @@ def build():
         "Tomorrow: we use one to read radiology reports.",
     ], accent=DEEPPINK)
     code_slide(prs, title="Same machinery, different input", code=(
-        "IMAGE   [patch][patch][patch] -> embed -> attention -> DR grade\n"
+        "IMAGE   [patch][patch][patch] -> embed -> attention -> refer?\n"
         "TEXT     'the'  'cat'  'sat'  -> embed -> attention -> next word\n\n"
         "the second line is an LLM."
     ))

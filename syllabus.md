@@ -34,7 +34,7 @@ Every student has Claude Pro. We treat it as what it is in the real world: an au
 The rule we say out loud: *use Claude freely, but always be able to explain what your code does.* The D3 rubric checks for it.
 
 ## Day 1 — Mon Jul 6: from pixels to vision transformers
-**Anchor: APTOS-2019 diabetic retinopathy (color fundus photos, 5-class severity). The first AI in medicine deployed at scale.**
+**Anchor: APTOS-2019 diabetic retinopathy (color fundus photos). Task: referable DR (does this eye need a doctor?), the binary screening task actually deployed in clinics.**
 
 | Time | Block | What happens |
 |------|-------|-------------|
