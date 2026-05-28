@@ -1,22 +1,22 @@
 {
   "3840": {
-    "cardiomegaly_present": false,
+    "cardiomegaly_present": true,
     "effusion_present": true,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "1164": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "3187": {
-    "cardiomegaly_present": false,
+    "cardiomegaly_present": true,
     "effusion_present": true,
     "opacity_present": false,
     "atelectasis_present": false,
@@ -25,15 +25,15 @@
   },
   "3278": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "mild"
+    "pneumothorax_present": false,
+    "severity_word": "none"
   },
   "2711": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -41,15 +41,15 @@
   },
   "3486": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "mild"
+    "pneumothorax_present": false,
+    "severity_word": "none"
   },
   "3993": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -58,38 +58,38 @@
   "1700": {
     "cardiomegaly_present": false,
     "effusion_present": false,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "none"
   },
   "1702": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
+    "pneumothorax_present": false,
+    "severity_word": "mild"
   },
   "2766": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "moderate"
   },
   "1357": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "441": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -97,7 +97,7 @@
   },
   "3650": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -105,62 +105,62 @@
   },
   "1328": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": true,
+    "effusion_present": false,
+    "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3256": {
     "cardiomegaly_present": true,
     "effusion_present": true,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "3075": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "1277": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
-    "atelectasis_present": false,
+    "atelectasis_present": true,
     "pneumothorax_present": false,
     "severity_word": "none"
   },
   "132": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3131": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2519": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "313": {
-    "cardiomegaly_present": false,
+    "cardiomegaly_present": true,
     "effusion_present": true,
     "opacity_present": true,
     "atelectasis_present": false,
@@ -169,42 +169,42 @@
   },
   "1898": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "severe"
   },
   "327": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "1361": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": true,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "424": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "1300": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": true,
+    "effusion_present": false,
+    "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "1426": {
@@ -217,7 +217,7 @@
   },
   "2041": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -229,7 +229,7 @@
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "3492": {
     "cardiomegaly_present": false,
@@ -245,11 +245,11 @@
     "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "moderate"
   },
   "670": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -257,11 +257,11 @@
   },
   "3432": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "moderate"
   },
   "2039": {
     "cardiomegaly_present": false,
@@ -273,15 +273,15 @@
   },
   "3379": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "3638": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -292,15 +292,15 @@
     "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "1261": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "2605": {
@@ -308,12 +308,12 @@
     "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3001": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -329,15 +329,15 @@
   },
   "729": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": true,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
+    "pneumothorax_present": false,
+    "severity_word": "mild"
   },
   "1478": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -345,15 +345,15 @@
   },
   "3261": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2965": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -368,16 +368,16 @@
     "severity_word": "none"
   },
   "1614": {
-    "cardiomegaly_present": false,
+    "cardiomegaly_present": true,
     "effusion_present": false,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "moderate"
   },
   "824": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -386,10 +386,10 @@
   "1501": {
     "cardiomegaly_present": false,
     "effusion_present": false,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "moderate"
   },
   "3640": {
     "cardiomegaly_present": false,
@@ -401,11 +401,11 @@
   },
   "3839": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "2221": {
     "cardiomegaly_present": true,
@@ -413,7 +413,7 @@
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "2461": {
     "cardiomegaly_present": false,
@@ -425,7 +425,7 @@
   },
   "3435": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -433,15 +433,15 @@
   },
   "3801": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": true,
+    "effusion_present": false,
+    "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
+    "pneumothorax_present": false,
+    "severity_word": "moderate"
   },
   "3417": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -449,56 +449,56 @@
   },
   "454": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
-    "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "mild"
-  },
-  "456": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
-    "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
-  },
-  "3402": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
-    "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
-  },
-  "3440": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
-  "2646": {
+  "456": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
+    "severity_word": "none"
+  },
+  "3402": {
+    "cardiomegaly_present": false,
+    "effusion_present": false,
+    "opacity_present": false,
+    "atelectasis_present": false,
+    "pneumothorax_present": false,
+    "severity_word": "none"
+  },
+  "3440": {
+    "cardiomegaly_present": false,
+    "effusion_present": false,
+    "opacity_present": false,
+    "atelectasis_present": false,
+    "pneumothorax_present": false,
+    "severity_word": "none"
+  },
+  "2646": {
+    "cardiomegaly_present": false,
+    "effusion_present": false,
+    "opacity_present": false,
+    "atelectasis_present": false,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "688": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": true,
     "atelectasis_present": true,
-    "pneumothorax_present": true,
-    "severity_word": "severe"
+    "pneumothorax_present": false,
+    "severity_word": "mild"
   },
   "2066": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
     "severity_word": "mild"
@@ -513,7 +513,7 @@
   },
   "1273": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -529,7 +529,7 @@
   },
   "2904": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -537,10 +537,10 @@
   },
   "349": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3398": {
@@ -557,11 +557,11 @@
     "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "3819": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -569,7 +569,7 @@
   },
   "3592": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -577,43 +577,43 @@
   },
   "1592": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "227": {
     "cardiomegaly_present": true,
     "effusion_present": true,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "2003": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": true,
-    "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
-  },
-  "681": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
-    "atelectasis_present": false,
-    "pneumothorax_present": false,
-    "severity_word": "none"
-  },
-  "2117": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "mild"
+  },
+  "681": {
+    "cardiomegaly_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
+    "atelectasis_present": false,
+    "pneumothorax_present": false,
+    "severity_word": "mild"
+  },
+  "2117": {
+    "cardiomegaly_present": false,
+    "effusion_present": false,
+    "opacity_present": false,
+    "atelectasis_present": false,
+    "pneumothorax_present": false,
+    "severity_word": "none"
   },
   "656": {
     "cardiomegaly_present": true,
@@ -625,7 +625,7 @@
   },
   "684": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -641,18 +641,18 @@
   },
   "669": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "202": {
     "cardiomegaly_present": true,
     "effusion_present": true,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "2400": {
@@ -673,10 +673,10 @@
   },
   "3829": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "moderate"
   },
   "2058": {
@@ -685,54 +685,54 @@
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "mild"
+    "severity_word": "none"
   },
   "379": {
     "cardiomegaly_present": true,
     "effusion_present": true,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "moderate"
   },
   "1826": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2421": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "severe"
+    "severity_word": "moderate"
   },
   "897": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "moderate"
   },
   "3912": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "2184": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "2814": {
@@ -741,27 +741,27 @@
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "3715": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
+    "pneumothorax_present": false,
+    "severity_word": "mild"
   },
   "2180": {
     "cardiomegaly_present": true,
     "effusion_present": false,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "severe"
   },
   "3430": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -769,7 +769,7 @@
   },
   "1849": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -777,10 +777,10 @@
   },
   "982": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "908": {
@@ -793,15 +793,15 @@
   },
   "3907": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "1178": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -818,25 +818,25 @@
   "650": {
     "cardiomegaly_present": true,
     "effusion_present": true,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "moderate"
   },
   "627": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
+    "pneumothorax_present": false,
+    "severity_word": "moderate"
   },
   "3917": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "3215": {
@@ -852,16 +852,16 @@
     "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2021": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "3553": {
     "cardiomegaly_present": false,
@@ -873,23 +873,23 @@
   },
   "3078": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "moderate"
   },
   "229": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2206": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": true,
     "pneumothorax_present": false,
@@ -897,7 +897,7 @@
   },
   "3941": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -905,15 +905,15 @@
   },
   "2919": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": true,
+    "effusion_present": false,
+    "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "severe"
   },
   "2355": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": true,
     "pneumothorax_present": false,
@@ -921,7 +921,7 @@
   },
   "3262": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -933,38 +933,38 @@
     "opacity_present": false,
     "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "severe"
+    "severity_word": "mild"
   },
   "2637": {
     "cardiomegaly_present": true,
     "effusion_present": true,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "severe"
+    "severity_word": "moderate"
   },
   "3686": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "moderate"
   },
   "1125": {
+    "cardiomegaly_present": true,
+    "effusion_present": false,
+    "opacity_present": true,
+    "atelectasis_present": false,
+    "pneumothorax_present": false,
+    "severity_word": "mild"
+  },
+  "588": {
     "cardiomegaly_present": false,
     "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
-  },
-  "588": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
-    "atelectasis_present": false,
-    "pneumothorax_present": true,
     "severity_word": "none"
   },
   "3750": {
@@ -973,11 +973,11 @@
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "1624": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -985,74 +985,74 @@
   },
   "1030": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "mild"
+    "severity_word": "none"
   },
   "1934": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": true,
+    "effusion_present": false,
+    "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3878": {
     "cardiomegaly_present": true,
     "effusion_present": false,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "551": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2036": {
     "cardiomegaly_present": true,
     "effusion_present": false,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "2848": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
-    "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "mild"
-  },
-  "3317": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": true,
-    "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
-  },
-  "2287": {
-    "cardiomegaly_present": true,
     "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
-  "477": {
+  "3317": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
+    "severity_word": "none"
+  },
+  "2287": {
+    "cardiomegaly_present": true,
+    "effusion_present": false,
+    "opacity_present": true,
+    "atelectasis_present": false,
+    "pneumothorax_present": false,
+    "severity_word": "mild"
+  },
+  "477": {
+    "cardiomegaly_present": false,
+    "effusion_present": false,
+    "opacity_present": false,
+    "atelectasis_present": false,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3853": {
@@ -1065,15 +1065,15 @@
   },
   "708": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3155": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -1081,31 +1081,31 @@
   },
   "3740": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": true,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
+    "pneumothorax_present": false,
+    "severity_word": "moderate"
   },
   "2981": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "mild"
+    "severity_word": "none"
   },
   "328": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "1795": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -1114,14 +1114,14 @@
   "374": {
     "cardiomegaly_present": true,
     "effusion_present": true,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "severe"
   },
   "844": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -1129,10 +1129,10 @@
   },
   "1152": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "1461": {
@@ -1144,7 +1144,7 @@
     "severity_word": "none"
   },
   "3761": {
-    "cardiomegaly_present": false,
+    "cardiomegaly_present": true,
     "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
@@ -1153,23 +1153,23 @@
   },
   "215": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "moderate"
   },
   "3700": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "2124": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -1186,17 +1186,17 @@
   "3545": {
     "cardiomegaly_present": false,
     "effusion_present": false,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "moderate"
   },
   "2373": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "moderate"
   },
   "2132": {
@@ -1209,7 +1209,7 @@
   },
   "3651": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -1217,26 +1217,26 @@
   },
   "1619": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "910": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "moderate"
   },
   "2098": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "1154": {
@@ -1265,7 +1265,7 @@
   },
   "666": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": true,
     "pneumothorax_present": false,
@@ -1273,10 +1273,10 @@
   },
   "2557": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "2130": {
@@ -1290,22 +1290,22 @@
   "2279": {
     "cardiomegaly_present": true,
     "effusion_present": false,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "2029": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2691": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -1313,23 +1313,23 @@
   },
   "2411": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "1909": {
-    "cardiomegaly_present": false,
+    "cardiomegaly_present": true,
     "effusion_present": false,
-    "opacity_present": false,
-    "atelectasis_present": true,
+    "opacity_present": true,
+    "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "1664": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -1337,16 +1337,16 @@
   },
   "3373": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3980": {
     "cardiomegaly_present": true,
     "effusion_present": true,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
     "severity_word": "moderate"
@@ -1357,19 +1357,19 @@
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "3232": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
+    "pneumothorax_present": false,
+    "severity_word": "mild"
   },
   "3139": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -1377,23 +1377,23 @@
   },
   "2477": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "moderate"
   },
   "1102": {
     "cardiomegaly_present": true,
     "effusion_present": true,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "3784": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -1401,7 +1401,7 @@
   },
   "2398": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -1417,71 +1417,71 @@
   },
   "235": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "2176": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "1432": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2676": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": true,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3455": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "moderate"
   },
   "1777": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "moderate"
   },
   "1214": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "2049": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "1031": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -1489,26 +1489,26 @@
   },
   "716": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
-    "atelectasis_present": false,
-    "pneumothorax_present": false,
-    "severity_word": "none"
-  },
-  "57": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
+  "57": {
+    "cardiomegaly_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
+    "atelectasis_present": false,
+    "pneumothorax_present": false,
+    "severity_word": "moderate"
+  },
   "2153": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "175": {
@@ -1549,23 +1549,23 @@
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "severe"
+    "severity_word": "moderate"
   },
   "3937": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": true,
-    "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "mild"
-  },
-  "3777": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "mild"
+    "severity_word": "none"
+  },
+  "3777": {
+    "cardiomegaly_present": false,
+    "effusion_present": false,
+    "opacity_present": false,
+    "atelectasis_present": false,
+    "pneumothorax_present": false,
+    "severity_word": "none"
   },
   "526": {
     "cardiomegaly_present": true,
@@ -1577,10 +1577,10 @@
   },
   "3752": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "1119": {
@@ -1589,7 +1589,7 @@
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "severe"
+    "severity_word": "none"
   },
   "3909": {
     "cardiomegaly_present": false,
@@ -1616,32 +1616,32 @@
     "severity_word": "none"
   },
   "3091": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": true,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
+    "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "2677": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "mild"
+    "pneumothorax_present": false,
+    "severity_word": "none"
   },
   "732": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "mild"
+    "pneumothorax_present": false,
+    "severity_word": "none"
   },
   "53": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
@@ -1649,15 +1649,15 @@
   },
   "2390": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
-    "atelectasis_present": false,
+    "atelectasis_present": true,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "490": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -1665,53 +1665,21 @@
   },
   "2579": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2150": {
     "cardiomegaly_present": false,
     "effusion_present": false,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "3288": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
-    "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
-  },
-  "2718": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": true,
-    "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "mild"
-  },
-  "3221": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
-    "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
-  },
-  "2006": {
-    "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": true,
-    "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "mild"
-  },
-  "1014": {
     "cardiomegaly_present": false,
     "effusion_present": false,
     "opacity_present": false,
@@ -1719,9 +1687,41 @@
     "pneumothorax_present": false,
     "severity_word": "none"
   },
+  "2718": {
+    "cardiomegaly_present": false,
+    "effusion_present": false,
+    "opacity_present": false,
+    "atelectasis_present": false,
+    "pneumothorax_present": false,
+    "severity_word": "none"
+  },
+  "3221": {
+    "cardiomegaly_present": false,
+    "effusion_present": false,
+    "opacity_present": false,
+    "atelectasis_present": false,
+    "pneumothorax_present": false,
+    "severity_word": "none"
+  },
+  "2006": {
+    "cardiomegaly_present": true,
+    "effusion_present": false,
+    "opacity_present": false,
+    "atelectasis_present": false,
+    "pneumothorax_present": false,
+    "severity_word": "mild"
+  },
+  "1014": {
+    "cardiomegaly_present": true,
+    "effusion_present": false,
+    "opacity_present": false,
+    "atelectasis_present": false,
+    "pneumothorax_present": false,
+    "severity_word": "mild"
+  },
   "1743": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -1729,10 +1729,10 @@
   },
   "2570": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "3535": {
@@ -1745,23 +1745,23 @@
   },
   "1880": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": true,
+    "effusion_present": false,
+    "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "344": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3235": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -1769,19 +1769,19 @@
   },
   "1126": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "moderate"
+    "severity_word": "mild"
   },
   "3813": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "3663": {
     "cardiomegaly_present": false,
@@ -1800,19 +1800,19 @@
     "severity_word": "none"
   },
   "825": {
-    "cardiomegaly_present": false,
+    "cardiomegaly_present": true,
     "effusion_present": false,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "moderate"
   },
   "104": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "3458": {
@@ -1825,7 +1825,7 @@
   },
   "1396": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -1833,47 +1833,47 @@
   },
   "2181": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": true,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "moderate"
   },
   "3021": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2650": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": true,
+    "effusion_present": false,
+    "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3690": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2465": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "483": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -1885,15 +1885,15 @@
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "2532": {
     "cardiomegaly_present": true,
     "effusion_present": true,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "436": {
     "cardiomegaly_present": false,
@@ -1905,14 +1905,14 @@
   },
   "139": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "severe"
+    "severity_word": "mild"
   },
   "3191": {
-    "cardiomegaly_present": false,
+    "cardiomegaly_present": true,
     "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
@@ -1920,16 +1920,16 @@
     "severity_word": "mild"
   },
   "2415": {
-    "cardiomegaly_present": false,
+    "cardiomegaly_present": true,
     "effusion_present": false,
     "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "moderate"
+    "severity_word": "mild"
   },
   "2043": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -1945,15 +1945,15 @@
   },
   "2250": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "1551": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -1961,7 +1961,7 @@
   },
   "1245": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -1969,50 +1969,50 @@
   },
   "3899": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "severe"
+    "severity_word": "none"
   },
   "3828": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3746": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "mild"
+    "pneumothorax_present": false,
+    "severity_word": "none"
   },
   "3908": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "534": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "1111": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "severe"
   },
   "266": {
@@ -2025,26 +2025,26 @@
   },
   "1666": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "1819": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
-    "pneumothorax_present": true,
-    "severity_word": "none"
+    "pneumothorax_present": false,
+    "severity_word": "moderate"
   },
   "523": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3771": {
@@ -2053,7 +2053,7 @@
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "severe"
+    "severity_word": "none"
   },
   "1190": {
     "cardiomegaly_present": false,
@@ -2065,18 +2065,18 @@
   },
   "2578": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2649": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2157": {
@@ -2089,7 +2089,7 @@
   },
   "193": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -2097,31 +2097,31 @@
   },
   "1740": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": true,
+    "atelectasis_present": false,
+    "pneumothorax_present": false,
+    "severity_word": "moderate"
+  },
+  "2033": {
+    "cardiomegaly_present": false,
+    "effusion_present": false,
+    "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "none"
   },
-  "2033": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
-    "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "mild"
-  },
   "2580": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "207": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -2137,7 +2137,7 @@
   },
   "3796": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -2145,7 +2145,7 @@
   },
   "2208": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -2168,16 +2168,16 @@
     "severity_word": "mild"
   },
   "3248": {
-    "cardiomegaly_present": false,
+    "cardiomegaly_present": true,
     "effusion_present": true,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "3039": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -2188,16 +2188,16 @@
     "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
+    "pneumothorax_present": false,
+    "severity_word": "mild"
   },
   "1750": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
+    "pneumothorax_present": false,
+    "severity_word": "mild"
   },
   "2017": {
     "cardiomegaly_present": false,
@@ -2216,51 +2216,51 @@
     "severity_word": "none"
   },
   "3095": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "500": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
-    "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
-  },
-  "3531": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": true,
-    "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "mild"
-  },
-  "3076": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "none"
   },
-  "1292": {
+  "3531": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": true,
+    "effusion_present": false,
+    "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
+  },
+  "3076": {
+    "cardiomegaly_present": true,
+    "effusion_present": false,
+    "opacity_present": false,
+    "atelectasis_present": false,
+    "pneumothorax_present": false,
+    "severity_word": "mild"
+  },
+  "1292": {
+    "cardiomegaly_present": true,
+    "effusion_present": false,
+    "opacity_present": false,
+    "atelectasis_present": false,
+    "pneumothorax_present": false,
+    "severity_word": "mild"
   },
   "2211": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2498": {
@@ -2273,7 +2273,7 @@
   },
   "152": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -2288,7 +2288,7 @@
     "severity_word": "none"
   },
   "1541": {
-    "cardiomegaly_present": false,
+    "cardiomegaly_present": true,
     "effusion_present": true,
     "opacity_present": false,
     "atelectasis_present": true,
@@ -2309,7 +2309,7 @@
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "2604": {
     "cardiomegaly_present": false,
@@ -2329,10 +2329,10 @@
   },
   "2008": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2105": {
@@ -2349,12 +2349,12 @@
     "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "moderate"
   },
   "3666": {
     "cardiomegaly_present": true,
     "effusion_present": true,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
     "severity_word": "none"
@@ -2364,20 +2364,20 @@
     "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3536": {
     "cardiomegaly_present": true,
     "effusion_present": true,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
-    "pneumothorax_present": true,
-    "severity_word": "none"
+    "pneumothorax_present": false,
+    "severity_word": "moderate"
   },
   "3120": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -2385,23 +2385,23 @@
   },
   "2755": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "1678": {
     "cardiomegaly_present": false,
     "effusion_present": true,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "moderate"
   },
   "3510": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -2409,15 +2409,15 @@
   },
   "2514": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "none"
   },
   "768": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -2425,7 +2425,7 @@
   },
   "759": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -2433,7 +2433,7 @@
   },
   "1742": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -2441,26 +2441,26 @@
   },
   "3489": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3490": {
     "cardiomegaly_present": false,
     "effusion_present": false,
     "opacity_present": false,
-    "atelectasis_present": false,
+    "atelectasis_present": true,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "2688": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "3148": {
@@ -2473,26 +2473,26 @@
   },
   "1379": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "none"
   },
   "1362": {
-    "cardiomegaly_present": false,
+    "cardiomegaly_present": true,
     "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "severe"
+    "severity_word": "mild"
   },
   "3789": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": true,
+    "effusion_present": false,
+    "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "851": {
@@ -2501,19 +2501,19 @@
     "opacity_present": false,
     "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "severe"
+    "severity_word": "mild"
   },
   "2589": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "1234": {
     "cardiomegaly_present": true,
-    "effusion_present": false,
+    "effusion_present": true,
     "opacity_present": false,
     "atelectasis_present": true,
     "pneumothorax_present": false,
@@ -2521,7 +2521,7 @@
   },
   "3534": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -2529,16 +2529,16 @@
   },
   "1597": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "955": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "none"
@@ -2549,11 +2549,11 @@
     "opacity_present": false,
     "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "2019": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -2563,16 +2563,16 @@
     "cardiomegaly_present": false,
     "effusion_present": false,
     "opacity_present": false,
-    "atelectasis_present": false,
+    "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "3111": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "3961": {
@@ -2580,15 +2580,15 @@
     "effusion_present": false,
     "opacity_present": true,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
+    "pneumothorax_present": false,
+    "severity_word": "mild"
   },
   "2496": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": true,
+    "effusion_present": false,
+    "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "severe"
   },
   "2764": {
@@ -2601,7 +2601,7 @@
   },
   "1935": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -2609,7 +2609,7 @@
   },
   "1990": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -2621,11 +2621,11 @@
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "mild"
+    "severity_word": "none"
   },
   "2561": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -2633,7 +2633,7 @@
   },
   "1170": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -2641,11 +2641,11 @@
   },
   "1739": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "2395": {
     "cardiomegaly_present": false,
@@ -2657,7 +2657,7 @@
   },
   "1612": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -2665,7 +2665,7 @@
   },
   "725": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -2673,7 +2673,7 @@
   },
   "2722": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -2681,23 +2681,23 @@
   },
   "2696": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2414": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
-    "pneumothorax_present": true,
-    "severity_word": "severe"
+    "pneumothorax_present": false,
+    "severity_word": "mild"
   },
   "1936": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -2706,22 +2706,22 @@
   "303": {
     "cardiomegaly_present": false,
     "effusion_present": false,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "1053": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": true,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "365": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -2729,15 +2729,15 @@
   },
   "462": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": true,
+    "effusion_present": false,
+    "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "3006": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -2745,15 +2745,15 @@
   },
   "2162": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "moderate"
   },
   "3459": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -2761,7 +2761,7 @@
   },
   "3848": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -2769,7 +2769,7 @@
   },
   "2962": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -2786,7 +2786,7 @@
   "2220": {
     "cardiomegaly_present": false,
     "effusion_present": true,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "mild"
@@ -2800,27 +2800,27 @@
     "severity_word": "none"
   },
   "802": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "severe"
+    "severity_word": "mild"
   },
   "3332": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "901": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "1878": {
@@ -2828,36 +2828,36 @@
     "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3323": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "1679": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2936": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": true,
+    "effusion_present": false,
+    "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "moderate"
+    "pneumothorax_present": false,
+    "severity_word": "mild"
   },
   "3280": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
@@ -2865,18 +2865,18 @@
   },
   "3915": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "3867": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "1528": {
@@ -2889,15 +2889,15 @@
   },
   "216": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": true,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "1204": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -2905,7 +2905,7 @@
   },
   "123": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -2913,7 +2913,7 @@
   },
   "1105": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": true,
     "pneumothorax_present": false,
@@ -2921,11 +2921,11 @@
   },
   "1471": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "moderate"
+    "severity_word": "mild"
   },
   "1942": {
     "cardiomegaly_present": true,
@@ -2936,11 +2936,11 @@
     "severity_word": "moderate"
   },
   "1753": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2774": {
@@ -2953,32 +2953,32 @@
   },
   "806": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
+    "pneumothorax_present": false,
+    "severity_word": "mild"
   },
   "1913": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": true,
-    "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "mild"
-  },
-  "401": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "none"
   },
-  "88": {
+  "401": {
     "cardiomegaly_present": false,
     "effusion_present": true,
-    "opacity_present": false,
+    "opacity_present": true,
+    "atelectasis_present": false,
+    "pneumothorax_present": false,
+    "severity_word": "moderate"
+  },
+  "88": {
+    "cardiomegaly_present": true,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "mild"
@@ -2996,20 +2996,20 @@
     "effusion_present": true,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "moderate"
   },
   "3324": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "none"
   },
   "340": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -3021,19 +3021,19 @@
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "1112": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "moderate"
   },
   "2178": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -3042,10 +3042,10 @@
   "672": {
     "cardiomegaly_present": true,
     "effusion_present": false,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "moderate"
   },
   "3123": {
     "cardiomegaly_present": true,
@@ -3065,11 +3065,11 @@
   },
   "1638": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
+    "pneumothorax_present": false,
+    "severity_word": "mild"
   },
   "2583": {
     "cardiomegaly_present": false,
@@ -3081,7 +3081,7 @@
   },
   "289": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -3089,7 +3089,7 @@
   },
   "1672": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -3097,7 +3097,7 @@
   },
   "2544": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -3109,7 +3109,7 @@
     "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "3026": {
     "cardiomegaly_present": false,
@@ -3121,7 +3121,7 @@
   },
   "610": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -3130,42 +3130,42 @@
   "177": {
     "cardiomegaly_present": true,
     "effusion_present": true,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
-    "pneumothorax_present": true,
-    "severity_word": "none"
+    "pneumothorax_present": false,
+    "severity_word": "moderate"
   },
   "812": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "none"
   },
   "1637": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "619": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": true,
-    "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
-  },
-  "849": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
+  },
+  "849": {
+    "cardiomegaly_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
+    "atelectasis_present": false,
+    "pneumothorax_present": false,
+    "severity_word": "mild"
   },
   "3231": {
     "cardiomegaly_present": false,
@@ -3177,7 +3177,7 @@
   },
   "510": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -3193,7 +3193,7 @@
   },
   "3065": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -3209,8 +3209,8 @@
   },
   "2183": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "moderate"
@@ -3226,13 +3226,13 @@
   "2644": {
     "cardiomegaly_present": true,
     "effusion_present": false,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "3214": {
-    "cardiomegaly_present": false,
+    "cardiomegaly_present": true,
     "effusion_present": true,
     "opacity_present": false,
     "atelectasis_present": false,
@@ -3249,24 +3249,24 @@
   },
   "2207": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "1100": {
-    "cardiomegaly_present": false,
-    "effusion_present": false,
-    "opacity_present": false,
+    "cardiomegaly_present": true,
+    "effusion_present": true,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "moderate"
   },
   "1832": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
     "severity_word": "none"
@@ -3285,7 +3285,7 @@
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "2348": {
     "cardiomegaly_present": false,
@@ -3293,27 +3293,27 @@
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "severe"
+    "severity_word": "moderate"
   },
   "388": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2088": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": true,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "1018": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -3321,18 +3321,18 @@
   },
   "813": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": true,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "1732": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "1243": {
@@ -3341,25 +3341,17 @@
     "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "moderate"
   },
   "3479": {
-    "cardiomegaly_present": false,
+    "cardiomegaly_present": true,
     "effusion_present": true,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "moderate"
   },
   "3121": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
-    "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
-  },
-  "2673": {
     "cardiomegaly_present": false,
     "effusion_present": false,
     "opacity_present": false,
@@ -3367,10 +3359,18 @@
     "pneumothorax_present": false,
     "severity_word": "none"
   },
+  "2673": {
+    "cardiomegaly_present": true,
+    "effusion_present": false,
+    "opacity_present": true,
+    "atelectasis_present": false,
+    "pneumothorax_present": false,
+    "severity_word": "moderate"
+  },
   "3656": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "mild"
@@ -3381,11 +3381,11 @@
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "moderate"
   },
   "1249": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -3393,24 +3393,24 @@
   },
   "3739": {
     "cardiomegaly_present": false,
+    "effusion_present": true,
+    "opacity_present": false,
+    "atelectasis_present": false,
+    "pneumothorax_present": false,
+    "severity_word": "mild"
+  },
+  "593": {
+    "cardiomegaly_present": true,
     "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
-  },
-  "593": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
-    "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "severe"
+    "severity_word": "mild"
   },
   "1957": {
     "cardiomegaly_present": false,
     "effusion_present": true,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
     "severity_word": "moderate"
@@ -3418,38 +3418,38 @@
   "1360": {
     "cardiomegaly_present": false,
     "effusion_present": false,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3811": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "1405": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "1961": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": true,
-    "pneumothorax_present": true,
-    "severity_word": "none"
+    "pneumothorax_present": false,
+    "severity_word": "moderate"
   },
   "1073": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -3457,79 +3457,79 @@
   },
   "2382": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "severe"
+    "severity_word": "moderate"
   },
   "1336": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3364": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "1443": {
     "cardiomegaly_present": false,
     "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3653": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": true,
-    "pneumothorax_present": true,
-    "severity_word": "moderate"
+    "pneumothorax_present": false,
+    "severity_word": "mild"
   },
   "998": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "925": {
     "cardiomegaly_present": true,
     "effusion_present": false,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
+    "pneumothorax_present": false,
+    "severity_word": "moderate"
   },
   "2924": {
     "cardiomegaly_present": false,
     "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3237": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "2102": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -3545,32 +3545,32 @@
   },
   "3142": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "1751": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2975": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "moderate"
   },
   "3949": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "mild"
@@ -3585,11 +3585,11 @@
   },
   "1894": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": true,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
+    "pneumothorax_present": false,
+    "severity_word": "mild"
   },
   "1095": {
     "cardiomegaly_present": false,
@@ -3597,17 +3597,33 @@
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "severe"
+    "severity_word": "none"
   },
   "3831": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": true,
+    "effusion_present": false,
+    "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3372": {
+    "cardiomegaly_present": true,
+    "effusion_present": false,
+    "opacity_present": true,
+    "atelectasis_present": false,
+    "pneumothorax_present": false,
+    "severity_word": "mild"
+  },
+  "772": {
+    "cardiomegaly_present": true,
+    "effusion_present": false,
+    "opacity_present": false,
+    "atelectasis_present": false,
+    "pneumothorax_present": false,
+    "severity_word": "none"
+  },
+  "2217": {
     "cardiomegaly_present": true,
     "effusion_present": false,
     "opacity_present": false,
@@ -3615,41 +3631,25 @@
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
-  "772": {
-    "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
-    "atelectasis_present": false,
-    "pneumothorax_present": false,
-    "severity_word": "none"
-  },
-  "2217": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
-    "atelectasis_present": false,
-    "pneumothorax_present": false,
-    "severity_word": "none"
-  },
   "3755": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "1965": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "moderate"
   },
   "687": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -3657,10 +3657,10 @@
   },
   "377": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2127": {
@@ -3673,7 +3673,7 @@
   },
   "513": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -3681,24 +3681,24 @@
   },
   "101": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "severe"
+    "severity_word": "mild"
   },
   "1309": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2125": {
     "cardiomegaly_present": false,
     "effusion_present": false,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "mild"
@@ -3721,10 +3721,10 @@
   },
   "2195": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "203": {
@@ -3737,15 +3737,15 @@
   },
   "2593": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "1395": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -3753,7 +3753,7 @@
   },
   "1857": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -3761,7 +3761,7 @@
   },
   "301": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -3769,7 +3769,7 @@
   },
   "2300": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -3785,7 +3785,7 @@
   },
   "2724": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -3793,7 +3793,7 @@
   },
   "50": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -3801,7 +3801,7 @@
   },
   "2882": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -3813,27 +3813,27 @@
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "2494": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": true,
+    "effusion_present": false,
+    "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "severe"
+    "pneumothorax_present": false,
+    "severity_word": "mild"
   },
   "612": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "2836": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": true,
     "pneumothorax_present": false,
@@ -3857,43 +3857,43 @@
   },
   "539": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
-    "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
-  },
-  "1864": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "none"
+  },
+  "1864": {
+    "cardiomegaly_present": true,
+    "effusion_present": false,
+    "opacity_present": true,
+    "atelectasis_present": false,
+    "pneumothorax_present": false,
+    "severity_word": "mild"
   },
   "3460": {
     "cardiomegaly_present": false,
     "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3869": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": true,
+    "effusion_present": false,
+    "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "1058": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
+    "pneumothorax_present": false,
+    "severity_word": "severe"
   },
   "339": {
     "cardiomegaly_present": false,
@@ -3921,7 +3921,7 @@
   },
   "3126": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -3937,18 +3937,18 @@
   },
   "1082": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "603": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3919": {
@@ -3957,27 +3957,27 @@
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "1941": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "2330": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "moderate"
   },
   "906": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -3986,18 +3986,18 @@
   "3151": {
     "cardiomegaly_present": false,
     "effusion_present": false,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3082": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "moderate"
   },
   "2879": {
     "cardiomegaly_present": false,
@@ -4005,20 +4005,20 @@
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "mild"
+    "severity_word": "none"
   },
   "334": {
     "cardiomegaly_present": false,
     "effusion_present": false,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "2615": {
     "cardiomegaly_present": true,
     "effusion_present": true,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "moderate"
@@ -4041,15 +4041,15 @@
   },
   "2531": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "mild"
+    "pneumothorax_present": false,
+    "severity_word": "none"
   },
   "3952": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -4061,54 +4061,54 @@
     "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": true,
-    "severity_word": "none"
+    "severity_word": "moderate"
   },
   "30": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "1411": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "mild"
+    "severity_word": "none"
   },
   "52": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "1129": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "2832": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3689": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2268": {
@@ -4117,7 +4117,7 @@
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "3986": {
     "cardiomegaly_present": false,
@@ -4130,30 +4130,30 @@
   "3631": {
     "cardiomegaly_present": false,
     "effusion_present": false,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2661": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "2648": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
+    "pneumothorax_present": false,
+    "severity_word": "mild"
   },
   "1760": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": true,
     "pneumothorax_present": false,
@@ -4161,15 +4161,15 @@
   },
   "1099": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "273": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -4177,16 +4177,16 @@
   },
   "168": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "mild"
+    "pneumothorax_present": false,
+    "severity_word": "none"
   },
   "218": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "none"
@@ -4200,16 +4200,16 @@
     "severity_word": "none"
   },
   "3130": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
     "opacity_present": true,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
+    "pneumothorax_present": false,
+    "severity_word": "moderate"
   },
   "1946": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -4217,35 +4217,35 @@
   },
   "763": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "1458": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": true,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "423": {
     "cardiomegaly_present": false,
     "effusion_present": true,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
     "severity_word": "moderate"
   },
   "3802": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "mild"
+    "severity_word": "none"
   },
   "3603": {
     "cardiomegaly_present": false,
@@ -4257,15 +4257,15 @@
   },
   "29": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "severe"
+    "pneumothorax_present": false,
+    "severity_word": "moderate"
   },
   "3618": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -4273,7 +4273,7 @@
   },
   "1408": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -4281,23 +4281,23 @@
   },
   "532": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "1906": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "3348": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -4305,10 +4305,10 @@
   },
   "1870": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "severe"
   },
   "1135": {
@@ -4321,7 +4321,7 @@
   },
   "1457": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -4329,7 +4329,7 @@
   },
   "3970": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -4337,24 +4337,24 @@
   },
   "1233": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "1801": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "3245": {
     "cardiomegaly_present": true,
     "effusion_present": true,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "moderate"
@@ -4377,14 +4377,14 @@
   },
   "2957": {
     "cardiomegaly_present": true,
-    "effusion_present": false,
+    "effusion_present": true,
     "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "3087": {
-    "cardiomegaly_present": false,
+    "cardiomegaly_present": true,
     "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": true,
@@ -4394,39 +4394,39 @@
   "1230": {
     "cardiomegaly_present": true,
     "effusion_present": true,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": true,
-    "severity_word": "none"
+    "severity_word": "moderate"
   },
   "1375": {
     "cardiomegaly_present": true,
     "effusion_present": false,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "moderate"
   },
   "3394": {
     "cardiomegaly_present": false,
     "effusion_present": false,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2868": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "mild"
+    "pneumothorax_present": false,
+    "severity_word": "none"
   },
   "2664": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
     "severity_word": "mild"
@@ -4437,7 +4437,7 @@
     "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "moderate"
   },
   "2271": {
     "cardiomegaly_present": true,
@@ -4449,26 +4449,26 @@
   },
   "1242": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "251": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "mild"
+    "severity_word": "none"
   },
   "1257": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": true,
     "atelectasis_present": true,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "1092": {
@@ -4482,10 +4482,10 @@
   "1792": {
     "cardiomegaly_present": false,
     "effusion_present": true,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "1595": {
     "cardiomegaly_present": true,
@@ -4506,54 +4506,54 @@
   "2499": {
     "cardiomegaly_present": true,
     "effusion_present": true,
+    "opacity_present": true,
+    "atelectasis_present": false,
+    "pneumothorax_present": false,
+    "severity_word": "moderate"
+  },
+  "834": {
+    "cardiomegaly_present": false,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "none"
   },
-  "834": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
-    "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "mild"
-  },
   "3589": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
-    "pneumothorax_present": true,
-    "severity_word": "none"
+    "pneumothorax_present": false,
+    "severity_word": "mild"
   },
   "3682": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": true,
+    "effusion_present": false,
+    "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2818": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": true,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
+    "pneumothorax_present": false,
+    "severity_word": "moderate"
   },
   "2752": {
     "cardiomegaly_present": true,
     "effusion_present": true,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "mild"
+    "severity_word": "large"
   },
   "1083": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -4562,14 +4562,14 @@
   "3342": {
     "cardiomegaly_present": true,
     "effusion_present": false,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "moderate"
   },
   "2263": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
@@ -4577,8 +4577,8 @@
   },
   "3863": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": true,
+    "effusion_present": false,
+    "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "none"
@@ -4589,22 +4589,22 @@
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "3595": {
     "cardiomegaly_present": true,
     "effusion_present": true,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "305": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": true,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
+    "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "978": {
@@ -4617,31 +4617,31 @@
   },
   "570": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2259": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
     "opacity_present": true,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "847": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "1992": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -4649,15 +4649,15 @@
   },
   "1950": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "1788": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -4665,47 +4665,47 @@
   },
   "3022": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "severe"
   },
   "3880": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "2371": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "3273": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "3502": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "1136": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -4713,15 +4713,15 @@
   },
   "3905": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "1770": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -4745,34 +4745,34 @@
   },
   "874": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
-    "atelectasis_present": false,
-    "pneumothorax_present": false,
-    "severity_word": "mild"
-  },
-  "1423": {
-    "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
-    "atelectasis_present": false,
-    "pneumothorax_present": false,
-    "severity_word": "none"
-  },
-  "2543": {
-    "cardiomegaly_present": true,
     "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "none"
   },
-  "2383": {
+  "1423": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
+    "severity_word": "mild"
+  },
+  "2543": {
+    "cardiomegaly_present": true,
+    "effusion_present": false,
+    "opacity_present": true,
+    "atelectasis_present": false,
+    "pneumothorax_present": false,
+    "severity_word": "moderate"
+  },
+  "2383": {
+    "cardiomegaly_present": true,
+    "effusion_present": false,
+    "opacity_present": false,
+    "atelectasis_present": false,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2040": {
@@ -4786,18 +4786,18 @@
   "1867": {
     "cardiomegaly_present": true,
     "effusion_present": true,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "494": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "783": {
     "cardiomegaly_present": false,
@@ -4809,15 +4809,15 @@
   },
   "1343": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "moderate"
+    "pneumothorax_present": false,
+    "severity_word": "mild"
   },
   "2984": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -4825,15 +4825,15 @@
   },
   "3013": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "2955": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -4841,11 +4841,11 @@
   },
   "437": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "mild"
+    "pneumothorax_present": false,
+    "severity_word": "none"
   },
   "3586": {
     "cardiomegaly_present": true,
@@ -4865,7 +4865,7 @@
   },
   "699": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
@@ -4877,11 +4877,11 @@
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "916": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -4898,14 +4898,14 @@
   "1439": {
     "cardiomegaly_present": false,
     "effusion_present": false,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "3994": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -4921,16 +4921,16 @@
   },
   "3720": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3158": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
     "severity_word": "none"
@@ -4941,7 +4941,7 @@
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "moderate"
+    "severity_word": "none"
   },
   "948": {
     "cardiomegaly_present": true,
@@ -4949,19 +4949,19 @@
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "2577": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2326": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -4969,48 +4969,48 @@
   },
   "45": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
+    "pneumothorax_present": false,
+    "severity_word": "moderate"
   },
   "3724": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "586": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": true,
     "atelectasis_present": true,
-    "pneumothorax_present": true,
-    "severity_word": "severe"
+    "pneumothorax_present": false,
+    "severity_word": "moderate"
   },
   "2191": {
-    "cardiomegaly_present": false,
+    "cardiomegaly_present": true,
     "effusion_present": false,
     "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "1446": {
     "cardiomegaly_present": false,
     "effusion_present": false,
-    "opacity_present": false,
-    "atelectasis_present": false,
+    "opacity_present": true,
+    "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "moderate"
   },
   "3798": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "none"
@@ -5020,48 +5020,48 @@
     "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "1970": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
+    "pneumothorax_present": false,
+    "severity_word": "mild"
   },
   "206": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
     "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "severe"
+    "severity_word": "mild"
   },
   "1537": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
-    "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
-  },
-  "2539": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
-    "atelectasis_present": false,
-    "pneumothorax_present": false,
-    "severity_word": "none"
-  },
-  "2475": {
     "cardiomegaly_present": false,
     "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "none"
+  },
+  "2539": {
+    "cardiomegaly_present": false,
+    "effusion_present": false,
+    "opacity_present": false,
+    "atelectasis_present": false,
+    "pneumothorax_present": false,
+    "severity_word": "none"
+  },
+  "2475": {
+    "cardiomegaly_present": true,
+    "effusion_present": false,
+    "opacity_present": false,
+    "atelectasis_present": false,
+    "pneumothorax_present": false,
+    "severity_word": "mild"
   },
   "3530": {
     "cardiomegaly_present": true,
@@ -5077,38 +5077,38 @@
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "severe"
+    "severity_word": "mild"
   },
   "538": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3068": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
     "opacity_present": false,
-    "atelectasis_present": false,
+    "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "1811": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "856": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "3608": {
@@ -5121,18 +5121,18 @@
   },
   "953": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "1662": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "1337": {
@@ -5145,7 +5145,7 @@
   },
   "1013": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -5153,10 +5153,10 @@
   },
   "2394": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": true,
+    "effusion_present": false,
+    "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "333": {
@@ -5165,20 +5165,20 @@
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "mild"
+    "severity_word": "none"
   },
   "2082": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "1139": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "none"
@@ -5188,18 +5188,26 @@
     "effusion_present": true,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "1807": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "3786": {
+    "cardiomegaly_present": true,
+    "effusion_present": false,
+    "opacity_present": true,
+    "atelectasis_present": false,
+    "pneumothorax_present": false,
+    "severity_word": "moderate"
+  },
+  "3339": {
     "cardiomegaly_present": false,
     "effusion_present": false,
     "opacity_present": false,
@@ -5207,17 +5215,9 @@
     "pneumothorax_present": false,
     "severity_word": "none"
   },
-  "3339": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
-    "atelectasis_present": false,
-    "pneumothorax_present": false,
-    "severity_word": "none"
-  },
   "2828": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -5225,7 +5225,7 @@
   },
   "664": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -5233,15 +5233,15 @@
   },
   "2103": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3159": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -5249,10 +5249,10 @@
   },
   "2751": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "58": {
@@ -5261,11 +5261,11 @@
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "mild"
+    "severity_word": "none"
   },
   "686": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -5273,31 +5273,31 @@
   },
   "2167": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "853": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2141": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "3145": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -5305,7 +5305,7 @@
   },
   "547": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -5317,14 +5317,14 @@
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "1923": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2139": {
@@ -5337,7 +5337,7 @@
   },
   "665": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -5345,7 +5345,7 @@
   },
   "2506": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -5353,23 +5353,23 @@
   },
   "505": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": true,
+    "effusion_present": false,
+    "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3600": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
-    "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
+    "effusion_present": false,
+    "opacity_present": true,
+    "atelectasis_present": true,
+    "pneumothorax_present": false,
+    "severity_word": "mild"
   },
   "3684": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -5377,10 +5377,10 @@
   },
   "2247": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2123": {
@@ -5389,11 +5389,11 @@
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "moderate"
   },
   "2462": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -5401,31 +5401,31 @@
   },
   "3926": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "2456": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "407": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3326": {
-    "cardiomegaly_present": false,
-    "effusion_present": true,
+    "cardiomegaly_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -5434,10 +5434,10 @@
   "1874": {
     "cardiomegaly_present": false,
     "effusion_present": false,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": true,
-    "severity_word": "severe"
+    "severity_word": "mild"
   },
   "316": {
     "cardiomegaly_present": false,
@@ -5458,18 +5458,18 @@
   "594": {
     "cardiomegaly_present": true,
     "effusion_present": false,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
     "pneumothorax_present": false,
-    "severity_word": "none"
+    "severity_word": "mild"
   },
   "3003": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "mild"
+    "pneumothorax_present": false,
+    "severity_word": "none"
   },
   "2654": {
     "cardiomegaly_present": false,
@@ -5481,15 +5481,15 @@
   },
   "2964": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "3768": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
     "pneumothorax_present": false,
@@ -5497,26 +5497,26 @@
   },
   "1459": {
     "cardiomegaly_present": true,
-    "effusion_present": true,
+    "effusion_present": false,
     "opacity_present": false,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "none"
   },
   "2562": {
     "cardiomegaly_present": false,
     "effusion_present": false,
-    "opacity_present": false,
+    "opacity_present": true,
     "atelectasis_present": true,
-    "pneumothorax_present": true,
+    "pneumothorax_present": false,
     "severity_word": "mild"
   },
   "1226": {
     "cardiomegaly_present": false,
-    "effusion_present": true,
-    "opacity_present": false,
+    "effusion_present": false,
+    "opacity_present": true,
     "atelectasis_present": false,
-    "pneumothorax_present": true,
-    "severity_word": "none"
+    "pneumothorax_present": false,
+    "severity_word": "moderate"
   }
 }

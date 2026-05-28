@@ -3,16 +3,19 @@
 Writes datasets/openi_llm_extractions.json. Students load that JSON in the lab, so
 they never need an API key.
 
-Two modes:
+Three modes:
   --mode anthropic  (default): real LLM extraction via the Anthropic API.
                      Needs ANTHROPIC_API_KEY. Costs ~$1-2 for ~600 reports (Haiku).
+  --mode versa     : UCSF Versa via Bedrock (AnthropicBedrock), model claude-opus-4-6.
+                     Reads Bedrock creds from ~/arcadia/autofeeder/.env, same as
+                     autofeeder. No personal Anthropic key needed.
   --mode rules     : deterministic keyword extraction from the report text.
-                     No API key. Used to build/validate the pipeline; the real
-                     course should use --mode anthropic for genuine LLM output.
+                     No API key. Used to build/validate the pipeline.
 
 Usage:
   ANTHROPIC_API_KEY=sk-ant-... python scripts/cache_openi_llm.py --mode anthropic --n 600
-  python scripts/cache_openi_llm.py --mode rules --n 600
+  python scripts/cache_openi_llm.py --mode versa
+  python scripts/cache_openi_llm.py --mode rules
 """
 from __future__ import annotations
 import argparse
@@ -32,17 +35,61 @@ SCHEMA = (
 )
 
 
+SYSTEM = ("Extract structured findings from this chest X-ray report. "
+          f"Return ONLY valid JSON matching: {SCHEMA}")
+
+
+def _parse_json(text: str) -> dict:
+    """Tolerant JSON parse: strip code fences / surrounding prose if present."""
+    text = text.strip()
+    if text.startswith("```"):
+        text = text.split("```")[1].lstrip("json").strip()
+    start, end = text.find("{"), text.rfind("}")
+    return json.loads(text[start:end + 1])
+
+
 def extract_anthropic(report_text: str) -> dict:
     import anthropic
     client = anthropic.Anthropic()
     msg = client.messages.create(
         model="claude-haiku-4-5-20251001",
         max_tokens=300,
-        system=("Extract structured findings from this chest X-ray report. "
-                f"Return ONLY valid JSON matching: {SCHEMA}"),
+        system=SYSTEM,
         messages=[{"role": "user", "content": report_text}],
     )
-    return json.loads(msg.content[0].text)
+    return _parse_json(msg.content[0].text)
+
+
+def _versa_client():
+    """Build an AnthropicBedrock client from autofeeder's .env (UCSF Versa)."""
+    import os
+    from pathlib import Path
+    from dotenv import load_dotenv
+    from anthropic import AnthropicBedrock
+
+    load_dotenv(Path.home() / "arcadia/autofeeder/.env")
+    return AnthropicBedrock(
+        aws_access_key=os.environ["AWS_ACCESS_KEY_ID"],
+        aws_secret_key=os.environ["AWS_SECRET_ACCESS_KEY"],
+        aws_region=os.environ.get("AWS_REGION") or "us-west-2",
+        base_url=os.environ.get("ANTHROPIC_BEDROCK_BASE_URL"),
+        timeout=120,
+    )
+
+
+def make_versa_extractor():
+    client = _versa_client()
+
+    def extract(report_text: str) -> dict:
+        msg = client.messages.create(
+            model="us.anthropic.claude-opus-4-6-v1",  # UCSF Versa Bedrock id
+            max_tokens=300,
+            system=SYSTEM,
+            messages=[{"role": "user", "content": report_text}],
+        )
+        return _parse_json(msg.content[0].text)
+
+    return extract
 
 
 def extract_rules(report_text: str) -> dict:
@@ -70,12 +117,18 @@ def extract_rules(report_text: str) -> dict:
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--mode", choices=["anthropic", "rules"], default="anthropic")
+    ap.add_argument("--mode", choices=["anthropic", "versa", "rules"], default="anthropic")
     ap.add_argument("--target", default="Cardiomegaly")
     ap.add_argument("--n", type=int, default=600)
     args = ap.parse_args()
 
-    extract = extract_anthropic if args.mode == "anthropic" else extract_rules
+    if args.mode == "anthropic":
+        extract = extract_anthropic
+    elif args.mode == "versa":
+        extract = make_versa_extractor()
+    else:
+        extract = extract_rules
+
     cache = {}
     for case_id, _img, rec, _label in common.list_cases(args.target, balanced=True):
         report_text = f"FINDINGS: {rec['findings']}\nIMPRESSION: {rec['impression']}"
