@@ -1,0 +1,336 @@
+{
+  "deck_md_hash": "5a8cd341e8c336fa16f8a61cdd6896a006521b768ffed549cf19afb0b8641036",
+  "mode": "expressive",
+  "shake_seed": "bec6663013024e0c890365c3596643d0",
+  "slides": [
+    {
+      "content_hash": "a8f0bc0155ce90b383057b075fb3bbebc26b600fc49a1d9f72e97ec3bc9675f4-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#40E0D0",
+        "label": "Where we are"
+      },
+      "slide_id": "divider-h1-where-we-are"
+    },
+    {
+      "content_hash": "3e618bc1c0f5c8211f4542198478f23fbdd82d6c7ef376521d815aee907030d6",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "cards = [('DAY 1', 'one image, one end-to-end network, the eye', 'turquoise'), ('DAY 2', 'image plus text plus patient data, combined, on the chest', 'deeppink'), ('THE THROUGHLINE', 'medicine is multimodal: real decisions use the scan AND the notes AND the history', 'amber')]\nn = len(cards)\ngap = 0.30\ncw = (body_w - (n - 1) * gap) / n\nfor i, (lab, bod, c) in enumerate(cards):\n    col = {'turquoise': TURQUOISE_RGB, 'deeppink': DEEPPINK_RGB, 'amber': AMBER_RGB, 'blueviolet': BLUEVIOLET_RGB}[c]\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=body_h, fill_rgb=PAPER_RGB)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=0.90, fill_rgb=col)\n    _add_text(slide, lab, left=x + 0.26, top=body_top, width=cw - 0.52, height=0.90,\n              size=18, color_rgb=_text_on(col), font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, bod, left=x + 0.26, top=body_top + 1.20, width=cw - 0.52, height=body_h - 1.5,\n              size=15, color_rgb=INK_RGB, font=SANS_FONT)",
+        "lede": "",
+        "notes": "Set the frame for the day. Yesterday was one image into one network. Today two changes at\nonce: chest X-rays, which uniquely come paired with a written report, and the idea of\ncombining several signals about one patient. The throughline to stress: real medicine is\nmultimodal, a doctor never looks at only the scan. Transition: let us look at the scan first.",
+        "section_label": "Where we are",
+        "title": "Yesterday, and today"
+      },
+      "slide_id": "h1-where-we-are/h2-yesterday-and-today"
+    },
+    {
+      "content_hash": "345dc0b6811bed305fa337fbb90278783c9de985612bc194410f91aae37ce2b5",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d2_cxr_findings.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "Ground them in the modality. The chest X-ray is the most common imaging test on earth,\ndone hundreds of millions of times a year. From one image a radiologist reads several\nfindings: is the heart enlarged (cardiomegaly), is there fluid around the lung (effusion),\na hazy patch of infection (pneumonia/opacity), a collapsed lung (pneumothorax). Today's\ntask will be one of these yes/no calls. Transition: but the image is only half the data.",
+        "section_label": "Where we are",
+        "title": "One chest X-ray, many findings"
+      },
+      "slide_id": "h1-where-we-are/h2-one-chest-x-ray-many-findings"
+    },
+    {
+      "content_hash": "af510d5ff1e22bc3288192385dee474bb88d7358d88c610ff343e3da7a88f5b4",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d2_report.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "This is the key difference from Day 1. Every chest X-ray in the clinic comes with a\nradiology report, the radiologist's free-text findings and impression. That text is data,\nand historically it is where the richest clinical signal lives. If a model can read it,\nwe unlock a whole second channel beyond the pixels. The figure shows the move we will make:\nfree text in, structured yes/no findings out. Transition: reading text is a job for a\nlanguage model, so what is one?",
+        "section_label": "Where we are",
+        "title": "Every scan comes with text"
+      },
+      "slide_id": "h1-where-we-are/h2-every-scan-comes-with-text"
+    },
+    {
+      "content_hash": "7dbac3062906fe2c6966d36b6360d984ca4e61f4576627e9a2b2d62a003632b7-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#FF1493",
+        "label": "What is a language model"
+      },
+      "slide_id": "divider-h1-what-is-a-language-model"
+    },
+    {
+      "content_hash": "97d47fa3136530354bb5543d789be7c5a783d1f16f11414fa943c68c180912ec",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/concept_bridge.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "Reassure them that today is not a fresh mountain to climb. Yesterday's Vision Transformer\nchopped an image into patches and used attention to decide which patches mattered. A large\nlanguage model does the identical thing with words instead of patches. The bottom row of\nthis figure IS an LLM. Same machinery, different input. Everything else today is just\nconsequences of that one idea. Transition: so how does text become something attention can\nchew on?",
+        "section_label": "What is a language model",
+        "title": "The bridge from yesterday"
+      },
+      "slide_id": "h1-what-is-a-language-model/h2-the-bridge-from-yesterday"
+    },
+    {
+      "content_hash": "c53f446cf827250982c137c8f19a0c6e34fc5f13e301981d2763cd1528b0c675",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d2_tokenization.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "Mirror yesterday's \"an image is just numbers\" with \"text is just numbers too\". A model\ncannot read letters, so text is split into tokens, whole words or word-pieces like \"en\" +\n\"larged\", and each token is looked up as a number. Once text is a sequence of numbers, the\nsame attention machinery from the ViT applies directly. Keep it light, the point is the\nparallel to images. Transition: and attention is what finds the meaning.",
+        "section_label": "What is a language model",
+        "title": "Tokenization: text becomes numbers"
+      },
+      "slide_id": "h1-what-is-a-language-model/h2-tokenization-text-becomes-numbers"
+    },
+    {
+      "content_hash": "7bb3fa7415d3d08ebdde9ebd86449eb254553c8eb7264cf1ed863e7a904ad5bb",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d2_attention.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "Show what attention does on text. Given a report, the model does not treat every word\nequally; it learns that \"heart\" and \"enlarged\" carry the finding while \"the\" and \"is\" are\nfiller. Bigger and bolder in the figure means more attention. This is the same mechanism\nthat let the ViT focus on the lesion in an image, now focusing on the meaningful words.\nTransition: stack a lot of this up and you get something that can do real work, and also\nmake things up.",
+        "section_label": "What is a language model",
+        "title": "Attention: which words matter"
+      },
+      "slide_id": "h1-what-is-a-language-model/h2-attention-which-words-matter"
+    },
+    {
+      "content_hash": "2b99db58766da7639fd111725e36990ed15b25c60852946d9b080a7f08cb9618",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "steps = [('THE OBJECTIVE', 'predict the next word-piece, over and over. that is it.', TURQUOISE_RGB),\n         ('WHAT IT BUYS', 'summarize, extract, answer, pull structured facts out of messy free text', AMBER_RGB),\n         ('THE CATCH', 'plausible is not the same as correct', DEEPPINK_RGB)]\nn = len(steps)\ngap = 0.30\ncw = (body_w - (n - 1) * gap) / n\nfor i, (lab, bod, c) in enumerate(steps):\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=body_h, fill_rgb=PAPER_RGB)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=0.90, fill_rgb=c)\n    _add_text(slide, lab, left=x + 0.26, top=body_top, width=cw - 0.52, height=0.90,\n              size=18, color_rgb=_text_on(c), font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, bod, left=x + 0.26, top=body_top + 1.20, width=cw - 0.52, height=body_h - 1.5,\n              size=16, color_rgb=INK_RGB, font=SANS_FONT)",
+        "lede": "",
+        "notes": "Demystify the LLM in one breath. Under all the capability, the training objective is just:\npredict the next token, given everything so far. Do that at massive scale and you get a\nsystem that can summarize, answer, and extract structure from messy text. But the objective\nrewards plausibility, not truth, which is exactly why it will confidently make things up.\nLand that tension; the next slide is the payoff. Transition: here is what that looks like.",
+        "section_label": "What is a language model",
+        "title": "What an LLM actually does"
+      },
+      "slide_id": "h1-what-is-a-language-model/h2-what-an-llm-actually-does"
+    },
+    {
+      "content_hash": "5df0ac05ad8c985a1a0c568e8d572486e5b07f73c2dd27243c764f7ac48335f9",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d2_hallucination.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "The most important safety idea about LLMs. When the model does not know something, it does\nnot stop or say \"unknown\", it generates a fluent, confident, fabricated answer. Ask it for a\nmedication the report never mentions and it will invent a plausible drug and dose. For a\nchatbot that is annoying; in medicine a confident wrong answer is the dangerous kind, because\npeople believe it. The rule for the lab and for life: use the LLM, but verify. Transition:\nwith that caution noted, let us build the multimodal model.",
+        "section_label": "What is a language model",
+        "title": "Hallucination: confident, fluent, wrong"
+      },
+      "slide_id": "h1-what-is-a-language-model/h2-hallucination-confident-fluent-wrong"
+    },
+    {
+      "content_hash": "21be2f2a675dd093a2f47920bd453f5423a0abe25c6fe5bf7f7faecac4be1f47-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#40E0D0",
+        "label": "The multimodal stack"
+      },
+      "slide_id": "divider-h1-the-multimodal-stack"
+    },
+    {
+      "content_hash": "bb29cc905d84cb23370d5a6581317c817f6f10e277485ca593b2e639209e34a7",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d2_three_signals.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "Lay out the build. For each patient we have three different signals: the X-ray pixels, the\nreport text, and basic demographics like age and smoking history. Each says something on its\nown; combined they should be stronger, which is the whole bet of multimodal modeling. The\nchallenge, and the rest of this section, is getting three very different things into one form\na single model can use. Transition: start with the image.",
+        "section_label": "The multimodal stack",
+        "title": "Three signals, one patient"
+      },
+      "slide_id": "h1-the-multimodal-stack/h2-three-signals-one-patient"
+    },
+    {
+      "content_hash": "a5f1d7d61b7e44afbc063f49b8917227dc64a79f4f1993eb2f79112430c705e1",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d2_radiomics.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "First signal, and a deliberate contrast with Day 1. Instead of an end-to-end network, today\nwe hand-engineer the image into numbers, the way radiologists have quantified scans for\ndecades: intensity (how bright), texture (how patterned), shape (how big and round). About a\nhundred numbers per image. Note the honest aside: the production tool is PyRadiomics, but it\nwill not install on current Python, so we use scikit-image for the same feature families.\nTransition: now the text.",
+        "section_label": "The multimodal stack",
+        "title": "Image to numbers: radiomics"
+      },
+      "slide_id": "h1-the-multimodal-stack/h2-image-to-numbers-radiomics"
+    },
+    {
+      "content_hash": "951b8623e96014ff825f4e553cf6f5dc3b65860670900abb274af735411ccafb",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "steps = [('THE PROMPT', '\"Read this report. Return the findings as JSON.\"', TURQUOISE_RGB),\n         ('THE OUTPUT', 'a handful of yes/no flags per patient, now just numbers', DEEPPINK_RGB),\n         ('PRE-CACHED', 'you load the saved answers; the one live call is the instructor demo', AMBER_RGB)]\nn = len(steps)\ngap = 0.30\ncw = (body_w - (n - 1) * gap) / n\nfor i, (lab, bod, c) in enumerate(steps):\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=body_h, fill_rgb=PAPER_RGB)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=0.90, fill_rgb=c)\n    _add_text(slide, lab, left=x + 0.26, top=body_top, width=cw - 0.52, height=0.90,\n              size=18, color_rgb=_text_on(c), font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, bod, left=x + 0.26, top=body_top + 1.20, width=cw - 0.52, height=body_h - 1.5,\n              size=15, color_rgb=INK_RGB, font=SANS_FONT)",
+        "lede": "",
+        "notes": "Second signal. We hand each radiology report to a language model and ask for structured\nfindings as JSON: cardiomegaly yes/no, effusion yes/no, and so on. Those flags become\nnumbers. The practical wrinkle students will feel: calling an LLM hundreds of times costs\nmoney and time, so the instructor pre-ran it and saved the answers. In the lab you load the\ncache, no API key needed; the one live call is the demo. Transition: image numbers, text\nnumbers, plus demographics, and now the magic step.",
+        "section_label": "The multimodal stack",
+        "title": "Text to numbers: the LLM extracts findings"
+      },
+      "slide_id": "h1-the-multimodal-stack/h2-text-to-numbers-the-llm-extracts-findings"
+    },
+    {
+      "content_hash": "b0b3fe04aa4eac8de28f48ae4fb9c332e77c0f08352b096eb59676df925b46a8",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d2_tabular_row.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "The big idea of the day, and it is satisfyingly simple. Image features are numbers, text\nfeatures are numbers, demographics are numbers. Lay them all side by side and every patient\nbecomes one row in a spreadsheet, with a label to predict. We have taken a scary-sounding\n\"multimodal\" problem and reduced it to a table. That reframing is most of the insight.\nTransition: and there is a very modern way to model a table.",
+        "section_label": "The multimodal stack",
+        "title": "Everything becomes one tabular row"
+      },
+      "slide_id": "h1-the-multimodal-stack/h2-everything-becomes-one-tabular-row"
+    },
+    {
+      "content_hash": "2ad8b468a57fa93c4ec72fa554b9e8fe36ba2f9b746d165a5cee3e05027f3f6a",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d2_tabpfn.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "Who predicts from the table? Not a network you train for an hour. TabPFN is a foundation\nmodel pretrained on millions of synthetic tables; you \"fit\" it (it just studies your rows)\nand \"predict\", both in seconds, no tuning. Connect it to yesterday: this is the same\npretraining-and-reuse shift you saw with ImageNet and ResNet, now for tabular data. The\n2020s pattern: reach for a pretrained foundation model first. Transition: so, does stacking\nall three signals actually help?",
+        "section_label": "The multimodal stack",
+        "title": "TabPFN: a foundation model for tables"
+      },
+      "slide_id": "h1-the-multimodal-stack/h2-tabpfn-a-foundation-model-for-tables"
+    },
+    {
+      "content_hash": "904e8fd2e12b17d598f1fc5e2cf06d3c88ef14eea6a9ec847b32947deedce07a-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#40E0D0",
+        "label": "Did it work?"
+      },
+      "slide_id": "divider-h1-did-it-work"
+    },
+    {
+      "content_hash": "c1f4473ebc91f06dbc022ecc050d01f32a41348188e4b23e6b79a3ab686fb9a7",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d2_result.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "Show the result and let them feel the excitement first. Image plus demographics alone gets\nabout 64%. Add the LLM-extracted text features and it leaps to about 89%. One extra signal,\na 25-point jump. If we stopped here we would celebrate. But set the hook: a jump that big\nshould make a careful person suspicious, not happy. Transition: so let us be suspicious.",
+        "section_label": "Did it work?",
+        "title": "Adding text looks amazing"
+      },
+      "slide_id": "h1-did-it-work/h2-adding-text-looks-amazing"
+    },
+    {
+      "content_hash": "18d099d8d89b6fadd7bb19b47e4c449a4dbf240f400d3abc1543b17bfdcfb6eb",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d2_leakage.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "The single most important lesson of Day 2. The report we extracted text features from\nliterally states the diagnosis we are trying to predict, the impression says \"Cardiomegaly\".\nSo the LLM's \"cardiomegaly: yes\" matches the label almost perfectly, correlation around 0.96.\nThe model is not detecting disease, it is copying the answer off the report. The 89% is a\nmirage. Make sure this lands hard, because it generalizes far beyond this lab. Transition: so\nwhat would have been a fair test?",
+        "section_label": "Did it work?",
+        "title": "Wait, that is too good"
+      },
+      "slide_id": "h1-did-it-work/h2-wait-that-is-too-good"
+    },
+    {
+      "content_hash": "42e853fde4cf480382b1f85dd3f3f90acec5ae9213be442fdbdb9eca6af674b1",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "cards = [('NO PEEKING AT THE LABEL', 'a feature that encodes the answer is cheating; the report impression basically is the answer', 'deeppink'), ('USE INPUTS THAT COME FIRST', 'fair signals exist before the diagnosis is known: the raw pixels, the demographics', 'turquoise'), ('REPORT IT HONESTLY', 'show the leaked and de-leaked numbers side by side; the honest result is lower, and real', 'amber')]\nn = len(cards)\ngap = 0.30\ncw = (body_w - (n - 1) * gap) / n\nfor i, (lab, bod, c) in enumerate(cards):\n    col = {'turquoise': TURQUOISE_RGB, 'deeppink': DEEPPINK_RGB, 'amber': AMBER_RGB, 'blueviolet': BLUEVIOLET_RGB}[c]\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=body_h, fill_rgb=PAPER_RGB)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=0.90, fill_rgb=col)\n    _add_text(slide, lab, left=x + 0.26, top=body_top, width=cw - 0.52, height=0.90,\n              size=18, color_rgb=_text_on(col), font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, bod, left=x + 0.26, top=body_top + 1.20, width=cw - 0.52, height=body_h - 1.5,\n              size=15, color_rgb=INK_RGB, font=SANS_FONT)",
+        "lede": "",
+        "notes": "Turn the gotcha into a transferable skill. Target leakage is when a feature secretly carries\nthe answer, and catching it is what separates a careful modeler from a fooled one. Three\nhabits: never let a feature encode the label; prefer inputs that exist before the label is\nknown (pixels and demographics are fair, the radiologist's impression is not); and always\nreport the honest, de-leaked number even though it is lower. Transition: you will expose this\nyourself in the lab.",
+        "section_label": "Did it work?",
+        "title": "What a fair test looks like"
+      },
+      "slide_id": "h1-did-it-work/h2-what-a-fair-test-looks-like"
+    },
+    {
+      "content_hash": "d040621cb1fd7a7aebb8e805855244dfe7a702015ba46ec3459edad0b2105ada-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#40E0D0",
+        "label": "The lab"
+      },
+      "slide_id": "divider-h1-the-lab"
+    },
+    {
+      "content_hash": "453bdcd18529d89ea7a0d079cf5f9514acd4e8b31f6af081dba31a8de1dcd6fa",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "steps = [('# TODO', 'Build the table', 'assemble the three feature groups, call TabPFN fit and predict', TURQUOISE_RGB),\n         ('-/-', 'Run the ablation', 'drop the text features, refit, compare; watch the gap shrink', AMBER_RGB),\n         ('?', 'Discuss', 'was that a fair test? what would you change?', DEEPPINK_RGB)]\nn = len(steps)\ngap = 0.30\ncw = (body_w - (n - 1) * gap) / n\nfor i, (tag, head, bod, c) in enumerate(steps):\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=body_h, fill_rgb=PAPER_RGB)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=0.10, fill_rgb=c)\n    cw2 = 2.0\n    _add_rect(slide, left=x + 0.24, top=body_top + 0.40, width=cw2, height=0.78, fill_rgb=c)\n    _add_text(slide, tag, left=x + 0.24, top=body_top + 0.40, width=cw2, height=0.78,\n              size=24, color_rgb=_text_on(c), font=MONO_FONT, bold=True, align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, head, left=x + 0.24, top=body_top + 1.45, width=cw - 0.48, height=0.5,\n              size=20, color_rgb=INK_RGB, font=MONO_FONT, bold=True)\n    _add_text(slide, bod, left=x + 0.24, top=body_top + 2.15, width=cw - 0.48, height=body_h - 2.4,\n              size=15, color_rgb=INK_RGB, font=SANS_FONT)",
+        "lede": "",
+        "notes": "Same shape as Day 1: one notebook, fill the TODO blanks. They assemble the three feature\ngroups into a table, call TabPFN's fit and predict, read the accuracy, then run the ablation\nthat drops the text features and watch the leak disappear. End on the discussion prompt, the\n\"was that fair?\" question, because the thinking matters more than the number. Transition: a\nword on Claude and cost.",
+        "section_label": "The lab",
+        "title": "How the lab works"
+      },
+      "slide_id": "h1-the-lab/h2-how-the-lab-works"
+    },
+    {
+      "content_hash": "eeaa8141d6b1dbf29b0238199bb14ffdb0c3529f3605731fb4b4745c160b10bd",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_add_rect(slide, left=body_l, top=body_top, width=body_w, height=body_h, fill_rgb=DARK_BG_RGB)\n_add_text(slide, 'Claude is your pair programmer again. One new wrinkle: real API calls cost money.',\n          left=body_l + 0.5, top=body_top + 0.35, width=body_w - 1.0, height=0.5,\n          size=17, color_rgb=WHITE_RGB, font=SANS_FONT)\nrows = [('PAIR PROGRAMMER', 'stuck on a blank? ask Claude, then make sure you understand the answer', TURQUOISE_RGB),\n        ('COST DISCIPLINE', 'pre-caching is how real teams keep LLM bills sane: cache once, reuse many times', AMBER_RGB),\n        ('THE RULE, STILL', 'always be able to explain what your code does', DEEPPINK_RGB)]\nry = body_top + 1.15\nrh = (body_h - 1.45) / 3\nfor i, (lab, bod, c) in enumerate(rows):\n    y = ry + i * rh\n    _add_rect(slide, left=body_l + 0.5, top=y + 0.10, width=0.14, height=rh - 0.30, fill_rgb=c)\n    _add_text(slide, lab, left=body_l + 0.85, top=y + 0.06, width=4.2, height=rh - 0.2,\n              size=18, color_rgb=c, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, bod, left=body_l + 5.1, top=y + 0.06, width=body_w - 5.6, height=rh - 0.2,\n              size=15, color_rgb=WHITE_RGB, font=SANS_FONT, anchor=MSO_ANCHOR.MIDDLE)",
+        "lede": "",
+        "notes": "Two quick points on tooling. Claude is the pair programmer again, same rule as yesterday:\nuse it, but be able to explain your code. The new lesson is cost discipline. Real LLM calls\ncost money per request, so calling one on hundreds of reports every run is wasteful; we\npre-cache the answers once and reuse them. That cache-once-reuse-many pattern is exactly how\nreal teams keep their AI bills sane. Transition: let us close by zooming out.",
+        "section_label": "The lab",
+        "title": "Using Claude, and the API budget"
+      },
+      "slide_id": "h1-the-lab/h2-using-claude-and-the-api-budget"
+    },
+    {
+      "content_hash": "dede9b7a0268c5b9f0ca67e59c91600d354ac3bbc013a87aa88dbc3d1db0984d-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#40E0D0",
+        "label": "What you built"
+      },
+      "slide_id": "divider-h1-what-you-built"
+    },
+    {
+      "content_hash": "cb0645a690027dca55932d824be2b10330667e6f5d623b5a32378f03ca3c302d",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d2_two_paradigms.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "The big recap. In two days students have built the two dominant approaches in applied AI.\nDay 1: feed raw data to one big network that learns its own features (end-to-end deep\nlearning). Day 2: hand-engineer features from every signal and let a pretrained foundation\nmodel handle the resulting table. Neither is \"better\"; knowing which to reach for, given the\ndata and the constraints, is half the real job. Transition: one last caution about today's\nnew kind of data.",
+        "section_label": "What you built",
+        "title": "Two paradigms, both yours now"
+      },
+      "slide_id": "h1-what-you-built/h2-two-paradigms-both-yours-now"
+    },
+    {
+      "content_hash": "84c678531e74c34d7d1d889716a38c840a034d021b23360e4450095b1af4d19e",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "cards = [('HIDDEN IDENTIFIERS', \"notes mention names, dates, places; 'de-identified' text often is not, fully\", 'turquoise'), ('THE MODEL CAN LEAK IT', 'LLMs can repeat training text verbatim: sensitive notes in, sensitive notes out', 'deeppink'), ('MINIMIZE AND PROTECT', 'use the least data that does the job, and guard it like the patient record it is', 'amber')]\nn = len(cards)\ngap = 0.30\ncw = (body_w - (n - 1) * gap) / n\nfor i, (lab, bod, c) in enumerate(cards):\n    col = {'turquoise': TURQUOISE_RGB, 'deeppink': DEEPPINK_RGB, 'amber': AMBER_RGB, 'blueviolet': BLUEVIOLET_RGB}[c]\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=body_h, fill_rgb=PAPER_RGB)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=0.90, fill_rgb=col)\n    _add_text(slide, lab, left=x + 0.26, top=body_top, width=cw - 0.52, height=0.90,\n              size=18, color_rgb=_text_on(col), font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, bod, left=x + 0.26, top=body_top + 1.20, width=cw - 0.52, height=body_h - 1.5,\n              size=15, color_rgb=INK_RGB, font=SANS_FONT)",
+        "lede": "",
+        "notes": "Close the ethics thread, because today introduced a riskier kind of data. A pixel grid is\nfairly anonymous; a clinical note is full of identifying detail, names, dates, places, and\n\"de-identified\" text frequently is not, fully. Worse, LLMs can memorize and regurgitate\ntraining text verbatim, so sensitive notes can leak back out. The discipline: minimize (use\nthe least data that does the job) and protect it like the medical record it is. Transition:\ntomorrow, you build.",
+        "section_label": "What you built",
+        "title": "Text data is even more sensitive"
+      },
+      "slide_id": "h1-what-you-built/h2-text-data-is-even-more-sensitive"
+    },
+    {
+      "content_hash": "c6d66e19032eeaadabd0c2d30057f58034c2424061ab5963c3dcd583f31430b3",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_add_text(slide, 'You now have the whole toolkit.', left=body_l, top=body_top + body_h * 0.30,\n          width=body_w, height=1.0, size=34, color_rgb=accent_rgb, font=MONO_FONT, bold=True,\n          align=PP_ALIGN.CENTER)\n_add_text(slide, 'End-to-end deep learning  ·  transfer learning  ·  multimodal feature stacks  ·  foundation models',\n          left=body_l, top=body_top + body_h * 0.52, width=body_w, height=0.6, size=16,\n          color_rgb=INK_RGB, font=SANS_FONT, align=PP_ALIGN.CENTER)\n_add_text(slide, 'Tomorrow you pick a problem, grab a dataset, and build it start to finish, with Claude as your engineer.',\n          left=body_l, top=body_top + body_h * 0.66, width=body_w, height=0.8, size=17,\n          color_rgb=INK_RGB, font=SANS_FONT, align=PP_ALIGN.CENTER)",
+        "lede": "",
+        "notes": "Send them off energized. In two afternoons they have gone from \"what is a pixel\" to building\nboth dominant paradigms of medical AI on real data. List the toolkit out loud so they feel\nhow much they have. Tomorrow is the capstone: they choose a problem, grab a dataset, and\nbuild something end to end with Claude as their engineer. That is the whole arc of the\ncourse paying off.",
+        "section_label": "What you built",
+        "title": "Tomorrow: build your own"
+      },
+      "slide_id": "h1-what-you-built/h2-tomorrow-build-your-own"
+    }
+  ],
+  "theme": "bone",
+  "version": 1
+}
