@@ -55,6 +55,10 @@ DPI = 200
 OUT = Path(__file__).resolve().parent / "figures"
 OUT.mkdir(parents=True, exist_ok=True)
 
+# Real, openly-licensed medical images (PD/CC0/CC-BY) for slides where photographic
+# realism is the payload. See realimg/CREDITS.md for sources + licenses.
+REALIMG = Path(__file__).resolve().parent / "realimg"
+
 # canonical contrast helper (ink on turquoise/amber, white on deeppink/blueviolet)
 txt_on = text_on_brand_fill
 

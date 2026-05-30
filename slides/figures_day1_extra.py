@@ -7,34 +7,36 @@ Run:  python slides/figures_day1_extra.py
 """
 from matplotlib.patches import FancyBboxPatch, Rectangle, Circle, FancyArrowPatch
 
-from figbase import (plt, np, save, figtitle, txt_on, INK, MUTED,
+from PIL import Image, ImageOps, ImageEnhance
+
+from figbase import (plt, np, save, figtitle, txt_on, INK, MUTED, REALIMG,
                      TURQUOISE, DEEPPINK, AMBER, BLUEVIOLET)
 
 
 # --------------------------------------------------------------------------- #
 # Augmentation: free data
 # --------------------------------------------------------------------------- #
-def _mini_fundus(ax, transform=None):
-    ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis("off"); ax.set_aspect("equal")
-    ax.add_patch(Circle((0.5, 0.5), 0.42, color="#C0633A"))
-    ax.add_patch(Circle((0.66, 0.55), 0.1, color="#F2C879"))
-    rng = np.random.RandomState(2)
-    for ang in np.linspace(0, 2 * np.pi, 6, endpoint=False):
-        xs = 0.66 + np.cos(ang) * np.linspace(0, 0.32, 12)
-        ys = 0.55 + np.sin(ang) * np.linspace(0, 0.32, 12)
-        ax.plot(xs, ys, color="#7A2418", lw=1.2)
-
-
 def fig_augmentation():
-    fig, axes = plt.subplots(1, 4, figsize=(11.5, 3.2))
-    labels = ["original", "flipped", "rotated", "brighter"]
-    colors = [INK, TURQUOISE, DEEPPINK, AMBER]
-    for ax, lab, c in zip(axes, labels, colors):
-        _mini_fundus(ax)
+    # Real fundus photo, with REAL augmentations applied (not four copies of a schematic).
+    base = Image.open(REALIMG / "fundus_normal.jpg").convert("RGB")
+    s = min(base.size)
+    base = base.crop(((base.width - s) // 2, (base.height - s) // 2,
+                      (base.width + s) // 2, (base.height + s) // 2))
+    variants = [("original", base, INK),
+                ("flipped", ImageOps.mirror(base), TURQUOISE),
+                ("rotated 15", base.rotate(15, expand=False), DEEPPINK),
+                ("brighter", ImageEnhance.Brightness(base).enhance(1.6), AMBER)]
+    fig, axes = plt.subplots(1, 4, figsize=(11.5, 3.4))
+    for ax, (lab, im, c) in zip(axes, variants):
+        ax.imshow(im)
         ax.set_title(lab, fontsize=13, family="Geist Mono", color=c, fontweight="bold")
+        ax.set_xticks([]); ax.set_yticks([])
+        for sp in ax.spines.values():
+            sp.set_visible(False)
     figtitle(fig, "Augmentation: free extra training data")
-    fig.text(0.5, -0.04, "Flip, rotate, or brighten the same eye and it is still that eye, "
-             "but a fresh set of numbers. The model sees more variety and memorizes less.",
+    fig.text(0.5, -0.04, "The same real fundus, actually flipped, rotated, and brightened. "
+             "Still the same eye, but a fresh set of numbers, so the model memorizes less. "
+             "(Image: public domain, Wikimedia Commons.)",
              ha="center", fontsize=10, color=MUTED, style="italic")
     save(fig, "concept_augmentation.png")
 

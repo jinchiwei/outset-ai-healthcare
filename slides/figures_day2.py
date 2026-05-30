@@ -6,8 +6,9 @@ backgrounds match the deck canvas. Output: slides/figures/d2_*.png
 Run:  python slides/figures_day2.py
 """
 from matplotlib.patches import FancyBboxPatch, Rectangle, Circle, FancyArrowPatch
+from PIL import Image
 
-from figbase import (plt, np, save, figtitle, txt_on, INK, MUTED,
+from figbase import (plt, np, save, figtitle, txt_on, INK, MUTED, REALIMG,
                      TURQUOISE, DEEPPINK, AMBER, BLUEVIOLET)
 
 
@@ -16,16 +17,12 @@ from figbase import (plt, np, save, figtitle, txt_on, INK, MUTED,
 # --------------------------------------------------------------------------- #
 def fig_cxr_findings():
     fig, (axL, axR) = plt.subplots(1, 2, figsize=(11.5, 4.3), gridspec_kw={"width_ratios": [1, 1.1]})
-    # stylized CXR: dark thorax with two lung fields + heart
-    axL.set_facecolor("#111")
-    axL.add_patch(Rectangle((0, 0), 1, 1, color="#1A1A1A"))
-    axL.add_patch(FancyBboxPatch((0.10, 0.18), 0.34, 0.66, boxstyle="round,pad=0.01,rounding_size=0.04",
-                                 facecolor="#3A3A3A", edgecolor="none"))
-    axL.add_patch(FancyBboxPatch((0.56, 0.18), 0.34, 0.66, boxstyle="round,pad=0.01,rounding_size=0.04",
-                                 facecolor="#3A3A3A", edgecolor="none"))
-    axL.add_patch(Circle((0.46, 0.40), 0.16, color="#6A6A6A"))  # heart
-    axL.set_xlim(0, 1); axL.set_ylim(0, 1); axL.axis("off")
-    axL.text(0.5, 0.92, "a chest X-ray", ha="center", fontsize=11, color="white", family="Geist Mono")
+    # REAL chest X-ray (CC0, Wikimedia)
+    axL.imshow(Image.open(REALIMG / "cxr_normal.png").convert("L"), cmap="gray")
+    axL.set_xticks([]); axL.set_yticks([])
+    for sp in axL.spines.values():
+        sp.set_visible(False)
+    axL.set_title("a real chest X-ray", fontsize=11, color=INK, family="Geist Mono")
 
     axR.axis("off"); axR.set_xlim(0, 1); axR.set_ylim(0, 1)
     findings = [("Cardiomegaly", "the heart is enlarged", DEEPPINK),
@@ -38,8 +35,8 @@ def fig_cxr_findings():
         axR.text(0.12, y + 0.02, name, fontsize=14, fontweight="bold", color=INK, family="Geist Mono", va="center")
         axR.text(0.12, y - 0.05, desc, fontsize=11, color=MUTED, va="center")
     figtitle(fig, "One chest X-ray, many possible findings")
-    fig.text(0.5, -0.02, "The chest X-ray is the most common imaging test in the world. "
-             "A single image can show the heart, the lungs, and more.",
+    fig.text(0.5, -0.02, "The chest X-ray is the most common imaging test in the world. A single "
+             "image can show the heart, the lungs, and more. (Image: CC0, Wikimedia Commons.)",
              ha="center", fontsize=10, color=MUTED, style="italic")
     save(fig, "d2_cxr_findings.png")
 
@@ -179,8 +176,8 @@ def fig_three_signals():
 def fig_radiomics():
     fig, ax = plt.subplots(figsize=(11, 4.0))
     ax.axis("off"); ax.set_xlim(0, 12); ax.set_ylim(0, 4)
-    ax.add_patch(Rectangle((0.5, 1.4), 2.4, 2.4, color="#3A3A3A"))
-    ax.add_patch(Circle((1.7, 2.6), 0.5, color="#6A6A6A"))
+    ax.imshow(Image.open(REALIMG / "cxr_normal.png").convert("L"), cmap="gray",
+              extent=[0.5, 2.9, 1.3, 3.7], aspect="auto", zorder=1)
     ax.text(1.7, 1.0, "the image", ha="center", fontsize=11, color=MUTED)
     ax.annotate("", xy=(4.0, 2.6), xytext=(3.1, 2.6), arrowprops=dict(arrowstyle="-|>", color=INK, lw=2.5))
     feats = [("intensity", "how bright", TURQUOISE), ("texture", "how busy", DEEPPINK),

@@ -22,4 +22,15 @@ conda run -n outset python "$REPO/slides/apply_divider_colors.py" "$OUT" "$SIDE"
 # 3. Outset wordmark (white) on the dark cover
 conda run -n outset python "$REPO/slides/apply_logo.py" "$OUT"
 
+# 4. real-image cover hero (lower-right), per day
+case "$DAY" in
+  day1) HERO=fundus_dr.jpg ;;
+  day2) HERO=cxr_normal.png ;;
+  day3) HERO=skin_melanoma.jpg ;;
+  *)    HERO="" ;;
+esac
+if [ -n "$HERO" ]; then
+  conda run -n outset python "$REPO/slides/apply_cover_hero.py" "$OUT" "$HERO" 40E0D0
+fi
+
 echo "built $OUT"

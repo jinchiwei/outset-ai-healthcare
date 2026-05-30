@@ -5,9 +5,17 @@ Output: slides/figures/d3_*.png
 Run:  python slides/figures_day3.py
 """
 from matplotlib.patches import FancyBboxPatch, Rectangle, Circle, FancyArrowPatch
+from PIL import Image
 
-from figbase import (plt, np, save, figtitle, txt_on, INK, MUTED,
+from figbase import (plt, np, save, figtitle, txt_on, INK, MUTED, REALIMG,
                      TURQUOISE, DEEPPINK, AMBER, BLUEVIOLET)
+
+
+def _sq(name):
+    im = Image.open(REALIMG / name).convert("RGB")
+    s = min(im.size)
+    return im.crop(((im.width - s) // 2, (im.height - s) // 2,
+                    (im.width + s) // 2, (im.height + s) // 2))
 
 
 # --------------------------------------------------------------------------- #
@@ -38,23 +46,28 @@ def fig_journey():
 # The three capstone options
 # --------------------------------------------------------------------------- #
 def fig_options():
-    fig, ax = plt.subplots(figsize=(11.5, 4.0))
-    ax.axis("off"); ax.set_xlim(0, 12); ax.set_ylim(0, 4)
-    opts = [("PNEUMONIA", "chest X-rays", "is there pneumonia?\nbinary, like Day 2", TURQUOISE),
-            ("SKIN LESIONS", "dermatology photos", "7 types, including\nmelanoma", DEEPPINK),
-            ("CHOOSE YOUR OWN", "any MedMNIST set", "retina, blood, pathology,\norgans...", AMBER)]
-    for i, (name, data, task, c) in enumerate(opts):
+    fig, ax = plt.subplots(figsize=(11.5, 4.2))
+    ax.axis("off"); ax.set_xlim(0, 12); ax.set_ylim(0, 4.4)
+    opts = [("PNEUMONIA", "chest X-rays", "cxr_normal.png", TURQUOISE),
+            ("SKIN LESIONS", "dermoscopy, incl. melanoma", "skin_melanoma.jpg", DEEPPINK),
+            ("CHOOSE YOUR OWN", "any MedMNIST set", "histology_idc.jpg", AMBER)]
+    cw = 3.5
+    for i, (name, data, fname, c) in enumerate(opts):
         x = 0.5 + i * 3.85
-        ax.add_patch(FancyBboxPatch((x, 0.5), 3.5, 3.1, boxstyle="round,pad=0.02,rounding_size=0.06",
+        ax.add_patch(FancyBboxPatch((x, 0.4), cw, 3.7, boxstyle="round,pad=0.02,rounding_size=0.06",
                                     facecolor=c, edgecolor="none"))
         tc = txt_on(c)
-        ax.text(x + 1.75, 3.15, name, ha="center", fontsize=15, fontweight="bold", color=tc, family="Geist Mono")
-        ax.text(x + 1.75, 2.45, data, ha="center", fontsize=12, color=tc, style="italic")
-        ax.text(x + 1.75, 1.55, task, ha="center", va="center", fontsize=12, color=tc)
-    figtitle(fig, "Pick one (or pitch your own)")
-    fig.text(0.5, -0.02, "All three use MedMNIST: pip-installable, downloads in seconds, no account "
-             "needed. So you spend the time building, not fighting data.",
-             ha="center", fontsize=10, color=MUTED, style="italic")
+        ax.text(x + cw / 2, 3.78, name, ha="center", fontsize=14, fontweight="bold", color=tc, family="Geist Mono")
+        # real image thumbnail
+        iw = 2.5
+        ix = x + (cw - iw) / 2
+        ax.imshow(_sq(fname), extent=[ix, ix + iw, 1.05, 1.05 + iw], aspect="auto", zorder=3)
+        ax.text(x + cw / 2, 0.72, data, ha="center", fontsize=11, color=tc, style="italic")
+    figtitle(fig, "Pick one (or pitch your own)", y=1.0)
+    fig.text(0.5, -0.03, "All three use MedMNIST: pip-installable, downloads in seconds, no account "
+             "needed. So you spend the time building, not fighting data. "
+             "(Sample images: PD / CC-BY, Wikimedia.)",
+             ha="center", fontsize=9.5, color=MUTED, style="italic")
     save(fig, "d3_options.png")
 
 

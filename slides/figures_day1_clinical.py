@@ -7,9 +7,17 @@ story, and the clinical severity scale. Output: slides/figures/clinical_*.png
 Run:  python slides/figures_day1_clinical.py
 """
 from matplotlib.patches import FancyBboxPatch, Circle, Rectangle, FancyArrowPatch
+from PIL import Image
 
-from figbase import (plt, np, save, figtitle, txt_on, INK, MUTED,
+from figbase import (plt, np, save, figtitle, txt_on, INK, MUTED, REALIMG,
                      TURQUOISE, DEEPPINK, AMBER, BLUEVIOLET)
+
+
+def _sq(name):
+    im = Image.open(REALIMG / name).convert("RGB")
+    s = min(im.size)
+    return im.crop(((im.width - s) // 2, (im.height - s) // 2,
+                    (im.width + s) // 2, (im.height + s) // 2))
 
 
 # --------------------------------------------------------------------------- #
@@ -69,25 +77,21 @@ def _fundus(ax, cx, cy, r, lesions=0, neo=False):
 
 
 def fig_dr_progression():
-    fig, ax = plt.subplots(figsize=(11.5, 4.0))
-    ax.axis("off"); ax.set_xlim(0, 12); ax.set_ylim(0, 4); ax.set_aspect("equal")
-    stages = [("Healthy", "clear retina", 0, False, TURQUOISE),
-              ("Early DR", "microaneurysms,\ntiny hemorrhages", 3, False, AMBER),
-              ("Advanced DR", "more bleeding,\nlipid exudates", 6, False, DEEPPINK),
-              ("Proliferative", "fragile new vessels\n-> blindness", 6, True, BLUEVIOLET)]
-    for i, (name, desc, les, neo, c) in enumerate(stages):
-        cx = 1.5 + i * 3.1
-        _fundus(ax, cx, 2.4, 1.05, lesions=les, neo=neo)
-        ax.text(cx, 0.95, name, ha="center", fontsize=13, fontweight="bold",
-                color=c, family="Geist Mono")
-        ax.text(cx, 0.35, desc, ha="center", va="top", fontsize=10, color=MUTED)
-        if i < 3:
-            ax.annotate("", xy=(cx + 1.55, 2.4), xytext=(cx + 1.05, 2.4),
-                        arrowprops=dict(arrowstyle="-|>", color=INK, lw=2))
-    figtitle(fig, "What diabetic retinopathy does to the eye "
-             "(adapted from the Intl. Clinical DR Severity Scale, Wilkinson 2003)")
-    fig.text(0.5, -0.03, "Chronic high blood sugar damages the retina's tiny vessels. "
-             "Caught early and referred, the blindness is preventable.",
+    # REAL fundus photos showing the progression (public domain, Wikimedia).
+    stages = [("fundus_normal.jpg", "Healthy", "clear retina", TURQUOISE),
+              ("fundus_dr.jpg", "Diabetic retinopathy", "hemorrhages, exudates", DEEPPINK),
+              ("fundus_proliferative.jpg", "Proliferative", "new vessels -> blindness", BLUEVIOLET)]
+    fig, axes = plt.subplots(1, 3, figsize=(11.5, 4.0))
+    for i, (ax, (fname, name, desc, c)) in enumerate(zip(axes, stages)):
+        ax.imshow(_sq(fname))
+        ax.set_xticks([]); ax.set_yticks([])
+        for sp in ax.spines.values():
+            sp.set_color(c); sp.set_linewidth(3)
+        ax.set_title(name, fontsize=14, fontweight="bold", color=c, family="Geist Mono", pad=8)
+        ax.set_xlabel(desc, fontsize=10.5, color=MUTED)
+    figtitle(fig, "What diabetic retinopathy does to the eye", y=1.02)
+    fig.text(0.5, -0.04, "Real fundus photographs (public domain, Wikimedia Commons). Chronic high "
+             "blood sugar damages the retina's vessels; caught early and referred, the blindness is preventable.",
              ha="center", fontsize=10, color=MUTED, style="italic")
     save(fig, "clinical_dr_progression.png")
 

@@ -1,7 +1,7 @@
 ---
 title: "Language, images, and the whole patient"
 eyebrow: "AI IN HEALTHCARE · DAY 2 · JULY 2026"
-subtitle: "How language models read clinical text, and how to combine three signals at once"
+subtitle: "How language models read clinical text, and how to combine signals"
 name: "Jinchi Wei"
 org: "Outset"
 date: "2026-07-07"
