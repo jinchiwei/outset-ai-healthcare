@@ -13,13 +13,17 @@ MD="$REPO/slides/$DAY.md"
 OUT="$REPO/slides/build/$DAY.pptx"
 SIDE="$REPO/slides/$DAY.md.layout.json"
 
-# 1. render (replays the handcrafted layout sidecar deterministically)
-( cd "$SKILL" && conda run -n outset python build.py --input "$MD" --output "$OUT" )
+# 1. render (replays the handcrafted layout sidecar deterministically).
+#    --no-end: we append our own custom co-author thank-you slide in step 4.
+( cd "$SKILL" && conda run -n outset python build.py --input "$MD" --output "$OUT" --no-end )
 
 # 2. recolor section dividers full-bleed with their cycling brand accent
 conda run -n outset python "$REPO/slides/apply_divider_colors.py" "$OUT" "$SIDE"
 
 # 3. Outset wordmark (white) on the dark cover
 conda run -n outset python "$REPO/slides/apply_logo.py" "$OUT"
+
+# 4. co-author treatment: orange cover byline + custom thank-you slide
+conda run -n outset python "$REPO/slides/apply_authors.py" "$OUT"
 
 echo "built $OUT"
