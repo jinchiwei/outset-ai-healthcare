@@ -2,7 +2,7 @@
 title: "From pixels to vision transformers"
 eyebrow: "AI IN HEALTHCARE · DAY 1 · JULY 2026"
 subtitle: "Build five models on real eye scans and watch each one beat the last"
-name: "Curtis Chambers · Jinchi Wei"
+name: "Jinchi Wei"
 org: "Outset"
 date: "2026-07-06"
 ---
