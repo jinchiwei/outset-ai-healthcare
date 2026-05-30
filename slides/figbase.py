@@ -18,10 +18,28 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402,F401  (re-exported)
 import numpy as np  # noqa: E402,F401  (re-exported)
 
+# Stable, long-standing mpl_style API (required).
 from mpl_style import (  # noqa: E402,F401  (title re-exported)
-    apply_style, theme_colors, text_on_brand_fill, warn_text_overflow, title,
+    apply_style, theme_colors, title,
     TURQUOISE, DEEPPINK, AMBER, BLUEVIOLET, GOLD,
 )
+
+# Newer helpers — import defensively so the figures still build on a machine
+# whose superstack is a little behind (older ~/.claude/skills/_shared/mpl_style.py).
+try:
+    from mpl_style import text_on_brand_fill  # noqa: E402
+except ImportError:
+    def text_on_brand_fill(fill_hex):
+        """Fallback: WCAG-luminance pick of black/white text on a fill."""
+        h = fill_hex.lstrip("#")
+        r, g, b = (int(h[i:i + 2], 16) / 255 for i in (0, 2, 4))
+        return "black" if (0.2126 * r + 0.7152 * g + 0.0722 * b) > 0.5 else "white"
+
+try:
+    from mpl_style import warn_text_overflow  # noqa: E402
+except ImportError:
+    def warn_text_overflow(fig, *, source=""):  # no-op on older superstack
+        return None
 
 # The deck theme. MUST match the theme frozen in the .md.layout.json sidecar
 # (currently "bone"). If the deck theme changes, change this too.
