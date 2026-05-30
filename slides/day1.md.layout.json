@@ -1,0 +1,210 @@
+{
+  "deck_md_hash": "f730cd78ad841495de25efa474080e22c37672b69a8fa611f1b87163c3618a61",
+  "mode": "expressive",
+  "shake_seed": "cb264709ed4b4032b267f7ab652eaf77",
+  "slides": [
+    {
+      "content_hash": "50870ef9635c44a8edd4b8ae9e032e2b758c3fabf5aa6ba751d52a86a7645b7f-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#40E0D0",
+        "label": "Why this matters"
+      },
+      "slide_id": "divider-h1-why-this-matters"
+    },
+    {
+      "content_hash": "7025f408badb0f5fbb9191d58c58b1391897cf800ce879ea38e355bc8bfb934d",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "fig_h = body_h * 0.64\n_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/intro_dr_screening.png', left=body_l, top=body_top, max_w=body_w, max_h=fig_h)\nchip_y = body_top + fig_h + 0.22\nch = body_h - fig_h - 0.30\ngap = 0.26\ncw = (body_w - 2 * gap) / 3\nchips = [('THE DATA', 'color photos of the retina', TURQUOISE_RGB),\n         ('THE TASK', 'refer this eye, yes or no?', DEEPPINK_RGB),\n         ('WHY FAMOUS', 'first medical AI at scale', AMBER_RGB)]\nfor i, (lab, bod, c) in enumerate(chips):\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=chip_y, width=cw, height=ch, fill_rgb=c)\n    _add_text(slide, lab, left=x + 0.20, top=chip_y + 0.14, width=cw - 0.40, height=0.34,\n              size=13, color_rgb=_text_on(c), font=MONO_FONT, bold=True)\n    _add_text(slide, bod, left=x + 0.20, top=chip_y + 0.52, width=cw - 0.40, height=ch - 0.62,\n              size=15, color_rgb=_text_on(c), font=SANS_FONT)",
+        "lede": "",
+        "notes": "Diabetic retinopathy is damage to blood vessels in the retina caused by diabetes. Left\nunchecked it causes blindness, but if you catch it early and send the patient to a\nspecialist, that blindness is preventable. The catch is scale: hundreds of millions of\ndiabetics, nowhere near enough eye doctors to screen them all. That mismatch is exactly\nwhat an automated screener fixes, which is why this was one of the first medical AIs\ndeployed in real clinics. Frame the day: by the end, every student will have built a\nmodel that makes this refer-or-not call. Transition: but first, what is the model even\nlooking at?",
+        "section_label": "Why this matters",
+        "title": "AI already screens for blindness"
+      },
+      "slide_id": "h1-why-this-matters/h2-ai-already-screens-for-blindness"
+    },
+    {
+      "content_hash": "13534872ff96ed62afc597ec1acd21e60aae89a740951ee69aa779a66628d607",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "gap = 0.30\ncw = (body_w - gap) / 2\nch = (body_h - gap) / 2\nitems = [('DEPLOYED TODAY', 'DR screening, mammogram triage, sepsis alerts: all in real hospitals now', TURQUOISE_RGB),\n         ('SHORTCUT LEARNING', 'the model reads the ruler in the image, not the tumor', DEEPPINK_RGB),\n         ('DISTRIBUTION SHIFT', 'your hospital is not the training hospital, so accuracy quietly drops', AMBER_RGB),\n         ('OVERCONFIDENCE', '\"90% sure\" can mean nothing; confident and wrong is the dangerous mix', BLUEVIOLET_RGB)]\nfor i, (lab, bod, c) in enumerate(items):\n    r = i // 2\n    col = i % 2\n    x = body_l + col * (cw + gap)\n    y = body_top + r * (ch + gap)\n    _add_rect(slide, left=x, top=y, width=cw, height=ch, fill_rgb=c)\n    _add_text(slide, lab, left=x + 0.26, top=y + 0.22, width=cw - 0.52, height=0.42,\n              size=18, color_rgb=_text_on(c), font=MONO_FONT, bold=True)\n    _add_text(slide, bod, left=x + 0.26, top=y + 0.78, width=cw - 0.52, height=ch - 1.0,\n              size=15, color_rgb=_text_on(c), font=SANS_FONT)",
+        "lede": "",
+        "notes": "Medical AI is not science fiction; it is already treating patients. But the interesting\npart for students is how it fails, because the failures are subtle and human. Shortcut\nlearning: a model told to spot tumors instead learns that scans WITH tumors happened to\nhave a ruler laid next to them, so it just detects rulers. Distribution shift: it was\ntrained on one hospital's scanner and quietly gets worse on yours. Overconfidence: it\nreports 90% confidence on everything because nobody calibrated it. The lesson: knowing\nhow these break is the real skill, more than chasing a higher accuracy number.\nTransition: to understand any of this, we have to start with what an image actually is.",
+        "section_label": "Why this matters",
+        "title": "Real systems, real failure modes"
+      },
+      "slide_id": "h1-why-this-matters/h2-real-systems-real-failure-modes"
+    },
+    {
+      "content_hash": "b1c7f82ba1286021206a9c0cc90ba660361a14438000f08386faa086193495f4-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#40E0D0",
+        "label": "What is an image"
+      },
+      "slide_id": "divider-h1-what-is-an-image"
+    },
+    {
+      "content_hash": "8faca2ad796884b7fd8e7406f00f5fa097c68ff0b723ea1926acc2e26f5c19fb",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/concept_image_numbers.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.75)\n_add_text(slide, 'The model never sees a photo. It sees a spreadsheet of about 150,000 numbers.',\n          left=body_l, top=body_top + body_h - 0.55, width=body_w, height=0.45,\n          size=18, color_rgb=accent_rgb, font=MONO_FONT, bold=True, align=PP_ALIGN.CENTER)",
+        "lede": "",
+        "notes": "This is the most important conceptual unlock of the day, and it is simple: a picture is\njust a grid of numbers. Each pixel is a brightness from 0 to 255. A grayscale image is\none grid; a color image is three grids stacked, one each for red, green, and blue. So a\n224 by 224 color image is about 150,000 numbers. Everything we do after this, every\nmodel, is math on those numbers. Mention augmentation: if we flip or rotate or brighten\nthe same eye, it is still the same eye but a fresh set of numbers, which is free extra\ntraining variety. Transition: now that the image is numbers, what does it mean for a\nmodel to learn?",
+        "section_label": "What is an image",
+        "title": "An image is just numbers"
+      },
+      "slide_id": "h1-what-is-an-image/h2-an-image-is-just-numbers"
+    },
+    {
+      "content_hash": "c1db453182effcfe616912f8cbb1a64494855716bec4cc3b81cdcaf17b7e5558-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#40E0D0",
+        "label": "What is learning"
+      },
+      "slide_id": "divider-h1-what-is-learning"
+    },
+    {
+      "content_hash": "231531c5e6b144adb839b81d62c1ee4c8642b9acdcf0c331ba8c0ac8088593b9",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "bw = 3.3\nbh = 2.7\ngap = (body_w - 3 * bw) / 2\nch = 1.25\nstack_h = bh + 0.6 + ch\ny = body_top + max(0.0, (body_h - stack_h) / 2)\nxs = [body_l, body_l + bw + gap, body_l + 2 * (bw + gap)]\nlabels = [('INPUT', 'the image, as a pile of numbers', TURQUOISE_RGB),\n          ('f(x)', 'the model: knobs we tune', INK_RGB),\n          ('OUTPUT', 'a label: refer, or not', DEEPPINK_RGB)]\nfor x, (lab, bod, c) in zip(xs, labels):\n    _add_rect(slide, left=x, top=y, width=bw, height=bh, fill_rgb=c)\n    _add_text(slide, lab, left=x + 0.2, top=y + bh * 0.30, width=bw - 0.4, height=0.7,\n              size=30, color_rgb=_text_on(c), font=MONO_FONT, bold=True, align=PP_ALIGN.CENTER)\n    _add_text(slide, bod, left=x + 0.25, top=y + bh * 0.62, width=bw - 0.5, height=0.8,\n              size=15, color_rgb=_text_on(c), font=SANS_FONT, align=PP_ALIGN.CENTER)\nfor i in range(2):\n    ax = xs[i] + bw + 0.12\n    _add_flat_shape(slide, MSO_SHAPE.RIGHT_ARROW, left=ax, top=y + bh / 2 - 0.22,\n                    width=gap - 0.24, height=0.44, fill_rgb=AMBER_RGB)\ncy = y + bh + 0.6\n_add_rect(slide, left=body_l, top=cy, width=body_w, height=ch, fill_rgb=AMBER_RGB)\n_add_text(slide, 'LEARNING  =  adjust the knobs until the guesses match the truth on examples we already know',\n          left=body_l + 0.35, top=cy, width=body_w - 0.7, height=ch,\n          size=18, color_rgb=INK_RGB, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)",
+        "lede": "",
+        "notes": "Demystify the word \"model\". A classifier is just a function: numbers go in, a label comes\nout. For us, the image numbers go in, and out comes \"refer this eye\" or \"do not\". The\nfunction has knobs, often millions of them. \"Learning\" is nothing mystical: it is turning\nthose knobs until the function's guesses line up with the right answers on examples we\nalready have labels for. That is it. Every model today does the same thing; what differs\nis how much structure the function is allowed to see in the numbers. Transition: so let\nus build five of them, each one able to see more than the last.",
+        "section_label": "What is learning",
+        "title": "A classifier is a function"
+      },
+      "slide_id": "h1-what-is-learning/h2-a-classifier-is-a-function"
+    },
+    {
+      "content_hash": "0dc2586a47cd478dc0db5b9d5898aa57ef98fadde9a8f66707c5ab6c8b2f36cd",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "steps = [('1', 'Logistic\\nregression', 'one straight line', MUTED_RGB),\n         ('2', 'MLP', 'curved, still blind to space', MUTED_RGB),\n         ('3', 'CNN', 'sees shapes', TURQUOISE_RGB),\n         ('4', 'ResNet', 'borrows trained vision', DEEPPINK_RGB),\n         ('5', 'ViT', 'patches that attend', BLUEVIOLET_RGB)]\nn = len(steps)\ngap = 0.16\nsw = (body_w - (n - 1) * gap) / n\nfor i, (num, name, sub, c) in enumerate(steps):\n    h = body_h * (0.40 + 0.135 * i)\n    x = body_l + i * (sw + gap)\n    yt = body_top + body_h - h\n    _add_rect(slide, left=x, top=yt, width=sw, height=h, fill_rgb=c)\n    tc = _text_on(c)\n    _add_text(slide, num, left=x + 0.14, top=yt + 0.14, width=sw - 0.28, height=0.6,\n              size=30, color_rgb=tc, font=MONO_FONT, bold=True)\n    _add_text(slide, name, left=x + 0.14, top=yt + 0.78, width=sw - 0.28, height=0.8,\n              size=16, color_rgb=tc, font=MONO_FONT, bold=True)\n    _add_text(slide, sub, left=x + 0.14, top=yt + h - 0.95, width=sw - 0.28, height=0.85,\n              size=12, color_rgb=tc, font=SANS_FONT)",
+        "lede": "",
+        "notes": "This is the spine of the whole day. We solve the same task five times, each model a rung\nhigher than the last, and we watch the accuracy climb. Logistic regression flattens the\nimage and draws one straight boundary, no idea pixels form shapes. An MLP bends that\nboundary but is still blind to space. A CNN slides filters across the image and finally\nsees structure. ResNet borrows vision already learned from a million everyday photos. The\nVision Transformer chops the image into patches that pay attention to each other. The\ngray rungs are the flat-pixel models, then the color rungs are where it gets good.\nTransition: let us look closely at the three that matter most, starting with the CNN.",
+        "section_label": "What is learning",
+        "title": "Five models, one ladder"
+      },
+      "slide_id": "h1-what-is-learning/h2-five-models-one-ladder"
+    },
+    {
+      "content_hash": "f312cbec9c67a849770f282790f96bfb66993c39807f86f3b687fb192c9adc3a",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/concept_cnn.png', left=body_l, top=body_top + 0.10, max_w=body_w, max_h=body_h - 0.20)",
+        "lede": "",
+        "notes": "The jump from MLP to CNN is the cleanest idea in computer vision. A plain network treats\nevery pixel as unrelated to its neighbors, which is absurd: in a real image, nearby pixels\nform edges, blobs, lesions. A convolutional network slides one small filter across the\nWHOLE image, so if it learns to detect a hemorrhage in the top-left, it detects it\nanywhere. That weight-sharing is what \"seeing spatial structure\" means, and it is why the\nCNN beats the flat-pixel models. Point at the highlighted patch in the figure: the filter\nlooks at a little neighborhood, produces one number in the feature map, then slides over.\nTransition: CNNs are great, but training one from scratch on a small medical set is hard,\nso the next rung borrows a brain.",
+        "section_label": "What is learning",
+        "title": "The CNN sees structure"
+      },
+      "slide_id": "h1-what-is-learning/h2-the-cnn-sees-structure"
+    },
+    {
+      "content_hash": "87016db772a2dd91973eef7146310192fc79ffdd52956593db1076861bb530b6",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "fig_h = body_h * 0.60\n_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/concept_resnet.png', left=body_l, top=body_top, max_w=body_w, max_h=fig_h)\nchip_y = body_top + fig_h + 0.22\nch = body_h - fig_h - 0.30\ngap = 0.30\ncw = (body_w - gap) / 2\nchips = [('SKIP CONNECTION', 'carry the input forward so even very deep networks train', BLUEVIOLET_RGB),\n         ('TRANSFER LEARNING', 'freeze a network pretrained on a million photos, teach one new layer', DEEPPINK_RGB)]\nfor i, (lab, bod, c) in enumerate(chips):\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=chip_y, width=cw, height=ch, fill_rgb=c)\n    _add_text(slide, lab, left=x + 0.22, top=chip_y + 0.14, width=cw - 0.44, height=0.34,\n              size=15, color_rgb=_text_on(c), font=MONO_FONT, bold=True)\n    _add_text(slide, bod, left=x + 0.22, top=chip_y + 0.52, width=cw - 0.44, height=ch - 0.62,\n              size=14, color_rgb=_text_on(c), font=SANS_FONT)",
+        "lede": "",
+        "notes": "ResNet brings two ideas. First, the skip connection: it adds the block's input straight\nto its output, which sounds trivial but is what lets networks get 50+ layers deep without\nthe training falling apart. Second, and the one students will feel in the lab: transfer\nlearning. Instead of learning vision from scratch, we take a ResNet already trained on a\nmillion everyday photos, freeze it, and train only a small new final layer for our eye\ntask. It already knows edges and textures; we just teach it which combinations mean\n\"refer\". This is the single biggest practical trick in modern vision, and it is the jump\non the leaderboard. Transition: the last rung swaps convolutions for attention.",
+        "section_label": "What is learning",
+        "title": "ResNet: borrow a trained brain"
+      },
+      "slide_id": "h1-what-is-learning/h2-resnet-borrow-a-trained-brain"
+    },
+    {
+      "content_hash": "5a6a7d765b16d122bc3b9fb3ff793fe682de4d33e5a7745696e7d021df58731a",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/concept_vit.png', left=body_l, top=body_top + 0.10, max_w=body_w, max_h=body_h - 0.20)",
+        "lede": "",
+        "notes": "The Vision Transformer is the newest rung and the bridge to tomorrow. It throws out\nconvolutions entirely. Instead it chops the image into a grid of patches, turns each patch\ninto a vector, and uses \"attention\" to let the patches weigh how much they matter to each\nother, before making a call. Do not over-explain attention here; the one sentence that\nlands is: the model decides which parts of the image to focus on. Keep this slide quick,\nbecause the parallel to language models is the payoff and we make it explicit at the end\nof the day. Transition: that is the full ladder; now you go build it.",
+        "section_label": "What is learning",
+        "title": "Vision Transformer: patches that attend"
+      },
+      "slide_id": "h1-what-is-learning/h2-vision-transformer-patches-that-attend"
+    },
+    {
+      "content_hash": "d040621cb1fd7a7aebb8e805855244dfe7a702015ba46ec3459edad0b2105ada-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#40E0D0",
+        "label": "The lab"
+      },
+      "slide_id": "divider-h1-the-lab"
+    },
+    {
+      "content_hash": "9f3e0d04628a2a2ca64875dad944cecafdcc9d4d5a3b4cfdaba32243fbc15e9c",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "steps = [('# TODO', 'Fill the blanks', 'each model has 2-3 missing lines; write them, run it, read the number', TURQUOISE_RGB),\n         ('?>', 'Predict, then check', 'guess each model\\'s accuracy first; being wrong is how intuition forms', AMBER_RGB),\n         ('->', 'Ask for help', 'stuck on a blank? ask me, or ask Claude; both are fair game', DEEPPINK_RGB)]\nn = len(steps)\ngap = 0.30\ncw = (body_w - (n - 1) * gap) / n\nfor i, (tag, head, bod, c) in enumerate(steps):\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=body_h, fill_rgb=PAPER_RGB)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=0.10, fill_rgb=c)\n    _add_text(slide, tag, left=x + 0.24, top=body_top + 0.40, width=cw - 0.48, height=0.7,\n              size=30, color_rgb=c, font=MONO_FONT, bold=True)\n    _add_text(slide, head, left=x + 0.24, top=body_top + 1.25, width=cw - 0.48, height=0.5,\n              size=20, color_rgb=INK_RGB, font=MONO_FONT, bold=True)\n    _add_text(slide, bod, left=x + 0.24, top=body_top + 1.95, width=cw - 0.48, height=body_h - 2.2,\n              size=15, color_rgb=INK_RGB, font=SANS_FONT)",
+        "lede": "",
+        "notes": "Set up the lab mechanics in thirty seconds. It is one notebook for everyone. Each model\nstep has a couple of blank lines marked TODO; the student fills them in, runs the cell,\nand sees the accuracy. Before running each model, they jot a one-word guess at how well it\nwill do; the point is not to be right, it is that guessing builds the intuition for why\nthe next rung is better. And there is no shame in getting stuck: ask the instructor, ask\nClaude, both fine. Transition: a word on using Claude well, because that is a real skill.",
+        "section_label": "The lab",
+        "title": "How the lab works"
+      },
+      "slide_id": "h1-the-lab/h2-how-the-lab-works"
+    },
+    {
+      "content_hash": "057ae6ba275760fb58b1443393851e563c7a9649166bd22510f8f48a059b47a0",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_add_rect(slide, left=body_l, top=body_top, width=body_w, height=body_h, fill_rgb=DARK_BG_RGB)\n_add_text(slide, 'you all have Claude. in the real world it takes an idea to a working result.',\n          left=body_l + 0.5, top=body_top + 0.35, width=body_w - 1.0, height=0.5,\n          size=17, color_rgb=WHITE_RGB, font=SANS_FONT)\nrows = [('ASK CLEARLY', 'give it the goal and the context, not just \"fix this\"', TURQUOISE_RGB),\n        ('READ THE ANSWER', 'I read what it writes; I do not paste blindly', AMBER_RGB),\n        ('OWN IT', 'the one rule all week: always be able to explain your code', DEEPPINK_RGB)]\nry = body_top + 1.15\nrh = (body_h - 1.45) / 3\nfor i, (lab, bod, c) in enumerate(rows):\n    y = ry + i * rh\n    _add_rect(slide, left=body_l + 0.5, top=y + 0.10, width=0.14, height=rh - 0.30, fill_rgb=c)\n    _add_text(slide, lab, left=body_l + 0.85, top=y + 0.06, width=4.0, height=rh - 0.2,\n              size=20, color_rgb=c, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, bod, left=body_l + 4.9, top=y + 0.06, width=body_w - 5.4, height=rh - 0.2,\n              size=16, color_rgb=WHITE_RGB, font=SANS_FONT, anchor=MSO_ANCHOR.MIDDLE)",
+        "lede": "",
+        "notes": "This is the philosophy slide for how we use AI in this course, and it is worth slowing\ndown on. Claude is not the subject of the class and it is not cheating; it is the tool a\nworking engineer reaches for. Model it live on one TODO: show how you phrase the ask with\nthe goal and context, show that you READ the response and sanity-check it rather than\npasting on faith, and land the one rule that governs the whole week, including the capstone\nrubric on Wednesday: you can use Claude freely, but you must always be able to explain\nwhat your code does. Then get out of the way and let them build. Transition: here is what\nthey will have built by the end of the hour.",
+        "section_label": "The lab",
+        "title": "Using Claude well"
+      },
+      "slide_id": "h1-the-lab/h2-using-claude-well"
+    },
+    {
+      "content_hash": "dede9b7a0268c5b9f0ca67e59c91600d354ac3bbc013a87aa88dbc3d1db0984d-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#40E0D0",
+        "label": "What you built"
+      },
+      "slide_id": "divider-h1-what-you-built"
+    },
+    {
+      "content_hash": "86f079f322c58a423c456c2728a6cf01c54a073c3037efefadf526b17ee1893a",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/result_ladder.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.65)\n_add_text(slide, 'Flat-pixel models near a coin flip. The CNN sees structure. Transfer learning takes the leap.',\n          left=body_l, top=body_top + body_h - 0.50, width=body_w, height=0.42,\n          size=17, color_rgb=accent_rgb, font=MONO_FONT, bold=True, align=PP_ALIGN.CENTER)",
+        "lede": "",
+        "notes": "This is the payoff slide: the actual leaderboard from the lab. Read it left to right.\nLogistic regression and the MLP sit in the mid-70s, both flattening pixels, both blind to\nspace; the gap between them is noise. The from-scratch CNN edges up because it finally\nsees structure. Then ResNet and the Vision Transformer jump to the high 80s, and that jump\nis almost entirely transfer learning, reusing a network that already knew how to see.\nNote honestly that ResNet and ViT are basically tied; ViT is not here to win, it is here\nto be the bridge. The real takeaway: borrowed knowledge beats from-scratch on small data.\nTransition: and that bridge is tomorrow's whole story.",
+        "section_label": "What you built",
+        "title": "The leaderboard you built"
+      },
+      "slide_id": "h1-what-you-built/h2-the-leaderboard-you-built"
+    },
+    {
+      "content_hash": "a32063d8534af28cef54b589f14144d9acd2fd1ef22d7782e6647e9b383015de",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/concept_bridge.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.65)\n_add_text(slide, 'Swap patches for words and you have a language model. See you tomorrow.',\n          left=body_l, top=body_top + body_h - 0.50, width=body_w, height=0.42,\n          size=18, color_rgb=accent_rgb, font=MONO_FONT, bold=True, align=PP_ALIGN.CENTER)",
+        "lede": "",
+        "notes": "End on the bridge, because it makes tomorrow feel inevitable. The Vision Transformer they\njust used works by splitting an image into patches and letting attention decide which\npatches matter. A large language model does the exact same thing with words instead of\npatches. Same machinery, different input; that bottom row in the figure IS an LLM. So\ntomorrow, when we point a language model at radiology reports, it is not a new magic\ntrick, it is the same idea they already built today. Send them off feeling like they have\nthe key to the next day already in hand.",
+        "section_label": "What you built",
+        "title": "The bridge to tomorrow"
+      },
+      "slide_id": "h1-what-you-built/h2-the-bridge-to-tomorrow"
+    }
+  ],
+  "theme": "bone",
+  "version": 1
+}
