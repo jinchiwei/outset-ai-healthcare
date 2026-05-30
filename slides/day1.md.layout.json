@@ -1,42 +1,94 @@
 {
-  "deck_md_hash": "f730cd78ad841495de25efa474080e22c37672b69a8fa611f1b87163c3618a61",
+  "deck_md_hash": "f902088dc0b5d6b30a7ae05690cc8c072c725475bd5efeabee7de8e44da3047c",
   "mode": "expressive",
   "shake_seed": "cb264709ed4b4032b267f7ab652eaf77",
   "slides": [
     {
-      "content_hash": "50870ef9635c44a8edd4b8ae9e032e2b758c3fabf5aa6ba751d52a86a7645b7f-divider",
+      "content_hash": "096af56a2f8f4be3dc2e13ecf4ecfb3927c54fd68deaad1abbd795e5af04b822-divider",
       "kind": "section-divider",
       "params": {
         "accent_hex": "#40E0D0",
-        "label": "Why this matters"
+        "label": "The clinical problem"
       },
-      "slide_id": "divider-h1-why-this-matters"
+      "slide_id": "divider-h1-the-clinical-problem"
     },
     {
-      "content_hash": "7025f408badb0f5fbb9191d58c58b1391897cf800ce879ea38e355bc8bfb934d",
+      "content_hash": "9ff62071ccbf725d0b6bc33ea53db0d7a752af3c82c9200633735f5ec07cefe7",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "fig_h = body_h * 0.64\n_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/intro_dr_screening.png', left=body_l, top=body_top, max_w=body_w, max_h=fig_h)\nchip_y = body_top + fig_h + 0.22\nch = body_h - fig_h - 0.30\ngap = 0.26\ncw = (body_w - 2 * gap) / 3\nchips = [('THE DATA', 'color photos of the retina', TURQUOISE_RGB),\n         ('THE TASK', 'refer this eye, yes or no?', DEEPPINK_RGB),\n         ('WHY FAMOUS', 'first medical AI at scale', AMBER_RGB)]\nfor i, (lab, bod, c) in enumerate(chips):\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=chip_y, width=cw, height=ch, fill_rgb=c)\n    _add_text(slide, lab, left=x + 0.20, top=chip_y + 0.14, width=cw - 0.40, height=0.34,\n              size=13, color_rgb=_text_on(c), font=MONO_FONT, bold=True)\n    _add_text(slide, bod, left=x + 0.20, top=chip_y + 0.52, width=cw - 0.40, height=ch - 0.62,\n              size=15, color_rgb=_text_on(c), font=SANS_FONT)",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/clinical_ai_in_medicine.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
         "lede": "",
-        "notes": "Diabetic retinopathy is damage to blood vessels in the retina caused by diabetes. Left\nunchecked it causes blindness, but if you catch it early and send the patient to a\nspecialist, that blindness is preventable. The catch is scale: hundreds of millions of\ndiabetics, nowhere near enough eye doctors to screen them all. That mismatch is exactly\nwhat an automated screener fixes, which is why this was one of the first medical AIs\ndeployed in real clinics. Frame the day: by the end, every student will have built a\nmodel that makes this refer-or-not call. Transition: but first, what is the model even\nlooking at?",
-        "section_label": "Why this matters",
-        "title": "AI already screens for blindness"
+        "notes": "Open by killing the \"someday\" framing. AI is reading medical data in real clinics right\nnow, across basically every specialty: radiology finds nodules and bleeds, pathology\ngrades tumors on biopsy slides, dermatology flags melanoma, cardiology catches abnormal\nheart rhythms, and ophthalmology screens the eye. The FDA has cleared well over a thousand\nof these. The point for students: this is a real, employable field, and today they get to\nwork in one corner of it. Transition: that corner is the eye, so let us look at the disease.",
+        "section_label": "The clinical problem",
+        "title": "AI is already in the clinic"
       },
-      "slide_id": "h1-why-this-matters/h2-ai-already-screens-for-blindness"
+      "slide_id": "h1-the-clinical-problem/h2-ai-is-already-in-the-clinic"
     },
     {
-      "content_hash": "13534872ff96ed62afc597ec1acd21e60aae89a740951ee69aa779a66628d607",
+      "content_hash": "e9394dbad7f5101ee8d6a9884d3f1d639d7253d3a22834b8a1d1dfccea8d3937",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "gap = 0.30\ncw = (body_w - gap) / 2\nch = (body_h - gap) / 2\nitems = [('DEPLOYED TODAY', 'DR screening, mammogram triage, sepsis alerts: all in real hospitals now', TURQUOISE_RGB),\n         ('SHORTCUT LEARNING', 'the model reads the ruler in the image, not the tumor', DEEPPINK_RGB),\n         ('DISTRIBUTION SHIFT', 'your hospital is not the training hospital, so accuracy quietly drops', AMBER_RGB),\n         ('OVERCONFIDENCE', '\"90% sure\" can mean nothing; confident and wrong is the dangerous mix', BLUEVIOLET_RGB)]\nfor i, (lab, bod, c) in enumerate(items):\n    r = i // 2\n    col = i % 2\n    x = body_l + col * (cw + gap)\n    y = body_top + r * (ch + gap)\n    _add_rect(slide, left=x, top=y, width=cw, height=ch, fill_rgb=c)\n    _add_text(slide, lab, left=x + 0.26, top=y + 0.22, width=cw - 0.52, height=0.42,\n              size=18, color_rgb=_text_on(c), font=MONO_FONT, bold=True)\n    _add_text(slide, bod, left=x + 0.26, top=y + 0.78, width=cw - 0.52, height=ch - 1.0,\n              size=15, color_rgb=_text_on(c), font=SANS_FONT)",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/clinical_dr_progression.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
         "lede": "",
-        "notes": "Medical AI is not science fiction; it is already treating patients. But the interesting\npart for students is how it fails, because the failures are subtle and human. Shortcut\nlearning: a model told to spot tumors instead learns that scans WITH tumors happened to\nhave a ruler laid next to them, so it just detects rulers. Distribution shift: it was\ntrained on one hospital's scanner and quietly gets worse on yours. Overconfidence: it\nreports 90% confidence on everything because nobody calibrated it. The lesson: knowing\nhow these break is the real skill, more than chasing a higher accuracy number.\nTransition: to understand any of this, we have to start with what an image actually is.",
-        "section_label": "Why this matters",
-        "title": "Real systems, real failure modes"
+        "notes": "Now the actual medicine, and it is worth making vivid. Diabetes keeps blood sugar too high\nfor years, which slowly damages the microscopic blood vessels lining the retina. Early on\nyou get tiny bulges and dot hemorrhages. It progresses to bigger bleeds and yellow lipid\ndeposits. In the worst stage the eye desperately grows fragile new vessels that bleed into\nthe eye and can detach the retina, causing blindness. The emotional anchor: this is a\nleading cause of blindness in working-age adults, AND it is largely preventable if you\ncatch it early. That tension, devastating but preventable, is the whole reason screening\nmatters. Transition: so why don't we just screen everyone?",
+        "section_label": "The clinical problem",
+        "title": "What diabetic retinopathy does to the eye"
       },
-      "slide_id": "h1-why-this-matters/h2-real-systems-real-failure-modes"
+      "slide_id": "h1-the-clinical-problem/h2-what-diabetic-retinopathy-does-to-the-eye"
+    },
+    {
+      "content_hash": "af50a8c8ca9a95b5a2d66228a5f15769caf0d51b1a736b0f9818917458751c8a",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/clinical_access_gap.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "Here is the systems problem. Every person with diabetes, and there are hundreds of millions\nof them, should get their retina checked every single year. But a retina exam needs a\ntrained eye specialist, and there are nowhere near enough, especially in rural areas and\nlower-income countries. So a huge fraction of diabetics never get screened and lose vision\nthey did not have to. This is the gap: enormous, routine need on one side, scarce expertise\non the other. That is the shape of problem where AI screening genuinely helps, by putting a\nspecialist-level read anywhere there is a camera. Transition: and this is not hypothetical.",
+        "section_label": "The clinical problem",
+        "title": "A screening problem AI was built for"
+      },
+      "slide_id": "h1-the-clinical-problem/h2-a-screening-problem-ai-was-built-for"
+    },
+    {
+      "content_hash": "a7723945831700cfb8ac4909c799a37052dc47186682e15b164c3640eec5abe1",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/clinical_deployment.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "Walk the timeline, because it is genuinely fast and inspiring. 2016: a Google team publishes\nin JAMA that a deep network grades diabetic retinopathy about as well as ophthalmologists.\n2018: IDx-DR becomes the first FDA-authorized AUTONOMOUS AI diagnostic, meaning it gives a\nscreening result with no doctor in the loop, run by a nurse in a primary-care office. Soon\nafter, screening programs roll out in clinics in India and Thailand where specialists are\nscarce. Two-ish years from paper to patients. The lesson for students: the gap between a\ngood research result and real-world impact can be short. Transition: so what exactly does\nthe model decide?",
+        "section_label": "The clinical problem",
+        "title": "From research to the clinic, fast"
+      },
+      "slide_id": "h1-the-clinical-problem/h2-from-research-to-the-clinic-fast"
+    },
+    {
+      "content_hash": "4186242228fad2c67e1779bc652a6c3e23c16b219c32cd007e9688e6c8684fc1",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/clinical_severity_scale.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "Connect the medicine to the machine-learning task. Ophthalmologists grade DR on a 0-to-4\nscale: none, mild, moderate, severe, and proliferative, the sight-threatening stage. That is\nrich clinical detail, but for SCREENING it collapses to one decision: is this grade 2 or\nworse? If yes, refer to a specialist. That single yes/no line, \"referable DR\", is the exact\ntarget the students will train every model on this afternoon. Emphasize: we are not asking\nthe model to be the doctor, just to decide who needs to see one. Transition: that is the\nclinical picture; now the technical question, what is the model actually looking at?",
+        "section_label": "The clinical problem",
+        "title": "Reading the retina"
+      },
+      "slide_id": "h1-the-clinical-problem/h2-reading-the-retina"
+    },
+    {
+      "content_hash": "90b0ee70813c9e4a3b5786fec4efe787a25f88719546ca74792814fe764bb36d",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "gap = 0.30\ncw = (body_w - gap) / 2\nch = (body_h - gap) / 2\nitems = [('SHORTCUT LEARNING', 'the model reads the ruler in the image, not the tumor', TURQUOISE_RGB),\n         ('DISTRIBUTION SHIFT', 'your hospital is not the training hospital, so accuracy quietly drops', DEEPPINK_RGB),\n         ('OVERCONFIDENCE', '\"90% sure\" can mean nothing; confident and wrong is the dangerous mix', AMBER_RGB),\n         ('AUTOMATION BIAS', 'when the AI is usually right, people stop checking, and the rare miss sails through', BLUEVIOLET_RGB)]\nfor i, (lab, bod, c) in enumerate(items):\n    r = i // 2\n    col = i % 2\n    x = body_l + col * (cw + gap)\n    y = body_top + r * (ch + gap)\n    _add_rect(slide, left=x, top=y, width=cw, height=ch, fill_rgb=c)\n    _add_text(slide, lab, left=x + 0.26, top=y + 0.22, width=cw - 0.52, height=0.42,\n              size=18, color_rgb=_text_on(c), font=MONO_FONT, bold=True)\n    _add_text(slide, bod, left=x + 0.26, top=y + 0.78, width=cw - 0.52, height=ch - 1.0,\n              size=15, color_rgb=_text_on(c), font=SANS_FONT)",
+        "lede": "",
+        "notes": "Before the technical content, plant the healthy skepticism that runs all week. These\nsystems fail in subtle, human ways. Shortcut learning: a tumor detector secretly keys on\nthe ruler that techs place next to tumors, so it \"detects\" rulers. Distribution shift: it\nwas tuned on one hospital's camera and quietly degrades on yours. Overconfidence: it reports\n90% on everything because nobody calibrated it. Automation bias: the scariest one socially,\nwhen the AI is right 99% of the time, the human stops double-checking, so the 1% miss goes\nstraight to the patient. The takeaway: knowing how these break is the real expertise, more\nthan chasing a higher accuracy number. Transition: to reason about any of it, we start with\nwhat an image actually is.",
+        "section_label": "The clinical problem",
+        "title": "How these systems fail"
+      },
+      "slide_id": "h1-the-clinical-problem/h2-how-these-systems-fail"
     },
     {
       "content_hash": "b1c7f82ba1286021206a9c0cc90ba660361a14438000f08386faa086193495f4-divider",
@@ -48,7 +100,7 @@
       "slide_id": "divider-h1-what-is-an-image"
     },
     {
-      "content_hash": "8faca2ad796884b7fd8e7406f00f5fa097c68ff0b723ea1926acc2e26f5c19fb",
+      "content_hash": "a58909bfeeba6533a30976e4e1e1daf8b0e5d2a25c0d7d4e797af61364b976c9",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
@@ -61,78 +113,213 @@
       "slide_id": "h1-what-is-an-image/h2-an-image-is-just-numbers"
     },
     {
-      "content_hash": "c1db453182effcfe616912f8cbb1a64494855716bec4cc3b81cdcaf17b7e5558-divider",
-      "kind": "section-divider",
+      "content_hash": "51c12d933fed2b0e5670af8d7af5cb2db3fc872893658d8952350129e8f8612a",
+      "kind": "freeform",
       "params": {
-        "accent_hex": "#40E0D0",
-        "label": "What is learning"
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/concept_augmentation.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "We never have enough labeled medical images. Augmentation is the cheapest fix: take each\ntraining image and apply small changes that do not change the right answer, a flip, a\nrotation, a brightness shift. The eye is still the same eye, still the same label, but the\npixels are different numbers, so the model effectively sees more variety and is less able to\nmemorize. Make the point that this is standard practice and basically free. Transition: now\nthat the image is numbers, what does it actually mean for the model to learn?",
+        "section_label": "What is an image",
+        "title": "Augmentation: free training data"
       },
-      "slide_id": "divider-h1-what-is-learning"
+      "slide_id": "h1-what-is-an-image/h2-augmentation-free-training-data"
     },
     {
-      "content_hash": "231531c5e6b144adb839b81d62c1ee4c8642b9acdcf0c331ba8c0ac8088593b9",
+      "content_hash": "6619fc02f5ba3a00d0f58974dcfd8bf166da98e6d6acb533ade9dac9d5395004-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#FF1493",
+        "label": "How a model learns"
+      },
+      "slide_id": "divider-h1-how-a-model-learns"
+    },
+    {
+      "content_hash": "1d4bcf20d676586af740b1a3468c87f3164ee02441f16665ca27032ad99614d8",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
         "code": "bw = 3.3\nbh = 2.7\ngap = (body_w - 3 * bw) / 2\nch = 1.25\nstack_h = bh + 0.6 + ch\ny = body_top + max(0.0, (body_h - stack_h) / 2)\nxs = [body_l, body_l + bw + gap, body_l + 2 * (bw + gap)]\nlabels = [('INPUT', 'the image, as a pile of numbers', TURQUOISE_RGB),\n          ('f(x)', 'the model: knobs we tune', INK_RGB),\n          ('OUTPUT', 'a label: refer, or not', DEEPPINK_RGB)]\nfor x, (lab, bod, c) in zip(xs, labels):\n    _add_rect(slide, left=x, top=y, width=bw, height=bh, fill_rgb=c)\n    _add_text(slide, lab, left=x + 0.2, top=y + bh * 0.30, width=bw - 0.4, height=0.7,\n              size=30, color_rgb=_text_on(c), font=MONO_FONT, bold=True, align=PP_ALIGN.CENTER)\n    _add_text(slide, bod, left=x + 0.25, top=y + bh * 0.62, width=bw - 0.5, height=0.8,\n              size=15, color_rgb=_text_on(c), font=SANS_FONT, align=PP_ALIGN.CENTER)\nfor i in range(2):\n    ax = xs[i] + bw + 0.12\n    _add_flat_shape(slide, MSO_SHAPE.RIGHT_ARROW, left=ax, top=y + bh / 2 - 0.22,\n                    width=gap - 0.24, height=0.44, fill_rgb=AMBER_RGB)\ncy = y + bh + 0.6\n_add_rect(slide, left=body_l, top=cy, width=body_w, height=ch, fill_rgb=AMBER_RGB)\n_add_text(slide, 'LEARNING  =  adjust the knobs until the guesses match the truth on examples we already know',\n          left=body_l + 0.35, top=cy, width=body_w - 0.7, height=ch,\n          size=18, color_rgb=INK_RGB, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)",
         "lede": "",
         "notes": "Demystify the word \"model\". A classifier is just a function: numbers go in, a label comes\nout. For us, the image numbers go in, and out comes \"refer this eye\" or \"do not\". The\nfunction has knobs, often millions of them. \"Learning\" is nothing mystical: it is turning\nthose knobs until the function's guesses line up with the right answers on examples we\nalready have labels for. That is it. Every model today does the same thing; what differs\nis how much structure the function is allowed to see in the numbers. Transition: so let\nus build five of them, each one able to see more than the last.",
-        "section_label": "What is learning",
+        "section_label": "How a model learns",
         "title": "A classifier is a function"
       },
-      "slide_id": "h1-what-is-learning/h2-a-classifier-is-a-function"
+      "slide_id": "h1-how-a-model-learns/h2-a-classifier-is-a-function"
     },
     {
-      "content_hash": "0dc2586a47cd478dc0db5b9d5898aa57ef98fadde9a8f66707c5ab6c8b2f36cd",
+      "content_hash": "d8710475d63154d675b8961ce9fc314c390d3c4784bc1f05f71001ab58fca42a",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/concept_data_split.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "This is the single most important habit in machine learning and the easiest to get wrong, so\nslow down. We split our data into three piles. The model trains on the biggest one. We use a\nvalidation pile to make choices and watch for trouble. And we lock away a test pile that the\nmodel does not see until the very end, to get an honest grade. The analogy that lands: testing\non data the model already trained on is like giving a student the exact exam questions to\npractice, then being amazed they ace the exam. Transition: so how do the knobs actually move?",
+        "section_label": "How a model learns",
+        "title": "Split the data: learn, tune, grade"
+      },
+      "slide_id": "h1-how-a-model-learns/h2-split-the-data-learn-tune-grade"
+    },
+    {
+      "content_hash": "a54bd6c78ef7178f9b53140147eeeb272ecf30977a1d78cef9b25508c322949a",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/concept_gradient_descent.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "Demystify training itself. The model makes predictions, measures how wrong it is with a number\ncalled the loss, and then nudges every one of its millions of knobs a tiny bit in the direction\nthat reduces the loss. Do that over and over and the error rolls downhill into a valley, the\nbest the model can do. That is gradient descent, and it is the engine under literally every\nmodel this week. Keep it intuitive, a ball settling into a bowl; no calculus needed.\nTransition: but there is a way this goes wrong that you have to watch for.",
+        "section_label": "How a model learns",
+        "title": "Learning = rolling downhill"
+      },
+      "slide_id": "h1-how-a-model-learns/h2-learning-rolling-downhill"
+    },
+    {
+      "content_hash": "2b8dee1bd1b121b76181a96dea52ffd7519d3dc06d56e2328a946c1438d6ef5a",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/concept_overfitting.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "Overfitting is the trap that catches everyone. If you train too long, the model stops learning\nthe general patterns of disease and starts memorizing the exact training images, down to their\nquirks. It scores beautifully on data it has seen and falls apart on anything new, which is\nuseless for real patients. The tell: training accuracy keeps climbing while validation accuracy\nstalls or drops. That gap is the warning light, and it is exactly why we kept a separate\nvalidation pile. Transition: with the mechanics in hand, let us build the actual models.",
+        "section_label": "How a model learns",
+        "title": "Overfitting: memorizing vs learning"
+      },
+      "slide_id": "h1-how-a-model-learns/h2-overfitting-memorizing-vs-learning"
+    },
+    {
+      "content_hash": "4cae79e168d48ec69a0e7052a17f3a31c1c7c3c823a5b9b5f2e463b3d7730d25-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#FF1493",
+        "label": "Five models, one ladder"
+      },
+      "slide_id": "divider-h1-five-models-one-ladder"
+    },
+    {
+      "content_hash": "04aa154286b9000ad2d8af4c7ff0d29680959136e5611e3fc5f21937a3148b7f",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
         "code": "steps = [('1', 'Logistic\\nregression', 'one straight line', MUTED_RGB),\n         ('2', 'MLP', 'curved, still blind to space', MUTED_RGB),\n         ('3', 'CNN', 'sees shapes', TURQUOISE_RGB),\n         ('4', 'ResNet', 'borrows trained vision', DEEPPINK_RGB),\n         ('5', 'ViT', 'patches that attend', BLUEVIOLET_RGB)]\nn = len(steps)\ngap = 0.16\nsw = (body_w - (n - 1) * gap) / n\nfor i, (num, name, sub, c) in enumerate(steps):\n    h = body_h * (0.40 + 0.135 * i)\n    x = body_l + i * (sw + gap)\n    yt = body_top + body_h - h\n    _add_rect(slide, left=x, top=yt, width=sw, height=h, fill_rgb=c)\n    tc = _text_on(c)\n    _add_text(slide, num, left=x + 0.14, top=yt + 0.14, width=sw - 0.28, height=0.6,\n              size=30, color_rgb=tc, font=MONO_FONT, bold=True)\n    _add_text(slide, name, left=x + 0.14, top=yt + 0.78, width=sw - 0.28, height=0.8,\n              size=16, color_rgb=tc, font=MONO_FONT, bold=True)\n    _add_text(slide, sub, left=x + 0.14, top=yt + h - 0.95, width=sw - 0.28, height=0.85,\n              size=12, color_rgb=tc, font=SANS_FONT)",
         "lede": "",
         "notes": "This is the spine of the whole day. We solve the same task five times, each model a rung\nhigher than the last, and we watch the accuracy climb. Logistic regression flattens the\nimage and draws one straight boundary, no idea pixels form shapes. An MLP bends that\nboundary but is still blind to space. A CNN slides filters across the image and finally\nsees structure. ResNet borrows vision already learned from a million everyday photos. The\nVision Transformer chops the image into patches that pay attention to each other. The\ngray rungs are the flat-pixel models, then the color rungs are where it gets good.\nTransition: let us look closely at the three that matter most, starting with the CNN.",
-        "section_label": "What is learning",
-        "title": "Five models, one ladder"
+        "section_label": "Five models, one ladder",
+        "title": "The ladder we build"
       },
-      "slide_id": "h1-what-is-learning/h2-five-models-one-ladder"
+      "slide_id": "h1-five-models-one-ladder/h2-the-ladder-we-build"
     },
     {
-      "content_hash": "f312cbec9c67a849770f282790f96bfb66993c39807f86f3b687fb192c9adc3a",
+      "content_hash": "0dad0da1020a706aa91815a08b128ac1b688d5760fbebecaf90678e914a2ae86",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "gap = 0.40\ncw = (body_w - gap) / 2\nch = body_h * 0.66\nmodels = [('LOGISTIC REGRESSION', 'flatten the image into one long row, then draw a single straight-line boundary between refer and clear', 'the simplest thing that works', TURQUOISE_RGB),\n          ('MLP', 'stack a few layers so the boundary can bend into curves', 'more flexible, but still a flat list of numbers', DEEPPINK_RGB)]\nfor i, (name, what, note, c) in enumerate(models):\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=ch, fill_rgb=PAPER_RGB)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=0.95, fill_rgb=c)\n    _add_text(slide, name, left=x + 0.28, top=body_top, width=cw - 0.56, height=0.95,\n              size=22, color_rgb=_text_on(c), font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, what, left=x + 0.28, top=body_top + 1.30, width=cw - 0.56, height=1.5,\n              size=16, color_rgb=INK_RGB, font=SANS_FONT)\n    _add_text(slide, note, left=x + 0.28, top=body_top + ch - 0.75, width=cw - 0.56, height=0.6,\n              size=14, color_rgb=INK_RGB, font=SANS_FONT, italic=True)\ncy = body_top + ch + 0.30\n_add_rect(slide, left=body_l, top=cy, width=body_w, height=body_h - ch - 0.30, fill_rgb=AMBER_RGB)\n_add_text(slide, 'Both throw away the picture. Neither can see that pixels next to each other belong together.',\n          left=body_l + 0.35, top=cy, width=body_w - 0.7, height=body_h - ch - 0.30,\n          size=17, color_rgb=INK_RGB, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)",
+        "lede": "",
+        "notes": "Give the two simplest models their due without dwelling. Logistic regression flattens the\nimage into one long row of numbers and draws a single straight cut between refer and clear; it\nis the honest baseline, the dumbest thing that could work. An MLP stacks a few layers so that\ncut can bend into curves, more powerful, but it still sees a flat list with no notion of which\npixels are neighbors. The punchline on the amber bar is the whole reason the next rung exists:\nboth of these threw away the 2D picture. Transition: the CNN is what happens when we stop doing\nthat.",
+        "section_label": "Five models, one ladder",
+        "title": "Rungs 1 and 2: flatten the pixels"
+      },
+      "slide_id": "h1-five-models-one-ladder/h2-rungs-1-and-2-flatten-the-pixels"
+    },
+    {
+      "content_hash": "f43ce0a9738172cc421b0dbc694c36f23851ac71f0f4a8ab5f6bad3f22578583",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
         "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/concept_cnn.png', left=body_l, top=body_top + 0.10, max_w=body_w, max_h=body_h - 0.20)",
         "lede": "",
         "notes": "The jump from MLP to CNN is the cleanest idea in computer vision. A plain network treats\nevery pixel as unrelated to its neighbors, which is absurd: in a real image, nearby pixels\nform edges, blobs, lesions. A convolutional network slides one small filter across the\nWHOLE image, so if it learns to detect a hemorrhage in the top-left, it detects it\nanywhere. That weight-sharing is what \"seeing spatial structure\" means, and it is why the\nCNN beats the flat-pixel models. Point at the highlighted patch in the figure: the filter\nlooks at a little neighborhood, produces one number in the feature map, then slides over.\nTransition: CNNs are great, but training one from scratch on a small medical set is hard,\nso the next rung borrows a brain.",
-        "section_label": "What is learning",
-        "title": "The CNN sees structure"
+        "section_label": "Five models, one ladder",
+        "title": "Rung 3: the CNN sees structure"
       },
-      "slide_id": "h1-what-is-learning/h2-the-cnn-sees-structure"
+      "slide_id": "h1-five-models-one-ladder/h2-rung-3-the-cnn-sees-structure"
     },
     {
-      "content_hash": "87016db772a2dd91973eef7146310192fc79ffdd52956593db1076861bb530b6",
+      "content_hash": "22b1652f81466e1ee42cda6c566b3cac0a05a476f2b4e101456d8565e6a816c9",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
         "code": "fig_h = body_h * 0.60\n_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/concept_resnet.png', left=body_l, top=body_top, max_w=body_w, max_h=fig_h)\nchip_y = body_top + fig_h + 0.22\nch = body_h - fig_h - 0.30\ngap = 0.30\ncw = (body_w - gap) / 2\nchips = [('SKIP CONNECTION', 'carry the input forward so even very deep networks train', BLUEVIOLET_RGB),\n         ('TRANSFER LEARNING', 'freeze a network pretrained on a million photos, teach one new layer', DEEPPINK_RGB)]\nfor i, (lab, bod, c) in enumerate(chips):\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=chip_y, width=cw, height=ch, fill_rgb=c)\n    _add_text(slide, lab, left=x + 0.22, top=chip_y + 0.14, width=cw - 0.44, height=0.34,\n              size=15, color_rgb=_text_on(c), font=MONO_FONT, bold=True)\n    _add_text(slide, bod, left=x + 0.22, top=chip_y + 0.52, width=cw - 0.44, height=ch - 0.62,\n              size=14, color_rgb=_text_on(c), font=SANS_FONT)",
         "lede": "",
         "notes": "ResNet brings two ideas. First, the skip connection: it adds the block's input straight\nto its output, which sounds trivial but is what lets networks get 50+ layers deep without\nthe training falling apart. Second, and the one students will feel in the lab: transfer\nlearning. Instead of learning vision from scratch, we take a ResNet already trained on a\nmillion everyday photos, freeze it, and train only a small new final layer for our eye\ntask. It already knows edges and textures; we just teach it which combinations mean\n\"refer\". This is the single biggest practical trick in modern vision, and it is the jump\non the leaderboard. Transition: the last rung swaps convolutions for attention.",
-        "section_label": "What is learning",
-        "title": "ResNet: borrow a trained brain"
+        "section_label": "Five models, one ladder",
+        "title": "Rung 4: ResNet borrows a trained brain"
       },
-      "slide_id": "h1-what-is-learning/h2-resnet-borrow-a-trained-brain"
+      "slide_id": "h1-five-models-one-ladder/h2-rung-4-resnet-borrows-a-trained-brain"
     },
     {
-      "content_hash": "5a6a7d765b16d122bc3b9fb3ff793fe682de4d33e5a7745696e7d021df58731a",
+      "content_hash": "24bd4326f7729cceb36591db3d029a1ab30f3472e75004a1cd5c3d68834d247c",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
         "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/concept_vit.png', left=body_l, top=body_top + 0.10, max_w=body_w, max_h=body_h - 0.20)",
         "lede": "",
         "notes": "The Vision Transformer is the newest rung and the bridge to tomorrow. It throws out\nconvolutions entirely. Instead it chops the image into a grid of patches, turns each patch\ninto a vector, and uses \"attention\" to let the patches weigh how much they matter to each\nother, before making a call. Do not over-explain attention here; the one sentence that\nlands is: the model decides which parts of the image to focus on. Keep this slide quick,\nbecause the parallel to language models is the payoff and we make it explicit at the end\nof the day. Transition: that is the full ladder; now you go build it.",
-        "section_label": "What is learning",
-        "title": "Vision Transformer: patches that attend"
+        "section_label": "Five models, one ladder",
+        "title": "Rung 5: the Vision Transformer"
       },
-      "slide_id": "h1-what-is-learning/h2-vision-transformer-patches-that-attend"
+      "slide_id": "h1-five-models-one-ladder/h2-rung-5-the-vision-transformer"
+    },
+    {
+      "content_hash": "904e8fd2e12b17d598f1fc5e2cf06d3c88ef14eea6a9ec847b32947deedce07a-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#40E0D0",
+        "label": "Did it work?"
+      },
+      "slide_id": "divider-h1-did-it-work"
+    },
+    {
+      "content_hash": "81256e7c3ad9030a20b7ee25618b4f3dc73006bc1396fc26a1971f65dbc5ece9",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/eval_accuracy_lies.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "This is the most important evaluation idea, so open the section with the gotcha. In screening,\nmost people are healthy, so the classes are imbalanced. If 90 out of 100 patients are fine, a\nlazy model that just says \"healthy, healthy, healthy\" to everyone scores 90% accuracy, and yet\nit misses every single sick patient, the exact people it was built to catch. A 90% number that\nhides total failure. The lesson: in medicine especially, one accuracy number can be worse than\nuseless. Transition: so we look at all four outcomes instead.",
+        "section_label": "Did it work?",
+        "title": "Accuracy can lie"
+      },
+      "slide_id": "h1-did-it-work/h2-accuracy-can-lie"
+    },
+    {
+      "content_hash": "f193d256b3d441f3f32f7dde6a96cec9edae32a4ce6edf455722c33d3bf947df",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/eval_confusion.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "The confusion matrix replaces one number with four honest outcomes. The model can be right two\nways, correctly refer a sick patient or correctly clear a healthy one. And it can be wrong two\nways that are NOT equal: a false alarm, where it refers a healthy person, costs a needless\nspecialist visit; a missed case, where it clears a sick person, can cost that person their\nsight. Drive the asymmetry home, because it is the entire reason medical AI is evaluated\ncarefully. Transition: from these four boxes come the two numbers clinicians live by.",
+        "section_label": "Did it work?",
+        "title": "The confusion matrix"
+      },
+      "slide_id": "h1-did-it-work/h2-the-confusion-matrix"
+    },
+    {
+      "content_hash": "0d454ea636c3b74736060eaa4f202dbcefa9671f1b3156eb768f779a64a0dc79",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/eval_sens_spec.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "Define the two words students will hear constantly in medicine. Sensitivity: of the people who\ntruly have disease, what fraction did we catch? Specificity: of the people who are truly\nhealthy, what fraction did we correctly clear? They trade off. For a SCREENING tool we usually\npush for high sensitivity, because the cost of missing disease, here blindness, is so much\nworse than the cost of a false alarm, a second look. Connect it back: this is why \"accuracy\"\nalone never tells the story. Transition: and you, the builder, get to choose the balance.",
+        "section_label": "Did it work?",
+        "title": "The two numbers that matter"
+      },
+      "slide_id": "h1-did-it-work/h2-the-two-numbers-that-matter"
+    },
+    {
+      "content_hash": "a0da29b2e4a3fd9ee9c4c497b9e17197f1c9c53bb9c301ef6fc0389812711029",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/eval_threshold.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "End the evaluation section by handing students agency. The model does not output a hard yes or\nno; it outputs a confidence, and YOU pick the threshold for action. Set a low bar for referral\nand you catch more disease but raise more false alarms; set a high bar and the reverse. There\nis no magic point that wins on both, the curves cross. The clinical context decides: a blindness\nscreener leans toward catching everything. The takeaway: evaluation is a values question, not\njust a math question. Transition: enough theory, time to build.",
+        "section_label": "Did it work?",
+        "title": "You choose the trade-off"
+      },
+      "slide_id": "h1-did-it-work/h2-you-choose-the-trade-off"
     },
     {
       "content_hash": "d040621cb1fd7a7aebb8e805855244dfe7a702015ba46ec3459edad0b2105ada-divider",
@@ -190,6 +377,19 @@
         "title": "The leaderboard you built"
       },
       "slide_id": "h1-what-you-built/h2-the-leaderboard-you-built"
+    },
+    {
+      "content_hash": "d9bf52640d858e29674169215dc6ffe9dd986042827e1e4893b26bd1f7443d97",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "cards = [('WHOSE EYES?', 'if the data skews to one country, age, or camera, the model can quietly underperform on everyone else', TURQUOISE_RGB),\n         ('CONSENT & PRIVACY', 'these are real patients; who agreed to this use, and how is the data protected?', DEEPPINK_RGB),\n         ('FAIRNESS IS TESTABLE', 'report accuracy per subgroup, not just overall; a good average can hide a bad gap', AMBER_RGB)]\nn = len(cards)\ngap = 0.30\ncw = (body_w - (n - 1) * gap) / n\nfor i, (lab, bod, c) in enumerate(cards):\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=body_h, fill_rgb=PAPER_RGB)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=0.90, fill_rgb=c)\n    _add_text(slide, lab, left=x + 0.26, top=body_top, width=cw - 0.52, height=0.90,\n              size=18, color_rgb=_text_on(c), font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, bod, left=x + 0.26, top=body_top + 1.25, width=cw - 0.52, height=body_h - 1.6,\n              size=15, color_rgb=INK_RGB, font=SANS_FONT)",
+        "lede": "",
+        "notes": "Do not skip the ethics, especially in a healthcare course. A model is only as fair as the data\nit learned from, and real deployed systems have been caught working worse on underrepresented\ngroups, for example performing differently across skin tones or in populations the training set\nbarely included. Three things to leave them with: ask whose data trained it, because skew\nbecomes bias; remember these are real patients with a right to consent and privacy; and stress\nthat fairness is testable, you report accuracy per subgroup, not just one overall number that\ncan hide a bad gap. Transition: now, finally, what did all this build?",
+        "section_label": "What you built",
+        "title": "Where the data comes from matters"
+      },
+      "slide_id": "h1-what-you-built/h2-where-the-data-comes-from-matters"
     },
     {
       "content_hash": "a32063d8534af28cef54b589f14144d9acd2fd1ef22d7782e6647e9b383015de",

@@ -40,6 +40,17 @@ def figtitle(fig, text, *, color=INK, y=1.04):
     fig.suptitle(text, fontsize=16, fontweight="bold", family="Geist Mono", color=color, y=y)
 
 
+def _lum(hexc):
+    h = hexc.lstrip("#")
+    r, g, b = (int(h[i:i + 2], 16) / 255 for i in (0, 2, 4))
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b
+
+
+def txt_on(color):
+    """Ink on light fills (turquoise/amber), white on dark fills (deeppink/blueviolet)."""
+    return INK if _lum(color) > 0.55 else "white"
+
+
 # --------------------------------------------------------------------------- #
 # 1. Diabetic retinopathy screening: the deployment story
 # --------------------------------------------------------------------------- #
@@ -82,7 +93,7 @@ def fig_dr_screening():
         axR.add_patch(FancyBboxPatch((0.04, y - 0.11), 0.92, 0.24,
                                      boxstyle="round,pad=0.01,rounding_size=0.02",
                                      facecolor=c, edgecolor="none"))
-        tc = INK if c == AMBER else "white"
+        tc = txt_on(c)
         axR.text(0.12, y, big, fontsize=26, fontweight="bold", va="center",
                  ha="left", color=tc, family="Geist Mono")
         axR.text(0.46, y, small, fontsize=12, va="center", ha="left", color=tc)
@@ -280,7 +291,7 @@ def fig_bridge():
             ax.add_patch(FancyBboxPatch((x, 0.7), 1.0, 0.8,
                                         boxstyle="round,pad=0.02,rounding_size=0.06",
                                         facecolor=color, edgecolor="white", lw=1.2))
-            tc = INK if color == AMBER else "white"
+            tc = txt_on(color)
             ax.text(x + 0.5, 1.1, it, ha="center", va="center", fontsize=12,
                     color=tc, fontweight="bold", family="Geist Mono")
         ax.annotate("", xy=(6.4, 1.1), xytext=(5.9, 1.1),

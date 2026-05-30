@@ -7,37 +7,65 @@ org: "Outset"
 date: "2026-07-06"
 ---
 
-# Why this matters
+# The clinical problem
 
 ---
 
-## AI already screens for blindness
+## AI is already in the clinic
 
-Diabetic retinopathy is damage to the back of the eye from diabetes. Caught early and referred to a doctor, the blindness it causes is preventable. The problem is scale: there are far more diabetic eyes than specialists to read them. That is exactly the gap automated screening was built to close.
+This is not science fiction or a someday technology. AI systems are reading medical data across nearly every specialty right now, helping doctors find disease earlier and screen more people than specialists could alone. Today we work in one of them: the eye.
 
-![Diabetic retinopathy screening](figures/intro_dr_screening.png)
-
-- **The data:** color photos of the retina, the back of the eye
-- **The task:** does this eye need to see a doctor? Yes or no
-- **Why it's famous:** among the first medical AI deployed at scale in real clinics
+![AI across medical specialties](figures/clinical_ai_in_medicine.png)
 
 ---
 
-## Real systems, real failure modes
+## What diabetic retinopathy does to the eye
 
-Medical AI is already in clinics. Knowing how it breaks is the actual skill.
+Diabetes slowly damages the tiny blood vessels at the back of the eye. They leak, bleed, and eventually sprout fragile new vessels that can destroy vision. It is one of the leading causes of blindness in working-age adults. The cruel part: caught early and treated, almost all of that blindness is preventable.
 
-### Deployed today
-DR screening in India and Thailand, FDA-cleared mammogram triage, sepsis early-warning in hospital records.
+![Diabetic retinopathy progression](figures/clinical_dr_progression.png)
+
+---
+
+## A screening problem AI was built for
+
+Hundreds of millions of people have diabetes, and every one of them should have their eyes checked each year. There are nowhere near enough eye specialists to do it, especially in rural and low-income areas. So millions go unscreened and lose vision they did not have to. That gap, huge need and scarce experts, is exactly where automated screening helps.
+
+![The access gap](figures/clinical_access_gap.png)
+
+---
+
+## From research to the clinic, fast
+
+This is one of the clearest success stories in medical AI, and it happened quickly. In a few years it went from a research paper to an FDA-authorized device that makes a screening decision on its own, to real clinics in India and Thailand.
+
+![Deployment timeline](figures/clinical_deployment.png)
+
+---
+
+## Reading the retina
+
+Eye doctors grade diabetic retinopathy on a scale from 0 to 4, from no disease to sight-threatening. For screening, all that detail collapses to one yes/no line: grade 2 or worse means refer this patient to a specialist. That single line, refer or not, is the task you will build a model for all afternoon.
+
+![The 0 to 4 severity scale](figures/clinical_severity_scale.png)
+
+---
+
+## How these systems fail
+
+Medical AI is powerful, but knowing how it breaks is the real skill, and the failures are subtle.
 
 ### Shortcut learning
-The model reads the ruler in the image, not the tumor. It learns the wrong cue.
+The model reads the ruler in the image, not the tumor. It latches onto the wrong cue.
 
 ### Distribution shift
-Your hospital is not the training hospital. Accuracy quietly drops on new equipment and new populations.
+Your hospital is not the training hospital. Accuracy quietly drops on new cameras and new populations.
 
 ### Overconfidence
 "90% sure" can mean almost nothing if the model was never calibrated. Confident and wrong is the dangerous combination.
+
+### Automation bias
+When the AI is usually right, people stop checking. The rare miss then sails straight through.
 
 ---
 
@@ -51,73 +79,138 @@ Before any model can learn, the picture has to become numbers. A grayscale image
 
 ![An image is numbers](figures/concept_image_numbers.png)
 
-- **One pixel:** a brightness value from 0 to 255
-- **One color image:** 224 x 224 x 3, about 150,000 numbers
-- **Augmentation:** flip, rotate, brighten the same eye, and the model sees more variety without new data
+---
+
+## Augmentation: free training data
+
+We never have as many labeled medical images as we want. Augmentation is a cheap trick: take each image and make small changes that do not change the answer. The eye is still the same eye whether you flip it or brighten it, but to the model it is a brand new set of numbers. More variety, less memorizing, no new patients required.
+
+![Augmentation](figures/concept_augmentation.png)
 
 ---
 
-# What is learning
+# How a model learns
 
 ---
 
 ## A classifier is a function
 
-Learning means tuning a function until its answers match the truth. Same input every time (the numbers), same kind of output (a label). What changes from model to model is how much structure the function can see.
+Demystify the word "model". A classifier is just a function: numbers go in, a label comes out. What "learning" means is mechanical, not magical, and it is the same for all five models we build. What changes is only how much structure the function is allowed to see.
 
 ### Input
 A pile of numbers: the image, flattened or kept as a grid.
 
+### f(x)
+The model: millions of adjustable knobs.
+
 ### Output
 A label: refer this eye to a doctor, or not.
 
-### "Learning"
-Adjust the function's knobs until its guesses line up with the real answers on examples we already know.
+---
+
+## Split the data: learn, tune, grade
+
+The most important habit in machine learning, and the easiest to get wrong. We split the data into three piles. The model learns from one, we tune our choices on another, and we save a third that the model never sees until the very end. Testing on data the model already studied is like grading a student on the exact questions they practiced: it looks great and means nothing.
+
+![Train, validation, test split](figures/concept_data_split.png)
 
 ---
 
-## Five models, one ladder
+## Learning = rolling downhill
 
-We build the same task five ways, each rung seeing more structure than the last. You write the missing pieces; the accuracy climbs as you go.
+So how do the knobs actually get set? The model makes guesses, measures how wrong it is (the "loss"), and nudges every knob a little in the direction that makes it less wrong. Repeat millions of times and the error rolls downhill into a valley. That is gradient descent, the engine under every model today.
 
-### 1. Logistic regression
-Flatten the image, draw one straight-line boundary. The simplest thing that works.
-
-### 2. MLP
-A small neural net. Curved boundaries now, but still blind to space.
-
-### 3. CNN
-Slides filters across the image. Finally understands that nearby pixels form shapes.
-
-### 4. ResNet
-A 50-layer network pretrained on a million photos. We reuse its vision.
-
-### 5. Vision Transformer
-Splits the image into patches that pay attention to each other. The bridge to tomorrow.
+![Gradient descent](figures/concept_gradient_descent.png)
 
 ---
 
-## The CNN sees structure
+## Overfitting: memorizing vs learning
 
-A plain neural net treats every pixel as unrelated. A convolutional network slides a small filter across the whole image, so it learns to spot an edge or a lesion anywhere it appears. That shared filter is the whole idea.
+There is a failure mode that fools beginners and experts alike. If you train too long, the model stops learning the disease and starts memorizing the exact training images. It aces the data it has seen and flops on anything new. We catch it by watching the validation pile: when training accuracy keeps climbing but validation stalls, that is the warning light.
+
+![Overfitting](figures/concept_overfitting.png)
+
+---
+
+# Five models, one ladder
+
+---
+
+## The ladder we build
+
+We solve the same task five ways, each rung able to see more structure than the last, and we watch the accuracy climb. You fill in the missing pieces of each one in the lab. Same data, five models, one clear story.
+
+---
+
+## Rungs 1 and 2: flatten the pixels
+
+The two simplest models throw away the picture and treat it as one long list of numbers.
+
+### Logistic regression
+Flatten the image into a row, draw one straight-line boundary between refer and clear. The simplest thing that works, and a fine sanity check.
+
+### MLP (a small neural net)
+Stack a few layers so the boundary can bend. More flexible than logreg, but it still sees a flat list of numbers with no idea which pixels sit next to which.
+
+---
+
+## Rung 3: the CNN sees structure
+
+This is the jump that matters. A plain network treats every pixel as unrelated to its neighbors, which is absurd for an image. A convolutional network slides one small filter across the whole image, so if it learns to spot a hemorrhage in one corner, it spots it anywhere. That shared filter is what "seeing spatial structure" means.
 
 ![How a CNN works](figures/concept_cnn.png)
 
 ---
 
-## ResNet: borrow a trained brain
+## Rung 4: ResNet borrows a trained brain
 
-Training a deep network from scratch on a small medical dataset is hard. ResNet's trick is twofold: a skip connection that lets very deep networks train at all, and ImageNet pretraining we can reuse. We freeze the borrowed vision and teach only a new final layer.
+Training a deep network from scratch on a few thousand medical images is hard. ResNet brings two ideas: a skip connection that lets networks get very deep without falling apart, and the option to reuse a network already trained on a million everyday photos. We freeze that borrowed vision and teach only a small new final layer. This is the single biggest practical trick in modern vision.
 
 ![ResNet residual block](figures/concept_resnet.png)
 
 ---
 
-## Vision Transformer: patches that attend
+## Rung 5: the Vision Transformer
 
-The newest rung. Chop the image into patches, turn each into a vector, and let the patches decide which of them matter to each other. No convolutions at all, just attention.
+The newest rung, and the bridge to tomorrow. It throws out convolutions: chop the image into patches, turn each into a vector, and let the patches use attention to decide which of them matter to each other. Keep this one in mind, because it is the same machinery as the language models we use on Day 2.
 
 ![Vision Transformer](figures/concept_vit.png)
+
+---
+
+# Did it work?
+
+---
+
+## Accuracy can lie
+
+Before we trust any number, a warning. Most patients screened are healthy, so a lazy model that refers nobody can score 90% accuracy while missing every single sick patient. In medicine that "accurate" model is worthless, even dangerous. One number is never enough.
+
+![Accuracy can lie](figures/eval_accuracy_lies.png)
+
+---
+
+## The confusion matrix
+
+Instead of one number, we look at four outcomes. The model can correctly refer or correctly clear, or it can make two very different mistakes: a false alarm, or a missed case. The whole point: those two errors are not equal. Missing a referral can mean preventable blindness; a false alarm is a wasted visit.
+
+![The confusion matrix](figures/eval_confusion.png)
+
+---
+
+## The two numbers that matter
+
+From those four outcomes come the two numbers clinicians actually care about. Sensitivity asks: of the truly sick, how many did we catch? Specificity asks: of the truly healthy, how many did we correctly clear? A screening tool lives and dies on sensitivity, because the cost of a miss is so high.
+
+![Sensitivity vs specificity](figures/eval_sens_spec.png)
+
+---
+
+## You choose the trade-off
+
+Here is the part students find surprising: the model does not hand you one answer, it hands you a dial. Lower the bar for referral and you catch more disease but raise more false alarms. There is no setting that wins on both. The clinical context, not the algorithm, decides where to put the dial.
+
+![The decision threshold](figures/eval_threshold.png)
 
 ---
 
@@ -164,6 +257,21 @@ The one rule all week: always be able to explain what your code does.
 Same eye scans, five models. The flat-pixel models hover near a coin flip. The CNN edges up because it sees structure. Then transfer learning takes a leap. That jump is the lesson.
 
 ![The five-model leaderboard](figures/result_ladder.png)
+
+---
+
+## Where the data comes from matters
+
+A model is only as fair as the data it learned from. Real medical AI has been caught working worse on the groups least represented in its training set. This is not a side issue, it is the issue.
+
+### Whose eyes?
+If training data skews to one country, age, or camera, the model can quietly underperform on everyone else.
+
+### Consent and privacy
+These are real patients. Who agreed to this use, and how is the data protected?
+
+### Fairness is testable
+The honest move: report accuracy per subgroup, not just overall. A good average can hide a bad gap.
 
 ---
 

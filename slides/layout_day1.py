@@ -23,47 +23,84 @@ def slide(key, code, notes):
 
 
 # --------------------------------------------------------------------------- #
-# 1. AI already screens for blindness  (figure: dr_screening + 3 chips)
+# Clinical-problem section: 5 figure-dominant slides + a failure-modes 2x2
 # --------------------------------------------------------------------------- #
-slide("ai-already-screens", f"""
-fig_h = body_h * 0.64
-_fit_image(slide, '{FIG}/intro_dr_screening.png', left=body_l, top=body_top, max_w=body_w, max_h=fig_h)
-chip_y = body_top + fig_h + 0.22
-ch = body_h - fig_h - 0.30
-gap = 0.26
-cw = (body_w - 2 * gap) / 3
-chips = [('THE DATA', 'color photos of the retina', TURQUOISE_RGB),
-         ('THE TASK', 'refer this eye, yes or no?', DEEPPINK_RGB),
-         ('WHY FAMOUS', 'first medical AI at scale', AMBER_RGB)]
-for i, (lab, bod, c) in enumerate(chips):
-    x = body_l + i * (cw + gap)
-    _add_rect(slide, left=x, top=chip_y, width=cw, height=ch, fill_rgb=c)
-    _add_text(slide, lab, left=x + 0.20, top=chip_y + 0.14, width=cw - 0.40, height=0.34,
-              size=13, color_rgb=_text_on(c), font=MONO_FONT, bold=True)
-    _add_text(slide, bod, left=x + 0.20, top=chip_y + 0.52, width=cw - 0.40, height=ch - 0.62,
-              size=15, color_rgb=_text_on(c), font=SANS_FONT)
-""", """
-Diabetic retinopathy is damage to blood vessels in the retina caused by diabetes. Left
-unchecked it causes blindness, but if you catch it early and send the patient to a
-specialist, that blindness is preventable. The catch is scale: hundreds of millions of
-diabetics, nowhere near enough eye doctors to screen them all. That mismatch is exactly
-what an automated screener fixes, which is why this was one of the first medical AIs
-deployed in real clinics. Frame the day: by the end, every student will have built a
-model that makes this refer-or-not call. Transition: but first, what is the model even
-looking at?
+def fig_slide(key, fname, notes, caption=""):
+    cap = ""
+    if caption:
+        cap = (f"\n_add_text(slide, '{caption}', left=body_l, top=body_top + body_h - 0.48, "
+               f"width=body_w, height=0.42, size=16, color_rgb=accent_rgb, font=MONO_FONT, "
+               f"bold=True, align=PP_ALIGN.CENTER)")
+        max_h = "body_h - 0.65"
+    else:
+        max_h = "body_h - 0.10"
+    code = (f"_fit_image(slide, '{FIG}/{fname}', left=body_l, top=body_top + 0.05, "
+            f"max_w=body_w, max_h={max_h}){cap}")
+    slide(key, code, notes)
+
+
+fig_slide("ai-is-already-in-the-clinic", "clinical_ai_in_medicine.png", """
+Open by killing the "someday" framing. AI is reading medical data in real clinics right
+now, across basically every specialty: radiology finds nodules and bleeds, pathology
+grades tumors on biopsy slides, dermatology flags melanoma, cardiology catches abnormal
+heart rhythms, and ophthalmology screens the eye. The FDA has cleared well over a thousand
+of these. The point for students: this is a real, employable field, and today they get to
+work in one corner of it. Transition: that corner is the eye, so let us look at the disease.
+""")
+
+fig_slide("what-diabetic-retinopathy-does", "clinical_dr_progression.png", """
+Now the actual medicine, and it is worth making vivid. Diabetes keeps blood sugar too high
+for years, which slowly damages the microscopic blood vessels lining the retina. Early on
+you get tiny bulges and dot hemorrhages. It progresses to bigger bleeds and yellow lipid
+deposits. In the worst stage the eye desperately grows fragile new vessels that bleed into
+the eye and can detach the retina, causing blindness. The emotional anchor: this is a
+leading cause of blindness in working-age adults, AND it is largely preventable if you
+catch it early. That tension, devastating but preventable, is the whole reason screening
+matters. Transition: so why don't we just screen everyone?
+""")
+
+fig_slide("a-screening-problem", "clinical_access_gap.png", """
+Here is the systems problem. Every person with diabetes, and there are hundreds of millions
+of them, should get their retina checked every single year. But a retina exam needs a
+trained eye specialist, and there are nowhere near enough, especially in rural areas and
+lower-income countries. So a huge fraction of diabetics never get screened and lose vision
+they did not have to. This is the gap: enormous, routine need on one side, scarce expertise
+on the other. That is the shape of problem where AI screening genuinely helps, by putting a
+specialist-level read anywhere there is a camera. Transition: and this is not hypothetical.
+""")
+
+fig_slide("from-research-to-the-clinic", "clinical_deployment.png", """
+Walk the timeline, because it is genuinely fast and inspiring. 2016: a Google team publishes
+in JAMA that a deep network grades diabetic retinopathy about as well as ophthalmologists.
+2018: IDx-DR becomes the first FDA-authorized AUTONOMOUS AI diagnostic, meaning it gives a
+screening result with no doctor in the loop, run by a nurse in a primary-care office. Soon
+after, screening programs roll out in clinics in India and Thailand where specialists are
+scarce. Two-ish years from paper to patients. The lesson for students: the gap between a
+good research result and real-world impact can be short. Transition: so what exactly does
+the model decide?
+""")
+
+fig_slide("reading-the-retina", "clinical_severity_scale.png", """
+Connect the medicine to the machine-learning task. Ophthalmologists grade DR on a 0-to-4
+scale: none, mild, moderate, severe, and proliferative, the sight-threatening stage. That is
+rich clinical detail, but for SCREENING it collapses to one decision: is this grade 2 or
+worse? If yes, refer to a specialist. That single yes/no line, "referable DR", is the exact
+target the students will train every model on this afternoon. Emphasize: we are not asking
+the model to be the doctor, just to decide who needs to see one. Transition: that is the
+clinical picture; now the technical question, what is the model actually looking at?
 """)
 
 # --------------------------------------------------------------------------- #
-# 2. Real systems, real failure modes  (2x2 color zones)
+# How these systems fail  (2x2 color zones)
 # --------------------------------------------------------------------------- #
-slide("real-systems-real-failure", """
+slide("how-these-systems-fail", """
 gap = 0.30
 cw = (body_w - gap) / 2
 ch = (body_h - gap) / 2
-items = [('DEPLOYED TODAY', 'DR screening, mammogram triage, sepsis alerts: all in real hospitals now', TURQUOISE_RGB),
-         ('SHORTCUT LEARNING', 'the model reads the ruler in the image, not the tumor', DEEPPINK_RGB),
-         ('DISTRIBUTION SHIFT', 'your hospital is not the training hospital, so accuracy quietly drops', AMBER_RGB),
-         ('OVERCONFIDENCE', '"90% sure" can mean nothing; confident and wrong is the dangerous mix', BLUEVIOLET_RGB)]
+items = [('SHORTCUT LEARNING', 'the model reads the ruler in the image, not the tumor', TURQUOISE_RGB),
+         ('DISTRIBUTION SHIFT', 'your hospital is not the training hospital, so accuracy quietly drops', DEEPPINK_RGB),
+         ('OVERCONFIDENCE', '"90% sure" can mean nothing; confident and wrong is the dangerous mix', AMBER_RGB),
+         ('AUTOMATION BIAS', 'when the AI is usually right, people stop checking, and the rare miss sails through', BLUEVIOLET_RGB)]
 for i, (lab, bod, c) in enumerate(items):
     r = i // 2
     col = i % 2
@@ -75,14 +112,15 @@ for i, (lab, bod, c) in enumerate(items):
     _add_text(slide, bod, left=x + 0.26, top=y + 0.78, width=cw - 0.52, height=ch - 1.0,
               size=15, color_rgb=_text_on(c), font=SANS_FONT)
 """, """
-Medical AI is not science fiction; it is already treating patients. But the interesting
-part for students is how it fails, because the failures are subtle and human. Shortcut
-learning: a model told to spot tumors instead learns that scans WITH tumors happened to
-have a ruler laid next to them, so it just detects rulers. Distribution shift: it was
-trained on one hospital's scanner and quietly gets worse on yours. Overconfidence: it
-reports 90% confidence on everything because nobody calibrated it. The lesson: knowing
-how these break is the real skill, more than chasing a higher accuracy number.
-Transition: to understand any of this, we have to start with what an image actually is.
+Before the technical content, plant the healthy skepticism that runs all week. These
+systems fail in subtle, human ways. Shortcut learning: a tumor detector secretly keys on
+the ruler that techs place next to tumors, so it "detects" rulers. Distribution shift: it
+was tuned on one hospital's camera and quietly degrades on yours. Overconfidence: it reports
+90% on everything because nobody calibrated it. Automation bias: the scariest one socially,
+when the AI is right 99% of the time, the human stops double-checking, so the 1% miss goes
+straight to the patient. The takeaway: knowing how these break is the real expertise, more
+than chasing a higher accuracy number. Transition: to reason about any of it, we start with
+what an image actually is.
 """)
 
 # --------------------------------------------------------------------------- #
@@ -146,7 +184,7 @@ us build five of them, each one able to see more than the last.
 # --------------------------------------------------------------------------- #
 # 5. Five models, one ladder  (ascending staircase)
 # --------------------------------------------------------------------------- #
-slide("five-models-one-ladder", """
+slide("the-ladder-we-build", """
 steps = [('1', 'Logistic\\nregression', 'one straight line', MUTED_RGB),
          ('2', 'MLP', 'curved, still blind to space', MUTED_RGB),
          ('3', 'CNN', 'sees shapes', TURQUOISE_RGB),
@@ -198,7 +236,7 @@ so the next rung borrows a brain.
 # --------------------------------------------------------------------------- #
 # 7. ResNet: borrow a trained brain  (figure + 2 chips)
 # --------------------------------------------------------------------------- #
-slide("resnet-borrow-a-trained-brain", f"""
+slide("resnet-borrows", f"""
 fig_h = body_h * 0.60
 _fit_image(slide, '{FIG}/concept_resnet.png', left=body_l, top=body_top, max_w=body_w, max_h=fig_h)
 chip_y = body_top + fig_h + 0.22
@@ -228,7 +266,7 @@ on the leaderboard. Transition: the last rung swaps convolutions for attention.
 # --------------------------------------------------------------------------- #
 # 8. Vision Transformer  (figure dominant, full width)
 # --------------------------------------------------------------------------- #
-slide("vision-transformer-patches", f"""
+slide("vision-transformer", f"""
 _fit_image(slide, '{FIG}/concept_vit.png', left=body_l, top=body_top + 0.10, max_w=body_w, max_h=body_h - 0.20)
 """, """
 The Vision Transformer is the newest rung and the bridge to tomorrow. It throws out
@@ -339,6 +377,140 @@ patches. Same machinery, different input; that bottom row in the figure IS an LL
 tomorrow, when we point a language model at radiology reports, it is not a new magic
 trick, it is the same idea they already built today. Send them off feeling like they have
 the key to the next day already in hand.
+""")
+
+
+# --------------------------------------------------------------------------- #
+# Added for the hour-long expansion: mechanics + evaluation figure slides
+# --------------------------------------------------------------------------- #
+fig_slide("augmentation", "concept_augmentation.png", """
+We never have enough labeled medical images. Augmentation is the cheapest fix: take each
+training image and apply small changes that do not change the right answer, a flip, a
+rotation, a brightness shift. The eye is still the same eye, still the same label, but the
+pixels are different numbers, so the model effectively sees more variety and is less able to
+memorize. Make the point that this is standard practice and basically free. Transition: now
+that the image is numbers, what does it actually mean for the model to learn?
+""")
+
+fig_slide("split-the-data", "concept_data_split.png", """
+This is the single most important habit in machine learning and the easiest to get wrong, so
+slow down. We split our data into three piles. The model trains on the biggest one. We use a
+validation pile to make choices and watch for trouble. And we lock away a test pile that the
+model does not see until the very end, to get an honest grade. The analogy that lands: testing
+on data the model already trained on is like giving a student the exact exam questions to
+practice, then being amazed they ace the exam. Transition: so how do the knobs actually move?
+""")
+
+fig_slide("rolling-downhill", "concept_gradient_descent.png", """
+Demystify training itself. The model makes predictions, measures how wrong it is with a number
+called the loss, and then nudges every one of its millions of knobs a tiny bit in the direction
+that reduces the loss. Do that over and over and the error rolls downhill into a valley, the
+best the model can do. That is gradient descent, and it is the engine under literally every
+model this week. Keep it intuitive, a ball settling into a bowl; no calculus needed.
+Transition: but there is a way this goes wrong that you have to watch for.
+""")
+
+fig_slide("overfitting", "concept_overfitting.png", """
+Overfitting is the trap that catches everyone. If you train too long, the model stops learning
+the general patterns of disease and starts memorizing the exact training images, down to their
+quirks. It scores beautifully on data it has seen and falls apart on anything new, which is
+useless for real patients. The tell: training accuracy keeps climbing while validation accuracy
+stalls or drops. That gap is the warning light, and it is exactly why we kept a separate
+validation pile. Transition: with the mechanics in hand, let us build the actual models.
+""")
+
+# Rungs 1 and 2 — the two flat-pixel models, side by side
+slide("rungs-1-and-2", """
+gap = 0.40
+cw = (body_w - gap) / 2
+ch = body_h * 0.66
+models = [('LOGISTIC REGRESSION', 'flatten the image into one long row, then draw a single straight-line boundary between refer and clear', 'the simplest thing that works', TURQUOISE_RGB),
+          ('MLP', 'stack a few layers so the boundary can bend into curves', 'more flexible, but still a flat list of numbers', DEEPPINK_RGB)]
+for i, (name, what, note, c) in enumerate(models):
+    x = body_l + i * (cw + gap)
+    _add_rect(slide, left=x, top=body_top, width=cw, height=ch, fill_rgb=PAPER_RGB)
+    _add_rect(slide, left=x, top=body_top, width=cw, height=0.95, fill_rgb=c)
+    _add_text(slide, name, left=x + 0.28, top=body_top, width=cw - 0.56, height=0.95,
+              size=22, color_rgb=_text_on(c), font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)
+    _add_text(slide, what, left=x + 0.28, top=body_top + 1.30, width=cw - 0.56, height=1.5,
+              size=16, color_rgb=INK_RGB, font=SANS_FONT)
+    _add_text(slide, note, left=x + 0.28, top=body_top + ch - 0.75, width=cw - 0.56, height=0.6,
+              size=14, color_rgb=INK_RGB, font=SANS_FONT, italic=True)
+cy = body_top + ch + 0.30
+_add_rect(slide, left=body_l, top=cy, width=body_w, height=body_h - ch - 0.30, fill_rgb=AMBER_RGB)
+_add_text(slide, 'Both throw away the picture. Neither can see that pixels next to each other belong together.',
+          left=body_l + 0.35, top=cy, width=body_w - 0.7, height=body_h - ch - 0.30,
+          size=17, color_rgb=INK_RGB, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)
+""", """
+Give the two simplest models their due without dwelling. Logistic regression flattens the
+image into one long row of numbers and draws a single straight cut between refer and clear; it
+is the honest baseline, the dumbest thing that could work. An MLP stacks a few layers so that
+cut can bend into curves, more powerful, but it still sees a flat list with no notion of which
+pixels are neighbors. The punchline on the amber bar is the whole reason the next rung exists:
+both of these threw away the 2D picture. Transition: the CNN is what happens when we stop doing
+that.
+""")
+
+fig_slide("accuracy-can-lie", "eval_accuracy_lies.png", """
+This is the most important evaluation idea, so open the section with the gotcha. In screening,
+most people are healthy, so the classes are imbalanced. If 90 out of 100 patients are fine, a
+lazy model that just says "healthy, healthy, healthy" to everyone scores 90% accuracy, and yet
+it misses every single sick patient, the exact people it was built to catch. A 90% number that
+hides total failure. The lesson: in medicine especially, one accuracy number can be worse than
+useless. Transition: so we look at all four outcomes instead.
+""")
+
+fig_slide("the-confusion-matrix", "eval_confusion.png", """
+The confusion matrix replaces one number with four honest outcomes. The model can be right two
+ways, correctly refer a sick patient or correctly clear a healthy one. And it can be wrong two
+ways that are NOT equal: a false alarm, where it refers a healthy person, costs a needless
+specialist visit; a missed case, where it clears a sick person, can cost that person their
+sight. Drive the asymmetry home, because it is the entire reason medical AI is evaluated
+carefully. Transition: from these four boxes come the two numbers clinicians live by.
+""")
+
+fig_slide("the-two-numbers-that-matter", "eval_sens_spec.png", """
+Define the two words students will hear constantly in medicine. Sensitivity: of the people who
+truly have disease, what fraction did we catch? Specificity: of the people who are truly
+healthy, what fraction did we correctly clear? They trade off. For a SCREENING tool we usually
+push for high sensitivity, because the cost of missing disease, here blindness, is so much
+worse than the cost of a false alarm, a second look. Connect it back: this is why "accuracy"
+alone never tells the story. Transition: and you, the builder, get to choose the balance.
+""")
+
+fig_slide("you-choose-the-trade-off", "eval_threshold.png", """
+End the evaluation section by handing students agency. The model does not output a hard yes or
+no; it outputs a confidence, and YOU pick the threshold for action. Set a low bar for referral
+and you catch more disease but raise more false alarms; set a high bar and the reverse. There
+is no magic point that wins on both, the curves cross. The clinical context decides: a blindness
+screener leans toward catching everything. The takeaway: evaluation is a values question, not
+just a math question. Transition: enough theory, time to build.
+""")
+
+# Where the data comes from / fairness — 3 cards
+slide("where-the-data-comes-from", """
+cards = [('WHOSE EYES?', 'if the data skews to one country, age, or camera, the model can quietly underperform on everyone else', TURQUOISE_RGB),
+         ('CONSENT & PRIVACY', 'these are real patients; who agreed to this use, and how is the data protected?', DEEPPINK_RGB),
+         ('FAIRNESS IS TESTABLE', 'report accuracy per subgroup, not just overall; a good average can hide a bad gap', AMBER_RGB)]
+n = len(cards)
+gap = 0.30
+cw = (body_w - (n - 1) * gap) / n
+for i, (lab, bod, c) in enumerate(cards):
+    x = body_l + i * (cw + gap)
+    _add_rect(slide, left=x, top=body_top, width=cw, height=body_h, fill_rgb=PAPER_RGB)
+    _add_rect(slide, left=x, top=body_top, width=cw, height=0.90, fill_rgb=c)
+    _add_text(slide, lab, left=x + 0.26, top=body_top, width=cw - 0.52, height=0.90,
+              size=18, color_rgb=_text_on(c), font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)
+    _add_text(slide, bod, left=x + 0.26, top=body_top + 1.25, width=cw - 0.52, height=body_h - 1.6,
+              size=15, color_rgb=INK_RGB, font=SANS_FONT)
+""", """
+Do not skip the ethics, especially in a healthcare course. A model is only as fair as the data
+it learned from, and real deployed systems have been caught working worse on underrepresented
+groups, for example performing differently across skin tones or in populations the training set
+barely included. Three things to leave them with: ask whose data trained it, because skew
+becomes bias; remember these are real patients with a right to consent and privacy; and stress
+that fairness is testable, you report accuracy per subgroup, not just one overall number that
+can hide a bad gap. Transition: now, finally, what did all this build?
 """)
 
 
