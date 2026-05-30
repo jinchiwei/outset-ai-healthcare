@@ -6,49 +6,10 @@ attribution in its title. Output: slides/figures/*.png
 
 Run:  python slides/figures_day1.py
 """
-import sys
-from pathlib import Path
-
-# wire the shared matplotlib brand style
-sys.path.insert(0, str(Path.home() / ".claude/skills/_shared"))
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch, FancyArrowPatch, Rectangle
-import numpy as np
 
-from mpl_style import apply_style, title, TURQUOISE, DEEPPINK, AMBER, BLUEVIOLET, GOLD
-
-apply_style()  # light mode, Geist
-INK = "#14141C"
-MUTED = "#555560"
-PAPER = "#FAFAF7"
-
-OUT = Path(__file__).resolve().parent / "figures"
-OUT.mkdir(parents=True, exist_ok=True)
-
-DPI = 200
-
-
-def save(fig, name):
-    fig.savefig(OUT / name, dpi=DPI, bbox_inches="tight", facecolor="white")
-    plt.close(fig)
-    print("wrote", name)
-
-
-def figtitle(fig, text, *, color=INK, y=1.04):
-    fig.suptitle(text, fontsize=16, fontweight="bold", family="Geist Mono", color=color, y=y)
-
-
-def _lum(hexc):
-    h = hexc.lstrip("#")
-    r, g, b = (int(h[i:i + 2], 16) / 255 for i in (0, 2, 4))
-    return 0.2126 * r + 0.7152 * g + 0.0722 * b
-
-
-def txt_on(color):
-    """Ink on light fills (turquoise/amber), white on dark fills (deeppink/blueviolet)."""
-    return INK if _lum(color) > 0.55 else "white"
+from figbase import (plt, np, save, figtitle, txt_on, title, INK, MUTED, PAPER, OUT,
+                     TURQUOISE, DEEPPINK, AMBER, BLUEVIOLET, GOLD)
 
 
 # --------------------------------------------------------------------------- #
@@ -131,7 +92,7 @@ def fig_image_as_numbers():
         ax.add_patch(Rectangle((0.18 + off, 0.30 - off), 0.5, 0.5,
                                facecolor=c, edgecolor="white", lw=2, alpha=0.85))
         ax.text(0.18 + off + 0.46, 0.30 - off + 0.46, lab, fontsize=15,
-                fontweight="bold", color="white", family="Geist Mono")
+                fontweight="bold", color=txt_on(c), family="Geist Mono")
     ax.set_xlim(0, 1.1); ax.set_ylim(0, 1.1)
     title(ax, "Color = three grids", color=INK)
 
@@ -155,7 +116,7 @@ def fig_image_as_numbers():
 # --------------------------------------------------------------------------- #
 def fig_cnn():
     fig, ax = plt.subplots(figsize=(11, 4.2))
-    ax.axis("off"); ax.set_xlim(0, 12); ax.set_ylim(0, 5)
+    ax.axis("off"); ax.set_xlim(0, 12.5); ax.set_ylim(0, 5)
 
     # input grid
     def grid(x0, y0, n, cell, color, hl=None):
@@ -181,7 +142,7 @@ def fig_cnn():
     ax.annotate("", xy=(6.5, 2.65), xytext=(5.9, 2.65),
                 arrowprops=dict(arrowstyle="-|>", color=INK, lw=2))
 
-    ax.text(11.4, 2.65, "slide the\nsame filter\neverywhere", ha="center", va="center",
+    ax.text(11.2, 2.65, "slide the\nsame filter\neverywhere", ha="center", va="center",
             fontsize=11, color=BLUEVIOLET, family="Geist Mono")
 
     figtitle(fig, "A CNN slides small filters across the image (adapted from LeCun et al. 1998)",
@@ -310,9 +271,9 @@ def fig_bridge():
     row(ax1, ["[img]", "[img]", "[img]", "[img]"], TURQUOISE, "image patches", "DR grade")
     row(ax2, ["the", "eye", "is", "..."], AMBER, "words", "next word")
 
-    ax1.text(11.7, 1.1, "ViT", fontsize=12, color=TURQUOISE, fontweight="bold",
+    ax1.text(11.2, 1.1, "ViT", fontsize=12, color=TURQUOISE, fontweight="bold",
              family="Geist Mono", ha="left", va="center")
-    ax2.text(11.7, 1.1, "LLM", fontsize=12, color=DEEPPINK, fontweight="bold",
+    ax2.text(11.2, 1.1, "LLM", fontsize=12, color=DEEPPINK, fontweight="bold",
              family="Geist Mono", ha="left", va="center")
 
     fig.suptitle("Same machinery, different input: that bottom row is a language model",
@@ -349,7 +310,7 @@ def fig_ladder_results():
 
 
 if __name__ == "__main__":
-    fig_dr_screening()
+    # fig_dr_screening()  # retired; replaced by clinical_* figures
     fig_image_as_numbers()
     fig_cnn()
     fig_resnet()

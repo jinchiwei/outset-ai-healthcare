@@ -6,45 +6,10 @@ story, and the clinical severity scale. Output: slides/figures/clinical_*.png
 
 Run:  python slides/figures_day1_clinical.py
 """
-import sys
-from pathlib import Path
-
-sys.path.insert(0, str(Path.home() / ".claude/skills/_shared"))
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch, Circle, Rectangle, FancyArrowPatch
-import numpy as np
 
-from mpl_style import apply_style, TURQUOISE, DEEPPINK, AMBER, BLUEVIOLET
-
-apply_style()
-INK = "#14141C"
-MUTED = "#555560"
-OUT = Path(__file__).resolve().parent / "figures"
-OUT.mkdir(parents=True, exist_ok=True)
-DPI = 200
-
-# Contrast rule: pick ink or white by the fill's luminance. Turquoise/amber and
-# other light fills get ink text; deeppink/blueviolet/dark fills get white.
-def _lum(hexc):
-    h = hexc.lstrip("#")
-    r, g, b = (int(h[i:i + 2], 16) / 255 for i in (0, 2, 4))
-    return 0.2126 * r + 0.7152 * g + 0.0722 * b
-
-
-def txt_on(color):
-    return INK if _lum(color) > 0.55 else "white"
-
-
-def save(fig, name):
-    fig.savefig(OUT / name, dpi=DPI, bbox_inches="tight", facecolor="white")
-    plt.close(fig)
-    print("wrote", name)
-
-
-def figtitle(fig, text, y=1.03):
-    fig.suptitle(text, fontsize=16, fontweight="bold", family="Geist Mono", color=INK, y=y)
+from figbase import (plt, np, save, figtitle, txt_on, INK, MUTED,
+                     TURQUOISE, DEEPPINK, AMBER, BLUEVIOLET)
 
 
 # --------------------------------------------------------------------------- #
@@ -138,22 +103,24 @@ def fig_access_gap():
         axL.add_patch(Circle((rng.uniform(0, 10), rng.uniform(0, 8)), 0.12, color=TURQUOISE, alpha=0.8))
     for _ in range(6):
         axL.add_patch(Circle((rng.uniform(1, 9), rng.uniform(1, 7)), 0.28, color=DEEPPINK))
+    axL.set_ylim(-0.6, 10)
     axL.text(5, 9.2, "many patients, few specialists", ha="center", fontsize=12,
              color=INK, family="Geist Mono")
     axL.text(0.2, -0.3, "● ~463M adults with diabetes      ● too few eye doctors",
              fontsize=10, color=MUTED)
 
     axR.axis("off"); axR.set_xlim(0, 1); axR.set_ylim(0, 1)
-    facts = [("1 in 3", "people with diabetes\ndevelop retinopathy", AMBER),
-             ("Leading", "cause of blindness in\nworking-age adults", DEEPPINK),
-             ("Preventable", "with early screening\nand referral", TURQUOISE)]
+    facts = [("1 in 3", "people with diabetes develop retinopathy", AMBER),
+             ("Leading", "cause of blindness in working-age adults", DEEPPINK),
+             ("Preventable", "with early screening and referral", TURQUOISE)]
+    bh = 0.30
     for i, (big, small, c) in enumerate(facts):
-        y = 0.78 - i * 0.31
-        axR.add_patch(FancyBboxPatch((0.02, y - 0.1), 0.96, 0.24,
+        y = 0.92 - i * 0.33
+        axR.add_patch(FancyBboxPatch((0.02, y - bh), 0.96, bh,
                                      boxstyle="round,pad=0.01,rounding_size=0.02", facecolor=c, edgecolor="none"))
         tc = txt_on(c)
-        axR.text(0.08, y, big, fontsize=20, fontweight="bold", va="center", color=tc, family="Geist Mono")
-        axR.text(0.42, y, small, fontsize=10.5, va="center", color=tc)
+        axR.text(0.07, y - 0.09, big, fontsize=18, fontweight="bold", va="center", color=tc, family="Geist Mono")
+        axR.text(0.07, y - 0.225, small, fontsize=9.5, va="center", color=tc)
     figtitle(fig, "A screening problem: too many eyes, too few specialists")
     save(fig, "clinical_access_gap.png")
 

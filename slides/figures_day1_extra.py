@@ -5,44 +5,10 @@ operating-point threshold). Brand-styled. Output: slides/figures/*.png
 
 Run:  python slides/figures_day1_extra.py
 """
-import sys
-from pathlib import Path
-
-sys.path.insert(0, str(Path.home() / ".claude/skills/_shared"))
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch, Rectangle, Circle, FancyArrowPatch
-import numpy as np
 
-from mpl_style import apply_style, TURQUOISE, DEEPPINK, AMBER, BLUEVIOLET
-
-apply_style()
-INK = "#14141C"
-MUTED = "#555560"
-OUT = Path(__file__).resolve().parent / "figures"
-OUT.mkdir(parents=True, exist_ok=True)
-DPI = 200
-
-
-def _lum(h):
-    h = h.lstrip("#")
-    r, g, b = (int(h[i:i + 2], 16) / 255 for i in (0, 2, 4))
-    return 0.2126 * r + 0.7152 * g + 0.0722 * b
-
-
-def txt_on(c):
-    return INK if _lum(c) > 0.55 else "white"
-
-
-def save(fig, name):
-    fig.savefig(OUT / name, dpi=DPI, bbox_inches="tight", facecolor="white")
-    plt.close(fig)
-    print("wrote", name)
-
-
-def figtitle(fig, text, y=1.03):
-    fig.suptitle(text, fontsize=16, fontweight="bold", family="Geist Mono", color=INK, y=y)
+from figbase import (plt, np, save, figtitle, txt_on, INK, MUTED,
+                     TURQUOISE, DEEPPINK, AMBER, BLUEVIOLET)
 
 
 # --------------------------------------------------------------------------- #
@@ -109,12 +75,13 @@ def fig_gradient_descent():
     x = np.linspace(-3, 3, 200)
     y = 0.5 * x ** 2 + 0.4
     ax.plot(x, y, color=BLUEVIOLET, lw=3)
+    ax.set_ylim(-0.3, 6.2)
     pts = [(-2.6, "start: bad guesses"), (-1.4, ""), (-0.6, ""), (-0.1, "minimum: best the model can do")]
     for px, lab in pts:
         py = 0.5 * px ** 2 + 0.4
         ax.add_patch(Circle((px, py), 0.13, color=DEEPPINK, zorder=5))
         if lab:
-            ax.annotate(lab, (px, py), xytext=(px, py + 1.3), fontsize=11, family="Geist Mono",
+            ax.annotate(lab, (px, py), xytext=(px, py + 1.1), fontsize=11, family="Geist Mono",
                         color=INK, ha="center",
                         arrowprops=dict(arrowstyle="-|>", color=MUTED, lw=1.5))
     for i in range(len(pts) - 1):
