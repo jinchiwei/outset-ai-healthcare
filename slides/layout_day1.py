@@ -254,11 +254,15 @@ for i, (tag, head, bod, c) in enumerate(steps):
     x = body_l + i * (cw + gap)
     _add_rect(slide, left=x, top=body_top, width=cw, height=body_h, fill_rgb=PAPER_RGB)
     _add_rect(slide, left=x, top=body_top, width=cw, height=0.10, fill_rgb=c)
-    _add_text(slide, tag, left=x + 0.24, top=body_top + 0.40, width=cw - 0.48, height=0.7,
-              size=30, color_rgb=c, font=MONO_FONT, bold=True)
-    _add_text(slide, head, left=x + 0.24, top=body_top + 1.25, width=cw - 0.48, height=0.5,
+    # accent chip holds the code-motif tag (readable: text via _text_on, never accent-on-paper)
+    chip_w = 2.0
+    _add_rect(slide, left=x + 0.24, top=body_top + 0.40, width=chip_w, height=0.78, fill_rgb=c)
+    _add_text(slide, tag, left=x + 0.24, top=body_top + 0.40, width=chip_w, height=0.78,
+              size=26, color_rgb=_text_on(c), font=MONO_FONT, bold=True,
+              align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+    _add_text(slide, head, left=x + 0.24, top=body_top + 1.45, width=cw - 0.48, height=0.5,
               size=20, color_rgb=INK_RGB, font=MONO_FONT, bold=True)
-    _add_text(slide, bod, left=x + 0.24, top=body_top + 1.95, width=cw - 0.48, height=body_h - 2.2,
+    _add_text(slide, bod, left=x + 0.24, top=body_top + 2.15, width=cw - 0.48, height=body_h - 2.4,
               size=15, color_rgb=INK_RGB, font=SANS_FONT)
 """, """
 Set up the lab mechanics in thirty seconds. It is one notebook for everyone. Each model
