@@ -268,13 +268,8 @@ def fig_bridge():
                 color=INK, fontweight="bold", family="Geist Mono")
         ax.text(0.3, 0.2, embed_label, fontsize=10, color=MUTED)
 
-    row(ax1, ["[img]", "[img]", "[img]", "[img]"], TURQUOISE, "image patches", "DR grade")
-    row(ax2, ["the", "eye", "is", "..."], AMBER, "words", "next word")
-
-    ax1.text(11.2, 1.1, "ViT", fontsize=12, color=TURQUOISE, fontweight="bold",
-             family="Geist Mono", ha="left", va="center")
-    ax2.text(11.2, 1.1, "LLM", fontsize=12, color=DEEPPINK, fontweight="bold",
-             family="Geist Mono", ha="left", va="center")
+    row(ax1, ["[img]", "[img]", "[img]", "[img]"], TURQUOISE, "image patches  (ViT)", "DR grade")
+    row(ax2, ["the", "eye", "is", "..."], AMBER, "words  (LLM)", "next word")
 
     fig.suptitle("Same machinery, different input: that bottom row is a language model",
                  fontsize=15, fontweight="bold", family="Geist Mono", color=INK, y=1.0)

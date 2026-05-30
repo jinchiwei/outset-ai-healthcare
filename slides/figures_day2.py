@@ -105,16 +105,15 @@ def fig_attention():
     ax.axis("off"); ax.set_xlim(0, 12); ax.set_ylim(0, 4)
     words = ["the", "heart", "is", "enlarged"]
     weights = [0.1, 0.9, 0.2, 0.8]
-    x = 1.0
-    pos = []
+    x = 1.5
     for wd, wt in zip(words, weights):
-        size = 0.5 + wt * 0.9
-        ax.add_patch(Circle((x, 2.6), size / 2, color=DEEPPINK, alpha=0.3 + 0.7 * wt))
-        ax.text(x, 2.6, wd, ha="center", va="center", fontsize=11 + int(wt * 8),
-                color=INK if wt < 0.5 else "white", family="Geist Mono", fontweight="bold")
-        pos.append(x); x += 2.6
-    # the question word attends to "heart" and "enlarged"
-    ax.text(6.0, 0.7, 'predicting the finding: attention focuses on "heart" and "enlarged"',
+        size = 0.55 + wt * 0.85   # circle size = attention weight
+        ax.add_patch(Circle((x, 2.9), size / 2, color=DEEPPINK, alpha=0.3 + 0.7 * wt))
+        # word label sits BELOW the blob, so long words never overflow the circle
+        ax.text(x, 1.75, wd, ha="center", va="center", fontsize=14,
+                color=INK, family="Geist Mono", fontweight="bold")
+        x += 2.7
+    ax.text(6.5, 0.8, 'predicting the finding: attention focuses on "heart" and "enlarged"',
             ha="center", fontsize=12, color=INK, family="Geist Mono")
     figtitle(fig, "Attention: the model decides which words matter")
     fig.text(0.5, -0.02, "Bigger, bolder = more attention. The model learns that "
@@ -184,13 +183,13 @@ def fig_radiomics():
     ax.add_patch(Circle((1.7, 2.6), 0.5, color="#6A6A6A"))
     ax.text(1.7, 1.0, "the image", ha="center", fontsize=11, color=MUTED)
     ax.annotate("", xy=(4.0, 2.6), xytext=(3.1, 2.6), arrowprops=dict(arrowstyle="-|>", color=INK, lw=2.5))
-    feats = [("intensity", "how bright", TURQUOISE), ("texture", "how patterned", DEEPPINK),
+    feats = [("intensity", "how bright", TURQUOISE), ("texture", "how busy", DEEPPINK),
              ("shape", "how big / round", AMBER)]
     for i, (name, desc, c) in enumerate(feats):
         y = 3.3 - i * 0.95
-        ax.add_patch(FancyBboxPatch((4.3, y - 0.32), 3.0, 0.7, boxstyle="round,pad=0.02,rounding_size=0.05",
+        ax.add_patch(FancyBboxPatch((4.3, y - 0.32), 3.3, 0.7, boxstyle="round,pad=0.02,rounding_size=0.05",
                                     facecolor=c, edgecolor="none"))
-        ax.text(4.5, y, f"{name}: {desc}", fontsize=12, fontweight="bold", color=txt_on(c),
+        ax.text(4.5, y, f"{name}: {desc}", fontsize=11, fontweight="bold", color=txt_on(c),
                 family="Geist Mono", va="center")
     ax.annotate("", xy=(8.5, 2.6), xytext=(7.5, 2.6), arrowprops=dict(arrowstyle="-|>", color=INK, lw=2.5))
     ax.text(10.2, 2.6, "~100 numbers\nper image", ha="center", va="center", fontsize=12,
