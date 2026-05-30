@@ -45,20 +45,25 @@ def fig_augmentation():
 def fig_data_split():
     fig, ax = plt.subplots(figsize=(11.5, 3.4))
     ax.axis("off"); ax.set_xlim(0, 12); ax.set_ylim(0, 4)
-    parts = [("TRAIN", 0.70, TURQUOISE, "the model learns from these"),
-             ("VALIDATION", 0.15, AMBER, "tune choices, watch for overfitting"),
-             ("TEST", 0.15, DEEPPINK, "touched once, the honest grade")]
+    parts = [("TRAIN", 0.70, TURQUOISE, "the model\nlearns from these"),
+             ("VALIDATION", 0.15, AMBER, "tune choices,\nwatch overfitting"),
+             ("TEST", 0.15, DEEPPINK, "touched once:\nthe honest grade")]
     x = 0.5
     total_w = 11.0
     for name, frac, c, desc in parts:
         w = total_w * frac
-        ax.add_patch(FancyBboxPatch((x, 1.6), w - 0.08, 1.4, boxstyle="round,pad=0.02,rounding_size=0.04",
+        ax.add_patch(FancyBboxPatch((x, 1.7), w - 0.08, 1.4, boxstyle="round,pad=0.02,rounding_size=0.04",
                                     facecolor=c, edgecolor="none"))
-        ax.text(x + w / 2, 2.5, name, ha="center", fontsize=15, fontweight="bold",
+        # name + % inside the colored block (always fits)
+        nm = name if frac > 0.2 else name[:3]  # TRA/VAL/TES would be cryptic; keep full but smaller
+        fs = 15 if frac > 0.2 else 11
+        ax.text(x + w / 2, 2.6, name, ha="center", fontsize=fs, fontweight="bold",
                 color=txt_on(c), family="Geist Mono")
-        ax.text(x + w / 2, 2.0, f"{int(frac*100)}%", ha="center", fontsize=12,
+        ax.text(x + w / 2, 2.1, f"{int(frac*100)}%", ha="center", fontsize=11,
                 color=txt_on(c), family="Geist Mono")
-        ax.text(x + w / 2, 1.25, desc, ha="center", va="top", fontsize=9.5, color=MUTED)
+        # description below, font sized to the block width so neighbors do not collide
+        ax.text(x + w / 2, 1.5, desc, ha="center", va="top",
+                fontsize=8.5 if frac < 0.2 else 10.5, color=MUTED)
         x += w
     figtitle(fig, "Split the data: learn, tune, then grade honestly")
     fig.text(0.5, -0.04, "The golden rule: never let the model train on the test set. "

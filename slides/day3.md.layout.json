@@ -1,0 +1,310 @@
+{
+  "deck_md_hash": "077d9c217bfe49f71c1738664acbac5ddbbe210d5436ffc7d21daaf2a829fe93",
+  "mode": "expressive",
+  "shake_seed": "b1035e6e20004cc68cd710f90d72f54f",
+  "slides": [
+    {
+      "content_hash": "624accbfa88faf1d1905c054bed680ba022b78f7117c016f2fb59fc9bd574f81-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#40E0D0",
+        "label": "The journey so far"
+      },
+      "slide_id": "divider-h1-the-journey-so-far"
+    },
+    {
+      "content_hash": "2e46caedcf93b019e6e6fb449ca33a154492aa5268f137516e209e546b01949f",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d3_journey.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "Open with pride and momentum. In three afternoons they went from \"what is a pixel\" to\nbuilding real medical AI. Day 1: the ladder on eye scans, end-to-end deep learning. Day 2:\ncombining image, text, and data with a foundation model. Today: their own build. Make them\nfeel the distance traveled. Transition: a quick recap of the two big lessons.",
+        "section_label": "The journey so far",
+        "title": "Three afternoons, one arc"
+      },
+      "slide_id": "h1-the-journey-so-far/h2-three-afternoons-one-arc"
+    },
+    {
+      "content_hash": "f6fb6ce778c044b20306ad2f05366be5e7fa5604c9119defbbc9c6097081cfb5",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/result_ladder.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "Recap Day 1 in one idea. The five-model ladder was not about memorizing five architectures;\nit was about the jump. A network pretrained on a million everyday photos, reused for eyes,\nbeat anything trained from scratch on our small dataset. The transferable habit: when in\ndoubt, start from something pretrained. Transition: and Day 2's lesson.",
+        "section_label": "The journey so far",
+        "title": "What Day 1 taught you"
+      },
+      "slide_id": "h1-the-journey-so-far/h2-what-day-1-taught-you"
+    },
+    {
+      "content_hash": "78eaa82d7ee488374cf021c02a5f59a2c2c3ab10b4d2a1335d2f563425e8a63d",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d2_two_paradigms.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "Recap Day 2. Two things: you can turn any mix of signals (image, text, demographics) into one\ntable and let a foundation model handle it; and you must distrust a too-good result and hunt\nfor leakage. Those two habits, reuse pretrained models and stay skeptical, are most of what a\nworking ML engineer does. Transition: here is everything you can now do.",
+        "section_label": "The journey so far",
+        "title": "What Day 2 taught you"
+      },
+      "slide_id": "h1-the-journey-so-far/h2-what-day-2-taught-you"
+    },
+    {
+      "content_hash": "082b8aab7fb32eb504803c758f2cb2deb97695a60d7d8fb2fa707c9428179b5b",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "cards = [('MODELS', 'logreg, MLP, CNN, transfer learning, vision transformers, TabPFN', 'turquoise'), ('METHOD', 'train/val/test, gradient descent, augmentation, watching for overfitting', 'deeppink'), ('JUDGMENT', 'sensitivity vs specificity, confusion matrices, spotting leakage, fairness', 'amber')]\nn = len(cards)\ngap = 0.30\ncw = (body_w - (n - 1) * gap) / n\nfor i, (lab, bod, c) in enumerate(cards):\n    col = {'turquoise': TURQUOISE_RGB, 'deeppink': DEEPPINK_RGB, 'amber': AMBER_RGB, 'blueviolet': BLUEVIOLET_RGB}[c]\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=body_h, fill_rgb=PAPER_RGB)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=0.90, fill_rgb=col)\n    _add_text(slide, lab, left=x + 0.26, top=body_top, width=cw - 0.52, height=0.90,\n              size=17, color_rgb=_text_on(col), font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, bod, left=x + 0.26, top=body_top + 1.20, width=cw - 0.52, height=body_h - 1.5,\n              size=15, color_rgb=INK_RGB, font=SANS_FONT)",
+        "lede": "",
+        "notes": "This is the confidence slide. Read it out loud, because students underestimate how much they\njust learned. They have real models, a real method for training and validating, and, most\nimportantly, the judgment to evaluate honestly. This is the actual toolkit of a junior\nmedical-AI engineer. Transition: now put it to work.",
+        "section_label": "The journey so far",
+        "title": "Everything in your toolkit now"
+      },
+      "slide_id": "h1-the-journey-so-far/h2-everything-in-your-toolkit-now"
+    },
+    {
+      "content_hash": "a455e04dfc8423ce50cc57aa1161e58502fe8cad84c2cf97e8c03132704d4cca-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#40E0D0",
+        "label": "Today’s mission"
+      },
+      "slide_id": "divider-h1-today-s-mission"
+    },
+    {
+      "content_hash": "d667be14104a2c16153281a599971bdbbf3f18386698b10cb959291e86b560cb",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "cards = [('PAIRS', 'two people, one project; both build, both present', 'turquoise'), ('BUILD SPRINT', 'about 90 minutes; I will circulate, check-ins at 3:15 and 4:00', 'amber'), ('PRESENT', 'three minutes per pair at 4:30; show what you built', 'deeppink')]\nn = len(cards)\ngap = 0.30\ncw = (body_w - (n - 1) * gap) / n\nfor i, (lab, bod, c) in enumerate(cards):\n    col = {'turquoise': TURQUOISE_RGB, 'deeppink': DEEPPINK_RGB, 'amber': AMBER_RGB, 'blueviolet': BLUEVIOLET_RGB}[c]\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=body_h, fill_rgb=PAPER_RGB)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=0.90, fill_rgb=col)\n    _add_text(slide, lab, left=x + 0.26, top=body_top, width=cw - 0.52, height=0.90,\n              size=17, color_rgb=_text_on(col), font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, bod, left=x + 0.26, top=body_top + 1.20, width=cw - 0.52, height=body_h - 1.5,\n              size=15, color_rgb=INK_RGB, font=SANS_FONT)",
+        "lede": "",
+        "notes": "Set the logistics clearly so the sprint runs smoothly. Pairs, because building together is\nhow real work happens and it keeps everyone unstuck. Ninety minutes to build, with two\ncheck-ins so nobody silently spins. Three-minute presentations at the end. Emphasize: the\ngoal is a real model you understand, not a perfect one. Transition: pick your problem.",
+        "section_label": "Today’s mission",
+        "title": "The capstone format"
+      },
+      "slide_id": "h1-today-s-mission/h2-the-capstone-format"
+    },
+    {
+      "content_hash": "68dfb9dc3b570330f30e88d028c94860978dbfd47ead5ce3d110ab0bd726ffb0",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d3_options.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "Present the three starter problems. Pneumonia on chest X-rays (closest to Day 2, a clean\nbinary). Skin-lesion classification including melanoma (multi-class, high-stakes feel).\nOr choose any MedMNIST dataset and surprise yourself. All use MedMNIST so data is a\nnon-issue, it downloads in seconds. And if a pair has their own idea, they can pitch it in\nthe first ten minutes. Transition: how to choose between them.",
+        "section_label": "Today’s mission",
+        "title": "Pick one, or pitch your own"
+      },
+      "slide_id": "h1-today-s-mission/h2-pick-one-or-pitch-your-own"
+    },
+    {
+      "content_hash": "f2c9aa2816144884a9dafc64095293508c54558aaf2728cf8e19d556d23c07b9",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "cards = [('CLOSEST TO WHAT YOU KNOW', 'pneumonia is the most like Day 2: a safe, satisfying choice', 'turquoise'), ('MOST INTERESTING TO YOU', 'melanoma detection feels high-stakes and real; follow curiosity', 'deeppink'), ('MOST ROOM TO EXPLORE', 'MedMNIST has a dozen datasets; pick a weird one', 'amber')]\nn = len(cards)\ngap = 0.30\ncw = (body_w - (n - 1) * gap) / n\nfor i, (lab, bod, c) in enumerate(cards):\n    col = {'turquoise': TURQUOISE_RGB, 'deeppink': DEEPPINK_RGB, 'amber': AMBER_RGB, 'blueviolet': BLUEVIOLET_RGB}[c]\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=body_h, fill_rgb=PAPER_RGB)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=0.90, fill_rgb=col)\n    _add_text(slide, lab, left=x + 0.26, top=body_top, width=cw - 0.52, height=0.90,\n              size=17, color_rgb=_text_on(col), font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, bod, left=x + 0.26, top=body_top + 1.20, width=cw - 0.52, height=body_h - 1.5,\n              size=15, color_rgb=INK_RGB, font=SANS_FONT)",
+        "lede": "",
+        "notes": "Lower the stakes of the choice; any of the three is a great afternoon, so pick on gut in\ntwo minutes. Frame the three reasons: familiarity (pneumonia mirrors Day 2), interest\n(melanoma is visceral), or exploration (a dozen MedMNIST sets to poke at). The worst move is\nspending fifteen minutes deciding. Transition: once you have picked, how do you actually\nbuild it?",
+        "section_label": "Today’s mission",
+        "title": "How to choose your project"
+      },
+      "slide_id": "h1-today-s-mission/h2-how-to-choose-your-project"
+    },
+    {
+      "content_hash": "17f8380128d83c25be0d656d808cefd634c4adcde3fe4be4f54179dd11ba1520-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#40E0D0",
+        "label": "How to build it"
+      },
+      "slide_id": "divider-h1-how-to-build-it"
+    },
+    {
+      "content_hash": "d98b576ecbdc12447852ff525a528e85dd31b6fb59b0f5207c1f3188b82b9059",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d3_workflow.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "Teach the single most useful meta-skill: building is a loop, not a straight line. Load and\nlook at the data. Get the simplest possible thing running. Improve one change at a time.\nEvaluate honestly. Then loop. The classic beginner mistake is to skip the baseline and\nover-engineer; the pros do the opposite, get something working first. We will walk each\nstep. Transition: step one.",
+        "section_label": "How to build it",
+        "title": "The build loop"
+      },
+      "slide_id": "h1-how-to-build-it/h2-the-build-loop"
+    },
+    {
+      "content_hash": "f7f6acb8c99b85b546eb79b868b9bf02a0f95973e6fa57723c3a86d26823936f",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "cards = [('MAKE IT RUN', 'end to end, even if the accuracy is terrible', 'turquoise'), ('GET A NUMBER', 'that first number is your baseline to beat', 'amber'), ('ONLY NOW, IMPROVE', 'a change you cannot measure is a change you cannot trust', 'deeppink')]\nn = len(cards)\ngap = 0.30\ncw = (body_w - (n - 1) * gap) / n\nfor i, (lab, bod, c) in enumerate(cards):\n    col = {'turquoise': TURQUOISE_RGB, 'deeppink': DEEPPINK_RGB, 'amber': AMBER_RGB, 'blueviolet': BLUEVIOLET_RGB}[c]\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=body_h, fill_rgb=PAPER_RGB)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=0.90, fill_rgb=col)\n    _add_text(slide, lab, left=x + 0.26, top=body_top, width=cw - 0.52, height=0.90,\n              size=17, color_rgb=_text_on(col), font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, bod, left=x + 0.26, top=body_top + 1.20, width=cw - 0.52, height=body_h - 1.5,\n              size=15, color_rgb=INK_RGB, font=SANS_FONT)",
+        "lede": "",
+        "notes": "Hammer the baseline-first discipline, it is the most common thing beginners skip. The first\ngoal is NOT a good model; it is a model that runs end to end and prints a number, however\nbad. That number is the safety net every later change is measured against. Resist making it\nfancy before it works at all. Transition: now improve, but carefully.",
+        "section_label": "How to build it",
+        "title": "Step 1: get a baseline running"
+      },
+      "slide_id": "h1-how-to-build-it/h2-step-1-get-a-baseline-running"
+    },
+    {
+      "content_hash": "5cf3f740a7107505b07abf173ecf010e46b3ea3577248bd97f63eb18a11ec458",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "cards = [('ONE CHANGE', 'isolate it, re-run, compare to baseline', 'turquoise'), ('KEEP WHAT HELPS', 'did the number move beyond noise?', 'deeppink'), ('LOG IT', \"'augmentation: +3 points' is half your presentation\", 'amber')]\nn = len(cards)\ngap = 0.30\ncw = (body_w - (n - 1) * gap) / n\nfor i, (lab, bod, c) in enumerate(cards):\n    col = {'turquoise': TURQUOISE_RGB, 'deeppink': DEEPPINK_RGB, 'amber': AMBER_RGB, 'blueviolet': BLUEVIOLET_RGB}[c]\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=body_h, fill_rgb=PAPER_RGB)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=0.90, fill_rgb=col)\n    _add_text(slide, lab, left=x + 0.26, top=body_top, width=cw - 0.52, height=0.90,\n              size=17, color_rgb=_text_on(col), font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, bod, left=x + 0.26, top=body_top + 1.20, width=cw - 0.52, height=body_h - 1.5,\n              size=15, color_rgb=INK_RGB, font=SANS_FONT)",
+        "lede": "",
+        "notes": "Teach scientific iteration. Change ONE thing, re-measure, keep it only if it genuinely\nhelped. Train longer, unfreeze the backbone, add augmentation, bigger images, one at a time.\nIf you change five things and the number moves, you have learned nothing about why. And\nlogging each result (\"augmentation: +3 points\") literally writes their presentation for\nthem. Transition: things will break; here is how to handle it.",
+        "section_label": "How to build it",
+        "title": "Step 2: improve, one change at a time"
+      },
+      "slide_id": "h1-how-to-build-it/h2-step-2-improve-one-change-at-a-time"
+    },
+    {
+      "content_hash": "09e12422fb72d94883ccd1cb8b382ed98a7a263da574c99632eb912cd11cdc07",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "cards = [('READ THE ERROR', 'the message usually says exactly what is wrong; read it before guessing', 'turquoise'), ('PRINT SHAPES', 'most bugs are a shape mismatch; print(x.shape) is your friend', 'amber'), ('THEN ASK CLAUDE', 'paste the error and code, then make sure you understand the fix', 'deeppink')]\nn = len(cards)\ngap = 0.30\ncw = (body_w - (n - 1) * gap) / n\nfor i, (lab, bod, c) in enumerate(cards):\n    col = {'turquoise': TURQUOISE_RGB, 'deeppink': DEEPPINK_RGB, 'amber': AMBER_RGB, 'blueviolet': BLUEVIOLET_RGB}[c]\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=body_h, fill_rgb=PAPER_RGB)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=0.90, fill_rgb=col)\n    _add_text(slide, lab, left=x + 0.26, top=body_top, width=cw - 0.52, height=0.90,\n              size=17, color_rgb=_text_on(col), font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, bod, left=x + 0.26, top=body_top + 1.20, width=cw - 0.52, height=body_h - 1.5,\n              size=15, color_rgb=INK_RGB, font=SANS_FONT)",
+        "lede": "",
+        "notes": "Normalize errors; they are not failure, they are the job. The skill is reading them, not\navoiding them. Read the actual message (it usually names the problem), print tensor shapes\n(most bugs are shape mismatches), change one thing, retry. And when stuck, Claude is right\nthere, but understand the fix, do not paste blindly. Transition: speaking of Claude, today\nit is a full engineer.",
+        "section_label": "How to build it",
+        "title": "Step 3: debug like an engineer"
+      },
+      "slide_id": "h1-how-to-build-it/h2-step-3-debug-like-an-engineer"
+    },
+    {
+      "content_hash": "7d649a7752121bc6a3a2ef69e845acdd470302a0786564ff2abef9318bf88782",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_add_rect(slide, left=body_l, top=body_top, width=body_w, height=body_h, fill_rgb=DARK_BG_RGB)\n_add_text(slide, 'Days 1 and 2, Claude filled in blanks. Today it is a full pair programmer.', left=body_l + 0.5, top=body_top + 0.35, width=body_w - 1.0, height=0.5,\n          size=17, color_rgb=WHITE_RGB, font=SANS_FONT)\nrows = [('DESCRIBE THE GOAL', \"give it context and what you want, not just 'make it work'\", 'turquoise'), ('BUILD TOGETHER', 'it drafts, you steer, you run it, you both iterate', 'amber'), ('OWN EVERY LINE', 'the rule all week: you must be able to explain your code', 'deeppink')]\ncmap = {'turquoise': TURQUOISE_RGB, 'deeppink': DEEPPINK_RGB, 'amber': AMBER_RGB, 'blueviolet': BLUEVIOLET_RGB}\nry = body_top + 1.15\nrh = (body_h - 1.45) / 3\nfor i, (lab, bod, c) in enumerate(rows):\n    col = cmap[c]\n    y = ry + i * rh\n    _add_rect(slide, left=body_l + 0.5, top=y + 0.10, width=0.14, height=rh - 0.30, fill_rgb=col)\n    _add_text(slide, lab, left=body_l + 0.85, top=y + 0.06, width=4.2, height=rh - 0.2,\n              size=18, color_rgb=col, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, bod, left=body_l + 5.1, top=y + 0.06, width=body_w - 5.6, height=rh - 0.2,\n              size=15, color_rgb=WHITE_RGB, font=SANS_FONT, anchor=MSO_ANCHOR.MIDDLE)",
+        "lede": "",
+        "notes": "This is the real-world workflow slide, the one that most reflects how software actually gets\nbuilt now. Today Claude is not a hint tool, it is a pair programmer: you describe the goal,\nit drafts code, you read and run and fix it together. That is genuinely how engineers work\nin 2026. The one unchanged rule, repeated all week: own every line, be able to explain it.\nTransition: build freely, but evaluate honestly.",
+        "section_label": "How to build it",
+        "title": "Claude is your engineer today"
+      },
+      "slide_id": "h1-how-to-build-it/h2-claude-is-your-engineer-today"
+    },
+    {
+      "content_hash": "f518e11d1290d124015d6ca0c8dc7de5cc53ae878a111ea83047a78e356e8683-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#40E0D0",
+        "label": "Evaluate honestly"
+      },
+      "slide_id": "divider-h1-evaluate-honestly"
+    },
+    {
+      "content_hash": "a78b8b8e55f5c9c9f34e973e0e3d9cf2d263bafec9001fd0fe4b6fd892da9089",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "items = [('ACCURACY LIES', \"on imbalanced data, 'always say no' can score high and be useless\", 'turquoise'), ('TARGET LEAKAGE', 'a feature that secretly encodes the answer; the Day 2 trap', 'deeppink'), ('OVERFITTING', 'great on training data, bad on new data; watch validation', 'amber'), ('CHERRY-PICKING', 'reporting your one lucky run instead of the typical result', 'blueviolet')]\ngap = 0.30\ncw = (body_w - gap) / 2\nch = (body_h - gap) / 2\ncmap = {'turquoise': TURQUOISE_RGB, 'deeppink': DEEPPINK_RGB, 'amber': AMBER_RGB, 'blueviolet': BLUEVIOLET_RGB}\nfor i, (lab, bod, c) in enumerate(items):\n    col = cmap[c]\n    r = i // 2\n    cc = i % 2\n    x = body_l + cc * (cw + gap)\n    y = body_top + r * (ch + gap)\n    _add_rect(slide, left=x, top=y, width=cw, height=ch, fill_rgb=col)\n    _add_text(slide, lab, left=x + 0.26, top=y + 0.22, width=cw - 0.52, height=0.42,\n              size=18, color_rgb=_text_on(col), font=MONO_FONT, bold=True)\n    _add_text(slide, bod, left=x + 0.26, top=y + 0.78, width=cw - 0.52, height=ch - 1.0,\n              size=15, color_rgb=_text_on(col), font=SANS_FONT)",
+        "lede": "",
+        "notes": "Consolidate the skepticism from two days into one checklist they can hold in their head\nduring the sprint. Accuracy lies on imbalanced data. Target leakage was the Day 2 gut-punch.\nOverfitting is memorizing, caught by validation. And cherry-picking, reporting the one lucky\nseed, is the subtle, tempting one under time pressure. Tell them: if your number looks\namazing, suspect one of these four first. Transition: so what does good evaluation look like?",
+        "section_label": "Evaluate honestly",
+        "title": "The four traps"
+      },
+      "slide_id": "h1-evaluate-honestly/h2-the-four-traps"
+    },
+    {
+      "content_hash": "c5260004b67efa5c79b53d10b34abb62f338fe987d69349b8342a20a3a40b248",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "cards = [('HELD-OUT TEST', 'never seen during training; the only honest grade', 'turquoise'), ('THE RIGHT METRIC', 'for screening, a missed case matters more than a false alarm', 'deeppink'), ('LOOK AT FAILURES', 'the cases it gets wrong are the most interesting slide in your talk', 'amber')]\nn = len(cards)\ngap = 0.30\ncw = (body_w - (n - 1) * gap) / n\nfor i, (lab, bod, c) in enumerate(cards):\n    col = {'turquoise': TURQUOISE_RGB, 'deeppink': DEEPPINK_RGB, 'amber': AMBER_RGB, 'blueviolet': BLUEVIOLET_RGB}[c]\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=body_h, fill_rgb=PAPER_RGB)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=0.90, fill_rgb=col)\n    _add_text(slide, lab, left=x + 0.26, top=body_top, width=cw - 0.52, height=0.90,\n              size=17, color_rgb=_text_on(col), font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, bod, left=x + 0.26, top=body_top + 1.20, width=cw - 0.52, height=body_h - 1.5,\n              size=15, color_rgb=INK_RGB, font=SANS_FONT)",
+        "lede": "",
+        "notes": "Define what an honest evaluation is, positively this time. Test on held-out data the model\nnever trained on. Choose the metric that matches the stakes (sensitivity for screening,\nsince a miss is worse than a false alarm). And look at the failures, not just the score, the\nwrong cases are both the most instructive and the most compelling thing to present.\nTransition: which connects to how the talk is judged.",
+        "section_label": "Evaluate honestly",
+        "title": "What makes a good evaluation"
+      },
+      "slide_id": "h1-evaluate-honestly/h2-what-makes-a-good-evaluation"
+    },
+    {
+      "content_hash": "9b5451c36d9d3e48adf4ac67b8de8343f95b363bf2489435f5da728ac1f347fc",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d3_rubric.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "Walk the rubric so expectations are crystal clear, and point out what is NOT on it: highest\naccuracy. Five points: it runs, you evaluated honestly, you found a failure, each partner\ndefends a decision, both contributed. The meta-message: we reward understanding and honesty\nover a leaderboard number. A simple model you can fully explain beats a fancy one you cannot.\nTransition: and the talk itself is short, so here is how to nail it.",
+        "section_label": "Evaluate honestly",
+        "title": "How your talk is judged"
+      },
+      "slide_id": "h1-evaluate-honestly/h2-how-your-talk-is-judged"
+    },
+    {
+      "content_hash": "8a17990a042eac0aabfdfa2aa23c1fdea146d56a6529920895c2832b46877da6-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#40E0D0",
+        "label": "Present it"
+      },
+      "slide_id": "divider-h1-present-it"
+    },
+    {
+      "content_hash": "8bd4f27dddb1ee9bcd32a23f94069c26747fd4755ab7682fe19e9a2d4c9c5c4d",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "cards = [('SHOW IT', 'run the model live, or show one clear result', 'turquoise'), ('ONE FINDING', 'the single most interesting thing you learned', 'amber'), ('ONE LIMITATION', 'what it gets wrong, or what you would do with more time', 'deeppink')]\nn = len(cards)\ngap = 0.30\ncw = (body_w - (n - 1) * gap) / n\nfor i, (lab, bod, c) in enumerate(cards):\n    col = {'turquoise': TURQUOISE_RGB, 'deeppink': DEEPPINK_RGB, 'amber': AMBER_RGB, 'blueviolet': BLUEVIOLET_RGB}[c]\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=body_h, fill_rgb=PAPER_RGB)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=0.90, fill_rgb=col)\n    _add_text(slide, lab, left=x + 0.26, top=body_top, width=cw - 0.52, height=0.90,\n              size=17, color_rgb=_text_on(col), font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, bod, left=x + 0.26, top=body_top + 1.20, width=cw - 0.52, height=body_h - 1.5,\n              size=15, color_rgb=INK_RGB, font=SANS_FONT)",
+        "lede": "",
+        "notes": "Give them a foolproof three-minute structure so nobody freezes. Show the model doing\nsomething (live or one clear result), give the single best finding, name one honest\nlimitation. That is a complete, professional short talk. Three minutes is less time than it\nsounds, so show, do not narrate. Transition: and both of you talk.",
+        "section_label": "Present it",
+        "title": "The three-minute talk"
+      },
+      "slide_id": "h1-present-it/h2-the-three-minute-talk"
+    },
+    {
+      "content_hash": "836fc05f9ec27a4666fa42243aeb61c0428f942e0cffe039b6ae9bd2b3347951",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_add_text(slide, 'Both of you present.', left=body_l, top=body_top + body_h * 0.32, width=body_w, height=1.2,\n          size=32, color_rgb=accent_rgb, font=MONO_FONT, bold=True, align=PP_ALIGN.CENTER)\n_add_text(slide, \"Decide who covers what, and make sure each of you can answer a question about the other's part. The best teams understood the whole thing, not half each.\", left=body_l + 1.0, top=body_top + body_h * 0.60, width=body_w - 2.0, height=1.0,\n          size=17, color_rgb=INK_RGB, font=SANS_FONT, align=PP_ALIGN.CENTER)",
+        "lede": "",
+        "notes": "Reinforce the pair expectation, which the rubric grades. Both partners speak, and each\nshould be able to field a question about the other's half, because the strongest teams truly\nco-built rather than splitting the work in two. Keep this one short; it is a reminder, not a\nlecture. Transition: and after today?",
+        "section_label": "Present it",
+        "title": "Both of you, out loud"
+      },
+      "slide_id": "h1-present-it/h2-both-of-you-out-loud"
+    },
+    {
+      "content_hash": "59c738524b375fe68f33f4fc67c40e04388e854433b19b87757a1eb57e786db3-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#40E0D0",
+        "label": "What’s next"
+      },
+      "slide_id": "divider-h1-what-s-next"
+    },
+    {
+      "content_hash": "5ad38bf622199edc695d301cd85acb2a3e621dae45ad22e9bc0b0e4c0ab3c4ed",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d3_whats_next.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "Give them an on-ramp so the momentum does not die at 5pm. Keep building (Kaggle, fast.ai,\ntheir own ideas). Go deeper (Andrew Ng's courses, the MICCAI community for medical imaging).\nAnd the real message: medical AI is a genuine, hiring field, not a hobby; people make\ncareers of exactly what they did this week. Transition: a final word.",
+        "section_label": "What’s next",
+        "title": "Where to go from here"
+      },
+      "slide_id": "h1-what-s-next/h2-where-to-go-from-here"
+    },
+    {
+      "content_hash": "a46831ba7279e8c9be36a3bc76938aa439d19c6dcc47b4c9bc2e9b05f696fafd",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_add_text(slide, 'Go build something people want.', left=body_l, top=body_top + body_h * 0.32, width=body_w, height=1.2,\n          size=32, color_rgb=accent_rgb, font=MONO_FONT, bold=True, align=PP_ALIGN.CENTER)\n_add_text(slide, 'Three afternoons ago some of you had never written Python. Today you build and evaluate medical AI on real data, and reason about when to trust it. That is the real job, not a toy version of it.', left=body_l + 1.0, top=body_top + body_h * 0.60, width=body_w - 2.0, height=1.0,\n          size=17, color_rgb=INK_RGB, font=SANS_FONT, align=PP_ALIGN.CENTER)",
+        "lede": "",
+        "notes": "Close with sincerity and a little ambition. Name the distance traveled: from never writing\nPython to building and critically evaluating medical AI in three afternoons. Stress that this\nwas not a watered-down version, it is the actual work. End on the send-off: go build\nsomething people want, and thank you. Let it land; this is the last thing they hear.",
+        "section_label": "What’s next",
+        "title": "You did real work this week"
+      },
+      "slide_id": "h1-what-s-next/h2-you-did-real-work-this-week"
+    }
+  ],
+  "theme": "bone",
+  "version": 1
+}

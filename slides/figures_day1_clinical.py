@@ -97,17 +97,19 @@ def fig_dr_progression():
 # --------------------------------------------------------------------------- #
 def fig_access_gap():
     fig, (axL, axR) = plt.subplots(1, 2, figsize=(11, 4.0), gridspec_kw={"width_ratios": [1.3, 1]})
-    axL.axis("off"); axL.set_xlim(0, 10); axL.set_ylim(0, 10)
+    axL.axis("off"); axL.set_xlim(0, 10); axL.set_ylim(-1.2, 10)
     rng = np.random.RandomState(1)
     for _ in range(220):
-        axL.add_patch(Circle((rng.uniform(0, 10), rng.uniform(0, 8)), 0.12, color=TURQUOISE, alpha=0.8))
+        axL.add_patch(Circle((rng.uniform(0, 10), rng.uniform(1.2, 9)), 0.12, color=TURQUOISE, alpha=0.85))
     for _ in range(6):
-        axL.add_patch(Circle((rng.uniform(1, 9), rng.uniform(1, 7)), 0.28, color=DEEPPINK))
-    axL.set_ylim(-0.6, 10)
-    axL.text(5, 9.2, "many patients, few specialists", ha="center", fontsize=12,
+        axL.add_patch(Circle((rng.uniform(1, 9), rng.uniform(1.5, 8.5)), 0.30, color=DEEPPINK))
+    axL.text(5, 9.6, "many patients, few specialists", ha="center", fontsize=12,
              color=INK, family="Geist Mono")
-    axL.text(0.2, -0.3, "● ~463M adults with diabetes      ● too few eye doctors",
-             fontsize=10, color=MUTED)
+    # color-matched legend (dots match the cloud)
+    axL.add_patch(Circle((0.5, 0.2), 0.16, color=TURQUOISE))
+    axL.text(0.85, 0.2, "people who need screening", fontsize=10, color=INK, va="center")
+    axL.add_patch(Circle((0.5, -0.7), 0.16, color=DEEPPINK))
+    axL.text(0.85, -0.7, "the few eye specialists", fontsize=10, color=INK, va="center")
 
     axR.axis("off"); axR.set_xlim(0, 1); axR.set_ylim(0, 1)
     facts = [("1 in 3", "people with diabetes develop retinopathy", AMBER),
