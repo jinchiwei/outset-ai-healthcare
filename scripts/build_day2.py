@@ -32,10 +32,11 @@ Yesterday: end-to-end deep learning on eye images. Today a different problem and
 different paradigm.
 
 We move to **chest X-rays** (Open-i, with real radiologist reports). Instead of one
-big neural net, we combine three kinds of signal:
+big neural net, we combine three kinds of signal, where each one casts a *vote*:
 
-- **image features**: handcrafted numbers from the X-ray (texture, brightness) --
-  radiomics-style, the way radiologists have quantified images for years
+- **image vote**: a trained image model's probability for the X-ray (transfer
+  learning, like Day 1) -- a single number, not a raw embedding. This is **late
+  fusion**, or **stacking**. (Pre-computed out-of-fold; you load it.)
 - **text features**: findings an LLM pulled out of the radiology report
 - **demographics**: age, sex, smoking history
 
@@ -83,33 +84,48 @@ those. Here's what the model pulled out of each report: which findings are prese
 and a severity word.
 """))
 
-# ---- Image features demo ------------------------------------------------- #
+# ---- Image vote: late fusion / stacking ---------------------------------- #
 both(md("""
-## Image features: radiomics, the quick version
+## The image's vote: a trained model, not raw features
 
-Radiologists have long summarized images with handcrafted numbers: how bright, how
-much contrast, how much texture. Let's compute some on a sample chest X-ray. (The
-production tool for this is PyRadiomics; we use scikit-image so it runs anywhere.)
+How do we get the X-ray into the table? The classic way is **radiomics**: hand-craft
+numbers like brightness and texture (the cell below shows it). But there's a cleaner
+move. Train an actual image model -- transfer learning, exactly like Day 1 -- and feed
+the table just *its prediction*: one probability, `img_pred`. That's the image's vote.
+Combining each modality's prediction this way is called **late fusion** or **stacking**.
+
+One honesty catch: if the image model scores a patient it trained on, that score is too
+optimistic (it has seen the answer). So the instructor pre-computed every `img_pred`
+**out-of-fold** -- each patient scored by a model trained only on the *others*. You just
+load the result. (See `scripts/cache_openi_image_preds.py`.)
 """))
 
 both(code("""
 import common
 from pathlib import Path
 
+# The classic handcrafted way (radiomics) -- shown once for contrast:
 sample = sorted(Path("sample_images").glob("*.png"))[0]
 feats = common.extract_image_features(sample)
-print("image features for one chest X-ray:")
-for k, v in feats.items():
+print("radiomics: ~12 handcrafted numbers per image (the old way)")
+for k, v in list(feats.items())[:4]:
     print(f"  {k:22s} {v:.4f}")
+print("  ...")
+
+# What we actually use: the trained image model's single out-of-fold vote.
+import json
+img_preds = json.loads(Path("../../datasets/openi_image_preds.json").read_text())
+print(f"\\nimg_pred: one probability per case (we use THIS). {len(img_preds)} cached.")
+print("  examples:", {k: img_preds[k] for k in list(img_preds)[:3]})
 """))
 
 # ---- The table ----------------------------------------------------------- #
 both(md("""
 ## Everything becomes one table
 
-The instructor pre-built a table: one row per patient, with all three kinds of feature
-plus the label (does this patient have cardiomegaly?). Notice the column name prefixes
--- `intensity_`/`glcm_` are image, `llm_` are text, then the demographics.
+The instructor pre-built a table: one row per patient, with all three kinds of signal
+plus the label (does this patient have cardiomegaly?). Notice the columns -- `img_pred`
+is the image model's vote, `llm_` are the text features, then the demographics.
 """))
 
 both(code("""
@@ -117,7 +133,7 @@ import pandas as pd
 df = pd.read_csv("../../datasets/openi_features.csv")
 print("table shape:", df.shape)
 print("\\ncolumn groups:")
-print("  image:", [c for c in df.columns if c.startswith(("intensity_", "glcm_"))])
+print("  image:", [c for c in df.columns if c == "img_pred"])
 print("  text :", [c for c in df.columns if c.startswith("llm_")])
 print("  demo :", [c for c in df.columns if c in ("age", "sex_male", "smoker")])
 df.head(3)
@@ -176,10 +192,12 @@ print(f"multimodal (image + text + demographics) accuracy: {acc_all:.3f}")
 both(md("""
 ## How much did each modality help?
 
-**Predict:** if we throw away the report (text) features and keep only image +
+**Predict:** if we throw away the report (text) features and keep only the image vote +
 demographics, how much will accuracy drop?
 
-Fill in the ablation: build an image+demographics-only matrix, refit, compare.
+Fill in the ablation: build an image+demographics-only matrix (drop the `llm_` columns),
+refit, compare. The image vote alone is an honest signal -- how far does the text take us
+*beyond* it?
 """))
 
 todo(
@@ -220,9 +238,11 @@ if "llm_cardiomegaly_present" in df.columns:
 both(md("""
 ## Stretch
 
-Try predicting something the report does *not* directly state, like the patient's age
-group, from the **image features alone**. Is it harder? Why might that be a more honest
-test of what the X-ray actually contains?
+The image vote (`img_pred`) is the one honest signal here -- it comes from pixels, not
+from a report that names the answer. Train TabPFN on **just `img_pred`**, then on **just
+the demographics**, and compare. Which single modality is strongest on its own? Now you
+have the full picture: the leaked text wins on paper, but the image vote is the number you
+could actually defend.
 """))
 
 both(md("""

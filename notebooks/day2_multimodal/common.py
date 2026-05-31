@@ -1,17 +1,24 @@
 """Day 2 helpers: Open-i chest X-ray multimodal stack.
 
 The big idea of Day 2: every signal becomes a row of numbers, then a foundation
-model (TabPFN) handles the table.
+model (TabPFN) handles the table. Each modality contributes its own *vote*:
 
-  image  -> radiomics-style features (scikit-image: intensity + texture)
+  image  -> a trained image model's probability  (late fusion / stacking; pre-cached)
   report -> structured findings via the Anthropic API (pre-cached to JSON)
   patient-> demographics (synthetic for Open-i)
   concat -> one tabular row -> TabPFN
 
-Note on the image features: production radiomics uses PyRadiomics, but it does not
-install on Python 3.12 (its build script calls the removed configparser.SafeConfigParser).
-We compute the same feature families (first-order intensity stats + GLCM texture) with
-scikit-image, which is portable and installs everywhere. Same lesson, robust tooling.
+The image vote (`img_pred`): rather than feed handcrafted radiomics or a raw 512-d
+embedding into the table, we train an actual image classifier (transfer learning, like
+Day 1) and use ITS single probability as the image's contribution. The instructor
+pre-computes these out-of-fold (cross_val_predict) so each case is scored by a model
+that never trained on it -- see scripts/cache_openi_image_preds.py. One honest number
+per X-ray, cached to JSON.
+
+We still keep `extract_image_features` below: it's the classic handcrafted-radiomics
+way (first-order intensity + GLCM texture via scikit-image, since PyRadiomics won't
+build on Python 3.12). The notebook shows it once to contrast "handcraft numbers" with
+"let a trained model vote."
 """
 from __future__ import annotations
 import json
@@ -23,6 +30,7 @@ import pandas as pd
 
 OPENI_ROOT = Path(__file__).resolve().parents[2] / "datasets/raw/openi"
 LLM_CACHE_PATH = Path(__file__).resolve().parents[2] / "datasets/openi_llm_extractions.json"
+IMG_PRED_CACHE_PATH = Path(__file__).resolve().parents[2] / "datasets/openi_image_preds.json"
 DEMO_PATH = Path(__file__).resolve().parents[2] / "datasets/synthetic_demographics.csv"
 
 
@@ -151,6 +159,15 @@ def load_cached_llm_features(case_id: str) -> dict:
     return feats
 
 
+def load_cached_image_pred(case_id: str) -> dict:
+    """The image model's out-of-fold probability for this case (late fusion vote).
+
+    Pre-computed by scripts/cache_openi_image_preds.py. One honest number per X-ray.
+    """
+    cache = json.loads(IMG_PRED_CACHE_PATH.read_text())
+    return {"img_pred": float(cache.get(case_id, 0.5))}
+
+
 def load_demographics(case_id: str) -> dict:
     df = pd.read_csv(DEMO_PATH, comment="#").set_index("case_id")
     if case_id in df.index:
@@ -160,12 +177,14 @@ def load_demographics(case_id: str) -> dict:
 
 
 def build_feature_row(case_id: str, image_path: Path, use_text: bool = True) -> pd.Series:
-    """Combine image + (optional) text + demographic features into one row.
+    """Combine the image vote + (optional) text + demographic features into one row.
 
+    The image channel is the trained model's cached probability (`img_pred`), not
+    handcrafted radiomics -- late fusion / stacking.
     `use_text=False` drops the LLM features -- used for the leakage ablation.
     """
     feats = {}
-    feats.update(extract_image_features(image_path))
+    feats.update(load_cached_image_pred(case_id))
     if use_text:
         feats.update(load_cached_llm_features(case_id))
     feats.update(load_demographics(case_id))

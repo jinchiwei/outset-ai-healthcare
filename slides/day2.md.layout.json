@@ -1,5 +1,5 @@
 {
-  "deck_md_hash": "5a8cd341e8c336fa16f8a61cdd6896a006521b768ffed549cf19afb0b8641036",
+  "deck_md_hash": "1f7715ec805fa31cc375eb86cd44b0053b9e3315726067264466668bf69e2b7b",
   "mode": "expressive",
   "shake_seed": "bec6663013024e0c890365c3596643d0",
   "slides": [
@@ -148,17 +148,30 @@
       "slide_id": "h1-the-multimodal-stack/h2-three-signals-one-patient"
     },
     {
-      "content_hash": "a5f1d7d61b7e44afbc063f49b8917227dc64a79f4f1993eb2f79112430c705e1",
+      "content_hash": "e8153418feb7fc0cbe2133ea7ad7c4b1435e675b8620036edd09daac50faa3ec",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d2_radiomics.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d2_stacking.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
         "lede": "",
-        "notes": "First signal, and a deliberate contrast with Day 1. Instead of an end-to-end network, today\nwe hand-engineer the image into numbers, the way radiologists have quantified scans for\ndecades: intensity (how bright), texture (how patterned), shape (how big and round). About a\nhundred numbers per image. Note the honest aside: the production tool is PyRadiomics, but it\nwill not install on current Python, so we use scikit-image for the same feature families.\nTransition: now the text.",
+        "notes": "First signal, and a deliberate callback to Day 1. How do we get the X-ray into the table?\nYou could hand-craft a hundred radiomics numbers, or dump a 512-number embedding, but both\nswamp a tabular model. Cleaner move: train an actual image model, exactly the transfer-\nlearning recipe from yesterday, and feed the table only its prediction, one probability,\nimg_pred. That is the image's vote. This pattern has a name: late fusion, or stacking. Each\nmodality produces one opinion; the tabular model combines the opinions. Transition: but there\nis an honesty catch.",
         "section_label": "The multimodal stack",
-        "title": "Image to numbers: radiomics"
+        "title": "Image to a vote: late fusion"
       },
-      "slide_id": "h1-the-multimodal-stack/h2-image-to-numbers-radiomics"
+      "slide_id": "h1-the-multimodal-stack/h2-image-to-a-vote-late-fusion"
+    },
+    {
+      "content_hash": "1aee3bdeab3b27d1a79d6213338cd7a8a94efbd9ab847e2efcd37e5044d0af67",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "cards = [('THE TRAP', 'a model is overconfident on data it trained on; scoring a patient it has already seen is cheating', 'deeppink'), ('THE FIX', 'score each patient with a model that never saw them, out-of-fold (cross-validation)', 'turquoise'), ('WHY IT MATTERS', 'otherwise the image vote silently cheats, before the text features even get a chance to', 'amber')]\nn = len(cards)\ngap = 0.30\ncw = (body_w - (n - 1) * gap) / n\nfor i, (lab, bod, c) in enumerate(cards):\n    col = {'turquoise': TURQUOISE_RGB, 'deeppink': DEEPPINK_RGB, 'amber': AMBER_RGB, 'blueviolet': BLUEVIOLET_RGB}[c]\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=body_h, fill_rgb=PAPER_RGB)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=0.90, fill_rgb=col)\n    _add_text(slide, lab, left=x + 0.26, top=body_top, width=cw - 0.52, height=0.90,\n              size=18, color_rgb=_text_on(col), font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, bod, left=x + 0.26, top=body_top + 1.20, width=cw - 0.52, height=body_h - 1.5,\n              size=15, color_rgb=INK_RGB, font=SANS_FONT)",
+        "lede": "",
+        "notes": "A subtle but real trap in stacking, and a chance to reinforce the day's theme before the big\nleakage reveal. If the image model scores a patient it trained on, that score is too\noptimistic; it has effectively peeked. So when the instructor pre-computed every img_pred,\neach one came from a model trained only on the other patients, out-of-fold. Same fairness\ninstinct that runs through the whole day: never let a model grade itself. Plant this now, so\nwhen the text leakage lands in a few slides, students already have the mental hook.\nTransition: now the second signal, the text.",
+        "section_label": "The multimodal stack",
+        "title": "One honest catch: out-of-fold"
+      },
+      "slide_id": "h1-the-multimodal-stack/h2-one-honest-catch-out-of-fold"
     },
     {
       "content_hash": "951b8623e96014ff825f4e553cf6f5dc3b65860670900abb274af735411ccafb",
@@ -174,13 +187,13 @@
       "slide_id": "h1-the-multimodal-stack/h2-text-to-numbers-the-llm-extracts-findings"
     },
     {
-      "content_hash": "b0b3fe04aa4eac8de28f48ae4fb9c332e77c0f08352b096eb59676df925b46a8",
+      "content_hash": "e15040d2e87dfca693854fbb8dca165ee65c6178c341c0833f47f4b05f098478",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
         "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d2_tabular_row.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
         "lede": "",
-        "notes": "The big idea of the day, and it is satisfyingly simple. Image features are numbers, text\nfeatures are numbers, demographics are numbers. Lay them all side by side and every patient\nbecomes one row in a spreadsheet, with a label to predict. We have taken a scary-sounding\n\"multimodal\" problem and reduced it to a table. That reframing is most of the insight.\nTransition: and there is a very modern way to model a table.",
+        "notes": "The big idea of the day, and it is satisfyingly simple. The image model's vote is a number,\ntext features are numbers, demographics are numbers. Lay them all side by side and every\npatient becomes one row in a spreadsheet, with a label to predict. We have taken a scary-\nsounding \"multimodal\" problem and reduced it to a table. That reframing is most of the\ninsight. Transition: and there is a very modern way to model a table.",
         "section_label": "The multimodal stack",
         "title": "Everything becomes one tabular row"
       },
@@ -209,13 +222,13 @@
       "slide_id": "divider-h1-did-it-work"
     },
     {
-      "content_hash": "c1f4473ebc91f06dbc022ecc050d01f32a41348188e4b23e6b79a3ab686fb9a7",
+      "content_hash": "09f46a95494e65e162174b276c096627ada54f2571153dc1c6eaa8ddd16df69f",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
         "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d2_result.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
         "lede": "",
-        "notes": "Show the result and let them feel the excitement first. Image plus demographics alone gets\nabout 64%. Add the LLM-extracted text features and it leaps to about 89%. One extra signal,\na 25-point jump. If we stopped here we would celebrate. But set the hook: a jump that big\nshould make a careful person suspicious, not happy. Transition: so let us be suspicious.",
+        "notes": "Show the result and let them feel the excitement first. The image vote plus demographics\nalone gets about 72%, a real honest signal straight from the pixels. Add the LLM-extracted\ntext features and it leaps to about 98%. One extra signal, a huge jump. If we stopped here we\nwould celebrate. But set the hook: a jump that big should make a careful person suspicious,\nnot happy. Transition: so let us be suspicious.",
         "section_label": "Did it work?",
         "title": "Adding text looks amazing"
       },

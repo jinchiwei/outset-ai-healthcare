@@ -11,7 +11,7 @@ Three afternoons. By Wednesday, every student will have built five different mac
 | Day | Pitch | What you build |
 |-----|-------|----------------|
 | Mon Jul 6 | "What is an image, what is learning, and how did we get from logistic regression to vision transformers?" | A 5-model ladder on diabetic retinopathy: logreg → MLP → CNN → ResNet → ViT |
-| Tue Jul 7 | "Transformers aren't just for images. Here's how they read clinical text, and how to combine three signals at once." | A multimodal predictor on chest X-ray: PyRadiomics features + LLM-extracted text features + demographics → TabPFN |
+| Tue Jul 7 | "Transformers aren't just for images. Here's how they read clinical text, and how to combine three signals at once." | A multimodal predictor on chest X-ray: an image model's vote (late fusion) + LLM-extracted text features + demographics → TabPFN |
 | Wed Jul 8 | "Pick a problem, build something, present it." | A capstone you can show to anyone, in pairs, with a 3-minute presentation |
 
 The progression is intentional. D1 ends with a vision transformer. D2 opens with: *transformers aren't just for images, they're how LLMs work too.* The dataset shifts from fundus (where end-to-end deep learning crushes it) to chest X-ray (where the workflow is different — clinicians have notes, radiomics is on-domain, and a foundation model on tabular data can compete).
@@ -84,15 +84,15 @@ The dataset shift from D1 is intentional. Fundus is where end-to-end deep learni
 
 The lab teaches one big idea: **everything becomes a tabular row, then a foundation model handles it.**
 
-1. **Image features** — PyRadiomics extracts handcrafted features (intensity, shape, texture statistics) from the chest X-ray. Output: a fixed-length vector per patient. Radiomics on grayscale CXR is on-domain; this is what radiologists historically did with these images, formalized.
+1. **Image vote (late fusion / stacking)** — instead of handcrafted radiomics or a raw embedding, a trained image model (transfer learning, like Day 1) outputs a single probability `img_pred` per chest X-ray. That one number is the image's vote. **Pre-computed out-of-fold by the instructor** (each patient scored by a model that never trained on them, so the image feature can't silently leak); students load it. The notebook still shows radiomics once, as the classic contrast.
 2. **Text features** — Anthropic API has parsed an associated report (real Open-i radiology report) into a structured JSON of findings (effusion present, opacity location, etc.). **Pre-cached by the instructor — students load JSON, no API key needed.**
 3. **Demographics** — age, sex, comorbidities. Tabular.
 4. **Concatenate** the three → one wide tabular row per patient.
-5. **TabPFN** — a 2023+ foundation model for tabular data. No traditional training. Run inference, compare to a CXR-image-only baseline (e.g., a pretrained ResNet head on the same images).
+5. **TabPFN** — a 2023+ foundation model for tabular data. No traditional training. Run inference; the image vote + demographics alone is the honest baseline (~72%), the leaked text inflates it (~98%).
 
 **Honest discussion at the end:** the LLM-extracted features from a radiology report can leak the answer (the report often *names* the finding we're trying to predict). This is a real problem in clinical ML — what counts as data, what counts as a label, what's a clinician's note that postdates the imaging. We'll surface this and discuss what a fair evaluation would look like.
 
-**Stretch:** try predicting a finding the report doesn't directly mention (e.g., predict patient age bin from imaging features alone, or predict a comorbidity).
+**Stretch:** fit TabPFN on each modality alone (just the image vote, then just demographics) and compare — which single signal is strongest, and which one could you actually defend in front of a clinician?
 
 **Learning outcomes**:
 - Explain what an LLM does at the token level.

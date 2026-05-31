@@ -148,13 +148,28 @@ challenge, and the rest of this section, is getting three very different things 
 a single model can use. Transition: start with the image.
 """)
 
-fig("image-to-numbers", "d2_radiomics.png", """
-First signal, and a deliberate contrast with Day 1. Instead of an end-to-end network, today
-we hand-engineer the image into numbers, the way radiologists have quantified scans for
-decades: intensity (how bright), texture (how patterned), shape (how big and round). About a
-hundred numbers per image. Note the honest aside: the production tool is PyRadiomics, but it
-will not install on current Python, so we use scikit-image for the same feature families.
-Transition: now the text.
+fig("image-to-a-vote", "d2_stacking.png", """
+First signal, and a deliberate callback to Day 1. How do we get the X-ray into the table?
+You could hand-craft a hundred radiomics numbers, or dump a 512-number embedding, but both
+swamp a tabular model. Cleaner move: train an actual image model, exactly the transfer-
+learning recipe from yesterday, and feed the table only its prediction, one probability,
+img_pred. That is the image's vote. This pattern has a name: late fusion, or stacking. Each
+modality produces one opinion; the tabular model combines the opinions. Transition: but there
+is an honesty catch.
+""")
+
+cards3("one-honest-catch",
+       [("THE TRAP", "a model is overconfident on data it trained on; scoring a patient it has already seen is cheating", "deeppink"),
+        ("THE FIX", "score each patient with a model that never saw them, out-of-fold (cross-validation)", "turquoise"),
+        ("WHY IT MATTERS", "otherwise the image vote silently cheats, before the text features even get a chance to", "amber")],
+       """
+A subtle but real trap in stacking, and a chance to reinforce the day's theme before the big
+leakage reveal. If the image model scores a patient it trained on, that score is too
+optimistic; it has effectively peeked. So when the instructor pre-computed every img_pred,
+each one came from a model trained only on the other patients, out-of-fold. Same fairness
+instinct that runs through the whole day: never let a model grade itself. Plant this now, so
+when the text leakage lands in a few slides, students already have the mental hook.
+Transition: now the second signal, the text.
 """)
 
 slide("text-to-numbers", """
@@ -182,11 +197,11 @@ numbers, plus demographics, and now the magic step.
 """)
 
 fig("everything-becomes-one-tabular", "d2_tabular_row.png", """
-The big idea of the day, and it is satisfyingly simple. Image features are numbers, text
-features are numbers, demographics are numbers. Lay them all side by side and every patient
-becomes one row in a spreadsheet, with a label to predict. We have taken a scary-sounding
-"multimodal" problem and reduced it to a table. That reframing is most of the insight.
-Transition: and there is a very modern way to model a table.
+The big idea of the day, and it is satisfyingly simple. The image model's vote is a number,
+text features are numbers, demographics are numbers. Lay them all side by side and every
+patient becomes one row in a spreadsheet, with a label to predict. We have taken a scary-
+sounding "multimodal" problem and reduced it to a table. That reframing is most of the
+insight. Transition: and there is a very modern way to model a table.
 """)
 
 fig("tabpfn", "d2_tabpfn.png", """
@@ -202,10 +217,11 @@ all three signals actually help?
 # Did it work?
 # --------------------------------------------------------------------------- #
 fig("adding-text-looks-amazing", "d2_result.png", """
-Show the result and let them feel the excitement first. Image plus demographics alone gets
-about 64%. Add the LLM-extracted text features and it leaps to about 89%. One extra signal,
-a 25-point jump. If we stopped here we would celebrate. But set the hook: a jump that big
-should make a careful person suspicious, not happy. Transition: so let us be suspicious.
+Show the result and let them feel the excitement first. The image vote plus demographics
+alone gets about 72%, a real honest signal straight from the pixels. Add the LLM-extracted
+text features and it leaps to about 98%. One extra signal, a huge jump. If we stopped here we
+would celebrate. But set the hook: a jump that big should make a careful person suspicious,
+not happy. Transition: so let us be suspicious.
 """)
 
 fig("wait-that-is-too-good", "d2_leakage.png", """

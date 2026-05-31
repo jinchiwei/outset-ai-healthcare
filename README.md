@@ -11,7 +11,7 @@ Three-session "AI in Healthcare" course for high school students, taught for Out
 | Day | Focus | Anchor |
 |-----|-------|--------|
 | Mon Jul 6 | Intro to deep learning, lab applies it | A 5-model ladder (logreg → MLP → CNN → ResNet → ViT) on APTOS-2019 fundus DR |
-| Tue Jul 7 | LLMs + multimodal medical AI | PyRadiomics + cached LLM features + demographics → TabPFN, on Open-i chest X-ray |
+| Tue Jul 7 | LLMs + multimodal medical AI | Image-model vote (late fusion) + cached LLM features + demographics → TabPFN, on Open-i chest X-ray |
 | Wed Jul 8 | Capstone in pairs | 3 starter kits (pneumonia, skin, MedMNIST) or propose your own |
 
 ## Course structure
@@ -27,7 +27,7 @@ slides/                            python-pptx generators per session
 notebooks/
   _shared/                         colab setup, pre-class warmup
   day1_ladder/                     APTOS DR + 5-model ladder (lab + solution)
-  day2_multimodal/                 Open-i CXR + PyRadiomics + LLM + TabPFN (lab + solution)
+  day2_multimodal/                 Open-i CXR: image-model vote + LLM + TabPFN (lab + solution)
   day3_capstone/                   3 starter kits + project options + rubric
 datasets/                          download scripts, pre-cached LLM JSON, no raw data
 scripts/                           smoke runner, deck builder, instructor caching script

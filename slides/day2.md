@@ -105,11 +105,26 @@ Now we build the thing. For each patient we have three very different signals: t
 
 ---
 
-## Image to numbers: radiomics
+## Image to a vote: late fusion
 
-First signal. Instead of an end-to-end network, today we turn the image into handcrafted numbers, the way radiologists have quantified scans for decades: how bright, how textured, how big and round. That gives about a hundred numbers per image. (The classic tool is PyRadiomics; we use scikit-image so it runs anywhere.)
+First signal. How do we get the X-ray into the table? You could hand-craft a hundred radiomics numbers, or dump a 512-number embedding, but both swamp a tabular model. Instead we do something cleaner: train an actual image model (transfer learning, exactly like Day 1) and feed the table just its prediction. One probability, the image's vote. This is called late fusion, or stacking.
 
-![Radiomics](figures/d2_radiomics.png)
+![Late fusion](figures/d2_stacking.png)
+
+---
+
+## One honest catch: out-of-fold
+
+There is a subtle trap in stacking. If the image model scores a patient it was trained on, that score is too optimistic, it has effectively seen the answer. So when the instructor pre-computed every patient's `img_pred`, each one came from a model trained only on the *other* patients (this is called out-of-fold, or cross-validation). It is the same fairness instinct that runs through the whole day: never let a model grade itself.
+
+### The trap
+A model is overconfident on data it trained on.
+
+### The fix
+Score each patient with a model that never saw them.
+
+### Why it matters
+Otherwise the image vote silently cheats, before the text even gets a chance to.
 
 ---
 
@@ -130,7 +145,7 @@ You load the saved answers; the one live call is the instructor's demo.
 
 ## Everything becomes one tabular row
 
-This is the big idea of the day, and it is beautifully simple. Image features are numbers. Text features are numbers. Demographics are numbers. Lay them side by side and every patient is just one row in a table, with a label to predict. We have turned a messy multimodal problem into a spreadsheet.
+This is the big idea of the day, and it is beautifully simple. The image model's vote is a number. Text features are numbers. Demographics are numbers. Lay them side by side and every patient is just one row in a table, with a label to predict. We have turned a messy multimodal problem into a spreadsheet.
 
 ![Everything becomes a tabular row](figures/d2_tabular_row.png)
 
@@ -150,7 +165,7 @@ So who predicts from the table? Not a network you train for hours. TabPFN is a f
 
 ## Adding text looks amazing
 
-Run it. Image plus demographics alone lands around 64%. Add the LLM-extracted text features and it jumps to about 89%. A huge gain from one extra signal. If we stopped here we would high-five and publish. But that jump should make you suspicious, not excited.
+Run it. The image vote plus demographics alone lands around 72%, a real, honest signal from the pixels. Add the LLM-extracted text features and it jumps to about 98%. A huge gain from one extra signal. If we stopped here we would high-five and publish. But that jump should make you suspicious, not excited.
 
 ![Multimodal result](figures/d2_result.png)
 

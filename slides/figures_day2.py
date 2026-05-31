@@ -1,6 +1,6 @@
 """Day 2 figures: clinical (chest X-ray + reports), language models (tokens,
-attention, hallucination), the multimodal stack (radiomics + LLM + demographics
--> tabular -> TabPFN), and the leakage evaluation. Brand-styled via figbase, so
+attention, hallucination), the multimodal stack (image-model vote + LLM + demographics
+-> tabular -> TabPFN, late fusion), and the leakage evaluation. Brand-styled via figbase, so
 backgrounds match the deck canvas. Output: slides/figures/d2_*.png
 
 Run:  python slides/figures_day2.py
@@ -171,31 +171,37 @@ def fig_three_signals():
 
 
 # --------------------------------------------------------------------------- #
-# STACK 2: radiomics (image -> handcrafted features)
+# STACK 2: the image's vote (late fusion / stacking)
 # --------------------------------------------------------------------------- #
-def fig_radiomics():
+def fig_stacking():
     fig, ax = plt.subplots(figsize=(11, 4.0))
     ax.axis("off"); ax.set_xlim(0, 12); ax.set_ylim(0, 4)
+    # the X-ray
     ax.imshow(Image.open(REALIMG / "cxr_normal.png").convert("L"), cmap="gray",
-              extent=[0.5, 2.9, 1.3, 3.7], aspect="auto", zorder=1)
-    ax.text(1.7, 1.0, "the image", ha="center", fontsize=11, color=MUTED)
-    ax.annotate("", xy=(4.0, 2.6), xytext=(3.1, 2.6), arrowprops=dict(arrowstyle="-|>", color=INK, lw=2.5))
-    feats = [("intensity", "how bright", TURQUOISE), ("texture", "how busy", DEEPPINK),
-             ("shape", "how big / round", AMBER)]
-    for i, (name, desc, c) in enumerate(feats):
-        y = 3.3 - i * 0.95
-        ax.add_patch(FancyBboxPatch((4.3, y - 0.32), 3.3, 0.7, boxstyle="round,pad=0.02,rounding_size=0.05",
-                                    facecolor=c, edgecolor="none"))
-        ax.text(4.5, y, f"{name}: {desc}", fontsize=11, fontweight="bold", color=txt_on(c),
-                family="Geist Mono", va="center")
-    ax.annotate("", xy=(8.5, 2.6), xytext=(7.5, 2.6), arrowprops=dict(arrowstyle="-|>", color=INK, lw=2.5))
-    ax.text(10.2, 2.6, "~100 numbers\nper image", ha="center", va="center", fontsize=12,
-            color=BLUEVIOLET, family="Geist Mono")
-    figtitle(fig, "Radiomics: turn the image into handcrafted numbers")
-    fig.text(0.5, -0.02, "Radiologists have long quantified images this way. We compute the same "
-             "families of features (intensity, texture, shape) with scikit-image.",
+              extent=[0.4, 2.6, 1.4, 3.6], aspect="auto", zorder=1)
+    ax.text(1.5, 1.05, "the X-ray", ha="center", fontsize=11, color=MUTED)
+    ax.annotate("", xy=(4.0, 2.5), xytext=(2.8, 2.5), arrowprops=dict(arrowstyle="-|>", color=INK, lw=2.5))
+    # the trained image model (a box, like Day 1)
+    ax.add_patch(FancyBboxPatch((4.0, 1.7), 3.4, 1.7, boxstyle="round,pad=0.02,rounding_size=0.06",
+                                facecolor=BLUEVIOLET, edgecolor="none"))
+    ax.text(5.7, 2.9, "image model", ha="center", fontsize=14, fontweight="bold",
+            color="white", family="Geist Mono")
+    ax.text(5.7, 2.2, "transfer learning,\nlike Day 1", ha="center", va="center",
+            fontsize=11, color="white")
+    ax.annotate("", xy=(9.0, 2.5), xytext=(7.6, 2.5), arrowprops=dict(arrowstyle="-|>", color=INK, lw=2.5))
+    # its single output: one probability
+    ax.add_patch(FancyBboxPatch((9.1, 1.85), 2.5, 1.3, boxstyle="round,pad=0.02,rounding_size=0.06",
+                                facecolor=TURQUOISE, edgecolor="none"))
+    ax.text(10.35, 2.72, "img_pred", ha="center", fontsize=13, fontweight="bold",
+            color=txt_on(TURQUOISE), family="Geist Mono")
+    ax.text(10.35, 2.18, "0.83", ha="center", fontsize=20, fontweight="bold",
+            color=txt_on(TURQUOISE), family="Geist Mono")
+    ax.text(10.35, 1.5, "one number", ha="center", fontsize=10, color=MUTED, style="italic")
+    figtitle(fig, "Late fusion: the image model casts one vote")
+    fig.text(0.5, -0.02, "Instead of 100 handcrafted numbers or a 512-d embedding, we feed the table the "
+             "image model's own probability. Each modality votes; TabPFN combines the votes.",
              ha="center", fontsize=10, color=MUTED, style="italic")
-    save(fig, "d2_radiomics.png")
+    save(fig, "d2_stacking.png")
 
 
 # --------------------------------------------------------------------------- #
@@ -204,8 +210,8 @@ def fig_radiomics():
 def fig_tabular_row():
     fig, ax = plt.subplots(figsize=(11.5, 3.6))
     ax.axis("off"); ax.set_xlim(0, 12); ax.set_ylim(0, 4)
-    groups = [("image features", 4, TURQUOISE), ("text features", 3, DEEPPINK),
-              ("demographics", 2, AMBER)]
+    groups = [("image vote", 1, TURQUOISE), ("text features", 5, DEEPPINK),
+              ("demographics", 3, AMBER)]
     x = 0.5
     for name, n, c in groups:
         for j in range(n):
@@ -255,7 +261,7 @@ def fig_tabpfn():
 def fig_result():
     fig, ax = plt.subplots(figsize=(10, 4.2))
     bars = ["image +\ndemographics", "+ text\n(multimodal)"]
-    accs = [0.64, 0.89]
+    accs = [0.72, 0.98]
     colors = [TURQUOISE, DEEPPINK]
     b = ax.bar(range(2), accs, color=colors, width=0.5)
     for bar, a in zip(b, accs):
@@ -265,7 +271,7 @@ def fig_result():
     ax.set_ylim(0.4, 1.0); ax.set_yticks([0.5, 0.75, 1.0]); ax.set_yticklabels(["50%", "75%", "100%"])
     ax.set_ylabel("accuracy")
     figtitle(fig, "Adding the text features looks amazing")
-    fig.text(0.5, -0.02, "Multimodal jumps from 64% to 89%. A huge gain... almost too huge. Why?",
+    fig.text(0.5, -0.02, "Multimodal jumps from 72% to 98%. A huge gain... almost too huge. Why?",
              ha="center", fontsize=10.5, color=MUTED, style="italic")
     save(fig, "d2_result.png")
 
@@ -301,8 +307,8 @@ def fig_two_paradigms():
     ax.axis("off"); ax.set_xlim(0, 12); ax.set_ylim(0, 4)
     cols = [("DAY 1", "End-to-end deep learning", "raw image -> one big neural net -> answer",
              "learns its own features", TURQUOISE),
-            ("DAY 2", "Features + foundation model", "image+text+data -> handcrafted features -> TabPFN",
-             "you choose the features", DEEPPINK)]
+            ("DAY 2", "Combine signals + foundation model", "image vote + text + data -> one table -> TabPFN",
+             "you assemble the signals", DEEPPINK)]
     for i, (day, name, how, note, c) in enumerate(cols):
         x = 0.5 + i * 5.9
         ax.add_patch(FancyBboxPatch((x, 0.5), 5.4, 3.1, boxstyle="round,pad=0.02,rounding_size=0.06",
@@ -323,7 +329,7 @@ if __name__ == "__main__":
     fig_attention()
     fig_hallucination()
     fig_three_signals()
-    fig_radiomics()
+    fig_stacking()
     fig_tabular_row()
     fig_tabpfn()
     fig_result()
