@@ -66,7 +66,10 @@ trained eye specialist, and there are nowhere near enough, especially in rural a
 lower-income countries. So a huge fraction of diabetics never get screened and lose vision
 they did not have to. This is the gap: enormous, routine need on one side, scarce expertise
 on the other. That is the shape of problem where AI screening genuinely helps, by putting a
-specialist-level read anywhere there is a camera. Transition: and this is not hypothetical.
+specialist-level read anywhere there is a camera. Concrete numbers for the bars: low-income
+countries have about 3.7 ophthalmologists per million people, high-income about 76, roughly
+a 20-fold gap (Resnikoff et al., Br J Ophthalmol 2020). The shortage is worst exactly where
+the diabetes burden is rising fastest. Transition: and this is not hypothetical.
 """)
 
 fig_slide("from-research-to-the-clinic", "clinical_deployment.png", """

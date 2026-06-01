@@ -100,21 +100,36 @@ def fig_dr_progression():
 # 3. The access gap
 # --------------------------------------------------------------------------- #
 def fig_access_gap():
-    fig, (axL, axR) = plt.subplots(1, 2, figsize=(11, 4.0), gridspec_kw={"width_ratios": [1.3, 1]})
-    axL.axis("off"); axL.set_xlim(0, 10); axL.set_ylim(-1.2, 10)
-    rng = np.random.RandomState(1)
-    for _ in range(220):
-        axL.add_patch(Circle((rng.uniform(0, 10), rng.uniform(1.2, 9)), 0.12, color=TURQUOISE, alpha=0.85))
-    for _ in range(6):
-        axL.add_patch(Circle((rng.uniform(1, 9), rng.uniform(1.5, 8.5)), 0.30, color=DEEPPINK))
-    axL.text(5, 9.6, "many patients, few specialists", ha="center", fontsize=12,
-             color=INK, family="Geist Mono")
-    # color-matched legend (dots match the cloud)
-    axL.add_patch(Circle((0.5, 0.2), 0.16, color=TURQUOISE))
-    axL.text(0.85, 0.2, "people who need screening", fontsize=10, color=INK, va="center")
-    axL.add_patch(Circle((0.5, -0.7), 0.16, color=DEEPPINK))
-    axL.text(0.85, -0.7, "the few eye specialists", fontsize=10, color=INK, va="center")
+    fig, (axL, axR) = plt.subplots(1, 2, figsize=(11, 4.0), gridspec_kw={"width_ratios": [1.45, 1]})
 
+    # LEFT: ophthalmologists per million, by country income group (real data).
+    # Resnikoff et al., Br J Ophthalmol 2020 (2015 data): an 18-20x gap.
+    tiers = [("Low income", 3.7), ("Lower-middle", 7.4),
+             ("Upper-middle", 15.8), ("High income", 76.2)]
+    labels = [t[0] for t in tiers]
+    vals = [t[1] for t in tiers]
+    # scarcity is the story: low-income bar in deeppink, the rest turquoise
+    colors = [DEEPPINK, TURQUOISE, TURQUOISE, TURQUOISE]
+    ypos = np.arange(len(tiers))[::-1]
+    axL.barh(ypos, vals, height=0.62, color=colors, edgecolor="none", zorder=3)
+    for y, v in zip(ypos, vals):
+        if y == ypos[0]:
+            continue  # low-income value is carried by the callout below
+        axL.text(v + 1.5, y, f"{v:g}", va="center", ha="left", fontsize=12,
+                 fontweight="bold", color=INK, family="Geist Mono")
+    axL.set_yticks(ypos); axL.set_yticklabels(labels, fontsize=11)
+    axL.set_xlim(0, 88); axL.set_xticks([0, 20, 40, 60, 80])
+    axL.tick_params(axis="x", labelsize=9, colors=MUTED)
+    for s in ("top", "right", "left"):
+        axL.spines[s].set_visible(False)
+    axL.spines["bottom"].set_color("#CCC")
+    # the gap, called out (carries the 3.7 value so it isn't crossed by the arrow)
+    axL.annotate("only 3.7 per million\n~20x fewer where need is highest",
+                 xy=(4.5, ypos[0]), xytext=(22, ypos[0]),
+                 fontsize=10, color=DEEPPINK, family="Geist Mono", va="center",
+                 arrowprops=dict(arrowstyle="-|>", color=DEEPPINK, lw=1.8))
+
+    # RIGHT: why this disease, in particular (kept stat cards).
     axR.axis("off"); axR.set_xlim(0, 1); axR.set_ylim(0, 1)
     facts = [("1 in 3", "people with diabetes develop retinopathy", AMBER),
              ("Leading", "cause of blindness in working-age adults", DEEPPINK),
@@ -128,6 +143,10 @@ def fig_access_gap():
         axR.text(0.07, y - 0.09, big, fontsize=18, fontweight="bold", va="center", color=tc, family="Geist Mono")
         axR.text(0.07, y - 0.225, small, fontsize=9.5, va="center", color=tc)
     figtitle(fig, "A screening problem: too many eyes, too few specialists")
+    fig.text(0.5, -0.02, "Ophthalmologists per million people, by country income group "
+             "(Resnikoff et al., Br J Ophthalmol 2020; 2015 data). The shortage is worst exactly "
+             "where the diabetes burden is growing fastest, which is what makes automated screening matter.",
+             ha="center", fontsize=8.5, color=MUTED, style="italic", wrap=True)
     save(fig, "clinical_access_gap.png")
 
 

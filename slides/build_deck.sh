@@ -14,15 +14,13 @@ OUT="$REPO/slides/build/$DAY.pptx"
 SIDE="$REPO/slides/$DAY.md.layout.json"
 
 # 1. render (replays the handcrafted layout sidecar deterministically)
+#    Section dividers render on navy with a cycling brand accent (non-full-bleed).
 ( cd "$SKILL" && conda run -n outset python build.py --input "$MD" --output "$OUT" )
 
-# 2. recolor section dividers full-bleed with their cycling brand accent
-conda run -n outset python "$REPO/slides/apply_divider_colors.py" "$OUT" "$SIDE"
-
-# 3. Outset wordmark (white) on the dark cover
+# 2. Outset wordmark (white) on the dark cover
 conda run -n outset python "$REPO/slides/apply_logo.py" "$OUT"
 
-# 4. real-image cover hero (lower-right), per day
+# 3. real-image cover hero (lower-right), per day
 case "$DAY" in
   day1) HERO=fundus_dr.jpg ;;
   day2) HERO=cxr_normal.png ;;
