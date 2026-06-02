@@ -41,6 +41,12 @@ except ImportError:
     def warn_text_overflow(fig, *, source=""):  # no-op on older superstack
         return None
 
+try:
+    from mpl_style import warn_box_padding  # noqa: E402
+except ImportError:
+    def warn_box_padding(fig, *, source=""):  # no-op on older superstack
+        return None
+
 # The deck theme. MUST match the theme frozen in the .md.layout.json sidecar
 # (currently "bone"). If the deck theme changes, change this too.
 THEME = "bone"
@@ -67,6 +73,7 @@ def save(fig, name):
     """Save a figure with the deck canvas as background, then warn on overflow."""
     fig.savefig(OUT / name, dpi=DPI, bbox_inches="tight", facecolor=CANVAS)
     warn_text_overflow(fig, source=name)
+    warn_box_padding(fig, source=name)
     plt.close(fig)
     print("wrote", name)
 
