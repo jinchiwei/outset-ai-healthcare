@@ -1,58 +1,36 @@
 """Shared base for every Day-N figure script in this repo.
 
-ONE place that sets the matplotlib brand style and saves figures, so the figure
-background ALWAYS matches the deck's slide canvas (no stark white rectangle) and
-nobody can hardcode facecolor="white" again. Import from here:
+Thin course wrapper over the standalone **build-figure** skill (`brandfig`), so the
+deck figures and the notebook figures share ONE foundation: the brand style, the
+theme-matched canvas (no stark white rectangle on the bone slide), and the save-time
+QA (text overflow + box padding). Import from here:
 
     from figbase import plt, np, save, figtitle, txt_on, INK, MUTED, CANVAS
     from figbase import TURQUOISE, DEEPPINK, AMBER, BLUEVIOLET
 
-`save()` writes with the theme canvas facecolor and runs the overflow check.
+`save()` writes with the theme canvas facecolor and runs the QA checks.
+
+If the build-figure skill isn't installed (a machine a little behind), we fall back
+to the shared `_shared/mpl_style.py` directly, so figures still build.
 """
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path.home() / ".claude/skills/_shared"))
+# The build-figure skill (brandfig) + its _shared dependency.
+for _p in (Path.home() / ".claude/skills/build-figure",
+           Path.home() / ".claude/skills/_shared"):
+    sys.path.insert(0, str(_p))
+
 import matplotlib  # noqa: E402
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402,F401  (re-exported)
 import numpy as np  # noqa: E402,F401  (re-exported)
 
-# Stable, long-standing mpl_style API (required).
-from mpl_style import (  # noqa: E402,F401  (title re-exported)
-    apply_style, theme_colors, title,
-    TURQUOISE, DEEPPINK, AMBER, BLUEVIOLET, GOLD,
-)
-
-# Newer helpers — import defensively so the figures still build on a machine
-# whose superstack is a little behind (older ~/.claude/skills/_shared/mpl_style.py).
-try:
-    from mpl_style import text_on_brand_fill  # noqa: E402
-except ImportError:
-    def text_on_brand_fill(fill_hex):
-        """Fallback: WCAG-luminance pick of black/white text on a fill."""
-        h = fill_hex.lstrip("#")
-        r, g, b = (int(h[i:i + 2], 16) / 255 for i in (0, 2, 4))
-        return "black" if (0.2126 * r + 0.7152 * g + 0.0722 * b) > 0.5 else "white"
-
-try:
-    from mpl_style import warn_text_overflow  # noqa: E402
-except ImportError:
-    def warn_text_overflow(fig, *, source=""):  # no-op on older superstack
-        return None
-
-try:
-    from mpl_style import warn_box_padding  # noqa: E402
-except ImportError:
-    def warn_box_padding(fig, *, source=""):  # no-op on older superstack
-        return None
-
-# The deck theme. MUST match the theme frozen in the .md.layout.json sidecar
-# (currently "bone"). If the deck theme changes, change this too.
+# The deck theme. MUST match the theme frozen in the .md.layout.json sidecar.
 THEME = "bone"
-apply_style(THEME)
-CANVAS = theme_colors(THEME).canvas
 
+# Course text constants (kept stable so figures don't shift if a theme palette
+# is retuned upstream): slightly darker ink + a readable muted than the raw theme.
 INK = "#14141C"
 MUTED = "#555560"
 PAPER = "#FAFAF7"
@@ -65,18 +43,58 @@ OUT.mkdir(parents=True, exist_ok=True)
 # realism is the payload. See realimg/CREDITS.md for sources + licenses.
 REALIMG = Path(__file__).resolve().parent / "realimg"
 
-# canonical contrast helper (ink on turquoise/amber, white on deeppink/blueviolet)
-txt_on = text_on_brand_fill
+try:
+    import brandfig as _bf  # the build-figure skill
+
+    _bf.use(THEME)
+    CANVAS = _bf.canvas(THEME)
+    txt_on = _bf.txt_on
+    from brandfig import TURQUOISE, DEEPPINK, AMBER, BLUEVIOLET, GOLD  # noqa: F401
+    from mpl_style import title  # noqa: F401  (ax-title helper, re-exported)
+
+    def save(fig, name):
+        """Save with the deck canvas as background, then run QA (overflow + box padding)."""
+        _bf.save(fig, OUT / name, theme=THEME, dpi=DPI, source=name)
+        plt.close(fig)
+        print("wrote", name)
+
+except ImportError:
+    # Fallback: drive the shared style module directly (pre-build-figure behavior).
+    from mpl_style import (  # noqa: E402,F401
+        apply_style, theme_colors, title,
+        TURQUOISE, DEEPPINK, AMBER, BLUEVIOLET, GOLD,
+    )
+    try:
+        from mpl_style import text_on_brand_fill as txt_on
+    except ImportError:
+        def txt_on(fill_hex):
+            h = fill_hex.lstrip("#")
+            r, g, b = (int(h[i:i + 2], 16) / 255 for i in (0, 2, 4))
+            return "black" if (0.2126 * r + 0.7152 * g + 0.0722 * b) > 0.5 else "white"
+
+    def _noop(fig, *, source=""):
+        return None
+
+    try:
+        from mpl_style import warn_text_overflow
+    except ImportError:
+        warn_text_overflow = _noop
+    try:
+        from mpl_style import warn_box_padding
+    except ImportError:
+        warn_box_padding = _noop
+
+    apply_style(THEME)
+    CANVAS = theme_colors(THEME).canvas
+
+    def save(fig, name):
+        fig.savefig(OUT / name, dpi=DPI, bbox_inches="tight", facecolor=CANVAS)
+        warn_text_overflow(fig, source=name)
+        warn_box_padding(fig, source=name)
+        plt.close(fig)
+        print("wrote", name)
 
 
-def save(fig, name):
-    """Save a figure with the deck canvas as background, then warn on overflow."""
-    fig.savefig(OUT / name, dpi=DPI, bbox_inches="tight", facecolor=CANVAS)
-    warn_text_overflow(fig, source=name)
-    warn_box_padding(fig, source=name)
-    plt.close(fig)
-    print("wrote", name)
-
-
+# canonical contrast helper (re-exported name used across figure scripts)
 def figtitle(fig, text, *, color=INK, y=1.03):
     fig.suptitle(text, fontsize=16, fontweight="bold", family="Geist Mono", color=color, y=y)
