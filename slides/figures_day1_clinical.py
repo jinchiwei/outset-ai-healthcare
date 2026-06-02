@@ -185,8 +185,8 @@ def fig_severity_scale():
         x = x0 + i * (bw + gap)
         ax.add_patch(FancyBboxPatch((x, 1.5), bw, 1.4, boxstyle="round,pad=0.02,rounding_size=0.05",
                                     facecolor=c, edgecolor="none"))
-        ax.text(x + bw / 2, 2.5, g, ha="center", fontsize=26, fontweight="bold", color=txt_on(c), family="Geist Mono")
-        ax.text(x + bw / 2, 1.85, name, ha="center", fontsize=12, color=txt_on(c), family="Geist Mono")
+        ax.text(x + bw / 2, 2.42, g, ha="center", va="center", fontsize=26, fontweight="bold", color=txt_on(c), family="Geist Mono")
+        ax.text(x + bw / 2, 1.88, name, ha="center", va="center", fontsize=12, color=txt_on(c), family="Geist Mono")
     # brackets
     split = x0 + 2 * (bw + gap) - gap / 2
     ax.plot([x0, split - 0.1], [1.2, 1.2], color=MUTED, lw=2)

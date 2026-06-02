@@ -147,8 +147,8 @@ def fig_accuracy_lies():
             fontsize=11, color=INK, family="Geist Mono")
     ax.add_patch(FancyBboxPatch((9.3, 1.4), 2.5, 2.2, boxstyle="round,pad=0.03,rounding_size=0.06",
                                 facecolor=AMBER, edgecolor="none"))
-    ax.text(10.55, 3.1, "90%", ha="center", fontsize=34, fontweight="bold", color=INK, family="Geist Mono")
-    ax.text(10.55, 2.2, 'accuracy by\nsaying "healthy"\nto everyone', ha="center", va="center",
+    ax.text(10.55, 2.95, "90%", ha="center", va="center", fontsize=34, fontweight="bold", color=INK, family="Geist Mono")
+    ax.text(10.55, 2.0, 'accuracy by\nsaying "healthy"\nto everyone', ha="center", va="center",
             fontsize=11, color=INK, family="Geist Mono")
     figtitle(fig, "Accuracy can lie: a useless model that looks great")
     fig.text(0.5, -0.03, "If only 10% have disease, a model that refers NOBODY is 90% accurate, "
