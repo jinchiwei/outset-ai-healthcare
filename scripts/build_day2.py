@@ -4,6 +4,10 @@ Emits:
   notebooks/day2_multimodal/day2.ipynb           (# TODO blanks)
   notebooks/day2_multimodal/day2_solution.ipynb  (filled)
 
+MIT 6.S191 density: numbered sub-sections, an explanation before every code cell, and a
+figure wherever it helps. Live plots use notebooks/_shared/nbfig.py (Colab-safe);
+concept diagrams under img/ are pre-rendered by img_gen.py with the build-figure skill.
+
 Run:  python scripts/build_day2.py
 """
 import sys
@@ -24,25 +28,37 @@ def todo(solution_src, blanks):
     PAIRS.append(code_with_todos(solution_src, blanks))
 
 
-# --------------------------------------------------------------------------- #
+# =========================================================================== #
+# Intro
+# =========================================================================== #
 both(md("""
-# Day 2 -- LLMs and multimodal medical AI
+# Day 2 -- Language models and the whole patient
 
-Yesterday: end-to-end deep learning on eye images. Today a different problem and a
-different paradigm.
+Yesterday we pointed one big neural network at eye photos. Today we change two things at
+once, and they're the two ideas behind most modern medical AI:
 
-We move to **chest X-rays** (Open-i, with real radiologist reports). Instead of one
-big neural net, we combine three kinds of signal, where each one casts a *vote*:
+1. **Language models.** Every scan comes with a written radiology report. We'll see what an
+   LLM actually does, and use one to turn that free text into numbers.
+2. **Multimodal fusion.** Real clinical decisions use the scan *and* the notes *and* the
+   patient history. We'll combine three different signals about one patient into a single
+   prediction.
 
-- **image vote**: a trained image model's probability for the X-ray (transfer
-  learning, like Day 1) -- a single number, not a raw embedding. This is **late
-  fusion**, or **stacking**. (Pre-computed out-of-fold; you load it.)
-- **text features**: findings an LLM pulled out of the radiology report
-- **demographics**: age, sex, smoking history
+The dataset is **Open-i chest X-rays** with real radiologist reports. The task: does this
+patient have **cardiomegaly** (an enlarged heart)? Each patient gives us three signals, and
+each casts a *vote*:
 
-We stack all three into one table and hand it to **TabPFN**, a foundation model for
-tabular data. The big idea: *everything becomes a row of numbers, then a model handles
-the table.*
+- **image vote** -- a trained image model's probability for the X-ray (transfer learning,
+  like Day 1): one number, `img_pred`. Combining per-modality predictions like this is
+  called **late fusion**, or **stacking**.
+- **text features** -- yes/no findings an LLM pulled out of the report.
+- **demographics** -- age, sex, smoking history.
+
+### By the end you'll be able to
+- Explain what an LLM does (predict the next token) and where it goes wrong (hallucination).
+- Turn three different data types into one table and let a foundation model (**TabPFN**) decide.
+- Spot **target leakage** -- the trap that makes a useless model look brilliant.
+
+Fill in the `# TODO`s. Ask Claude when stuck, then make sure you understand the answer.
 """))
 
 both(code("""
@@ -57,52 +73,94 @@ import colab_setup
 colab_setup.ensure(*colab_setup.DAY2)
 """))
 
-# ---- What is an LLM ------------------------------------------------------ #
-both(md("""
-## Recap the bridge: ViT patches -> LLM tokens
+both(code("""
+import numpy as np
+import pandas as pd
+import common
+import nbfig          # Colab-safe branded plotting (matches the slide figures)
+nbfig.use()
+"""))
 
-Yesterday's Vision Transformer split an image into patches and used attention. An LLM
-does the same with text: it splits text into **tokens** (word pieces) and uses
-attention to decide which tokens matter. Let's look at a real radiology report.
+# =========================================================================== #
+# Section 1 -- What is a language model
+# =========================================================================== #
+both(md("""
+## 1. What is a language model?
+
+### 1.1 The bridge from yesterday
+Yesterday's Vision Transformer split an image into patches and used **attention** to decide
+which patches mattered. A language model does the exact same thing with **words instead of
+patches**. So none of today is magic -- it's the same machinery you already built, pointed
+at text. Let's start with a real radiology report.
 """))
 
 both(code("""
 report = ("FINDINGS: The heart is enlarged. There is a small left pleural effusion. "
           "No pneumothorax. IMPRESSION: Cardiomegaly with small effusion.")
-# A real LLM uses subword tokens; here's the rough idea -- text becomes pieces:
-tokens = report.replace(".", " .").split()
-print(f"{len(tokens)} rough tokens:")
-print(tokens[:20])
+
+# A model can't read letters; text is chopped into *tokens* (word-pieces), then numbers.
+tokens = report.replace(".", " .").replace(":", " :").split()
+print(f"{len(tokens)} rough tokens")
+
+# Visualize the report as a strip of tokens -- the sequence the model actually sees.
+from matplotlib.patches import FancyBboxPatch
+show = tokens[:16]
+fig, ax = nbfig.fig(figsize=(11, 1.7))
+ax.axis("off"); ax.set_xlim(0, len(show)); ax.set_ylim(0, 1); ax.grid(False)
+for i, t in enumerate(show):
+    c = nbfig.palette(len(show))[i]
+    ax.add_patch(FancyBboxPatch((i + 0.05, 0.25), 0.9, 0.5, boxstyle="round,pad=0.02,rounding_size=0.1",
+                                facecolor=c, edgecolor="none"))
+    ax.text(i + 0.5, 0.5, t, ha="center", va="center", fontsize=9,
+            color=nbfig.txt_on(c), family="DejaVu Sans Mono")
+nbfig.show(fig, "Text becomes a sequence of tokens")
 """))
 
 both(md("""
-## The LLM already read every report for us
+### 1.2 Attention, next-token, and the catch
+Once text is tokens, the **same attention** from the ViT decides which tokens carry signal
+("heart", "enlarged") and which are filler ("the", "is"). And under all the hype, an LLM does
+exactly one thing: **predict the next token**, over and over. That simple objective at huge
+scale is enough to summarize, answer questions, and pull structured facts out of messy notes.
 
-Calling an LLM live for hundreds of reports costs money and time, so the instructor
-ran it once with the Anthropic API and saved the structured findings. You'll load
-those. Here's what the model pulled out of each report: which findings are present,
-and a severity word.
+**The catch (important in medicine):** "predict something plausible" is not "tell the truth."
+When an LLM doesn't know, it doesn't stop -- it **hallucinates** a fluent, confident, wrong
+answer. So today's rule: *use the LLM, but verify what it says.*
 """))
 
-# ---- Image vote: late fusion / stacking ---------------------------------- #
 both(md("""
-## The image's vote: a trained model, not raw features
+### 1.3 The LLM already read every report for us
+Calling an LLM on hundreds of reports costs money and time, so the instructor ran it once
+(Anthropic API) and **saved** the structured findings -- which findings are present, plus a
+severity word. You'll load those; no API key needed. That's the second signal handled.
+"""))
 
-How do we get the X-ray into the table? The classic way is **radiomics**: hand-craft
-numbers like brightness and texture (the cell below shows it). But there's a cleaner
-move. Train an actual image model -- transfer learning, exactly like Day 1 -- and feed
-the table just *its prediction*: one probability, `img_pred`. That's the image's vote.
-Combining each modality's prediction this way is called **late fusion** or **stacking**.
+# =========================================================================== #
+# Section 2 -- The three signals, and stacking
+# =========================================================================== #
+both(md("""
+## 2. Three signals, one table
 
-One honesty catch: if the image model scores a patient it trained on, that score is too
-optimistic (it has seen the answer). So the instructor pre-computed every `img_pred`
-**out-of-fold** -- each patient scored by a model trained only on the *others*. You just
-load the result. (See `scripts/cache_openi_image_preds.py`.)
+The whole plan in one picture: turn each signal into numbers, lay them side by side as one
+row per patient, and hand the table to one model.
+
+![Late fusion: each signal becomes a column, then TabPFN decides](img/multimodal_stack.png)
+
+### 2.1 The image's vote (late fusion)
+How do we get the X-ray into the table? The classic way is **radiomics**: hand-craft numbers
+like brightness and texture (shown below for contrast). But there's a cleaner move: train an
+actual image model -- transfer learning, exactly like Day 1 -- and feed the table just *its
+prediction*, one probability `img_pred`. That's the image's vote.
+
+**One honesty catch:** if the image model scores a patient it trained on, that score is too
+optimistic (it has seen the answer). So every `img_pred` was pre-computed **out-of-fold** --
+each patient scored by a model trained only on the *others*. (See
+`scripts/cache_openi_image_preds.py`.) Same fairness instinct that runs through the whole day.
 """))
 
 both(code("""
-import common
 from pathlib import Path
+import json
 
 # The classic handcrafted way (radiomics) -- shown once for contrast:
 sample = sorted(Path("sample_images").glob("*.png"))[0]
@@ -113,23 +171,22 @@ for k, v in list(feats.items())[:4]:
 print("  ...")
 
 # What we actually use: the trained image model's single out-of-fold vote.
-import json
 img_preds = json.loads(Path("../../datasets/openi_image_preds.json").read_text())
 print(f"\\nimg_pred: one probability per case (we use THIS). {len(img_preds)} cached.")
 print("  examples:", {k: img_preds[k] for k in list(img_preds)[:3]})
 """))
 
-# ---- The table ----------------------------------------------------------- #
+# =========================================================================== #
+# Section 3 -- The table
+# =========================================================================== #
 both(md("""
-## Everything becomes one table
+## 3. Everything becomes one table
 
-The instructor pre-built a table: one row per patient, with all three kinds of signal
-plus the label (does this patient have cardiomegaly?). Notice the columns -- `img_pred`
-is the image model's vote, `llm_` are the text features, then the demographics.
+The instructor pre-built the table: one row per patient, all three signals plus the label.
+`img_pred` is the image vote, `llm_` are the text features, then the demographics.
 """))
 
 both(code("""
-import pandas as pd
 df = pd.read_csv("../../datasets/openi_features.csv")
 print("table shape:", df.shape)
 print("\\ncolumn groups:")
@@ -139,14 +196,30 @@ print("  demo :", [c for c in df.columns if c in ("age", "sex_male", "smoker")])
 df.head(3)
 """))
 
-# ---- Build X / y (TODO) -------------------------------------------------- #
 both(md("""
-## Build your feature matrix
+### 3.1 Is the image vote any good on its own?
+Before modeling, look at the image vote split by the truth. If `img_pred` is a real signal,
+patients *with* cardiomegaly should score higher than those without -- the two histograms
+should pull apart. (They overlap, because the image alone isn't the whole story. That's why
+we add the other signals.)
+"""))
 
-**Predict first:** which feature group do you think will matter most for detecting
-cardiomegaly (an enlarged heart) -- the image, the report text, or demographics?
+both(code("""
+fig, ax = nbfig.fig(figsize=(7, 3.4))
+ax.hist(df.loc[df.label == 0, "img_pred"], bins=20, alpha=0.7, color=nbfig.TURQUOISE, label="no cardiomegaly")
+ax.hist(df.loc[df.label == 1, "img_pred"], bins=20, alpha=0.7, color=nbfig.DEEPPINK, label="cardiomegaly")
+ax.set_xlabel("img_pred (image model's probability)"); ax.set_ylabel("patients"); ax.legend()
+nbfig.show(fig, "The image vote separates the classes -- partly")
+"""))
 
-Now assemble the inputs. `X` is every feature column; `y` is the label.
+# =========================================================================== #
+# Section 4 -- Build + TabPFN
+# =========================================================================== #
+both(md("""
+## 4. Build the feature matrix, then let TabPFN decide
+
+**Predict first:** which group will matter most for cardiomegaly -- the image, the report
+text, or demographics? Now assemble the inputs: `X` is every feature column; `y` is the label.
 """))
 
 todo(
@@ -162,12 +235,10 @@ print("X:", X.shape, " positives:", int(y.sum()), "/", len(y))
     ],
 )
 
-# ---- TabPFN (TODO) ------------------------------------------------------- #
 both(md("""
-## TabPFN: a foundation model for tables
-
-TabPFN is pretrained on millions of synthetic tables. It does not train in the usual
-sense -- you `fit` (it just memorizes the examples) and `predict` in seconds.
+**TabPFN** is a foundation model pretrained on millions of synthetic tables. It doesn't train
+in the usual sense -- you `fit` (it just studies your examples) and `predict`, both in
+seconds. Same pretraining-and-reuse idea as ImageNet yesterday, now for tables.
 """))
 
 todo(
@@ -188,16 +259,14 @@ print(f"multimodal (image + text + demographics) accuracy: {acc_all:.3f}")
     ],
 )
 
-# ---- Ablation (TODO) ----------------------------------------------------- #
+# =========================================================================== #
+# Section 5 -- Ablation
+# =========================================================================== #
 both(md("""
-## How much did each modality help?
+## 5. How much did each modality help?
 
-**Predict:** if we throw away the report (text) features and keep only the image vote +
-demographics, how much will accuracy drop?
-
-Fill in the ablation: build an image+demographics-only matrix (drop the `llm_` columns),
-refit, compare. The image vote alone is an honest signal -- how far does the text take us
-*beyond* it?
+**Predict:** drop the report (text) features and keep only the image vote + demographics --
+how much does accuracy fall? Fill in the ablation, then we'll plot the two side by side.
 """))
 
 todo(
@@ -219,38 +288,101 @@ print(f"the text features were worth {acc_all - acc_no_text:+.3f}")
     ],
 )
 
-both(md("""
-## Honest discussion: is this a fair test?
+both(code("""
+fig, ax = nbfig.fig(figsize=(6, 3.6))
+bars = ax.bar(["image + demo", "+ text"], [acc_no_text, acc_all],
+              color=[nbfig.TURQUOISE, nbfig.DEEPPINK], width=0.55)
+for b, a in zip(bars, [acc_no_text, acc_all]):
+    ax.text(b.get_x() + b.get_width() / 2, a + 0.01, f"{a:.0%}", ha="center",
+            fontweight="bold", family="DejaVu Sans Mono")
+ax.set_ylabel("test accuracy"); ax.set_ylim(0, 1)
+nbfig.show(fig, "Adding the text features looks amazing")
+"""))
 
-That text-feature boost is suspiciously large. Look at why:
+both(md("""
+### 5.1 The confusion matrix of the full model
 """))
 
 both(code("""
-import numpy as np
-if "llm_cardiomegaly_present" in df.columns:
-    corr = np.corrcoef(df["llm_cardiomegaly_present"], df["label"])[0, 1]
-    print(f"correlation between the LLM's 'cardiomegaly_present' and the true label: {corr:.2f}")
-    print("\\nThe report often *names* the diagnosis we're trying to predict.")
-    print("So the text features can leak the answer. In real clinical AI this is a")
-    print("constant danger: what counts as a fair input vs. a peek at the label?")
+nbfig.confusion(yte, clf.predict(Xte), ["no cardiomegaly", "cardiomegaly"],
+                text="Multimodal model").show()
+"""))
+
+# =========================================================================== #
+# Section 6 -- Leakage
+# =========================================================================== #
+both(md("""
+## 6. Wait -- that's too good. Target leakage.
+
+That text boost should make you *suspicious*, not excited. Here's the catch, and it's the
+single most important lesson of the day.
+
+![The report names the diagnosis we are predicting](img/leakage.png)
+
+The report we read the text from literally **states the diagnosis** we're trying to predict
+("IMPRESSION: Cardiomegaly"). So the LLM's `cardiomegaly: yes` matches the label almost
+perfectly. The model isn't detecting disease -- it's copying the answer off the report.
+"""))
+
+both(code("""
+llm_cols = [c for c in df.columns if c.startswith("llm_")]
+corrs = {c.replace("llm_", ""): np.corrcoef(df[c], df["label"])[0, 1] for c in llm_cols}
+
+fig, ax = nbfig.fig(figsize=(7.5, 3.4))
+names = list(corrs); vals = [corrs[n] for n in names]
+colors = [nbfig.DEEPPINK if abs(v) > 0.7 else nbfig.TURQUOISE for v in vals]
+ax.barh(names, vals, color=colors)
+ax.set_xlabel("correlation with the true label"); ax.set_xlim(-0.1, 1)
+ax.axvline(0, color=nbfig.MUTED, lw=0.8)
+nbfig.show(fig, "One text feature basically IS the answer")
+print("cardiomegaly_present vs label:", round(corrs.get("cardiomegaly_present", float('nan')), 2))
+"""))
+
+both(md("""
+### 6.1 What a fair test looks like
+This trap is **target leakage**, and catching it is real expertise.
+
+- **No peeking at the label.** A feature that encodes the answer is cheating. The report's
+  impression basically *is* the answer.
+- **Use inputs that come before the label.** Fair signals exist before the diagnosis is
+  known: the raw pixels (our `img_pred`), the demographics.
+- **Report it honestly.** Show the leaked and de-leaked numbers side by side. The honest
+  result -- the image vote + demographics, ~72% -- is lower, and real.
+"""))
+
+# =========================================================================== #
+# Recap + stretch
+# =========================================================================== #
+both(md("""
+## 7. Two paradigms, both yours now
+
+In two days you've built the two dominant approaches in medical AI:
+
+- **Day 1 -- end-to-end deep learning:** feed raw data to one big network that learns its own
+  features.
+- **Day 2 -- combine signals + a foundation model:** turn everything into a table and let a
+  pretrained model handle it.
+
+Knowing which to reach for -- and being able to *catch your own leakage* -- is half the job.
+A closing caution: clinical **text** carries even more identifying detail than pixels; handle
+it like the patient record it is.
 """))
 
 both(md("""
 ## Stretch
 
-The image vote (`img_pred`) is the one honest signal here -- it comes from pixels, not
-from a report that names the answer. Train TabPFN on **just `img_pred`**, then on **just
-the demographics**, and compare. Which single modality is strongest on its own? Now you
-have the full picture: the leaked text wins on paper, but the image vote is the number you
-could actually defend.
+The image vote (`img_pred`) is the one honest signal -- it comes from pixels, not a report
+that names the answer. Train TabPFN on **just `img_pred`**, then on **just the demographics**,
+and compare. Which single modality is strongest on its own? You'll see the leaked text wins on
+paper, but the image vote is the number you could actually defend to a clinician.
 """))
 
 both(md("""
 ## Tomorrow: capstone
 
-You've now seen two paradigms: end-to-end deep learning (Day 1) and feature-based
-modeling with a foundation model (Day 2). Tomorrow you pick a problem and build, with
-Claude as your pair programmer.
+You now have the whole toolkit: end-to-end deep learning, transfer learning, multimodal
+feature stacks, and a foundation model. Tomorrow you pick a problem and build it start to
+finish, with Claude as your engineer. See you there.
 """))
 
 
@@ -260,7 +392,7 @@ def build():
     lab.cells = [p[1] for p in PAIRS]
     save(sol, ROOT / "notebooks/day2_multimodal/day2_solution.ipynb")
     save(lab, ROOT / "notebooks/day2_multimodal/day2.ipynb")
-    print("wrote day2.ipynb + day2_solution.ipynb")
+    print(f"wrote day2.ipynb + day2_solution.ipynb ({len(PAIRS)} cells)")
 
 
 if __name__ == "__main__":

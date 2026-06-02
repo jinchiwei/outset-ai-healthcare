@@ -164,22 +164,33 @@ def make_vit_base(num_classes: int = NUM_CLASSES, pretrained: bool = True, freez
 # --------------------------------------------------------------------------- #
 # Train / eval
 # --------------------------------------------------------------------------- #
-def train_model(model, train_loader, val_loader, epochs: int = 3, lr: float = 1e-3, device: str = "cpu"):
-    """Standard supervised loop. Returns list of (epoch, val_acc)."""
+def train_model(model, train_loader, val_loader, epochs: int = 3, lr: float = 1e-3,
+                device: str = "cpu", verbose: bool = True):
+    """Standard supervised loop.
+
+    Returns list of (epoch, val_acc, train_loss) per epoch. The val_acc stays at
+    index [1] so older callers (history[-1][1]) keep working; train_loss at [2]
+    lets the notebook draw a learning curve.
+    """
     model = model.to(device)
     opt = torch.optim.Adam([p for p in model.parameters() if p.requires_grad], lr=lr)
     loss_fn = nn.CrossEntropyLoss()
     history = []
     for epoch in range(epochs):
         model.train()
+        running, n = 0.0, 0
         for xb, yb in train_loader:
             xb, yb = xb.to(device), yb.to(device)
             opt.zero_grad()
             loss = loss_fn(model(xb), yb)
             loss.backward()
             opt.step()
+            running += float(loss) * len(xb); n += len(xb)
+        train_loss = running / max(n, 1)
         acc = evaluate_classifier(lambda b: model(b).argmax(1), val_loader, device)["accuracy"]
-        history.append((epoch + 1, acc))
+        history.append((epoch + 1, acc, train_loss))
+        if verbose:
+            print(f"  epoch {epoch + 1:2d}/{epochs}  train_loss {train_loss:.3f}  val_acc {acc:.3f}")
     return history
 
 
