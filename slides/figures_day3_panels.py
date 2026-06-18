@@ -103,8 +103,17 @@ def three_min():
              ("ONE LIMITATION", "deeppink", "what it gets wrong, or what\nyou'd do with more time")])
 
 
+def breaks():
+    _panels("d3_panel_breaks.png", "Where it still breaks",
+            [("DATASET SHIFT", "turquoise", "a model trained at one\nhospital can fail at another"),
+             ("THE WRONG METRIC", "deeppink", "high accuracy can still mean\nmost real cases are missed"),
+             ("LEAKAGE, AGAIN", "amber", "the Day 2 trap is everywhere;\nhonest eval is the antidote")],
+            badges=["~", "%", "!"])
+
+
 if __name__ == "__main__":
     toolkit()
+    breaks()
     capstone()
     how_to_choose()
     step1()

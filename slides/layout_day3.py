@@ -123,6 +123,41 @@ importantly, the judgment to evaluate honestly. This is the actual toolkit of a 
 medical-AI engineer. Transition: now put it to work.
 """)
 
+# --------------------------------------------------------------------------- #
+# Where the field stands (lit-review intro)
+# --------------------------------------------------------------------------- #
+fig("ai-is-already-in-the-clinic", "d3_field_map.png", """
+Zoom out before they build. AI in medicine is not speculative; roughly a thousand AI/ML
+devices have FDA clearance, spread across radiology, ophthalmology, pathology, cardiology,
+clinical text, and drug discovery. Every example on this map is a real, deployed system. The
+point: the thing they are about to attempt is a real and growing field, not a toy. Transition:
+a few flagships by name.
+""")
+
+fig("four-systems-treating-patients-now", "d3_flagships.png", """
+Make it concrete with four real systems, each mapping onto something they built. IDx-DR: an
+autonomous screening classifier (Day 1's task, deployed). Viz.ai: a triage detector that pages
+the stroke team. Apple Watch: a wearable signal at population scale. Med-PaLM: a clinical LLM
+that passed the medical licensing bar. They now understand the shape of all four. Transition:
+where is this heading?
+""")
+
+fig("the-frontier-multimodal-medical-ai", "d3_frontier.png", """
+Name the trajectory. The field is moving from one narrow model per task toward large,
+pretrained, multimodal models that ingest image plus text plus signals together, the same
+late-fusion idea from Day 2, scaled to foundation models like Med-Gemini and GPT-4. Reassure
+them: they already grasp the core idea behind the frontier. Transition: but deployed is not the
+same as flawless.
+""")
+
+fig("where-it-still-breaks", "d3_panel_breaks.png", """
+Ground the hype with a real cautionary tale: a widely deployed hospital sepsis model (live in
+hundreds of hospitals) was found on external validation to miss most cases and over-alert
+(Wong et al., JAMA Internal Medicine 2021). The failure modes are exactly the ones they already
+met: dataset shift, the wrong metric, and leakage. This is why today's rubric rewards honest
+evaluation over a high number. Transition: now, your mission.
+""")
+
 fig("the-capstone-format", "d3_panel_capstone.png", """
 Set the logistics clearly so the sprint runs smoothly. Pairs, because building together is
 how real work happens and it keeps everyone unstuck. Ninety minutes to build, with two

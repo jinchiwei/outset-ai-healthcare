@@ -1,5 +1,5 @@
 {
-  "deck_md_hash": "077d9c217bfe49f71c1738664acbac5ddbbe210d5436ffc7d21daaf2a829fe93",
+  "deck_md_hash": "bb63ff159550edcc48600575885404133f4647fd3520f7304fc37f4457644ac8",
   "mode": "expressive",
   "shake_seed": "b1035e6e20004cc68cd710f90d72f54f",
   "slides": [
@@ -63,6 +63,67 @@
         "title": "Everything in your toolkit now"
       },
       "slide_id": "h1-the-journey-so-far/h2-everything-in-your-toolkit-now"
+    },
+    {
+      "content_hash": "1be0d9470407ba6f64283737ed1df008f445eaf41c4470a9fa61eb2da5180708-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#40E0D0",
+        "label": "Where the field stands"
+      },
+      "slide_id": "divider-h1-where-the-field-stands"
+    },
+    {
+      "content_hash": "05a2d091e5a2931068d1c058901912735d6118ab006c9fe3d3cb62e6de3af252",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d3_field_map.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "Zoom out before they build. AI in medicine is not speculative; roughly a thousand AI/ML\ndevices have FDA clearance, spread across radiology, ophthalmology, pathology, cardiology,\nclinical text, and drug discovery. Every example on this map is a real, deployed system. The\npoint: the thing they are about to attempt is a real and growing field, not a toy. Transition:\na few flagships by name.",
+        "section_label": "Where the field stands",
+        "title": "AI is already in the clinic"
+      },
+      "slide_id": "h1-where-the-field-stands/h2-ai-is-already-in-the-clinic"
+    },
+    {
+      "content_hash": "9d343ac930fae5bd42f006c9c72b2ee311486f04f5645c13020587e8924a14c7",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d3_flagships.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "Make it concrete with four real systems, each mapping onto something they built. IDx-DR: an\nautonomous screening classifier (Day 1's task, deployed). Viz.ai: a triage detector that pages\nthe stroke team. Apple Watch: a wearable signal at population scale. Med-PaLM: a clinical LLM\nthat passed the medical licensing bar. They now understand the shape of all four. Transition:\nwhere is this heading?",
+        "section_label": "Where the field stands",
+        "title": "Four systems treating patients now"
+      },
+      "slide_id": "h1-where-the-field-stands/h2-four-systems-treating-patients-now"
+    },
+    {
+      "content_hash": "378a2584caa91d75f3beb9b7232af07760e49370964d3a9aca8583c4de98aad0",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d3_frontier.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "Name the trajectory. The field is moving from one narrow model per task toward large,\npretrained, multimodal models that ingest image plus text plus signals together, the same\nlate-fusion idea from Day 2, scaled to foundation models like Med-Gemini and GPT-4. Reassure\nthem: they already grasp the core idea behind the frontier. Transition: but deployed is not the\nsame as flawless.",
+        "section_label": "Where the field stands",
+        "title": "The frontier: multimodal medical AI"
+      },
+      "slide_id": "h1-where-the-field-stands/h2-the-frontier-multimodal-medical-ai"
+    },
+    {
+      "content_hash": "c75e30398d23c557ee1884100d404fd3611b37e7a5c87ac28a6d78538daec209",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d3_panel_breaks.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "Ground the hype with a real cautionary tale: a widely deployed hospital sepsis model (live in\nhundreds of hospitals) was found on external validation to miss most cases and over-alert\n(Wong et al., JAMA Internal Medicine 2021). The failure modes are exactly the ones they already\nmet: dataset shift, the wrong metric, and leakage. This is why today's rubric rewards honest\nevaluation over a high number. Transition: now, your mission.",
+        "section_label": "Where the field stands",
+        "title": "Where it still breaks"
+      },
+      "slide_id": "h1-where-the-field-stands/h2-where-it-still-breaks"
     },
     {
       "content_hash": "a455e04dfc8423ce50cc57aa1161e58502fe8cad84c2cf97e8c03132704d4cca-divider",

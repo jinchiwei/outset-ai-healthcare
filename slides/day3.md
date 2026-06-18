@@ -50,6 +50,49 @@ sensitivity vs specificity, confusion matrices, spotting leakage, fairness.
 
 ---
 
+# Where the field stands
+
+---
+
+## AI is already in the clinic
+
+Before you build your own, look at the field you are joining. AI is not a someday-in-medicine story; it is already deployed across nearly every specialty, from radiology to pathology to cardiology. Around a thousand AI/ML-enabled devices have FDA clearance, and the examples below are real systems used on real patients.
+
+![AI across specialties](figures/d3_field_map.png)
+
+---
+
+## Four systems treating patients now
+
+A few flagships worth knowing by name. Each one is a real, regulated product, and each maps onto something you built this week: a screening classifier, a triage detector, a wearable signal, a clinical language model. You now understand, at least in outline, how every one of these works.
+
+![Four flagship systems](figures/d3_flagships.png)
+
+---
+
+## The frontier: multimodal medical AI
+
+Where is it heading? Away from one narrow model per task and toward large, pretrained, multimodal models that take an image, a report, and a lab value together, exactly the late-fusion idea from Day 2, scaled up. That is the same arc you felt across these three afternoons.
+
+![The multimodal frontier](figures/d3_frontier.png)
+
+---
+
+## Where it still breaks
+
+A grounding caution before you build. Deployed does not mean flawless. A widely used hospital sepsis-prediction model, live in hundreds of hospitals, was found in external validation to miss most cases and flood clinicians with false alarms. The usual culprits are the ones you already met: a model that never saw truly held-out data, a metric that hid the failure, and leakage.
+
+### Dataset shift
+A model trained at one hospital can quietly fail at another.
+
+### The wrong metric
+High accuracy can still mean most real cases are missed.
+
+### Leakage, again
+The Day 2 trap is everywhere; honest evaluation is the antidote.
+
+---
+
 # Today's mission
 
 ---

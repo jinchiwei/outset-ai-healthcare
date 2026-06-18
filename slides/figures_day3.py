@@ -146,10 +146,101 @@ def fig_whats_next():
     save(fig, "d3_whats_next.png")
 
 
+# --------------------------------------------------------------------------- #
+# STATE OF THE FIELD: existing AI-in-healthcare applications (lit review)
+# --------------------------------------------------------------------------- #
+def fig_field_map():
+    """Where AI is already deployed across medicine, with real example systems."""
+    fig, ax = plt.subplots(figsize=(11.5, 5.0))
+    ax.axis("off"); ax.set_xlim(0, 12); ax.set_ylim(0, 6)
+    domains = [
+        ("RADIOLOGY", "stroke & bleed triage,\nfracture, nodule flags", "Aidoc, Viz.ai", TURQUOISE),
+        ("OPHTHALMOLOGY", "autonomous diabetic-\nretinopathy screening", "IDx-DR, 2018", DEEPPINK),
+        ("PATHOLOGY", "first FDA-cleared AI\nin digital pathology", "Paige Prostate, 2021", AMBER),
+        ("CARDIOLOGY", "atrial-fib alerts;\nlow-EF from an ECG", "Apple Watch; Mayo ECG", BLUEVIOLET),
+        ("CLINICAL TEXT", "ambient scribes; note\nsummaries & coding", "Nuance DAX, Abridge", TURQUOISE),
+        ("DRUG / GENOMICS", "protein structure for\ndrug discovery", "AlphaFold, 2021", DEEPPINK),
+    ]
+    for i, (name, what, ex, c) in enumerate(domains):
+        col, row = i % 3, i // 3
+        x, y = 0.4 + col * 3.85, 3.1 - row * 2.7
+        ax.add_patch(FancyBboxPatch((x, y), 3.55, 2.35, boxstyle="round,pad=0.02,rounding_size=0.08",
+                                    facecolor="#FBFAF6", edgecolor="#E3E0D6", lw=1.3))
+        ax.add_patch(FancyBboxPatch((x, y + 1.85), 3.55, 0.5, boxstyle="round,pad=0.02,rounding_size=0.08",
+                                    facecolor=c, edgecolor="none"))
+        ax.text(x + 1.775, y + 2.1, name, ha="center", va="center", fontsize=12.5, fontweight="bold",
+                color=txt_on(c), family="Geist Mono")
+        ax.text(x + 1.775, y + 1.18, what, ha="center", va="center", fontsize=10.5, color=INK)
+        ax.text(x + 1.775, y + 0.34, ex, ha="center", va="center", fontsize=10, color=c,
+                family="Geist Mono", fontweight="bold")
+    figtitle(fig, "AI is already in the clinic, across every specialty")
+    fig.text(0.5, -0.02, "~1,000 AI/ML-enabled devices have FDA clearance (2024), the large majority in "
+             "radiology. Examples are real, deployed systems.", ha="center", fontsize=10, color=MUTED, style="italic")
+    save(fig, "d3_field_map.png")
+
+
+def fig_flagships():
+    """Four flagship deployed systems, each with what it does and a citation."""
+    import textwrap
+    fig, ax = plt.subplots(figsize=(11.5, 5.0))
+    ax.axis("off"); ax.set_xlim(0, 12); ax.set_ylim(0, 5)
+    cards = [
+        ("IDx-DR", "Autonomous AI that screens for diabetic retinopathy in a primary-care "
+         "clinic, with no specialist in the loop. First FDA-authorized autonomous diagnostic.",
+         "Abramoff et al., npj Digital Medicine 2018", TURQUOISE),
+        ("Viz.ai LVO", "Scans emergency CT for large-vessel-occlusion stroke and pages the "
+         "stroke team directly, cutting time-to-treatment by tens of minutes.",
+         "FDA cleared 2018", DEEPPINK),
+        ("Apple Watch", "Irregular-rhythm notifications surface possible atrial fibrillation "
+         "on the wrist, at population scale.",
+         "Apple Heart Study, Perez et al., NEJM 2019", AMBER),
+        ("Med-PaLM", "A large language model answers medical questions at expert level, "
+         "the first to pass the USMLE bar, pointing at clinical LLMs.",
+         "Singhal et al., Nature 2023", BLUEVIOLET),
+    ]
+    for i, (name, what, cite, c) in enumerate(cards):
+        y = 4.25 - i * 1.12
+        ax.add_patch(Rectangle((0.4, y - 0.42), 0.12, 1.02, color=c))
+        ax.text(0.72, y + 0.42, name, fontsize=14, fontweight="bold", color=INK,
+                family="Geist Mono", va="center")
+        ax.text(0.72, y - 0.02, textwrap.fill(what, 92), fontsize=10.2, color=INK, va="center")
+        ax.text(0.72, y - 0.46, cite, fontsize=9, color=c, family="Geist Mono", va="center", fontweight="bold")
+    figtitle(fig, "Four systems treating patients right now")
+    save(fig, "d3_flagships.png")
+
+
+def fig_frontier():
+    """The shift from narrow single-task models to multimodal foundation models."""
+    fig, ax = plt.subplots(figsize=(11.5, 4.0))
+    ax.axis("off"); ax.set_xlim(0, 12); ax.set_ylim(0, 4)
+    ax.add_patch(FancyBboxPatch((0.4, 0.7), 4.4, 2.6, boxstyle="round,pad=0.03,rounding_size=0.06",
+                                facecolor="#FBFAF6", edgecolor="#E3E0D6", lw=1.3))
+    ax.text(2.6, 2.95, "YESTERDAY", ha="center", fontsize=12, fontweight="bold", color=MUTED, family="Geist Mono")
+    ax.text(2.6, 2.2, "one model,\none narrow task", ha="center", va="center", fontsize=13, color=INK)
+    ax.text(2.6, 1.25, "a detector per finding", ha="center", va="center", fontsize=10.5,
+            color=TURQUOISE, family="Geist Mono")
+    ax.annotate("", xy=(7.2, 2.0), xytext=(5.0, 2.0), arrowprops=dict(arrowstyle="-|>", color=INK, lw=2.5))
+    ax.add_patch(FancyBboxPatch((7.3, 0.7), 4.3, 2.6, boxstyle="round,pad=0.03,rounding_size=0.06",
+                                facecolor=BLUEVIOLET, edgecolor="none"))
+    ax.text(9.45, 2.95, "THE FRONTIER", ha="center", fontsize=12, fontweight="bold", color="white", family="Geist Mono")
+    ax.text(9.45, 2.2, "one multimodal model:\nimages + text + signals", ha="center", va="center",
+            fontsize=12.5, color="white")
+    ax.text(9.45, 1.25, "Med-Gemini, GPT-4, foundation models", ha="center", va="center", fontsize=9.5,
+            color="white", family="Geist Mono")
+    figtitle(fig, "The frontier: generalist, multimodal medical AI")
+    fig.text(0.5, -0.02, "The same shift you felt across Days 1-2: from narrow, hand-built models toward large "
+             "pretrained models that take any signal. (Med-Gemini: Saab et al., 2024.)",
+             ha="center", fontsize=10, color=MUTED, style="italic")
+    save(fig, "d3_frontier.png")
+
+
 if __name__ == "__main__":
     fig_journey()
     fig_options()
     fig_workflow()
     fig_rubric()
     fig_whats_next()
+    fig_field_map()
+    fig_flagships()
+    fig_frontier()
     print("Day 3 figures done")
