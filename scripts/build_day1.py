@@ -330,13 +330,13 @@ no notion of space, though -- shuffle the pixels and it wouldn't notice.
 todo(
     """
 mlp = common.make_mlp(in_features=3 * 64 * 64)
-history = common.train_model(mlp, tr64, va64, epochs=5, lr=1e-3, device=device)
+history = common.train_model(mlp, tr64, va64, epochs=15, lr=1e-3, device=device)
 results["mlp"] = history[-1][1]
 print(f"mlp val accuracy: {history[-1][1]:.3f}")
 """,
     [
         ("mlp = common.make_mlp", "build an MLP with common.make_mlp; in_features is 3*64*64 (the flattened size)"),
-        ("history = common.train_model", "train it: common.train_model(mlp, tr64, va64, epochs=5, lr=1e-3, device=device)"),
+        ("history = common.train_model", "train it: common.train_model(mlp, tr64, va64, epochs=15, lr=1e-3, device=device)"),
     ],
 )
 
