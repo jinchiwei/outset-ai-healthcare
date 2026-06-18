@@ -86,6 +86,78 @@ nbfig.use()
 """))
 
 # =========================================================================== #
+# Section 0 -- Meet the data
+# =========================================================================== #
+both(md("""
+## 0. Meet the data: X-rays, reports, and a yes/no question
+
+Before any modeling, look at the data, exactly like Day 1. Our task: does this chest X-ray
+show **cardiomegaly** (an enlarged heart)? A binary call a radiologist makes every day.
+
+### 0.1 Three real chest X-rays
+These are real Open-i chest films. The heart is the bright shape in the lower-middle. In an
+enlarged heart it takes up more than half the chest width. See if you can spot which is which
+before you read the label.
+"""))
+
+both(code("""
+import json
+from PIL import Image
+
+reports = json.loads(open("../../datasets/openi_sample_reports.json").read())
+sample_ids = ["3840", "1164", "3187"]   # the three we shipped images for
+
+fig, axes = nbfig.fig(1, 3, figsize=(11, 4.2))
+for ax, cid in zip(axes, sample_ids):
+    ax.imshow(Image.open(f"sample_images/{cid}.png").convert("L"), cmap="gray")
+    lab = "CARDIOMEGALY" if reports[cid]["label"] else "normal heart"
+    ax.set_title(lab, fontsize=12, color=(nbfig.DEEPPINK if reports[cid]["label"] else nbfig.INK),
+                 family="DejaVu Sans Mono")
+    ax.axis("off")
+nbfig.show(fig, "Three real chest X-rays")
+"""))
+
+both(md("""
+### 0.2 Every scan comes with a report
+Here is what makes chest imaging different from yesterday's eye photos: each scan is paired
+with a **radiologist's written report** -- a `FINDINGS` section and an `IMPRESSION`. That free
+text is a second channel of data, and historically it's where most of the clinical signal was
+recorded. Read one real report below.
+"""))
+
+both(code("""
+cid = "3840"
+rec = reports[cid]
+print(f"CASE {cid}   (label: {'cardiomegaly' if rec['label'] else 'normal'})")
+print("=" * 64)
+print("FINDINGS:   ", rec["findings"])
+print("IMPRESSION: ", rec["impression"])
+print("MeSH tags:  ", rec["mesh_majors"])
+"""))
+
+both(md("""
+### 0.3 Where does the label come from?
+We didn't hand-label these. Each Open-i report carries **MeSH** tags -- standardized medical
+keywords a librarian assigned. Our label is simply: *does `Cardiomegaly` appear in the tags?*
+Notice that the impression text and the MeSH tag agree -- hold onto that, it becomes the
+sharpest lesson of the day (Section 6).
+"""))
+
+both(code("""
+df = pd.read_csv("../../datasets/openi_features.csv")
+counts = df.label.value_counts().sort_index()
+
+fig, ax = nbfig.fig(figsize=(5.2, 3.2))
+bars = ax.bar(["normal", "cardiomegaly"], counts.values, color=[nbfig.TURQUOISE, nbfig.DEEPPINK])
+for b, c in zip(bars, counts.values):
+    ax.text(b.get_x() + b.get_width() / 2, c, str(c), ha="center", va="bottom",
+            fontweight="bold", family="DejaVu Sans Mono")
+ax.set_ylabel("patients")
+nbfig.show(fig, f"A balanced dataset: {len(df)} patients")
+print("balanced on purpose, so accuracy is a meaningful number (50% = coin flip).")
+"""))
+
+# =========================================================================== #
 # Section 1 -- What is a language model
 # =========================================================================== #
 both(md("""
@@ -137,6 +209,39 @@ both(md("""
 Calling an LLM on hundreds of reports costs money and time, so the instructor ran it once
 (Anthropic API) and **saved** the structured findings -- which findings are present, plus a
 severity word. You'll load those; no API key needed. That's the second signal handled.
+
+The prompt was essentially: *"Read this radiology report. Return JSON: is cardiomegaly
+present? effusion? opacity? atelectasis? pneumothorax? and a severity word."* Below, see a
+real report next to the structured findings the LLM pulled out of it.
+"""))
+
+both(code("""
+# A real report (free text) -> the LLM's structured findings (numbers we can model).
+cid = "3840"
+print("THE REPORT THE LLM READ:")
+print(" ", reports[cid]["findings"])
+print(" ", reports[cid]["impression"])
+print("\\nWHAT THE LLM RETURNED (cached):")
+for k, v in common.load_cached_llm_features(cid).items():
+    print(f"  {k:28s} {v}")
+"""))
+
+both(md("""
+### 1.4 How often is each finding present?
+Quick sanity check on the text channel: across all patients, how often did the LLM mark each
+finding present? If a feature is almost always 0 (or always 1) it carries little signal.
+Cardiomegaly itself sits near 50% -- because we balanced the dataset on exactly that label.
+"""))
+
+both(code("""
+llm_cols = [c for c in df.columns if c.startswith("llm_") and c.endswith("_present")]
+rates = df[llm_cols].mean().sort_values()
+
+fig, ax = nbfig.fig(figsize=(7.5, 3.4))
+ax.barh([c.replace("llm_", "").replace("_present", "") for c in rates.index], rates.values,
+        color=nbfig.palette(len(rates)))
+ax.set_xlabel("fraction of patients where the LLM marked it present"); ax.set_xlim(0, 1)
+nbfig.show(fig, "How common is each finding?")
 """))
 
 # =========================================================================== #
@@ -343,7 +448,27 @@ print("cardiomegaly_present vs label:", round(corrs.get("cardiomegaly_present", 
 """))
 
 both(md("""
-### 6.1 What a fair test looks like
+### 6.1 Prove it: remove the one leaked feature
+If `llm_cardiomegaly_present` really is the answer in disguise, deleting *just that one column*
+(keeping every other text feature) should make the near-perfect score collapse. Let's check.
+"""))
+
+both(code("""
+leaked = "llm_cardiomegaly_present"
+fair_cols = [c for c in feature_cols if c != leaked]
+Xf = df[fair_cols].fillna(0).values
+Xf_tr, Xf_te, _, _ = train_test_split(Xf, y, test_size=0.25, random_state=0, stratify=y)
+
+clf_fair = TabPFNClassifier()
+clf_fair.fit(Xf_tr, ytr)
+acc_fair = (clf_fair.predict(Xf_te) == yte).mean()
+print(f"with the leaked feature:    {acc_all:.3f}")
+print(f"after deleting just it:     {acc_fair:.3f}")
+print(f"one column was worth {acc_all - acc_fair:+.3f} -- it WAS the answer.")
+"""))
+
+both(md("""
+### 6.2 What a fair test looks like
 This trap is **target leakage**, and catching it is real expertise.
 
 - **No peeking at the label.** A feature that encodes the answer is cheating. The report's

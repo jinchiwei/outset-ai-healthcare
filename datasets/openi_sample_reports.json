@@ -1,0 +1,78 @@
+{
+ "3840": {
+  "findings": "No acute osseous abnormality. Degenerative changes throughout the thoracic spine. Soft tissue structures are within normal limits. There is stable enlargement of the heart. Stable prominent mediastinal contours. Central vascular congestion. Mildly low lung volumes bilaterally. Bibasilar and left perihilar airspace opacities. XXXX bilateral pleural effusions. No pneumothorax.",
+  "impression": "1. Bilateral airspace disease. 2. Stable enlarged heart and prominent mediastinal contours.",
+  "mesh_majors": [
+   "Thoracic Vertebrae/degenerative",
+   "Cardiomegaly",
+   "Mediastinum/prominent",
+   "Pulmonary Congestion",
+   "Lung/bilateral/hypoinflation/mild",
+   "Opacity/lung/base/bilateral",
+   "Opacity/lung/hilum/left",
+   "Pleural Effusion/bilateral",
+   "Airspace Disease/lung/bilateral"
+  ],
+  "label": 1
+ },
+ "1164": {
+  "findings": "",
+  "impression": "Borderline heart size, improved mediastinal widening. No focal alveolar consolidation, no definite pleural effusion seen. Mild hypoventilation, bronchovascular crowding without typical findings of pulmonary edema.",
+  "mesh_majors": [
+   "Cardiomegaly/borderline",
+   "Mediastinum/prominent",
+   "Lung/hypoinflation",
+   "Markings/bronchovascular"
+  ],
+  "label": 1
+ },
+ "3187": {
+  "findings": "PA and lateral views. stable postoperative changes with midline sternotomy XXXX and myocardial revascularization. Cardiac size remains mildly enlarged but stable. There is mild vascular congestion. Small bilateral pleural effusions are present, which are XXXX.",
+  "impression": "Mild pulmonary vascular congestion, with XXXX XXXX bilateral effusions. Constellation findings is most compatible with congestive heart failure.",
+  "mesh_majors": [
+   "Cardiomegaly/mild",
+   "Pulmonary Congestion/mild",
+   "Pleural Effusion/bilateral/small",
+   "Heart Failure"
+  ],
+  "label": 1
+ },
+ "3993": {
+  "findings": "The heart is mildly enlarged. Left hemidiaphragm is elevated. There is no acute infiltrate or pleural effusion. The mediastinum is unremarkable.",
+  "impression": "Borderline cardiomegaly without acute disease.",
+  "mesh_majors": [
+   "Cardiomegaly/mild",
+   "Diaphragm/left/elevated"
+  ],
+  "label": 1
+ },
+ "1702": {
+  "findings": "No acute osseous abnormality. Soft tissues are within normal limits. Borderline enlargement of the heart. Normal hilar vasculature. No focal area of consolidation, pleural effusion, or pneumothorax.",
+  "impression": "1. No acute radiographic cardiopulmonary process.",
+  "mesh_majors": [
+   "Cardiomegaly/borderline"
+  ],
+  "label": 1
+ },
+ "1357": {
+  "findings": "The lungs are clear bilaterally. Specifically, no evidence of focal consolidation, pneumothorax, or pleural effusion.. Cardiomegaly is noted and is stable compared to prior examination from XXXX. Stable right basilar calcified granuloma. Visualized osseous structures of the thorax are without acute abnormality.",
+  "impression": "Stable cardiomegaly without acute cardiopulmonary abnormality..",
+  "mesh_majors": [
+   "Cardiomegaly",
+   "Calcified Granuloma/lung/base/right"
+  ],
+  "label": 1
+ },
+ "3256": {
+  "findings": "There is mild cardiomegaly. Mediastinal contours appear within normal limits. There are small bilateral pleural effusions, left greater than right with left basilar opacities. No pneumothorax. Mild degenerative changes of the thoracic spine.",
+  "impression": "Cardiomegaly with small bilateral pleural effusions and left basilar atelectasis.",
+  "mesh_majors": [
+   "Cardiomegaly/mild",
+   "Pleural Effusion/bilateral/small",
+   "Opacity/lung/base/left",
+   "Thoracic Vertebrae/degenerative/mild",
+   "Pulmonary Atelectasis/base/left"
+  ],
+  "label": 1
+ }
+}
