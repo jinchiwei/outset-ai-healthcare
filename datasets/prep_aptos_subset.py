@@ -41,20 +41,20 @@ def build_dataframe(per_class: int) -> pd.DataFrame:
 
 
 def square_resize(img: Image.Image, size: int) -> Image.Image:
-    """Resize the shorter edge to `size`, then center-crop to size x size.
+    """Letterbox the image into a size x size square: scale the longer edge to
+    `size`, then pad the short axis with black to make it square.
 
-    Aspect-ratio preserving: the round retina stays round (a plain
-    `.resize((size, size))` squashes the wide APTOS photos into ovals).
-    APTOS images are wider than tall with the retina centered, so the
-    center crop trims the black side margins and keeps the full disc.
+    Aspect-ratio preserving with no cropping: a plain `.resize((size, size))`
+    squashes the wide APTOS photos into ovals, and a center-crop eats into the
+    retina disc (leaving a "square with tapered corners"). Padding keeps the
+    whole retina at its true shape, on black -- the classic fundus look.
     """
     w, h = img.size
-    scale = size / min(w, h)
+    scale = size / max(w, h)
     img = img.resize((round(w * scale), round(h * scale)), Image.LANCZOS)
-    w, h = img.size
-    left = (w - size) // 2
-    top = (h - size) // 2
-    return img.crop((left, top, left + size, top + size))
+    canvas = Image.new("RGB", (size, size), (0, 0, 0))
+    canvas.paste(img, ((size - img.size[0]) // 2, (size - img.size[1]) // 2))
+    return canvas
 
 
 def to_hf_dataset(df: pd.DataFrame):
