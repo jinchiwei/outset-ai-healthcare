@@ -141,6 +141,12 @@ Networks train best when their inputs are **centered at zero with a similar spre
 **Standardization** does exactly that: for each color channel, subtract that channel's mean and
 divide by its standard deviation. The result has mean ~0 and std ~1. Watch the per-channel means
 collapse onto the zero line below.
+
+Heads-up: the middle panel (the standardized image) looks washed-out and bluish, **not** like a
+real photo -- that's expected. A retina is almost all red/orange with barely any blue, so
+stretching every channel to the same spread blows the faint blue channel way up. There's no
+"natural" way to display a standardized tensor; the model doesn't need one, it just reads the
+numbers.
 """))
 
 both(code("""
