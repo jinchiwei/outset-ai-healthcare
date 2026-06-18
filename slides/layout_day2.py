@@ -48,11 +48,7 @@ for i, (lab, bod, c) in enumerate(cards):
 # --------------------------------------------------------------------------- #
 # Where we are
 # --------------------------------------------------------------------------- #
-cards3("yesterday-and-today",
-       [("DAY 1", "one image, one end-to-end network, the eye", "turquoise"),
-        ("DAY 2", "image plus text plus patient data, combined, on the chest", "deeppink"),
-        ("THE THROUGHLINE", "medicine is multimodal: real decisions use the scan AND the notes AND the history", "amber")],
-       """
+fig("yesterday-and-today", "d2_recap_days.png", """
 Set the frame for the day. Yesterday was one image into one network. Today two changes at
 once: chest X-rays, which uniquely come paired with a written report, and the idea of
 combining several signals about one patient. The throughline to stress: real medicine is
@@ -105,22 +101,7 @@ Transition: stack a lot of this up and you get something that can do real work, 
 make things up.
 """)
 
-slide("what-an-llm-actually-does", """
-steps = [('THE OBJECTIVE', 'predict the next word-piece, over and over. that is it.', TURQUOISE_RGB),
-         ('WHAT IT BUYS', 'summarize, extract, answer, pull structured facts out of messy free text', AMBER_RGB),
-         ('THE CATCH', 'plausible is not the same as correct', DEEPPINK_RGB)]
-n = len(steps)
-gap = 0.30
-cw = (body_w - (n - 1) * gap) / n
-for i, (lab, bod, c) in enumerate(steps):
-    x = body_l + i * (cw + gap)
-    _add_rect(slide, left=x, top=body_top, width=cw, height=body_h, fill_rgb=PAPER_RGB)
-    _add_rect(slide, left=x, top=body_top, width=cw, height=0.90, fill_rgb=c)
-    _add_text(slide, lab, left=x + 0.26, top=body_top, width=cw - 0.52, height=0.90,
-              size=18, color_rgb=_text_on(c), font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)
-    _add_text(slide, bod, left=x + 0.26, top=body_top + 1.20, width=cw - 0.52, height=body_h - 1.5,
-              size=16, color_rgb=INK_RGB, font=SANS_FONT)
-""", """
+fig("what-an-llm-actually-does", "d2_llm_does.png", """
 Demystify the LLM in one breath. Under all the capability, the training objective is just:
 predict the next token, given everything so far. Do that at massive scale and you get a
 system that can summarize, answer, and extract structure from messy text. But the objective
@@ -158,11 +139,7 @@ modality produces one opinion; the tabular model combines the opinions. Transiti
 is an honesty catch.
 """)
 
-cards3("one-honest-catch",
-       [("THE TRAP", "a model is overconfident on data it trained on; scoring a patient it has already seen is cheating", "deeppink"),
-        ("THE FIX", "score each patient with a model that never saw them, out-of-fold (cross-validation)", "turquoise"),
-        ("WHY IT MATTERS", "otherwise the image vote silently cheats, before the text features even get a chance to", "amber")],
-       """
+fig("one-honest-catch", "d2_oof.png", """
 A subtle but real trap in stacking, and a chance to reinforce the day's theme before the big
 leakage reveal. If the image model scores a patient it trained on, that score is too
 optimistic; it has effectively peeked. So when the instructor pre-computed every img_pred,
@@ -172,22 +149,7 @@ when the text leakage lands in a few slides, students already have the mental ho
 Transition: now the second signal, the text.
 """)
 
-slide("text-to-numbers", """
-steps = [('THE PROMPT', '"Read this report. Return the findings as JSON."', TURQUOISE_RGB),
-         ('THE OUTPUT', 'a handful of yes/no flags per patient, now just numbers', DEEPPINK_RGB),
-         ('PRE-CACHED', 'you load the saved answers; the one live call is the instructor demo', AMBER_RGB)]
-n = len(steps)
-gap = 0.30
-cw = (body_w - (n - 1) * gap) / n
-for i, (lab, bod, c) in enumerate(steps):
-    x = body_l + i * (cw + gap)
-    _add_rect(slide, left=x, top=body_top, width=cw, height=body_h, fill_rgb=PAPER_RGB)
-    _add_rect(slide, left=x, top=body_top, width=cw, height=0.90, fill_rgb=c)
-    _add_text(slide, lab, left=x + 0.26, top=body_top, width=cw - 0.52, height=0.90,
-              size=18, color_rgb=_text_on(c), font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)
-    _add_text(slide, bod, left=x + 0.26, top=body_top + 1.20, width=cw - 0.52, height=body_h - 1.5,
-              size=15, color_rgb=INK_RGB, font=SANS_FONT)
-""", """
+fig("text-to-numbers", "d2_text_to_num.png", """
 Second signal. We hand each radiology report to a language model and ask for structured
 findings as JSON: cardiomegaly yes/no, effusion yes/no, and so on. Those flags become
 numbers. The practical wrinkle students will feel: calling an LLM hundreds of times costs
@@ -233,11 +195,7 @@ mirage. Make sure this lands hard, because it generalizes far beyond this lab. T
 what would have been a fair test?
 """)
 
-cards3("what-a-fair-test-looks-like",
-       [("NO PEEKING AT THE LABEL", "a feature that encodes the answer is cheating; the report impression basically is the answer", "deeppink"),
-        ("USE INPUTS THAT COME FIRST", "fair signals exist before the diagnosis is known: the raw pixels, the demographics", "turquoise"),
-        ("REPORT IT HONESTLY", "show the leaked and de-leaked numbers side by side; the honest result is lower, and real", "amber")],
-       """
+fig("what-a-fair-test-looks-like", "d2_fair_test.png", """
 Turn the gotcha into a transferable skill. Target leakage is when a feature secretly carries
 the answer, and catching it is what separates a careful modeler from a fooled one. Three
 habits: never let a feature encode the label; prefer inputs that exist before the label is
@@ -313,11 +271,7 @@ data and the constraints, is half the real job. Transition: one last caution abo
 new kind of data.
 """)
 
-cards3("text-data-is-even-more-sensitive",
-       [("HIDDEN IDENTIFIERS", "notes mention names, dates, places; 'de-identified' text often is not, fully", "turquoise"),
-        ("THE MODEL CAN LEAK IT", "LLMs can repeat training text verbatim: sensitive notes in, sensitive notes out", "deeppink"),
-        ("MINIMIZE AND PROTECT", "use the least data that does the job, and guard it like the patient record it is", "amber")],
-       """
+fig("text-data-is-even-more-sensitive", "d2_text_sensitive.png", """
 Close the ethics thread, because today introduced a riskier kind of data. A pixel grid is
 fairly anonymous; a clinical note is full of identifying detail, names, dates, places, and
 "de-identified" text frequently is not, fully. Worse, LLMs can memorize and regurgitate
