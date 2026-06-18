@@ -13,7 +13,31 @@ Public API:
     show_first_layer_filters / gradcam
 """
 from __future__ import annotations
+import os
+import warnings
 from typing import Callable, Optional
+
+# Keep the teaching notebook output clean: silence HuggingFace download chatter
+# and the harmless "IProgress not found" tqdm warning so students don't mistake
+# routine log lines for errors. (The data still loads exactly the same.)
+os.environ.setdefault("HF_HUB_DISABLE_PROGRESS_BARS", "1")
+warnings.filterwarnings("ignore", message="IProgress not found.*")
+warnings.filterwarnings("ignore", message=".*unauthenticated requests.*")
+
+
+def _quiet_hf() -> None:
+    try:
+        import datasets
+        datasets.disable_progress_bars()
+        datasets.utils.logging.set_verbosity_error()
+    except Exception:
+        pass
+    try:
+        from huggingface_hub.utils import logging as _hf_logging
+        _hf_logging.set_verbosity_error()
+    except Exception:
+        pass
+
 
 import numpy as np
 import torch
@@ -55,8 +79,11 @@ class _HFImageDataset(Dataset):
 
 def _transform(size: int, train: bool):
     aug = [T.RandomHorizontalFlip(), T.RandomRotation(15)] if train else []
+    # Resize the shorter edge then center-crop to a square: keeps the eye's true
+    # proportions (no stretching) and matches how ResNet/ViT were pretrained.
     return T.Compose(
-        [T.Resize((size, size)), *aug, T.ToTensor(), T.Normalize(NORM_MEAN, NORM_STD)]
+        [T.Resize(size), T.CenterCrop(size), *aug, T.ToTensor(),
+         T.Normalize(NORM_MEAN, NORM_STD)]
     )
 
 
@@ -68,6 +95,7 @@ def get_loaders(size: int = 224, batch_size: int = 32):
     """
     from datasets import load_dataset
 
+    _quiet_hf()
     ds = load_dataset(HF_DATASET)
     train = _HFImageDataset(ds["train"], _transform(size, train=True))
     val = _HFImageDataset(ds["validation"], _transform(size, train=False))
