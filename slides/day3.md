@@ -78,6 +78,22 @@ Where is it heading? Away from one narrow model per task and toward large, pretr
 
 ---
 
+## Deployed at real scale
+
+This is not a research curiosity. The systems that made it to the bedside run at enormous scale, and they are overwhelmingly in radiology, where the input is a clean image and the workflow is well-defined. Aidoc reads over a hundred million cases across 1,600+ centers; Viz.ai's stroke tool runs in 1,800 hospitals and pages the team in minutes.
+
+![Deployed clinical AI at scale](figures/d3_deployment_scale.png)
+
+---
+
+## The hard part usually isn't the model
+
+Here is the part nobody tells you at the start. Getting a good number is the easy 20%. Most enterprise AI pilots, around 95% in one 2025 study, showed no measurable benefit, because agreeing with a label in a notebook is not the same as helping a real patient. The real bottleneck is institutional: regulation, who pays, and fitting into a clinician's workflow. Keep this in mind today: a model that runs and that you can honestly evaluate is worth more than a fancy one nobody can trust.
+
+![The hard part is not the model](figures/d3_hard_part.png)
+
+---
+
 ## Where it still breaks
 
 A grounding caution before you build. Deployed does not mean flawless. A widely used hospital sepsis-prediction model, live in hundreds of hospitals, was found in external validation to miss most cases and flood clinicians with false alarms. The usual culprits are the ones you already met: a model that never saw truly held-out data, a metric that hid the failure, and leakage.
@@ -140,6 +156,14 @@ Melanoma detection feels high-stakes and real. Follow curiosity.
 
 ### Most room to explore
 MedMNIST has a dozen datasets. Pick a weird one and surprise yourself.
+
+---
+
+## Stuck? Build one of these
+
+If nothing is jumping out, do not burn ten minutes deciding, just grab one of these. Each is sized for the sprint: set `DATASET`, run the baseline from the template, then chase the one goal in bold. The narrower the goal, the better your talk.
+
+![Concrete project ideas](figures/d3_project_ideas.png)
 
 ---
 

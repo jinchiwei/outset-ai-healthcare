@@ -149,6 +149,95 @@ def fig_whats_next():
 # --------------------------------------------------------------------------- #
 # STATE OF THE FIELD: existing AI-in-healthcare applications (lit review)
 # --------------------------------------------------------------------------- #
+def fig_project_ideas():
+    """Concrete, buildable project ideas for pairs who can't think of one."""
+    import textwrap
+    fig, ax = plt.subplots(figsize=(11.5, 5.6))
+    ax.axis("off"); ax.set_xlim(0, 12); ax.set_ylim(0, 6.4)
+    ideas = [
+        ("Pneumonia you'd trust", "tune the threshold so you miss <5% of pneumonia; report the cost in false alarms", "pneumoniamnist", TURQUOISE),
+        ("Catch the melanoma", "maximize recall on the melanoma class; look at what it confuses it with", "dermamnist", DEEPPINK),
+        ("Re-grade the retina", "redo Day 1's retinopathy task; beat your Day 1 number", "retinamnist", AMBER),
+        ("Which cells confuse it?", "8-class blood cells; build it, then read the confusion matrix", "bloodmnist", BLUEVIOLET),
+        ("Does pretraining help?", "pretrained vs from-scratch on one set; measure the gap honestly", "any set", TURQUOISE),
+        ("Does augmentation help?", "add augmentation, measure the real delta, log it for your talk", "any set", DEEPPINK),
+    ]
+    for i, (title, what, ds, c) in enumerate(ideas):
+        col, row = i % 2, i // 2
+        x, y = 0.4 + col * 5.85, 4.05 - row * 1.95
+        ax.add_patch(FancyBboxPatch((x, y), 5.5, 1.65, boxstyle="round,pad=0.03,rounding_size=0.05",
+                                    facecolor="#FBFAF6", edgecolor="#E3E0D6", lw=1.3))
+        ax.add_patch(Rectangle((x, y), 0.12, 1.65, color=c))
+        ax.text(x + 0.32, y + 1.32, title, fontsize=13, fontweight="bold", color=INK, family="Geist Mono", va="center")
+        ax.text(x + 0.32, y + 0.74, textwrap.fill(what, 52), fontsize=10, color=INK, va="center")
+        ax.text(x + 0.32, y + 0.2, f"DATASET = {ds}", fontsize=9, color=c, family="Geist Mono", va="center", fontweight="bold")
+    figtitle(fig, "Stuck? Build one of these")
+    fig.text(0.5, -0.02, "Each is doable in the sprint with the project template: set DATASET, run the "
+             "baseline, then chase the one goal in bold.", ha="center", fontsize=10, color=MUTED, style="italic")
+    save(fig, "d3_project_ideas.png")
+
+
+def fig_deployment_scale():
+    """Deployed clinical AI is mostly radiology, and it runs at real scale."""
+    fig, ax = plt.subplots(figsize=(11.5, 4.8))
+    ax.axis("off"); ax.set_xlim(0, 12); ax.set_ylim(0, 5)
+
+    # left: the big composition stat as a stacked bar
+    ax.text(0.5, 4.5, "~1,451", fontsize=30, fontweight="bold", color=INK, family="Geist Mono", va="center")
+    ax.text(0.55, 3.75, "AI/ML devices FDA-cleared", fontsize=11, color=MUTED, va="center")
+    bx, bw = 0.55, 3.3
+    ax.add_patch(FancyBboxPatch((bx, 1.2), bw * 0.76, 1.5, boxstyle="square,pad=0",
+                                facecolor=TURQUOISE, edgecolor="none"))
+    ax.add_patch(FancyBboxPatch((bx + bw * 0.76, 1.2), bw * 0.24, 1.5, boxstyle="square,pad=0",
+                                facecolor="#D9D6CC", edgecolor="none"))
+    ax.text(bx + bw * 0.38, 1.95, "76%\nRADIOLOGY", ha="center", va="center", fontsize=12,
+            fontweight="bold", color=txt_on(TURQUOISE), family="Geist Mono")
+    ax.text(bx + bw * 0.88, 1.95, "rest", ha="center", va="center", fontsize=9, color=INK, family="Geist Mono")
+    ax.text(0.55, 0.6, "Most deployed medical AI reads scans.", fontsize=10.5, color=INK, style="italic")
+
+    # right: two real at-scale systems
+    cards = [("Aidoc", "1,600+ centers   ·   100M+ cases read", TURQUOISE),
+             ("Viz.ai stroke", "1,800 hospitals, pages the team in minutes", DEEPPINK)]
+    for i, (name, stat, c) in enumerate(cards):
+        y = 3.3 - i * 1.5
+        ax.add_patch(FancyBboxPatch((6.3, y), 5.2, 1.2, boxstyle="round,pad=0.03,rounding_size=0.06",
+                                    facecolor="#FBFAF6", edgecolor="#E3E0D6", lw=1.3))
+        ax.add_patch(Rectangle((6.3, y), 0.12, 1.2, color=c))
+        ax.text(6.6, y + 0.82, name, fontsize=14, fontweight="bold", color=INK, family="Geist Mono", va="center")
+        ax.text(6.6, y + 0.34, stat, fontsize=10.5, color=c, va="center", fontweight="bold")
+    figtitle(fig, "Deployed clinical AI, at real scale")
+    fig.text(0.5, -0.02, "Bedi et al., npj Digital Medicine 2025; Aidoc and Viz.ai company figures, 2025-26.",
+             ha="center", fontsize=9.5, color=MUTED, style="italic")
+    save(fig, "d3_deployment_scale.png")
+
+
+def fig_hard_part():
+    """The bottleneck on deployed clinical AI is institutional, not the model."""
+    fig, ax = plt.subplots(figsize=(11.5, 4.6))
+    ax.axis("off"); ax.set_xlim(0, 12); ax.set_ylim(0, 5)
+    # the headline stat
+    ax.text(3.0, 3.7, "95%", fontsize=58, fontweight="bold", color=DEEPPINK, family="Geist Mono",
+            ha="center", va="center")
+    ax.text(3.0, 2.45, "of enterprise AI pilots showed\nno measurable benefit", ha="center", va="center",
+            fontsize=12.5, color=INK)
+    ax.text(3.0, 1.5, "MIT NANDA, 2025", ha="center", fontsize=9.5, color=MUTED, family="Geist Mono")
+    # divider
+    ax.plot([6.0, 6.0], [0.8, 4.2], color="#E3E0D6", lw=1.5)
+    # the lesson
+    ax.text(9.0, 3.95, "“Agreement with a label is\nnot benefit to a patient.”",
+            ha="center", va="center", fontsize=14, color=INK, style="italic", fontweight="bold")
+    ax.text(9.0, 2.7, "The real bottleneck is institutional:", ha="center", fontsize=11.5, color=INK)
+    for i, word in enumerate(["regulation", "payment", "coordination"]):
+        x = 7.05 + i * 1.45
+        ax.add_patch(FancyBboxPatch((x - 0.62, 1.85), 1.24, 0.5, boxstyle="round,pad=0.02,rounding_size=0.08",
+                                    facecolor=[TURQUOISE, AMBER, BLUEVIOLET][i], edgecolor="none"))
+        ax.text(x, 2.1, word, ha="center", va="center", fontsize=9.5,
+                color=txt_on([TURQUOISE, AMBER, BLUEVIOLET][i]), family="Geist Mono", fontweight="bold")
+    ax.text(9.0, 1.2, "not model quality.", ha="center", fontsize=11.5, color=DEEPPINK, fontweight="bold")
+    figtitle(fig, "The hard part usually isn't the model")
+    save(fig, "d3_hard_part.png")
+
+
 def fig_dataset_menu():
     """A concrete menu of MedMNIST datasets students can drop into config.DATASET."""
     fig, ax = plt.subplots(figsize=(11.5, 5.2))
@@ -276,5 +365,8 @@ if __name__ == "__main__":
     fig_field_map()
     fig_flagships()
     fig_frontier()
+    fig_deployment_scale()
+    fig_hard_part()
     fig_dataset_menu()
+    fig_project_ideas()
     print("Day 3 figures done")

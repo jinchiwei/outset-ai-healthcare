@@ -150,6 +150,23 @@ them: they already grasp the core idea behind the frontier. Transition: but depl
 same as flawless.
 """)
 
+fig("deployed-at-real-scale", "d3_deployment_scale.png", """
+Make the field feel real and big. Deployed clinical AI is not a demo; it runs at enormous
+scale, and it is overwhelmingly radiology (clean image in, well-defined read out). Aidoc:
+100M+ cases across 1,600+ centers. Viz.ai stroke triage: 1,800 hospitals. The honest nuance:
+breadth of FDA clearances is concentrated where the data is cleanest. Transition: but scale
+and clearance still are not the same as helping patients.
+""")
+
+fig("the-hard-part-usually-isnt-the-model", "d3_hard_part.png", """
+The most important slide of the day for their future. Getting a good number is the easy part.
+About 95% of enterprise AI pilots showed no measurable benefit (MIT NANDA 2025), because
+agreeing with a label is not the same as helping a patient. The bottleneck is institutional:
+regulation, payment, workflow, not model quality. This is exactly why today's rubric rewards an
+honest, well-understood model over a high score. Transition: and here is how models actually
+fail.
+""")
+
 fig("where-it-still-breaks", "d3_panel_breaks.png", """
 Ground the hype with a real cautionary tale: a widely deployed hospital sepsis model (live in
 hundreds of hospitals) was found on external validation to miss most cases and over-alert
@@ -180,6 +197,14 @@ DATASET in config.py (e.g. 'bloodmnist'), and it downloads in seconds. Eight sho
 more exist. Point out the spread of modalities: X-ray, fundus, dermoscopy, ultrasound,
 microscopy, histology, OCT, CT, so everyone can find something that grabs them. Transition:
 do not overthink the choice.
+""")
+
+fig("stuck-build-one-of-these", "d3_project_ideas.png", """
+The safety net so no pair stalls. If nothing jumps out, hand them a concrete goal: a pneumonia
+screener tuned to miss <5% of cases; melanoma recall; re-grade the retina and beat their Day 1
+number; read a blood-cell confusion matrix; or a clean ablation (pretraining or augmentation,
+measure the delta). Each maps directly onto the template: set DATASET, run baseline, chase the
+bold goal. Stress: a narrow goal makes a better three-minute talk. Transition: now the build loop.
 """)
 
 fig("how-to-choose", "d3_panel_choose.png", """

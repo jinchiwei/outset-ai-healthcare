@@ -47,6 +47,23 @@ A dozen more exist (organ coronal/sagittal views, tissue, ...). See https://medm
 
 **Level up:** try a harder dataset, combine two, or bring your own images.
 
+## Stuck? Grab one of these
+Don't burn ten minutes deciding. Each idea below works with the `project_template/`: set
+`DATASET`, run the baseline, then chase the one goal in bold. A narrow goal makes a better talk.
+
+1. **A pneumonia screener you'd trust** (`pneumoniamnist`) -- tune the decision threshold so you
+   miss **fewer than 5% of pneumonia cases**, and report what that costs in false alarms.
+2. **Catch the melanoma** (`dermamnist`) -- maximize **recall on the melanoma class**, then look
+   at which lesions it confuses melanoma with.
+3. **Re-grade the retina** (`retinamnist`) -- redo Day 1's diabetic-retinopathy task and try to
+   **beat your Day 1 accuracy**.
+4. **Which blood cells confuse the model?** (`bloodmnist`) -- build the 8-class classifier, then
+   **read the confusion matrix** and explain the mix-ups.
+5. **Does pretraining actually help?** (any set) -- compare **pretrained vs from-scratch** and
+   measure the gap honestly.
+6. **Does augmentation help here?** (any set) -- add augmentation, measure the **real delta**,
+   and log it for your presentation.
+
 ## Propose your own
 Want to do ECG, a multimodal stack like Day 2, or something with your own data? Pitch it
 to the instructor at 2:30. If it's feasible in the time, go for it.

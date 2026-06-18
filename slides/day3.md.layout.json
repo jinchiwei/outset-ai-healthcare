@@ -1,5 +1,5 @@
 {
-  "deck_md_hash": "32505a8ecb5b9f77e6b811b80b3a2c177604bce5b387e41d78d824d3e78594c3",
+  "deck_md_hash": "f4b0255e578b0d5eace96ae9f2486d74cd3d6e588fad430e80b3101b30a4c9c9",
   "mode": "expressive",
   "shake_seed": "b1035e6e20004cc68cd710f90d72f54f",
   "slides": [
@@ -113,6 +113,31 @@
       "slide_id": "h1-where-the-field-stands/h2-the-frontier-multimodal-medical-ai"
     },
     {
+      "content_hash": "c86a87035bf978b15a08c1289474d725b44586a2c25941355cb3788fb98fa27b",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d3_deployment_scale.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "Make the field feel real and big. Deployed clinical AI is not a demo; it runs at enormous\nscale, and it is overwhelmingly radiology (clean image in, well-defined read out). Aidoc:\n100M+ cases across 1,600+ centers. Viz.ai stroke triage: 1,800 hospitals. The honest nuance:\nbreadth of FDA clearances is concentrated where the data is cleanest. Transition: but scale\nand clearance still are not the same as helping patients.",
+        "section_label": "Where the field stands",
+        "title": "Deployed at real scale"
+      },
+      "slide_id": "h1-where-the-field-stands/h2-deployed-at-real-scale"
+    },
+    {
+      "content_hash": "edd86666c55565de2ea8f16b9c74cabd75a719b56d65e99e9087921bdbbe2648",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "composer",
+        "code": "fw = body_w*0.56\n_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d3_hard_part.png', left=body_l, top=body_top+0.10, max_w=body_w*0.56, max_h=body_h-0.25)\npx = body_l + fw + 0.40\npw = body_w - fw - 0.40\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=body_h-0.15, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=0.09, fill_rgb=accent_rgb)\n_add_rect(slide, left=px+0.22, top=body_top+0.37, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'Here is the part nobody tells you at the start', left=px+0.44, top=body_top+0.30, width=pw-0.62, height=0.49, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)\n_add_rect(slide, left=px+0.22, top=body_top+1.00, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'Getting a good number is the easy 20%. Most enterprise AI pilots, around 95% in one 2025 study, showed no measurable benefit, because agreeing with a label in a notebook is not the same as helping a real patient. The real bottleneck is institutional: regulation, who pays, and fitting into a clinician’s workflow. Keep this in mind today: a model that runs and that you can honestly evaluate is worth more than a fancy one nobody can trust.', left=px+0.44, top=body_top+0.93, width=pw-0.62, height=2.42, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "lede": "",
+        "section_label": "Where the field stands",
+        "title": "The hard part usually isn’t the model"
+      },
+      "slide_id": "h1-where-the-field-stands/h2-the-hard-part-usually-isn-t-the-model"
+    },
+    {
       "content_hash": "c75e30398d23c557ee1884100d404fd3611b37e7a5c87ac28a6d78538daec209",
       "kind": "freeform",
       "params": {
@@ -185,6 +210,19 @@
         "title": "How to choose your project"
       },
       "slide_id": "h1-today-s-mission/h2-how-to-choose-your-project"
+    },
+    {
+      "content_hash": "e5e35c4f6086c17f55ca640dfec16bff05810b3d3fa94ec19d5a1d83a398b8c4",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d3_project_ideas.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "The safety net so no pair stalls. If nothing jumps out, hand them a concrete goal: a pneumonia\nscreener tuned to miss <5% of cases; melanoma recall; re-grade the retina and beat their Day 1\nnumber; read a blood-cell confusion matrix; or a clean ablation (pretraining or augmentation,\nmeasure the delta). Each maps directly onto the template: set DATASET, run baseline, chase the\nbold goal. Stress: a narrow goal makes a better three-minute talk. Transition: now the build loop.",
+        "section_label": "Today’s mission",
+        "title": "Stuck? Build one of these"
+      },
+      "slide_id": "h1-today-s-mission/h2-stuck-build-one-of-these"
     },
     {
       "content_hash": "17f8380128d83c25be0d656d808cefd634c4adcde3fe4be4f54179dd11ba1520-divider",
