@@ -214,6 +214,14 @@ Here is the part students find surprising: the model does not hand you one answe
 
 ---
 
+## Reading an ROC curve
+
+Every threshold you could pick traces out one curve: the ROC. It plots catch rate (sensitivity) against false-alarm rate as you slide the dial. One picture summarizes every operating point at once. The closer it hugs the top-left, the better the model, and the area under it (AUC) is the single number people quote. This is the chart you will stare at most when you judge a medical model.
+
+![Reading an ROC curve](figures/eval_roc.png)
+
+---
+
 # The lab
 
 ---

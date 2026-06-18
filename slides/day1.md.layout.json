@@ -1,5 +1,5 @@
 {
-  "deck_md_hash": "f902088dc0b5d6b30a7ae05690cc8c072c725475bd5efeabee7de8e44da3047c",
+  "deck_md_hash": "e497767820cb623d5fb51ebee93c56450dfcc693236fa255071b70505f9f192f",
   "mode": "expressive",
   "shake_seed": "cb264709ed4b4032b267f7ab652eaf77",
   "slides": [
@@ -315,11 +315,24 @@
         "_provenance": "agent",
         "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/eval_threshold.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
         "lede": "",
-        "notes": "End the evaluation section by handing students agency. The model does not output a hard yes or\nno; it outputs a confidence, and YOU pick the threshold for action. Set a low bar for referral\nand you catch more disease but raise more false alarms; set a high bar and the reverse. There\nis no magic point that wins on both, the curves cross. The clinical context decides: a blindness\nscreener leans toward catching everything. The takeaway: evaluation is a values question, not\njust a math question. Transition: enough theory, time to build.",
+        "notes": "End the evaluation section by handing students agency. The model does not output a hard yes or\nno; it outputs a confidence, and YOU pick the threshold for action. Set a low bar for referral\nand you catch more disease but raise more false alarms; set a high bar and the reverse. There\nis no magic point that wins on both, the curves cross. The clinical context decides: a blindness\nscreener leans toward catching everything. The takeaway: evaluation is a values question, not\njust a math question. Transition: every threshold at once is the ROC curve.",
         "section_label": "Did it work?",
         "title": "You choose the trade-off"
       },
       "slide_id": "h1-did-it-work/h2-you-choose-the-trade-off"
+    },
+    {
+      "content_hash": "e9795fea95c3b441030ff21aee9d672d3253e2b172ebd62e4ba1ba39912feccc",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/eval_roc.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "Give them the chart they'll judge medical models by. As you slide the threshold from strict to\nlenient, the (false-alarm, catch-rate) point traces the ROC curve. One picture holds every\noperating point. Teach three reads: every point is a threshold; up-and-left is better (the\ndashed diagonal is a coin flip); and AUC, the area underneath, is the one-number summary\n(0.5 random, 1.0 perfect). Screening tools deliberately operate to the right, accepting false\nalarms to keep the catch rate high. Transition: enough theory, time to build.",
+        "section_label": "Did it work?",
+        "title": "Reading an ROC curve"
+      },
+      "slide_id": "h1-did-it-work/h2-reading-an-roc-curve"
     },
     {
       "content_hash": "d040621cb1fd7a7aebb8e805855244dfe7a702015ba46ec3459edad0b2105ada-divider",

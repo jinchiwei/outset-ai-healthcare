@@ -487,7 +487,16 @@ no; it outputs a confidence, and YOU pick the threshold for action. Set a low ba
 and you catch more disease but raise more false alarms; set a high bar and the reverse. There
 is no magic point that wins on both, the curves cross. The clinical context decides: a blindness
 screener leans toward catching everything. The takeaway: evaluation is a values question, not
-just a math question. Transition: enough theory, time to build.
+just a math question. Transition: every threshold at once is the ROC curve.
+""")
+
+fig_slide("reading-an-roc-curve", "eval_roc.png", """
+Give them the chart they'll judge medical models by. As you slide the threshold from strict to
+lenient, the (false-alarm, catch-rate) point traces the ROC curve. One picture holds every
+operating point. Teach three reads: every point is a threshold; up-and-left is better (the
+dashed diagonal is a coin flip); and AUC, the area underneath, is the one-number summary
+(0.5 random, 1.0 perfect). Screening tools deliberately operate to the right, accepting false
+alarms to keep the catch rate high. Transition: enough theory, time to build.
 """)
 
 # Where the data comes from / fairness — 3 cards

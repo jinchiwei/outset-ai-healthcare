@@ -77,31 +77,74 @@ def fig_data_split():
 # --------------------------------------------------------------------------- #
 # How learning works: gradient descent
 # --------------------------------------------------------------------------- #
+def _glossy_ball(ax, cx, cy, r, color, z=6):
+    """A ball that actually looks 3D: shaded body + a white sheen highlight."""
+    ax.add_patch(Circle((cx, cy), r, color=color, zorder=z, ec="none"))
+    ax.add_patch(Circle((cx, cy), r, fill=False, ec=INK, lw=1.0, alpha=0.25, zorder=z + 0.1))
+    ax.add_patch(Circle((cx - r * 0.32, cy + r * 0.34), r * 0.34, color="white", alpha=0.65, zorder=z + 0.2))
+
+
 def fig_gradient_descent():
-    fig, ax = plt.subplots(figsize=(10.5, 4.2))
-    x = np.linspace(-3, 3, 200)
-    y = 0.5 * x ** 2 + 0.4
-    ax.plot(x, y, color=BLUEVIOLET, lw=3)
-    ax.set_ylim(-0.3, 6.2)
-    pts = [(-2.6, "start: bad guesses"), (-1.4, ""), (-0.6, ""), (-0.1, "minimum: best the model can do")]
-    for px, lab in pts:
-        py = 0.5 * px ** 2 + 0.4
-        ax.add_patch(Circle((px, py), 0.13, color=DEEPPINK, zorder=5))
-        if lab:
-            ax.annotate(lab, (px, py), xytext=(px, py + 1.1), fontsize=11, family="Geist Mono",
-                        color=INK, ha="center",
-                        arrowprops=dict(arrowstyle="-|>", color=MUTED, lw=1.5))
-    for i in range(len(pts) - 1):
-        x0 = pts[i][0]; x1 = pts[i + 1][0]
-        ax.annotate("", xy=(x1, 0.5 * x1 ** 2 + 0.4), xytext=(x0, 0.5 * x0 ** 2 + 0.4),
-                    arrowprops=dict(arrowstyle="-|>", color=AMBER, lw=2.5))
-    ax.set_xlabel("the model's knobs (millions of them)", fontsize=12)
-    ax.set_ylabel("error (how wrong)", fontsize=12)
+    from matplotlib.colors import LinearSegmentedColormap
+    from matplotlib.patches import Polygon
+
+    fig, ax = plt.subplots(figsize=(11, 4.8))
+    x = np.linspace(0, 10, 500)
+    # a real rolling landscape: a deep valley on the right, a little local dip + bump on the left
+    y = (0.09 * (x - 6.6) ** 2          # the big bowl (global minimum near x=6.6)
+         + 0.9 * np.exp(-((x - 2.3) / 1.1) ** 2)   # a hump the ball rolls over
+         + 0.35 * np.sin(0.8 * x) + 1.0)
+
+    ymin = y.min() - 0.5
+    ax.set_xlim(0, 10); ax.set_ylim(ymin, y.max() + 1.7)
+
+    # gradient-filled hill under the curve (light at the surface -> brand violet deep down)
+    hill = LinearSegmentedColormap.from_list("hill", ["#EDE7FB", BLUEVIOLET])
+    grad = np.linspace(1, 0, 256).reshape(-1, 1)
+    im = ax.imshow(grad, extent=[0, 10, ymin, y.max() + 1.7], origin="upper", aspect="auto",
+                   cmap=hill, zorder=0, alpha=0.92)
+    verts = list(zip(x, y)) + [(10, ymin), (0, ymin)]
+    clip = Polygon(verts, closed=True, transform=ax.transData)
+    im.set_clip_path(clip)
+    ax.plot(x, y, color=BLUEVIOLET, lw=3, zorder=3)            # the hill surface line
+
+    def yof(xx):
+        return float(np.interp(xx, x, y))
+
+    # the descending trajectory: ball starts high-left, rolls over the hump into the valley
+    path = [0.7, 1.5, 3.2, 4.4, 5.3, 6.0, 6.45, 6.6]
+    for i in range(len(path) - 1):
+        x0, x1 = path[i], path[i + 1]
+        ax.annotate("", xy=(x1, yof(x1) + 0.12), xytext=(x0, yof(x0) + 0.12),
+                    arrowprops=dict(arrowstyle="-|>", color=AMBER, lw=2.4,
+                                    connectionstyle="arc3,rad=0.08"), zorder=4)
+    for xx in path[1:-1]:                                       # faded "motion" balls
+        _glossy_ball(ax, xx, yof(xx) + 0.16, 0.12, DEEPPINK, z=4)
+        ax.patches[-3].set_alpha(0.35)
+
+    # start + end emphasised
+    _glossy_ball(ax, path[0], yof(path[0]) + 0.18, 0.22, DEEPPINK, z=7)
+    ax.annotate("START\nbad model, high error", (path[0], yof(path[0]) + 0.18),
+                xytext=(1.5, y.max() + 1.25), fontsize=10.5, family="Geist Mono", color=INK, ha="center",
+                arrowprops=dict(arrowstyle="-|>", color=MUTED, lw=1.4))
+    _glossy_ball(ax, path[-1], yof(path[-1]) + 0.2, 0.26, TURQUOISE, z=7)
+    ax.annotate("MINIMUM\nbest the model can do", (path[-1], yof(path[-1]) + 0.2),
+                xytext=(8.4, yof(path[-1]) + 1.6), fontsize=10.5, family="Geist Mono", color=INK, ha="center",
+                arrowprops=dict(arrowstyle="-|>", color=MUTED, lw=1.4))
+
+    # learning-rate = step size inset (two arrows of different lengths), in the open top-center
+    lx, ly = 3.7, y.max() + 1.15
+    ax.annotate("", xy=(lx + 0.45, ly), xytext=(lx, ly), arrowprops=dict(arrowstyle="-|>", color=TURQUOISE, lw=3))
+    ax.text(lx + 0.6, ly, "small step: slow but safe", fontsize=9, color=INK, va="center", family="Geist Mono")
+    ax.annotate("", xy=(lx + 1.35, ly - 0.5), xytext=(lx, ly - 0.5), arrowprops=dict(arrowstyle="-|>", color=DEEPPINK, lw=3))
+    ax.text(lx + 1.5, ly - 0.5, "big step = learning rate (overshoots)", fontsize=9, color=INK, va="center", family="Geist Mono")
+
+    ax.set_xlabel("the model's millions of knobs (weights)", fontsize=12)
+    ax.set_ylabel("error (how wrong it is)", fontsize=12)
     ax.set_xticks([]); ax.set_yticks([])
-    figtitle(fig, "Learning = rolling downhill to less error (gradient descent)")
-    fig.text(0.5, -0.03, "Each training step nudges the knobs in the direction that reduces error, "
-             "a little at a time, like a ball settling into a valley.",
-             ha="center", fontsize=10, color=MUTED, style="italic")
+    figtitle(fig, "Learning is a ball rolling downhill (gradient descent)")
+    fig.text(0.5, -0.03, "Each training step nudges the weights downhill, toward less error. The step size is "
+             "the learning rate: too big overshoots, too small crawls.", ha="center", fontsize=10, color=MUTED, style="italic")
     save(fig, "concept_gradient_descent.png")
 
 
@@ -189,22 +232,104 @@ def fig_confusion():
 # Sensitivity vs specificity
 # --------------------------------------------------------------------------- #
 def fig_sens_spec():
-    fig, (axL, axR) = plt.subplots(1, 2, figsize=(11, 4.0))
-    for ax, name, defn, q, c in [
-        (axL, "SENSITIVITY", "of the truly sick,\nhow many did we catch?", "Miss a referral\n= preventable blindness", DEEPPINK),
-        (axR, "SPECIFICITY", "of the truly healthy,\nhow many did we clear?", "False alarm\n= a needless specialist visit", TURQUOISE)]:
-        ax.axis("off"); ax.set_xlim(0, 1); ax.set_ylim(0, 1)
-        ax.add_patch(FancyBboxPatch((0.04, 0.08), 0.92, 0.84, boxstyle="round,pad=0.02,rounding_size=0.04",
-                                    facecolor=c, edgecolor="none"))
-        tc = txt_on(c)
-        ax.text(0.5, 0.76, name, ha="center", fontsize=20, fontweight="bold", color=tc, family="Geist Mono")
-        ax.text(0.5, 0.52, defn, ha="center", va="center", fontsize=13, color=tc)
-        ax.text(0.5, 0.22, q, ha="center", va="center", fontsize=11, color=tc, style="italic")
-    figtitle(fig, "The two numbers that matter in screening")
-    fig.text(0.5, -0.03, "For screening we usually favor SENSITIVITY: better to send a few healthy "
-             "people for a second look than to miss someone going blind.",
+    """100 real patients: show who gets caught, cleared, missed, and falsely alarmed."""
+    fig, (axG, axR) = plt.subplots(1, 2, figsize=(11.5, 4.8),
+                                   gridspec_kw={"width_ratios": [1.25, 1]})
+    # --- left: a population of 100 patients ---
+    axG.axis("off"); axG.set_xlim(-0.6, 10); axG.set_ylim(-2.0, 9.8)
+    axG.invert_yaxis()
+    # 20 sick patients at fixed scattered positions; 2 of them MISSED; 9 healthy = false alarms
+    sick = {3, 7, 11, 16, 22, 24, 31, 38, 40, 45, 52, 56, 61, 67, 70, 74, 81, 88, 93, 96}
+    missed = {40, 74}                 # sick but model said "fine" -> the costly errors
+    false_alarm = {5, 19, 28, 47, 59, 64, 83, 90, 99}   # healthy but model referred
+    LIGHT = "#D9D6CC"
+    for i in range(100):
+        r, c = divmod(i, 10)
+        if i in sick:
+            axG.add_patch(Circle((c, r), 0.38, color=DEEPPINK, zorder=3))
+            if i in missed:           # ring + slash = a missed case
+                axG.add_patch(Circle((c, r), 0.46, fill=False, ec=INK, lw=2.6, zorder=4))
+                axG.plot([c - 0.3, c + 0.3], [r + 0.3, r - 0.3], color=INK, lw=2.4, zorder=5)
+        else:
+            axG.add_patch(Circle((c, r), 0.38, color=LIGHT, zorder=3))
+            if i in false_alarm:
+                axG.add_patch(Circle((c, r), 0.46, fill=False, ec=AMBER, lw=2.6, zorder=4))
+    axG.set_title("100 patients screened", fontsize=12, color=INK, family="Geist Mono")
+    # mini legend above the grid (2x2)
+    leg = [(DEEPPINK, "has disease"), (LIGHT, "healthy"), (INK, "MISSED (x)"), (AMBER, "false alarm (o)")]
+    for k, (col, lab) in enumerate(leg):
+        lx = (k % 2) * 5.0; ly = -1.65 + (k // 2) * 0.7
+        axG.add_patch(Circle((lx, ly), 0.22, color=col if col != INK else "white",
+                             ec=col if col in (INK, AMBER) else "none", lw=2.2))
+        axG.text(lx + 0.45, ly, lab, fontsize=9.5, color=INK, va="center", family="Geist Mono")
+
+    # --- right: the two numbers + the human cost ---
+    axR.axis("off"); axR.set_xlim(0, 1); axR.set_ylim(0, 1)
+    axR.add_patch(FancyBboxPatch((0.03, 0.55), 0.94, 0.4, boxstyle="round,pad=0.02,rounding_size=0.06",
+                                 facecolor=DEEPPINK, edgecolor="none"))
+    axR.text(0.5, 0.85, "SENSITIVITY = 90%", ha="center", fontsize=17, fontweight="bold",
+             color="white", family="Geist Mono")
+    axR.text(0.5, 0.66, "caught 18 of 20 sick.\nthe 2 we MISSED -> preventable blindness",
+             ha="center", va="center", fontsize=11, color="white")
+    axR.add_patch(FancyBboxPatch((0.03, 0.08), 0.94, 0.4, boxstyle="round,pad=0.02,rounding_size=0.06",
+                                 facecolor=TURQUOISE, edgecolor="none"))
+    axR.text(0.5, 0.38, "SPECIFICITY = 89%", ha="center", fontsize=17, fontweight="bold",
+             color=txt_on(TURQUOISE), family="Geist Mono")
+    axR.text(0.5, 0.19, "cleared 71 of 80 healthy.\n9 false alarms -> a needless specialist visit",
+             ha="center", va="center", fontsize=11, color=txt_on(TURQUOISE))
+    figtitle(fig, "Sensitivity and specificity, in actual people")
+    fig.text(0.5, -0.03, "A missed case (✕) is far costlier than a false alarm (○), so screening tools are "
+             "tuned for high sensitivity, even at the price of more false alarms.",
              ha="center", fontsize=10, color=MUTED, style="italic")
     save(fig, "eval_sens_spec.png")
+
+
+# --------------------------------------------------------------------------- #
+# ROC curve + thresholds
+# --------------------------------------------------------------------------- #
+def fig_roc():
+    """A real ROC curve with three operating points and what moving the threshold does."""
+    fig, (axL, axR) = plt.subplots(1, 2, figsize=(11.5, 4.8),
+                                   gridspec_kw={"width_ratios": [1.05, 1]})
+    # a realistic ROC: TPR vs FPR for a decent model (AUC ~ 0.9)
+    fpr = np.linspace(0, 1, 200)
+    tpr = fpr ** 0.28                     # concave, well above the diagonal
+    axL.plot([0, 1], [0, 1], ls="--", color=MUTED, lw=1.5, label="random guessing")
+    axL.plot(fpr, tpr, color=BLUEVIOLET, lw=3.5, zorder=3)
+    axL.fill_between(fpr, tpr, fpr, color=BLUEVIOLET, alpha=0.10)
+    # three operating points along the curve
+    ops = [(0.04, 0.04 ** 0.28, "strict\n(high specificity)", TURQUOISE, (0.07, -0.10)),
+           (0.20, 0.20 ** 0.28, "balanced", AMBER, (0.06, 0.05)),
+           (0.55, 0.55 ** 0.28, "screening\n(high sensitivity)", DEEPPINK, (0.02, 0.06))]
+    for fx, ty, lab, c, (ox, oy) in ops:
+        axL.add_patch(Circle((fx, ty), 0.022, color=c, zorder=6))
+        axL.annotate(lab, (fx, ty), xytext=(fx + ox, ty + oy), fontsize=9.5,
+                     family="Geist Mono", color=INK)
+    axL.text(0.55, 0.18, "AUC ~ 0.90", fontsize=13, fontweight="bold", color=BLUEVIOLET, family="Geist Mono")
+    axL.set_xlabel("false-alarm rate  (1 - specificity)", fontsize=11)
+    axL.set_ylabel("catch rate  (sensitivity)", fontsize=11)
+    axL.set_xlim(-0.02, 1.02); axL.set_ylim(-0.02, 1.05)
+    axL.set_xticks([0, 0.5, 1]); axL.set_yticks([0, 0.5, 1]); axL.legend(loc="lower right", fontsize=9.5)
+    axL.set_title("the ROC curve", fontsize=12, color=INK, family="Geist Mono")
+
+    # right: how to read it
+    axR.axis("off"); axR.set_xlim(0, 1); axR.set_ylim(0, 1)
+    rows = [("Every point is a threshold.", "Slide the cutoff and you move along the curve, trading "
+             "catch rate against false alarms.", BLUEVIOLET),
+            ("Up-and-left is better.", "The closer the curve hugs the top-left corner, the better the "
+             "model. The dashed line is a coin flip.", TURQUOISE),
+            ("AUC = one summary number.", "The area under the curve, 0.5 is random, 1.0 is perfect. "
+             "It rates the model independent of any one threshold.", AMBER),
+            ("Screening sits to the right.", "We accept more false alarms to push catch rate up; "
+             "missing a patient is the worst error.", DEEPPINK)]
+    import textwrap
+    for i, (head, body, c) in enumerate(rows):
+        y = 0.95 - i * 0.245
+        axR.add_patch(Rectangle((0.02, y - 0.13), 0.05, 0.17, color=c))
+        axR.text(0.12, y, head, fontsize=12, fontweight="bold", color=INK, family="Geist Mono", va="center")
+        axR.text(0.12, y - 0.10, textwrap.fill(body, 42), fontsize=9.3, color=INK, va="top")
+    figtitle(fig, "Reading an ROC curve")
+    save(fig, "eval_roc.png")
 
 
 # --------------------------------------------------------------------------- #
@@ -238,5 +363,6 @@ if __name__ == "__main__":
     fig_accuracy_lies()
     fig_confusion()
     fig_sens_spec()
+    fig_roc()
     fig_threshold()
     print("extra figures done")
