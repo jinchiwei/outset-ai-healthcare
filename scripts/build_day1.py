@@ -136,40 +136,42 @@ common.show_pixel_histogram(images[0])  # the distribution of pixel brightnesses
 """))
 
 both(md("""
-### 0.3 Normalization: why the model sees "weird" colors
-Networks train best when every input channel is on the same, standardized scale. So before an
-image goes in, we **normalize** each color channel: subtract a fixed mean and divide by a fixed
-standard deviation -- the classic **ImageNet** values. Why those exact numbers and not this
-dataset's own? Because the pretrained backbones we'll use later (ResNet, ViT) were trained with
-precisely these constants and *expect* them; matching their preprocessing is what makes transfer
-learning work.
-
-The picture below shows the eye you'd recognize, the *exact tensor the model actually receives*
-(rescaled so we can view it -- note the color shift), and the per-channel means before vs after.
-
-**Look closely at the means after normalization:** they don't land at zero -- they land
-*well below* it (around -1 to -1.6). That's expected, not a bug. These retina photos are much
-darker than ImageNet's everyday snapshots, so subtracting ImageNet's brighter mean pushes them
-negative. The goal of normalization isn't a mean of exactly zero on *this* data -- it's to put
-every channel on the same standardized scale (units of standard deviations) using a fixed,
-known reference, which is what keeps training stable and matches the pretrained models.
+### 0.3 Normalization: put every channel on the same scale
+Networks train best when their inputs are **centered at zero with a similar spread**.
+**Standardization** does exactly that: for each color channel, subtract that channel's mean and
+divide by its standard deviation. The result has mean ~0 and std ~1. Watch the per-channel means
+collapse onto the zero line below.
 """))
 
 both(code("""
-raw = common._denorm(images[0])     # back to the 0..1 image a human recognizes
-normed = images[0]                  # the standardized tensor the model is actually fed
-disp = (normed - normed.min()) / (normed.max() - normed.min())  # rescale just to view
+# Standardize each channel using THIS data's own mean and std -- the textbook recipe.
+raw_batch = torch.stack([common._denorm(im) for im in images])  # N,3,H,W back in 0..1
+ch_mean = raw_batch.mean(dim=(0, 2, 3))        # per-channel mean
+ch_std = raw_batch.std(dim=(0, 2, 3))          # per-channel std
+standardized = (raw_batch - ch_mean[:, None, None]) / ch_std[:, None, None]
+
+raw0, std0 = raw_batch[0], standardized[0]
+disp = (std0 - std0.min()) / (std0.max() - std0.min())  # rescale just to view
 
 fig, (a1, a2, a3) = nbfig.fig(1, 3, figsize=(11, 3.6))
-a1.imshow(raw.permute(1, 2, 0).numpy()); a1.set_title("raw (0..1)", fontsize=11); a1.axis("off")
-a2.imshow(disp.permute(1, 2, 0).numpy()); a2.set_title("normalized (what the model sees)", fontsize=11); a2.axis("off")
-a3.grid(True)
+a1.imshow(raw0.permute(1, 2, 0).numpy()); a1.set_title("raw (0..1)", fontsize=11); a1.axis("off")
+a2.imshow(disp.permute(1, 2, 0).numpy()); a2.set_title("standardized (rescaled to view)", fontsize=11); a2.axis("off")
 x = np.arange(3)
-a3.bar(x - 0.2, raw.mean((1, 2)).numpy(), 0.4, color=nbfig.TURQUOISE, label="raw")
-a3.bar(x + 0.2, normed.mean((1, 2)).numpy(), 0.4, color=nbfig.DEEPPINK, label="normalized")
+a3.bar(x - 0.2, raw_batch.mean((0, 2, 3)).numpy(), 0.4, color=nbfig.TURQUOISE, label="raw mean")
+a3.bar(x + 0.2, standardized.mean((0, 2, 3)).numpy(), 0.4, color=nbfig.DEEPPINK, label="standardized mean")
 a3.axhline(0, color=nbfig.MUTED, lw=0.8); a3.set_xticks(x); a3.set_xticklabels(["R", "G", "B"])
-a3.set_title("channel means", fontsize=11); a3.legend()
-nbfig.show(fig, "Normalization: fixed ImageNet stats, so dark retinas land below zero")
+a3.set_title("channel means: ~0 after", fontsize=11); a3.legend()
+nbfig.show(fig, "Standardization: subtract the mean, divide by the std -> centered at zero")
+print("standardized channel means:", [round(v, 3) for v in standardized.mean((0, 2, 3)).tolist()])
+"""))
+
+both(md("""
+> **One practical footnote.** Our actual training pipeline standardizes with *fixed* **ImageNet**
+> constants (mean `0.485/0.456/0.406`, std `0.229/0.224/0.225`) rather than each batch's own
+> stats. Two reasons: the transform must be identical at train and test time (per-batch stats
+> would drift), and the pretrained ResNet/ViT we load later were trained with exactly those
+> numbers. It's the same idea -- a fixed, shared scale -- it just leaves our darker-than-average
+> retinas sitting a little below zero instead of exactly on it.
 """))
 
 both(md("""
