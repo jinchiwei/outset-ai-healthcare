@@ -20,9 +20,14 @@ def _card(ax, label, color, body):
                                 facecolor="#FBFAF6", edgecolor="#E3E0D6", lw=1.3))
     ax.add_patch(FancyBboxPatch((0.03, 0.80), 0.94, 0.17, boxstyle="round,pad=0,rounding_size=0.03",
                                 facecolor=color, edgecolor="none"))
-    ax.text(0.5, 0.885, label, ha="center", va="center", fontsize=12.5, fontweight="bold",
-            color=txt_on(color), family="Geist Mono", wrap=True)
-    ax.text(0.5, 0.165, body, ha="center", va="center", fontsize=10.6, color=INK, wrap=True)
+    # auto-shrink so nothing spills past the card (mono header ~18 chars at full size,
+    # body lines ~25 chars; scale down past that).
+    hfs = min(12.5, 12.5 * 18 / max(len(label), 18))
+    longest = max((len(ln) for ln in body.split("\n")), default=1)
+    bfs = min(10.6, 10.6 * 25 / max(longest, 25))
+    ax.text(0.5, 0.885, label, ha="center", va="center", fontsize=hfs, fontweight="bold",
+            color=txt_on(color), family="Geist Mono")
+    ax.text(0.5, 0.165, body, ha="center", va="center", fontsize=bfs, color=INK)
 
 
 def _panels(fname, title, items, badges=None):
