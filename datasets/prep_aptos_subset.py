@@ -40,6 +40,23 @@ def build_dataframe(per_class: int) -> pd.DataFrame:
     return bal
 
 
+def square_resize(img: Image.Image, size: int) -> Image.Image:
+    """Resize the shorter edge to `size`, then center-crop to size x size.
+
+    Aspect-ratio preserving: the round retina stays round (a plain
+    `.resize((size, size))` squashes the wide APTOS photos into ovals).
+    APTOS images are wider than tall with the retina centered, so the
+    center crop trims the black side margins and keeps the full disc.
+    """
+    w, h = img.size
+    scale = size / min(w, h)
+    img = img.resize((round(w * scale), round(h * scale)), Image.LANCZOS)
+    w, h = img.size
+    left = (w - size) // 2
+    top = (h - size) // 2
+    return img.crop((left, top, left + size, top + size))
+
+
 def to_hf_dataset(df: pd.DataFrame):
     from datasets import Dataset, DatasetDict, Features, Image as HFImage, ClassLabel, Value
 
@@ -48,7 +65,7 @@ def to_hf_dataset(df: pd.DataFrame):
     def gen():
         for _, row in df.iterrows():
             path = img_dir / f"{row['id_code']}.png"
-            img = Image.open(path).convert("RGB").resize((IMG_SIZE, IMG_SIZE))
+            img = square_resize(Image.open(path).convert("RGB"), IMG_SIZE)
             yield {"image": img, "diagnosis": int(row["diagnosis"]), "id_code": row["id_code"]}
 
     features = Features({
