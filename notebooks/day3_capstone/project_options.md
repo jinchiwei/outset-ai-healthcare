@@ -28,9 +28,22 @@ a mole and watch how it behaves on data that looks nothing like training.
 ## Option 3: Choose your own
 `starter_kits/choose/`
 
-Pick any MedMNIST dataset (retina, blood cells, pathology, organs, ...) and build on it.
-Defaults to RetinaMNIST (diabetic retinopathy, like Day 1). Good if something specific
-caught your interest.
+Pick any MedMNIST dataset and build on it. Defaults to RetinaMNIST (diabetic retinopathy,
+like Day 1). Good if something specific caught your interest. Set `DATASET` in `config.py`
+to one of these:
+
+| `DATASET` | modality | task |
+|-----------|----------|------|
+| `pneumoniamnist` | chest X-ray | pneumonia? (binary) |
+| `retinamnist`    | fundus photo | retinopathy grade (5) |
+| `dermamnist`     | dermoscopy | skin lesion (7) |
+| `breastmnist`    | breast ultrasound | malignant? (binary) |
+| `bloodmnist`     | microscopy | blood-cell type (8) |
+| `pathmnist`      | histology | colon tissue (9) |
+| `octmnist`       | retinal OCT | retinal disease (4) |
+| `organamnist`    | abdominal CT | organ (11) |
+
+A dozen more exist (organ coronal/sagittal views, tissue, ...). See https://medmnist.com.
 
 **Level up:** try a harder dataset, combine two, or bring your own images.
 

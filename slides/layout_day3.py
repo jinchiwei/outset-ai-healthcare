@@ -173,6 +173,15 @@ non-issue, it downloads in seconds. And if a pair has their own idea, they can p
 the first ten minutes. Transition: how to choose between them.
 """)
 
+fig("the-dataset-menu", "d3_dataset_menu.png", """
+The concrete menu for the "choose your own" path, so nobody stalls on "what can I even pick?".
+Each tile is a MedMNIST dataset; the name in the colored band is exactly what they type into
+DATASET in config.py (e.g. 'bloodmnist'), and it downloads in seconds. Eight shown, a dozen
+more exist. Point out the spread of modalities: X-ray, fundus, dermoscopy, ultrasound,
+microscopy, histology, OCT, CT, so everyone can find something that grabs them. Transition:
+do not overthink the choice.
+""")
+
 fig("how-to-choose", "d3_panel_choose.png", """
 Lower the stakes of the choice; any of the three is a great afternoon, so pick on gut in
 two minutes. Frame the three reasons: familiarity (pneumonia mirrors Day 2), interest

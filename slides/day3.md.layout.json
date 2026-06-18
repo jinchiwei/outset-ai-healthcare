@@ -1,5 +1,5 @@
 {
-  "deck_md_hash": "bb63ff159550edcc48600575885404133f4647fd3520f7304fc37f4457644ac8",
+  "deck_md_hash": "32505a8ecb5b9f77e6b811b80b3a2c177604bce5b387e41d78d824d3e78594c3",
   "mode": "expressive",
   "shake_seed": "b1035e6e20004cc68cd710f90d72f54f",
   "slides": [
@@ -159,6 +159,19 @@
         "title": "Pick one, or pitch your own"
       },
       "slide_id": "h1-today-s-mission/h2-pick-one-or-pitch-your-own"
+    },
+    {
+      "content_hash": "21a142cee7904e7ce05dc0904207b831d61dcd842d1ebd9401be1b54b1ca4daf",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d3_dataset_menu.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "The concrete menu for the \"choose your own\" path, so nobody stalls on \"what can I even pick?\".\nEach tile is a MedMNIST dataset; the name in the colored band is exactly what they type into\nDATASET in config.py (e.g. 'bloodmnist'), and it downloads in seconds. Eight shown, a dozen\nmore exist. Point out the spread of modalities: X-ray, fundus, dermoscopy, ultrasound,\nmicroscopy, histology, OCT, CT, so everyone can find something that grabs them. Transition:\ndo not overthink the choice.",
+        "section_label": "Today’s mission",
+        "title": "The dataset menu"
+      },
+      "slide_id": "h1-today-s-mission/h2-the-dataset-menu"
     },
     {
       "content_hash": "f2c9aa2816144884a9dafc64095293508c54558aaf2728cf8e19d556d23c07b9",

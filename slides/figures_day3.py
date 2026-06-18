@@ -149,6 +149,39 @@ def fig_whats_next():
 # --------------------------------------------------------------------------- #
 # STATE OF THE FIELD: existing AI-in-healthcare applications (lit review)
 # --------------------------------------------------------------------------- #
+def fig_dataset_menu():
+    """A concrete menu of MedMNIST datasets students can drop into config.DATASET."""
+    fig, ax = plt.subplots(figsize=(11.5, 5.2))
+    ax.axis("off"); ax.set_xlim(0, 12); ax.set_ylim(0, 6)
+    items = [
+        ("pneumoniamnist", "chest X-ray", "pneumonia? (binary)", TURQUOISE),
+        ("retinamnist", "fundus photo", "retinopathy grade (5)", DEEPPINK),
+        ("dermamnist", "dermoscopy", "skin lesion (7)", AMBER),
+        ("breastmnist", "ultrasound", "malignant? (binary)", BLUEVIOLET),
+        ("bloodmnist", "microscopy", "blood-cell type (8)", DEEPPINK),
+        ("pathmnist", "histology", "colon tissue (9)", TURQUOISE),
+        ("octmnist", "retinal OCT", "retinal disease (4)", BLUEVIOLET),
+        ("organamnist", "abdominal CT", "organ (11)", AMBER),
+    ]
+    for i, (flag, modality, task, c) in enumerate(items):
+        col, row = i % 4, i // 4
+        x, y = 0.35 + col * 2.92, 3.0 - row * 2.55
+        ax.add_patch(FancyBboxPatch((x, y), 2.7, 2.2, boxstyle="round,pad=0.02,rounding_size=0.08",
+                                    facecolor="#FBFAF6", edgecolor="#E3E0D6", lw=1.3))
+        ax.add_patch(FancyBboxPatch((x, y + 1.62), 2.7, 0.58, boxstyle="round,pad=0.02,rounding_size=0.08",
+                                    facecolor=c, edgecolor="none"))
+        ax.text(x + 1.35, y + 1.9, flag, ha="center", va="center", fontsize=10.5, fontweight="bold",
+                color=txt_on(c), family="Geist Mono")
+        ax.text(x + 1.35, y + 1.05, modality, ha="center", va="center", fontsize=11, color=INK)
+        ax.text(x + 1.35, y + 0.45, task, ha="center", va="center", fontsize=10, color=c,
+                family="Geist Mono", fontweight="bold")
+    figtitle(fig, "The dataset menu: set DATASET in config.py")
+    fig.text(0.5, -0.02, "All are MedMNIST 2D sets: pip install medmnist, downloads in seconds, no account. "
+             "A dozen more exist, organ views, tissue, more. (medmnist.com)",
+             ha="center", fontsize=10, color=MUTED, style="italic")
+    save(fig, "d3_dataset_menu.png")
+
+
 def fig_field_map():
     """Where AI is already deployed across medicine, with real example systems."""
     fig, ax = plt.subplots(figsize=(11.5, 5.0))
@@ -243,4 +276,5 @@ if __name__ == "__main__":
     fig_field_map()
     fig_flagships()
     fig_frontier()
+    fig_dataset_menu()
     print("Day 3 figures done")

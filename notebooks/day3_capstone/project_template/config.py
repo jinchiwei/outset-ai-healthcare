@@ -5,10 +5,15 @@ number to your last run. Change ONE thing at a time so you know what helped.
 """
 
 # Which dataset? Any 2D MedMNIST key (downloads in seconds, no account needed):
-#   pneumoniamnist  -- chest X-ray, pneumonia yes/no   (closest to Day 2)
-#   dermamnist      -- skin lesions, 7 classes incl. melanoma
-#   retinamnist     -- retina, diabetic-retinopathy grade (Day 1's problem!)
-#   bloodmnist, organamnist, pathmnist, ...   (a dozen more)
+#   pneumoniamnist  -- chest X-ray,   pneumonia? (binary)        (closest to Day 2)
+#   retinamnist     -- fundus photo,  retinopathy grade (5)      (Day 1's problem!)
+#   dermamnist      -- dermoscopy,    skin lesion (7, incl. melanoma)
+#   breastmnist     -- ultrasound,    malignant? (binary)
+#   bloodmnist      -- microscopy,    blood-cell type (8)
+#   pathmnist       -- histology,     colon tissue (9)
+#   octmnist        -- retinal OCT,   retinal disease (4)
+#   organamnist     -- abdominal CT,  organ (11)
+#   ...a dozen more at https://medmnist.com
 DATASET = "pneumoniamnist"
 
 IMG_SIZE = 64          # 28, 64, 128, or 224. Bigger = slower but can be sharper.

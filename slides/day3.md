@@ -120,6 +120,14 @@ Three starter problems, each with a working notebook you extend. All use MedMNIS
 
 ---
 
+## The dataset menu
+
+If you take the "choose your own" path, here is the concrete menu. Each is a MedMNIST dataset: just set `DATASET` in `config.py` to the name in the colored band, and it downloads in seconds. Eight good starting points below, and a dozen more exist if you want to dig.
+
+![MedMNIST dataset menu](figures/d3_dataset_menu.png)
+
+---
+
 ## How to choose your project
 
 Do not overthink this. Any of the three is a great afternoon. Pick on gut.
