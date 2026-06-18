@@ -116,22 +116,14 @@ for leakage. Those two habits, reuse pretrained models and stay skeptical, are m
 working ML engineer does. Transition: here is everything you can now do.
 """)
 
-cards3("everything-in-your-toolkit",
-       [("MODELS", "logreg, MLP, CNN, transfer learning, vision transformers, TabPFN", "turquoise"),
-        ("METHOD", "train/val/test, gradient descent, augmentation, watching for overfitting", "deeppink"),
-        ("JUDGMENT", "sensitivity vs specificity, confusion matrices, spotting leakage, fairness", "amber")],
-       """
+fig("everything-in-your-toolkit", "d3_panel_toolkit.png", """
 This is the confidence slide. Read it out loud, because students underestimate how much they
 just learned. They have real models, a real method for training and validating, and, most
 importantly, the judgment to evaluate honestly. This is the actual toolkit of a junior
 medical-AI engineer. Transition: now put it to work.
 """)
 
-cards3("the-capstone-format",
-       [("PAIRS", "two people, one project; both build, both present", "turquoise"),
-        ("BUILD SPRINT", "about 90 minutes; I will circulate, check-ins at 3:15 and 4:00", "amber"),
-        ("PRESENT", "three minutes per pair at 4:30; show what you built", "deeppink")],
-       """
+fig("the-capstone-format", "d3_panel_capstone.png", """
 Set the logistics clearly so the sprint runs smoothly. Pairs, because building together is
 how real work happens and it keeps everyone unstuck. Ninety minutes to build, with two
 check-ins so nobody silently spins. Three-minute presentations at the end. Emphasize: the
@@ -146,11 +138,7 @@ non-issue, it downloads in seconds. And if a pair has their own idea, they can p
 the first ten minutes. Transition: how to choose between them.
 """)
 
-cards3("how-to-choose",
-       [("CLOSEST TO WHAT YOU KNOW", "pneumonia is the most like Day 2: a safe, satisfying choice", "turquoise"),
-        ("MOST INTERESTING TO YOU", "melanoma detection feels high-stakes and real; follow curiosity", "deeppink"),
-        ("MOST ROOM TO EXPLORE", "MedMNIST has a dozen datasets; pick a weird one", "amber")],
-       """
+fig("how-to-choose", "d3_panel_choose.png", """
 Lower the stakes of the choice; any of the three is a great afternoon, so pick on gut in
 two minutes. Frame the three reasons: familiarity (pneumonia mirrors Day 2), interest
 (melanoma is visceral), or exploration (a dozen MedMNIST sets to poke at). The worst move is
@@ -166,22 +154,14 @@ over-engineer; the pros do the opposite, get something working first. We will wa
 step. Transition: step one.
 """)
 
-cards3("step-1-get-a-baseline",
-       [("MAKE IT RUN", "end to end, even if the accuracy is terrible", "turquoise"),
-        ("GET A NUMBER", "that first number is your baseline to beat", "amber"),
-        ("ONLY NOW, IMPROVE", "a change you cannot measure is a change you cannot trust", "deeppink")],
-       """
+fig("step-1-get-a-baseline", "d3_panel_step1.png", """
 Hammer the baseline-first discipline, it is the most common thing beginners skip. The first
 goal is NOT a good model; it is a model that runs end to end and prints a number, however
 bad. That number is the safety net every later change is measured against. Resist making it
 fancy before it works at all. Transition: now improve, but carefully.
 """)
 
-cards3("step-2-improve",
-       [("ONE CHANGE", "isolate it, re-run, compare to baseline", "turquoise"),
-        ("KEEP WHAT HELPS", "did the number move beyond noise?", "deeppink"),
-        ("LOG IT", "'augmentation: +3 points' is half your presentation", "amber")],
-       """
+fig("step-2-improve", "d3_panel_step2.png", """
 Teach scientific iteration. Change ONE thing, re-measure, keep it only if it genuinely
 helped. Train longer, unfreeze the backbone, add augmentation, bigger images, one at a time.
 If you change five things and the number moves, you have learned nothing about why. And
@@ -189,11 +169,7 @@ logging each result ("augmentation: +3 points") literally writes their presentat
 them. Transition: things will break; here is how to handle it.
 """)
 
-cards3("step-3-debug",
-       [("READ THE ERROR", "the message usually says exactly what is wrong; read it before guessing", "turquoise"),
-        ("PRINT SHAPES", "most bugs are a shape mismatch; print(x.shape) is your friend", "amber"),
-        ("THEN ASK CLAUDE", "paste the error and code, then make sure you understand the fix", "deeppink")],
-       """
+fig("step-3-debug", "d3_panel_step3.png", """
 Normalize errors; they are not failure, they are the job. The skill is reading them, not
 avoiding them. Read the actual message (it usually names the problem), print tensor shapes
 (most bugs are shape mismatches), change one thing, retry. And when stuck, Claude is right
@@ -227,11 +203,7 @@ seed, is the subtle, tempting one under time pressure. Tell them: if your number
 amazing, suspect one of these four first. Transition: so what does good evaluation look like?
 """)
 
-cards3("what-makes-a-good-evaluation",
-       [("HELD-OUT TEST", "never seen during training; the only honest grade", "turquoise"),
-        ("THE RIGHT METRIC", "for screening, a missed case matters more than a false alarm", "deeppink"),
-        ("LOOK AT FAILURES", "the cases it gets wrong are the most interesting slide in your talk", "amber")],
-       """
+fig("what-makes-a-good-evaluation", "d3_panel_eval.png", """
 Define what an honest evaluation is, positively this time. Test on held-out data the model
 never trained on. Choose the metric that matches the stakes (sensitivity for screening,
 since a miss is worse than a false alarm). And look at the failures, not just the score, the
@@ -247,11 +219,7 @@ over a leaderboard number. A simple model you can fully explain beats a fancy on
 Transition: and the talk itself is short, so here is how to nail it.
 """)
 
-cards3("the-three-minute-talk",
-       [("SHOW IT", "run the model live, or show one clear result", "turquoise"),
-        ("ONE FINDING", "the single most interesting thing you learned", "amber"),
-        ("ONE LIMITATION", "what it gets wrong, or what you would do with more time", "deeppink")],
-       """
+fig("the-three-minute-talk", "d3_panel_talk.png", """
 Give them a foolproof three-minute structure so nobody freezes. Show the model doing
 something (live or one clear result), give the single best finding, name one honest
 limitation. That is a complete, professional short talk. Three minutes is less time than it
