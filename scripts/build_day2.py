@@ -74,9 +74,13 @@ colab_setup.ensure(*colab_setup.DAY2)
 """))
 
 both(code("""
+import os, sys
 import numpy as np
 import pandas as pd
 import common
+# nbfig lives in notebooks/_shared; add it relative to common.py so this cell
+# works even if the setup cell above wasn't run, and from any working directory.
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(common.__file__)), "..", "_shared"))
 import nbfig          # Colab-safe branded plotting (matches the slide figures)
 nbfig.use()
 """))
