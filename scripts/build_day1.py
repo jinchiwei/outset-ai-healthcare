@@ -422,6 +422,53 @@ That jump over the MLP is convolutions earning their keep: the model can finally
 thousand images. The next rung borrows a head start from millions.
 """))
 
+both(md("""
+### 3.3 Your turn: the knobs that change everything
+
+A model isn't a fixed thing, it's a machine with **dials**. Two matter most:
+
+- **Learning rate** -- the *step size* the model takes downhill while learning (remember the ball
+  rolling down a hill). Too small and it crawls; too big and it overshoots and bounces around
+  instead of settling.
+- **Epochs** -- how many times the model gets to see the whole training set. More isn't always
+  better (later you'll watch too many epochs cause *overfitting*).
+
+Let's actually *see* the learning rate matter. The cell below trains the same small CNN at three
+learning rates and overlays the curves. **Change the numbers and re-run** -- this is your playground.
+"""))
+
+both(code("""
+# ---- the control panel: change these and re-run ----
+LEARNING_RATES = [3e-4, 1e-3, 3e-3]   # try adding 1e-2 (too big) or 1e-5 (too small)
+EPOCHS = 8
+# ----------------------------------------------------
+
+runs = {}
+for lr in LEARNING_RATES:
+    print(f"training a fresh CNN at lr={lr} ...")
+    model = common.make_small_cnn().to(device)
+    runs[lr] = common.train_model(model, tr224, va224, epochs=EPOCHS, lr=lr, device=device, verbose=False)
+
+# overlay: validation accuracy (left) and training loss (right) for each learning rate
+fig, (a1, a2) = nbfig.fig(1, 2, figsize=(11, 4.2))
+colors = nbfig.palette(len(LEARNING_RATES))
+for c, (lr, hist) in zip(colors, runs.items()):
+    ep = [h[0] for h in hist]
+    a1.plot(ep, [h[1] for h in hist], "-o", color=c, label=f"lr={lr}")
+    a2.plot(ep, [h[2] for h in hist], "-o", color=c, label=f"lr={lr}")
+a1.set_title("validation accuracy"); a1.set_xlabel("epoch"); a1.set_ylabel("accuracy"); a1.legend()
+a2.set_title("training loss"); a2.set_xlabel("epoch"); a2.set_ylabel("loss"); a2.legend()
+nbfig.show(fig, "Same model, three learning rates")
+"""))
+
+both(md("""
+Look at the shapes. The **middle** learning rate usually climbs fastest and settles highest. The
+**smallest** one learns too slowly to get there in time. The **largest** one is jumpy, its loss
+zig-zags because each step overshoots. That's the whole intuition behind tuning: find the step
+size that's big enough to make progress but small enough to be stable. Try `1e-2` to watch it
+break, then `1e-5` to watch it crawl.
+"""))
+
 # =========================================================================== #
 # Step 4 -- ResNet (transfer learning)
 # =========================================================================== #
