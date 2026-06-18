@@ -137,17 +137,27 @@ common.show_pixel_histogram(images[0])  # the distribution of pixel brightnesses
 
 both(md("""
 ### 0.3 Normalization: why the model sees "weird" colors
-Networks train best when their inputs are centered around zero. So before an image goes in,
-we **normalize** each color channel: subtract a mean and divide by a standard deviation (the
-classic ImageNet values). The picture below shows the eye you'd recognize, the *exact tensor
-the model actually receives* (rescaled so we can view it -- note the color shift), and the
-per-channel means before vs after. After normalization the means sit near zero. That's the
-whole point.
+Networks train best when every input channel is on the same, standardized scale. So before an
+image goes in, we **normalize** each color channel: subtract a fixed mean and divide by a fixed
+standard deviation -- the classic **ImageNet** values. Why those exact numbers and not this
+dataset's own? Because the pretrained backbones we'll use later (ResNet, ViT) were trained with
+precisely these constants and *expect* them; matching their preprocessing is what makes transfer
+learning work.
+
+The picture below shows the eye you'd recognize, the *exact tensor the model actually receives*
+(rescaled so we can view it -- note the color shift), and the per-channel means before vs after.
+
+**Look closely at the means after normalization:** they don't land at zero -- they land
+*well below* it (around -1 to -1.6). That's expected, not a bug. These retina photos are much
+darker than ImageNet's everyday snapshots, so subtracting ImageNet's brighter mean pushes them
+negative. The goal of normalization isn't a mean of exactly zero on *this* data -- it's to put
+every channel on the same standardized scale (units of standard deviations) using a fixed,
+known reference, which is what keeps training stable and matches the pretrained models.
 """))
 
 both(code("""
 raw = common._denorm(images[0])     # back to the 0..1 image a human recognizes
-normed = images[0]                  # the zero-centered tensor the model is fed
+normed = images[0]                  # the standardized tensor the model is actually fed
 disp = (normed - normed.min()) / (normed.max() - normed.min())  # rescale just to view
 
 fig, (a1, a2, a3) = nbfig.fig(1, 3, figsize=(11, 3.6))
@@ -159,7 +169,7 @@ a3.bar(x - 0.2, raw.mean((1, 2)).numpy(), 0.4, color=nbfig.TURQUOISE, label="raw
 a3.bar(x + 0.2, normed.mean((1, 2)).numpy(), 0.4, color=nbfig.DEEPPINK, label="normalized")
 a3.axhline(0, color=nbfig.MUTED, lw=0.8); a3.set_xticks(x); a3.set_xticklabels(["R", "G", "B"])
 a3.set_title("channel means", fontsize=11); a3.legend()
-nbfig.show(fig, "Normalization centers every channel near zero")
+nbfig.show(fig, "Normalization: fixed ImageNet stats, so dark retinas land below zero")
 """))
 
 both(md("""
@@ -203,6 +213,52 @@ for ax in axes.ravel():
     shown = common._denorm(aug(pil))        # apply augmentation, then de-normalize to view
     ax.imshow(shown.permute(1, 2, 0).numpy()); ax.axis("off")
 nbfig.show(fig, "The same eye, 15 random augmentations")
+"""))
+
+both(md("""
+### 0.6 Augmentations we deliberately *avoid* (and why)
+Augmentation is not a free-for-all. In everyday-photo tasks (cats, cars) people throw on strong
+**color jitter, shearing, perspective warps, vertical flips** -- a cat is still a cat upside-down
+and tinted blue. **Medicine is different: some "harmless" augmentations destroy the signal.** The
+exact things a clinician reads off a retina -- the *color* of a hemorrhage, the *shape* of the
+vessels, the *position* of a lesion relative to the macula -- are the things these transforms
+mangle. Below we crank each one up so you can *see* the damage, then we explain why it's off the table.
+"""))
+
+both(code("""
+# Crank each "risky" augmentation way up so the damage is obvious.
+risky = {
+    "original":        pil,
+    "color jitter":    T.ColorJitter(brightness=0.0, contrast=0.0, saturation=0.0, hue=0.45)(pil),
+    "heavy shear":     T.functional.affine(pil, angle=0, translate=(0, 0), scale=1.0, shear=[35, 20]),
+    "perspective warp": T.RandomPerspective(distortion_scale=0.6, p=1.0)(pil),
+    "vertical flip":   T.functional.vflip(pil),
+    "huge zoom-crop":  T.RandomResizedCrop(224, scale=(0.15, 0.15))(pil),
+}
+fig, axes = nbfig.fig(2, 3, figsize=(11, 7.2))
+for ax, (name, im) in zip(axes.ravel(), risky.items()):
+    ax.imshow(im); ax.set_title(name, fontsize=12,
+              color=(nbfig.INK if name == "original" else nbfig.DEEPPINK)); ax.axis("off")
+nbfig.show(fig, "Too far: augmentations that corrupt the diagnosis")
+"""))
+
+both(md("""
+**Why each one is dangerous here:**
+- **Color jitter / hue shift** -- diabetic retinopathy is graded partly on the *color* of
+  lesions (bright yellow exudates, deep-red hemorrhages). Recolor the image and you can turn a
+  textbook finding into something that looks like a different disease.
+- **Shear / perspective warp** -- these bend straight anatomy. Vessel calibre and the shape of
+  microaneurysms are diagnostic; warping invents geometry the eye never had.
+- **Vertical flip** -- a retina has a real top and bottom. DR is graded by *where* lesions sit
+  relative to the macula and optic disc; flipping vertically teaches the model anatomy that
+  doesn't exist in any real patient. (A horizontal flip is the borderline-OK exception -- a left
+  eye is roughly a mirror of a right eye, so we *do* allow that one.)
+- **Huge zoom-crop** -- crop too aggressively and the actual lesion can fall outside the frame,
+  so the image no longer supports its own label.
+
+The rule of thumb: **augment only in ways a real patient or camera could plausibly produce.**
+Small rotations and a horizontal flip pass that test; the transforms above do not -- which is
+exactly why our training pipeline (Section 0.5) sticks to the gentle ones.
 """))
 
 # =========================================================================== #

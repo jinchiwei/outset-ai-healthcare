@@ -262,7 +262,7 @@ def show_rgb_split(img_tensor):
     for a in axes:
         a.axis("off")
     plt.tight_layout()
-    return fig
+    plt.show()  # display once; don't return the fig (Jupyter would echo it -> double image)
 
 
 def show_pixel_histogram(img_tensor):
@@ -272,7 +272,7 @@ def show_pixel_histogram(img_tensor):
     for i, c in enumerate(["red", "green", "blue"]):
         ax.hist(img[i].flatten().numpy(), bins=40, color=c, alpha=0.5, label=c)
     ax.set_title("Pixel intensity per channel"); ax.legend()
-    return fig
+    plt.show()  # display once; don't return the fig (Jupyter would echo it -> double image)
 
 
 def show_augmentations(pil_image, size: int = 224):
@@ -289,7 +289,7 @@ def show_augmentations(pil_image, size: int = 224):
     for ax, (name, im) in zip(axes, variants.items()):
         ax.imshow(im); ax.set_title(name); ax.axis("off")
     plt.tight_layout()
-    return fig
+    plt.show()
 
 
 def show_first_layer_filters(model):
@@ -303,7 +303,7 @@ def show_first_layer_filters(model):
     for i, ax in enumerate(axes.flat):
         ax.imshow(w[i].permute(1, 2, 0)); ax.axis("off")
     fig.suptitle("First-layer filters")
-    return fig
+    plt.show()
 
 
 def gradcam(model, img_tensor, target_class: Optional[int] = None, device: str = "cpu"):

@@ -40,6 +40,16 @@ _SANS = ["Geist", "DejaVu Sans", "sans-serif"]
 
 def use():
     """Apply the brand matplotlib defaults. Inline plots afterward adopt the canvas."""
+    # Force the inline backend under Jupyter/Colab so figures render in the
+    # notebook instead of popping a native window (which on macOS shows a
+    # "save the photo" dialog). No-op outside IPython.
+    try:
+        from IPython import get_ipython
+        ip = get_ipython()
+        if ip is not None:
+            ip.run_line_magic("matplotlib", "inline")
+    except Exception:
+        pass
     mpl.rcParams.update({
         "font.family": _SANS,
         "text.color": INK, "axes.labelcolor": INK, "axes.titlecolor": INK,
