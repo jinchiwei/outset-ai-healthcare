@@ -1,5 +1,5 @@
 {
-  "deck_md_hash": "1f7715ec805fa31cc375eb86cd44b0053b9e3315726067264466668bf69e2b7b",
+  "deck_md_hash": "cdd0b3e80619df4f60d7aae8135b09659249374df8351294c8cb0cd36654d506",
   "mode": "expressive",
   "shake_seed": "bec6663013024e0c890365c3596643d0",
   "slides": [
@@ -37,6 +37,19 @@
         "title": "One chest X-ray, many findings"
       },
       "slide_id": "h1-where-we-are/h2-one-chest-x-ray-many-findings"
+    },
+    {
+      "content_hash": "9a725b974218fef96d35bd5a31c9b93d79cc8fd4b2fc664abd119a0105d60a42",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d2_cardiomegaly.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "Make the target concrete before any modeling. Cardiomegaly just means an enlarged heart, and\nradiologists decide it with a real measurement: the cardiothoracic ratio, heart width over\nchest width. Under ~0.50 is normal; above it the heart is enlarged. The figure shows a normal\nheart (CTR 0.45) beside an enlarged one (CTR 0.62). The point for students: our yes/no label\nisn't arbitrary, it reflects a physical thing you can see and measure. Transition: and every\nscan comes with a written report describing it.",
+        "section_label": "Where we are",
+        "title": "What is cardiomegaly?"
+      },
+      "slide_id": "h1-where-we-are/h2-what-is-cardiomegaly"
     },
     {
       "content_hash": "af510d5ff1e22bc3288192385dee474bb88d7358d88c610ff343e3da7a88f5b4",

@@ -359,6 +359,71 @@ def _panels(fname, title, builders, caption=""):
     save(fig, fname)
 
 
+def _draw_chest(ax, heart_frac, title, ctr_label, flag_color):
+    """A schematic frontal chest: ribcage, two lungs, a heart silhouette, and the
+    cardiothoracic-ratio measurement. heart_frac = heart width / chest width."""
+    from matplotlib.patches import Ellipse, Arc, Polygon
+    ax.axis("off"); ax.set_xlim(0, 10); ax.set_ylim(0, 12)
+    cx = 5.0
+    chest_l, chest_r = 1.7, 8.3
+    chest_w = chest_r - chest_l
+
+    # chest wall / ribcage outline (rounded bell shape)
+    wall = Polygon([(2.0, 11.0), (8.0, 11.0), (8.9, 8.5), (8.6, 4.2), (7.4, 2.4),
+                    (2.6, 2.4), (1.4, 4.2), (1.1, 8.5)],
+                   closed=True, facecolor="#FBFAF6", edgecolor="#C9C6BC", lw=2.0, zorder=1)
+    ax.add_patch(wall)
+    # two lung fields
+    ax.add_patch(Ellipse((3.45, 7.0), 3.0, 6.4, facecolor="#E9E6DD", edgecolor="none", zorder=2))
+    ax.add_patch(Ellipse((6.55, 7.0), 3.0, 6.4, facecolor="#E9E6DD", edgecolor="none", zorder=2))
+    # ribs (thin arcs over each lung)
+    for k in range(4):
+        yy = 8.6 - k * 1.25
+        ax.add_patch(Arc((3.45, yy), 3.4, 1.7, angle=0, theta1=200, theta2=340, color="#CFCCC2", lw=1.3, zorder=3))
+        ax.add_patch(Arc((6.55, yy), 3.4, 1.7, angle=0, theta1=200, theta2=340, color="#CFCCC2", lw=1.3, zorder=3))
+    # spine + mediastinum centre line
+    ax.plot([cx, cx], [3.0, 10.4], color="#C9C6BC", lw=1.2, ls=(0, (4, 3)), zorder=3)
+    # diaphragm
+    ax.add_patch(Arc((cx, 2.7), 6.6, 2.2, angle=0, theta1=185, theta2=355, color="#C9C6BC", lw=1.6, zorder=3))
+
+    # heart silhouette: sits left-of-centre, base near the diaphragm
+    heart_w = heart_frac * chest_w
+    hcx = cx - 0.35                      # slightly left of midline, as in a real chest
+    ax.add_patch(Ellipse((hcx, 4.5), heart_w, 3.4, angle=-12, facecolor=DEEPPINK,
+                         edgecolor="white", lw=1.5, alpha=0.92, zorder=4))
+    ax.text(hcx, 4.5, "heart", ha="center", va="center", fontsize=10, color="white",
+            family="Geist Mono", fontweight="bold", zorder=5)
+
+    # measurement: chest width and heart width with the ratio
+    hl, hr = hcx - heart_w / 2, hcx + heart_w / 2
+    ax.annotate("", xy=(chest_r, 1.5), xytext=(chest_l, 1.5),
+                arrowprops=dict(arrowstyle="<|-|>", color=INK, lw=1.8))
+    ax.text(cx, 1.05, "chest width", ha="center", fontsize=9.5, color=INK, family="Geist Mono")
+    ax.annotate("", xy=(hr, 0.45), xytext=(hl, 0.45),
+                arrowprops=dict(arrowstyle="<|-|>", color=DEEPPINK, lw=2.2))
+    ax.text(cx, 0.0, "heart width", ha="center", fontsize=9.5, color=DEEPPINK, family="Geist Mono")
+    # ratio badge
+    ax.add_patch(FancyBboxPatch((6.7, 9.7), 3.1, 1.5, boxstyle="round,pad=0.05,rounding_size=0.12",
+                                facecolor=flag_color, edgecolor="none", zorder=6))
+    ax.text(8.25, 10.7, ctr_label, ha="center", va="center", fontsize=12.5, fontweight="bold",
+            color=txt_on(flag_color), family="Geist Mono", zorder=7)
+    ax.text(8.25, 10.05, "heart / chest", ha="center", va="center", fontsize=8.5,
+            color=txt_on(flag_color), zorder=7)
+    ax.set_title(title, fontsize=13, color=INK, family="Geist Mono", fontweight="bold")
+
+
+def fig_cardiomegaly():
+    """What cardiomegaly actually is: the cardiothoracic ratio, normal vs enlarged."""
+    fig, (axL, axR) = plt.subplots(1, 2, figsize=(11.5, 5.2))
+    _draw_chest(axL, 0.45, "normal heart", "CTR 0.45", TURQUOISE)
+    _draw_chest(axR, 0.62, "cardiomegaly", "CTR 0.62", DEEPPINK)
+    figtitle(fig, "What is cardiomegaly? An enlarged heart")
+    fig.text(0.5, -0.02, "Radiologists measure the cardiothoracic ratio: heart width / chest width. "
+             "Above ~0.50 on a frontal chest X-ray, the heart is enlarged.",
+             ha="center", fontsize=10, color=MUTED, style="italic")
+    save(fig, "d2_cardiomegaly.png")
+
+
 def fig_recap_days():
     def p1(ax):
         _card(ax, "DAY 1", TURQUOISE, "one image, one end-to-end\nnetwork, the eye")
@@ -494,6 +559,7 @@ if __name__ == "__main__":
     fig_fair_test()
     fig_text_sensitive()
     fig_cxr_findings()
+    fig_cardiomegaly()
     fig_report()
     fig_tokenization()
     fig_attention()

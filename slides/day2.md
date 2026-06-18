@@ -34,6 +34,14 @@ The chest X-ray is the most common imaging test in the world. A single image can
 
 ---
 
+## What is cardiomegaly?
+
+Our target today is cardiomegaly: an enlarged heart. How does a radiologist actually decide? They measure the cardiothoracic ratio, the width of the heart divided by the width of the chest. On a normal chest the heart takes up less than half; once it crosses about 0.50, it counts as enlarged. So our yes/no label has a real, physical definition, it is not arbitrary.
+
+![What cardiomegaly is](figures/d2_cardiomegaly.png)
+
+---
+
 ## Every scan comes with text
 
 Here is what makes chest imaging different from yesterday. Each scan is paired with a radiology report: the radiologist's written findings and impression. That text is data too, and historically it is where most of the clinical signal was recorded. If we can read it automatically, we unlock a whole second channel.

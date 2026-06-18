@@ -63,6 +63,15 @@ a hazy patch of infection (pneumonia/opacity), a collapsed lung (pneumothorax). 
 task will be one of these yes/no calls. Transition: but the image is only half the data.
 """)
 
+fig("what-is-cardiomegaly", "d2_cardiomegaly.png", """
+Make the target concrete before any modeling. Cardiomegaly just means an enlarged heart, and
+radiologists decide it with a real measurement: the cardiothoracic ratio, heart width over
+chest width. Under ~0.50 is normal; above it the heart is enlarged. The figure shows a normal
+heart (CTR 0.45) beside an enlarged one (CTR 0.62). The point for students: our yes/no label
+isn't arbitrary, it reflects a physical thing you can see and measure. Transition: and every
+scan comes with a written report describing it.
+""")
+
 fig("every-scan-comes-with-text", "d2_report.png", """
 This is the key difference from Day 1. Every chest X-ray in the clinic comes with a
 radiology report, the radiologist's free-text findings and impression. That text is data,
