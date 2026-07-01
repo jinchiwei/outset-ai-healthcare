@@ -319,7 +319,9 @@ try:
              zoom=FloatSlider(value=1.0, min=1.0, max=2.5, step=0.1),
              hflip=Checkbox(value=False))
 except ImportError:
-    print("ipywidgets not available -- showing a few fixed examples instead.")
+    print("No live sliders here (ipywidgets missing). For the interactive version, run")
+    print("   !pip install ipywidgets   then restart the kernel and re-run this cell.")
+    print("Showing a few fixed examples instead:")
     for kw in [dict(), dict(rotate=25), dict(brightness=1.6), dict(blur=5), dict(zoom=1.8, hflip=True)]:
         show_augment(**kw)
 """))
@@ -790,7 +792,8 @@ try:
     from ipywidgets import interact, FloatSlider
     interact(threshold_demo, threshold=FloatSlider(value=0.5, min=0.0, max=1.0, step=0.05))
 except ImportError:
-    print("ipywidgets not available -- showing a strict, balanced, and lenient cutoff:")
+    print("No live slider here (ipywidgets missing). Run  !pip install ipywidgets ,")
+    print("restart the kernel, and re-run for the interactive version. Fixed cutoffs for now:")
     for t in (0.75, 0.5, 0.25):
         threshold_demo(t)
 """))
