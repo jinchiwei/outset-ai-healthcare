@@ -269,6 +269,61 @@ Small rotations and a horizontal flip pass that test; the transforms above do no
 exactly why our training pipeline (Section 0.5) sticks to the gentle ones.
 """))
 
+both(md("""
+### 0.7 Play with it: your own augmentation dials
+Now grab the controls. Drag the sliders below and watch a real eye transform in real time, no
+training, instant feedback. Try to answer for yourself: *which* of these still looks like a valid
+patient photo, and which ones cross the line we just talked about? (The sliders need Colab or
+Jupyter widgets; if you don't see them, run the previous cells first.)
+"""))
+
+both(code("""
+import torchvision.transforms.functional as TF
+import matplotlib.pyplot as plt
+
+# self-heal: works even if you jumped straight here after a kernel restart
+try:
+    common, device, tr224
+except NameError:
+    import sys; sys.path.insert(0, ".")
+    import common
+    _nb, device, tr224, _va = common.playground_setup()
+
+# one clean sample eye to experiment on
+_imgs, _ = next(iter(tr224))
+BASE = TF.to_pil_image(common._denorm(_imgs[0]))
+
+def show_augment(rotate=0, brightness=1.0, contrast=1.0, blur=0, zoom=1.0, hflip=False):
+    img = TF.adjust_contrast(TF.adjust_brightness(BASE, brightness), contrast)
+    if zoom > 1.0:
+        w, h = img.size
+        img = TF.resize(TF.center_crop(img, [int(h / zoom), int(w / zoom)]), [h, w])
+    img = TF.rotate(img, rotate)
+    if hflip:
+        img = TF.hflip(img)
+    if blur > 0:
+        img = TF.gaussian_blur(img, kernel_size=2 * blur + 1)
+    fig, ax = plt.subplots(figsize=(4.6, 4.6))
+    ax.imshow(img); ax.axis("off")
+    ax.set_title(f"rotate {rotate}deg | bright {brightness:.1f} | contrast {contrast:.1f} | "
+                 f"blur {blur} | zoom {zoom:.1f} | hflip {hflip}", fontsize=8)
+    plt.show()
+
+try:
+    from ipywidgets import interact, FloatSlider, IntSlider, Checkbox
+    interact(show_augment,
+             rotate=IntSlider(value=0, min=-45, max=45, step=5),
+             brightness=FloatSlider(value=1.0, min=0.3, max=2.0, step=0.1),
+             contrast=FloatSlider(value=1.0, min=0.3, max=2.0, step=0.1),
+             blur=IntSlider(value=0, min=0, max=8, step=1),
+             zoom=FloatSlider(value=1.0, min=1.0, max=2.5, step=0.1),
+             hflip=Checkbox(value=False))
+except ImportError:
+    print("ipywidgets not available -- showing a few fixed examples instead.")
+    for kw in [dict(), dict(rotate=25), dict(brightness=1.6), dict(blur=5), dict(zoom=1.8, hflip=True)]:
+        show_augment(**kw)
+"""))
+
 # =========================================================================== #
 # Step 1 -- logistic regression
 # =========================================================================== #
@@ -678,6 +733,66 @@ both(md("""
 The bottom-left cell -- truly *referable* eyes the model called *not referable* -- is the one
 a clinician loses sleep over. This is why medical AI is judged on sensitivity and specificity,
 not raw accuracy. We dig into exactly that vocabulary in the slides.
+"""))
+
+both(md("""
+### 7.1 Play with it: slide the decision threshold
+The model doesn't output "yes/no", it outputs a *probability*. **You** pick the cutoff for
+action. Drag the slider and watch the trade-off happen live: lower the threshold to catch more
+disease (sensitivity up) but trigger more false alarms (specificity down). There is no setting
+that wins both, that's the whole lesson of the ROC curve, in your hands.
+"""))
+
+both(code("""
+import numpy as np
+import matplotlib.pyplot as plt
+
+# self-heal: make sure nbfig exists even if you jumped here after a restart
+try:
+    nbfig
+except NameError:
+    import sys; sys.path.insert(0, "."); import common
+    nbfig, device, tr224, va224 = common.playground_setup()
+
+# use your trained model's real probabilities if they're in memory, else clear example scores
+try:
+    import torch
+    resnet, device, va224
+    resnet.eval(); _P, _Y = [], []
+    with torch.no_grad():
+        for xb, yb in va224:
+            _P.append(torch.softmax(resnet(xb.to(device)), 1)[:, 1].cpu().numpy())
+            _Y.append(yb.numpy())
+    scores, truth = np.concatenate(_P), np.concatenate(_Y)
+    source = "your ResNet's real predictions on the validation eyes"
+except NameError:
+    _rng = np.random.RandomState(0)
+    truth = np.r_[np.zeros(180), np.ones(120)].astype(int)
+    scores = np.r_[np.clip(_rng.beta(2, 5, 180), 0, 1), np.clip(_rng.beta(5, 2, 120), 0, 1)]
+    source = "example scores (run the notebook top-to-bottom to use your real model)"
+
+def threshold_demo(threshold=0.5):
+    pred = (scores >= threshold).astype(int)
+    tp = int(((pred == 1) & (truth == 1)).sum()); fn = int(((pred == 0) & (truth == 1)).sum())
+    tn = int(((pred == 0) & (truth == 0)).sum()); fp = int(((pred == 1) & (truth == 0)).sum())
+    sens, spec = tp / max(tp + fn, 1), tn / max(tn + fp, 1)
+    fig, ax = plt.subplots(figsize=(8, 3.6))
+    ax.hist(scores[truth == 0], bins=20, alpha=0.6, color=nbfig.TURQUOISE, label="not referable")
+    ax.hist(scores[truth == 1], bins=20, alpha=0.6, color=nbfig.DEEPPINK, label="referable")
+    ax.axvline(threshold, color=nbfig.INK, lw=2.5, ls="--")
+    ax.set_xlabel("model's predicted probability of 'referable'"); ax.legend(loc="upper center")
+    ax.set_title(f"threshold {threshold:.2f}   ->   sensitivity {sens:.0%} (missed {fn}),  "
+                 f"specificity {spec:.0%} (false alarms {fp})", fontsize=9)
+    plt.show()
+
+print("scoring:", source)
+try:
+    from ipywidgets import interact, FloatSlider
+    interact(threshold_demo, threshold=FloatSlider(value=0.5, min=0.0, max=1.0, step=0.05))
+except ImportError:
+    print("ipywidgets not available -- showing a strict, balanced, and lenient cutoff:")
+    for t in (0.75, 0.5, 0.25):
+        threshold_demo(t)
 """))
 
 # =========================================================================== #

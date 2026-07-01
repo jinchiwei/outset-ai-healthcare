@@ -15,7 +15,7 @@ import sys
 DAY1 = [
     "torch", "torchvision", "timm",
     "scikit-learn", "matplotlib", "seaborn", "pillow",
-    "tqdm", "pandas", "numpy", "datasets",
+    "tqdm", "pandas", "numpy", "datasets", "ipywidgets",
 ]
 DAY2 = ["pandas", "numpy", "scipy", "scikit-learn", "scikit-image", "matplotlib", "pillow", "tabpfn"]
 
