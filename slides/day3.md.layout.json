@@ -1,7 +1,7 @@
 {
-  "deck_md_hash": "f4b0255e578b0d5eace96ae9f2486d74cd3d6e588fad430e80b3101b30a4c9c9",
+  "deck_md_hash": "9ab018c2e813ff7c10231f5f37c2dccb8a614dccb527e624500e5b35a3e1782c",
   "mode": "expressive",
-  "shake_seed": "b1035e6e20004cc68cd710f90d72f54f",
+  "shake_seed": "9ab018c2e813ff7c10231f5f37c2dccb8a614dccb527e624500e5b35a3e1782c",
   "slides": [
     {
       "content_hash": "624accbfa88faf1d1905c054bed680ba022b78f7117c016f2fb59fc9bd574f81-divider",
@@ -129,9 +129,10 @@
       "content_hash": "edd86666c55565de2ea8f16b9c74cabd75a719b56d65e99e9087921bdbbe2648",
       "kind": "freeform",
       "params": {
-        "_provenance": "composer",
-        "code": "fw = body_w*0.56\n_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d3_hard_part.png', left=body_l, top=body_top+0.10, max_w=body_w*0.56, max_h=body_h-0.25)\npx = body_l + fw + 0.40\npw = body_w - fw - 0.40\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=body_h-0.15, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=0.09, fill_rgb=accent_rgb)\n_add_rect(slide, left=px+0.22, top=body_top+0.37, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'Here is the part nobody tells you at the start', left=px+0.44, top=body_top+0.30, width=pw-0.62, height=0.49, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)\n_add_rect(slide, left=px+0.22, top=body_top+1.00, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'Getting a good number is the easy 20%. Most enterprise AI pilots, around 95% in one 2025 study, showed no measurable benefit, because agreeing with a label in a notebook is not the same as helping a real patient. The real bottleneck is institutional: regulation, who pays, and fitting into a clinician’s workflow. Keep this in mind today: a model that runs and that you can honestly evaluate is worth more than a fancy one nobody can trust.', left=px+0.44, top=body_top+0.93, width=pw-0.62, height=2.42, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d3_hard_part.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
         "lede": "",
+        "notes": "The most important slide of the day for their future. Getting a good number is the easy part.\nAbout 95% of enterprise AI pilots showed no measurable benefit (MIT NANDA 2025), because\nagreeing with a label is not the same as helping a patient. The bottleneck is institutional:\nregulation, payment, workflow, not model quality. This is exactly why today's rubric rewards an\nhonest, well-understood model over a high score. Transition: and here is how models actually\nfail.",
         "section_label": "Where the field stands",
         "title": "The hard part usually isn’t the model"
       },
@@ -144,11 +145,24 @@
         "_provenance": "agent",
         "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d3_panel_breaks.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
         "lede": "",
-        "notes": "Ground the hype with a real cautionary tale: a widely deployed hospital sepsis model (live in\nhundreds of hospitals) was found on external validation to miss most cases and over-alert\n(Wong et al., JAMA Internal Medicine 2021). The failure modes are exactly the ones they already\nmet: dataset shift, the wrong metric, and leakage. This is why today's rubric rewards honest\nevaluation over a high number. Transition: now, your mission.",
+        "notes": "Ground the hype with a real cautionary tale: a widely deployed hospital sepsis model (live in\nhundreds of hospitals) was found on external validation to miss most cases and over-alert\n(Wong et al., JAMA Internal Medicine 2021). The failure modes are exactly the ones they already\nmet: dataset shift, the wrong metric, and leakage. This is why today's rubric rewards honest\nevaluation over a high number. Transition: so if you were in charge, how would you regulate it?",
         "section_label": "Where the field stands",
         "title": "Where it still breaks"
       },
       "slide_id": "h1-where-the-field-stands/h2-where-it-still-breaks"
+    },
+    {
+      "content_hash": "cfabbabb91091b2d2462d28af34c09fb2bffee0558f24c278c6500c746dd3f66",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/d3_regulation_exercise.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=body_h - 0.10)",
+        "lede": "",
+        "notes": "A short, active break that turns the landscape into judgment. In pairs, five minutes: what must a\nmedical AI PROVE before it touches a patient, and how would you actually check it? The left column\nseeds seven priorities (safety, fairness, transparency, evidence, privacy, monitoring,\naccountability); the right shows worked enforcement examples and the task (pick top 3, name a check\nfor each, decide which is hardest). Circulate and collect a few out loud, the disagreement is the\nlesson, real US/EU/Asia regulators land differently. Ties the ethics thread straight into their own\nbuild. Transition: now, your mission.",
+        "section_label": "Where the field stands",
+        "title": "Your turn: you’re the regulator"
+      },
+      "slide_id": "h1-where-the-field-stands/h2-your-turn-you-re-the-regulator"
     },
     {
       "content_hash": "a455e04dfc8423ce50cc57aa1161e58502fe8cad84c2cf97e8c03132704d4cca-divider",
@@ -417,6 +431,6 @@
       "slide_id": "h1-what-s-next/h2-you-did-real-work-this-week"
     }
   ],
-  "theme": "bone",
+  "theme": "slate",
   "version": 1
 }

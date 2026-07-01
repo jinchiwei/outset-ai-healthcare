@@ -158,7 +158,7 @@ breadth of FDA clearances is concentrated where the data is cleanest. Transition
 and clearance still are not the same as helping patients.
 """)
 
-fig("the-hard-part-usually-isnt-the-model", "d3_hard_part.png", """
+fig("the-hard-part-usually-isn-t-the-model", "d3_hard_part.png", """
 The most important slide of the day for their future. Getting a good number is the easy part.
 About 95% of enterprise AI pilots showed no measurable benefit (MIT NANDA 2025), because
 agreeing with a label is not the same as helping a patient. The bottleneck is institutional:
@@ -172,7 +172,17 @@ Ground the hype with a real cautionary tale: a widely deployed hospital sepsis m
 hundreds of hospitals) was found on external validation to miss most cases and over-alert
 (Wong et al., JAMA Internal Medicine 2021). The failure modes are exactly the ones they already
 met: dataset shift, the wrong metric, and leakage. This is why today's rubric rewards honest
-evaluation over a high number. Transition: now, your mission.
+evaluation over a high number. Transition: so if you were in charge, how would you regulate it?
+""")
+
+fig("your-turn-you-re-the-regulator", "d3_regulation_exercise.png", """
+A short, active break that turns the landscape into judgment. In pairs, five minutes: what must a
+medical AI PROVE before it touches a patient, and how would you actually check it? The left column
+seeds seven priorities (safety, fairness, transparency, evidence, privacy, monitoring,
+accountability); the right shows worked enforcement examples and the task (pick top 3, name a check
+for each, decide which is hardest). Circulate and collect a few out loud, the disagreement is the
+lesson, real US/EU/Asia regulators land differently. Ties the ethics thread straight into their own
+build. Transition: now, your mission.
 """)
 
 fig("the-capstone-format", "d3_panel_capstone.png", """

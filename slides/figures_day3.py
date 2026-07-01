@@ -149,6 +149,53 @@ def fig_whats_next():
 # --------------------------------------------------------------------------- #
 # STATE OF THE FIELD: existing AI-in-healthcare applications (lit review)
 # --------------------------------------------------------------------------- #
+def fig_regulation_exercise():
+    """A worksheet: pick what a medical AI must prove, and how you'd enforce it."""
+    import textwrap
+    fig, (axL, axR) = plt.subplots(1, 2, figsize=(11.5, 5.4),
+                                   gridspec_kw={"width_ratios": [1, 1.05]})
+    # left: candidate priorities as chips (seeds to react to, not an answer key)
+    axL.axis("off"); axL.set_xlim(0, 1); axL.set_ylim(0, 1)
+    axL.text(0.5, 0.96, "WHAT MUST IT PROVE?", ha="center", fontsize=13, fontweight="bold",
+             color=INK, family="Geist Mono")
+    dims = [("Safety", "does it actually work, and not harm?", TURQUOISE),
+            ("Fairness", "does it work for every group of patients?", DEEPPINK),
+            ("Transparency", "can a clinician see why it decided?", AMBER),
+            ("Evidence", "tested where, on whom, how recently?", BLUEVIOLET),
+            ("Privacy", "is patient data protected?", TURQUOISE),
+            ("Monitoring", "is it watched after it ships?", DEEPPINK),
+            ("Accountability", "who is responsible when it's wrong?", AMBER)]
+    for i, (name, q, c) in enumerate(dims):
+        y = 0.86 - i * 0.118
+        axL.add_patch(FancyBboxPatch((0.03, y - 0.045), 0.94, 0.095, boxstyle="round,pad=0.01,rounding_size=0.04",
+                                     facecolor="#FBFAF6", edgecolor="#E3E0D6", lw=1.1))
+        axL.add_patch(Rectangle((0.03, y - 0.045), 0.028, 0.095, color=c))
+        axL.text(0.10, y + 0.012, name, fontsize=11, fontweight="bold", color=INK, family="Geist Mono", va="center")
+        axL.text(0.10, y - 0.028, q, fontsize=8.8, color=MUTED, va="center")
+
+    # right: the task + a couple of worked enforcement examples + blanks
+    axR.axis("off"); axR.set_xlim(0, 1); axR.set_ylim(0, 1)
+    axR.text(0.5, 0.96, "HOW WOULD YOU ENFORCE IT?", ha="center", fontsize=13, fontweight="bold",
+             color=INK, family="Geist Mono")
+    axR.add_patch(FancyBboxPatch((0.03, 0.62), 0.94, 0.28, boxstyle="round,pad=0.02,rounding_size=0.05",
+                                 facecolor=BLUEVIOLET, edgecolor="none"))
+    axR.text(0.5, 0.845, "seed ideas", ha="center", fontsize=9.5, color="white", family="Geist Mono")
+    for i, ex in enumerate(["Fairness -> audit accuracy across age, sex, skin tone before approval",
+                            "Evidence -> require a trial at a hospital that did NOT build it",
+                            "Monitoring -> re-check performance every year, or pull it"]):
+        axR.text(0.07, 0.775 - i * 0.058, textwrap.fill(ex, 52), fontsize=8.8, color="white", va="top")
+    axR.text(0.5, 0.50, "In pairs (5 min):", ha="center", fontsize=12, fontweight="bold",
+             color=DEEPPINK, family="Geist Mono")
+    for i, step in enumerate(["1.  pick your TOP 3 priorities",
+                              "2.  for each, one way to check it",
+                              "3.  which is hardest to enforce?"]):
+        axR.text(0.08, 0.40 - i * 0.085, step, fontsize=10.5, color=INK, va="center", family="Geist Mono")
+    axR.text(0.5, 0.06, "no right answer -- real regulators disagree on exactly this",
+             ha="center", fontsize=9, color=MUTED, style="italic")
+    figtitle(fig, "Your turn: you're the regulator")
+    save(fig, "d3_regulation_exercise.png")
+
+
 def fig_project_ideas():
     """Concrete, buildable project ideas for pairs who can't think of one."""
     import textwrap
@@ -367,6 +414,7 @@ if __name__ == "__main__":
     fig_frontier()
     fig_deployment_scale()
     fig_hard_part()
+    fig_regulation_exercise()
     fig_dataset_menu()
     fig_project_ideas()
     print("Day 3 figures done")

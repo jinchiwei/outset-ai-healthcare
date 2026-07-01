@@ -109,6 +109,14 @@ The Day 2 trap is everywhere; honest evaluation is the antidote.
 
 ---
 
+## Your turn: you're the regulator
+
+You have now seen where medical AI is deployed, why the hard part is institutional, and how it breaks. So here is a five-minute exercise before you build. In pairs: if it were up to you, what would a medical AI have to prove before it is allowed to touch a patient, and how would you actually check it? There is no answer key, real regulators in the US, EU, and Asia disagree on exactly this.
+
+![You're the regulator](figures/d3_regulation_exercise.png)
+
+---
+
 # Today's mission
 
 ---
