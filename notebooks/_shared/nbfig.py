@@ -97,6 +97,21 @@ def palette(n: int):
     return [PALETTE[i % len(PALETTE)] for i in range(n)]
 
 
+class _Plot:
+    """Wraps a figure so a chained `.show()` displays it inline via plt.show()
+    instead of fig.show(), which warns 'FigureCanvasAgg is non-interactive'
+    under the inline backend (whose canvas is Agg-based)."""
+    def __init__(self, fig):
+        self.fig = fig
+
+    def show(self):
+        plt.show()
+        return None
+
+    def __repr__(self):   # keep bare use from printing an object repr
+        return ""
+
+
 def confusion(y, pred, labels, normalize=True, text="Confusion matrix"):
     """Branded confusion-matrix heatmap. Returns the figure."""
     import numpy as _np
@@ -119,7 +134,7 @@ def confusion(y, pred, labels, normalize=True, text="Confusion matrix"):
                     color="white" if shown[i, j] > (shown.max() or 1) * 0.55 else INK,
                     family=_MONO)
     title(f, text)
-    return f
+    return _Plot(f)
 
 
 def learning_curve(history, text="Learning curve"):
@@ -140,4 +155,4 @@ def learning_curve(history, text="Learning curve"):
         ax2.set_ylabel("train loss", color=DEEPPINK)
         ax2.tick_params(axis="y", labelcolor=DEEPPINK)
     title(f, text)
-    return f
+    return _Plot(f)

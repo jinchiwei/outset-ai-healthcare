@@ -347,7 +347,7 @@ Xtr, ytr = common.flatten_for_classical(tr64)
 Xva, yva = common.flatten_for_classical(va64)
 print("flattened features per image:", Xtr.shape[1])
 
-clf = LogisticRegression(max_iter=500, solver="saga")
+clf = LogisticRegression(max_iter=1000)
 clf.fit(Xtr, ytr)
 
 preds = clf.predict(Xva)
@@ -356,7 +356,7 @@ results["logreg"] = acc
 print(f"logistic regression val accuracy: {acc:.3f}")
 """,
     [
-        ("clf = LogisticRegression", "make a LogisticRegression with max_iter=500 and solver='saga'"),
+        ("clf = LogisticRegression", "make a LogisticRegression with max_iter=1000"),
         ("clf.fit(Xtr, ytr)", "fit the classifier on the training features Xtr, ytr"),
     ],
 )
