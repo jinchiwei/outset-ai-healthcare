@@ -442,6 +442,14 @@ learning rates and overlays the curves. **Change the numbers and re-run** -- thi
 """))
 
 both(code("""
+# lets this cell run on its own -- e.g. if you restart the kernel and jump here
+try:
+    common, nbfig, device, tr224, va224
+except NameError:
+    import sys; sys.path.insert(0, ".")
+    import common
+    nbfig, device, tr224, va224 = common.playground_setup()
+
 # ---- the control panel: change these and re-run ----
 LEARNING_RATES = [3e-4, 1e-3, 3e-3]   # try adding 1e-2 (too big) or 1e-5 (too small)
 EPOCHS = 8
@@ -487,6 +495,14 @@ the curve. Some things to try:
 """))
 
 both(code("""
+# lets this cell run on its own -- e.g. if you restart the kernel and jump here
+try:
+    common, nbfig, device, tr224, va224
+except NameError:
+    import sys; sys.path.insert(0, ".")
+    import common
+    nbfig, device, tr224, va224 = common.playground_setup()
+
 # ================= THE CONTROL PANEL: change anything, re-run =================
 LEARNING_RATE = 1e-3      # step size downhill
 EPOCHS        = 10        # passes over the data

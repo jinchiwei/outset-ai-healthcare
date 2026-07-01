@@ -105,6 +105,23 @@ def get_loaders(size: int = 224, batch_size: int = 32):
     )
 
 
+def playground_setup(size: int = 224, batch_size: int = 32):
+    """Rebuild what the Day-1 parameter playground needs, so those cells run even
+    if you jump straight to them (e.g. after a kernel restart).
+
+    Returns (nbfig, device, train_loader, val_loader).
+    """
+    import os
+    import sys
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "_shared"))
+    import nbfig
+    nbfig.use()
+    device = "cuda" if torch.cuda.is_available() else (
+        "mps" if torch.backends.mps.is_available() else "cpu")
+    train_loader, val_loader = get_loaders(size=size, batch_size=batch_size)
+    return nbfig, device, train_loader, val_loader
+
+
 def synthetic_loaders(size: int = 224, batch_size: int = 8, n: int = 32):
     """Random-noise loaders with the right shapes. For local smoke tests only,
     when the real HF dataset isn't downloaded."""
