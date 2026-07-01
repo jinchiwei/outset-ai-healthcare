@@ -1,7 +1,7 @@
 {
   "deck_md_hash": "2e8ef90164731d02f197ce9ed63acbbc6ba0dcabac90499cbfd47fe78a4ee120",
-  "mode": "strict",
-  "shake_seed": null,
+  "mode": "expressive",
+  "shake_seed": "2e8ef90164731d02f197ce9ed63acbbc6ba0dcabac90499cbfd47fe78a4ee120",
   "slides": [
     {
       "content_hash": "2259d5df653dce4028ca6de85da064ead47789223a63864a8d9e6735d24a0eca-divider",
@@ -14,15 +14,10 @@
     },
     {
       "content_hash": "46d5135f7177381d2909f8ea0bbeea9a538f0109f3a0adaf44a7c95bac3bbe72",
-      "kind": "content-text",
+      "kind": "freeform",
       "params": {
-        "body": [
-          {
-            "html": "High schoolers learn a concept faster when they can touch it, move it, or bet on it. This deck collects the interactive and unplugged activities that pair with the three-day course. Each slide shows what the activity looks like set up, plus what you need, how to run it, and the payoff. Pick the ones that fit your room; none is required. Most run 5 to 10 minutes, and every one ends on a reveal that maps straight onto something students then see in code.",
-            "kind": "paragraph",
-            "pos": 1
-          }
-        ],
+        "_provenance": "composer",
+        "code": "_add_text(slide, 'High schoolers learn a concept faster when they can touch it, move it, or bet on it. This deck collects the interactive and unplugged activities that pair with the three-day course. Each slide shows what the activity looks like set up, plus what you need, how to run it, and the payoff. Pick the ones that fit your room; none is required. Most run 5 to 10 minutes, and every one ends on a reveal that maps straight onto something students then see in code.', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=1.42, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
         "lede": "",
         "section_label": "How to use this",
         "title": "Make the concepts physical"
@@ -40,15 +35,10 @@
     },
     {
       "content_hash": "2630f1299a0a45949d7273aee15c8faf643df02d535fba6143ada726797b1cd4",
-      "kind": "figure-with-aside",
+      "kind": "freeform",
       "params": {
-        "alt": "",
-        "aside": {
-          "body": "Materials: a laptop on Colab, projected. Run it (5 min): have students push rotate, brightness, blur, and zoom to the extremes on a real eye, then ask which versions still look like a valid patient photo. The reveal: gentle rotations and flips are fair; heavy color or warping changes the diagnosis, which is exactly why the pipeline only uses the mild ones.",
-          "icon": null,
-          "label": "Day 1, notebook 0.7"
-        },
-        "image": "/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/fac_widget_augment.png",
+        "_provenance": "composer",
+        "code": "fw = body_w*0.56\n_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/fac_widget_augment.png', left=body_l, top=body_top+0.10, max_w=body_w*0.56, max_h=body_h-0.25)\npx = body_l + fw + 0.40\npw = body_w - fw - 0.40\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=body_h-0.15, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=0.09, fill_rgb=accent_rgb)\n_add_rect(slide, left=px+0.22, top=body_top+0.37, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'Day 1, notebook 0.7', left=px+0.44, top=body_top+0.30, width=pw-0.62, height=0.28, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)\n_add_rect(slide, left=px+0.22, top=body_top+0.79, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'Materials: a laptop on Colab, projected. Run it (5 min): have students push rotate, brightness, blur, and zoom to the extremes on a real eye, then ask which versions still look like a valid patient photo. The reveal: gentle rotations and flips are fair; heavy color or warping changes the diagnosis, which is exactly why the pipeline only uses the mild ones.', left=px+0.44, top=body_top+0.72, width=pw-0.62, height=2.00, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
         "lede": "",
         "section_label": "Live widgets (in the notebook)",
         "title": "Augmentation explorer"
@@ -57,15 +47,10 @@
     },
     {
       "content_hash": "b8f077f52aa75b38cc6bfea9014ccfbdca71992a404eda7c34c272070a95ee56",
-      "kind": "figure-with-aside",
+      "kind": "freeform",
       "params": {
-        "alt": "",
-        "aside": {
-          "body": "Materials: the same notebook. Run it (5 min): a volunteer sets the policy for a blindness screener by dragging the cutoff, first toward catch-everything, then toward avoid-false-alarms. The reveal: no setting wins both; the clinician, not the algorithm, picks the operating point. This is the ROC curve in their hands.",
-          "icon": null,
-          "label": "Day 1, notebook 7.1, after a model is trained"
-        },
-        "image": "/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/fac_widget_threshold.png",
+        "_provenance": "composer",
+        "code": "fw = body_w*0.56\n_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/fac_widget_threshold.png', left=body_l, top=body_top+0.10, max_w=body_w*0.56, max_h=body_h-0.25)\npx = body_l + fw + 0.40\npw = body_w - fw - 0.40\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=body_h-0.15, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=0.09, fill_rgb=accent_rgb)\n_add_rect(slide, left=px+0.22, top=body_top+0.37, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'Day 1, notebook 7.1, after a model is trained', left=px+0.44, top=body_top+0.30, width=pw-0.62, height=0.49, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)\n_add_rect(slide, left=px+0.22, top=body_top+1.00, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'Materials: the same notebook. Run it (5 min): a volunteer sets the policy for a blindness screener by dragging the cutoff, first toward catch-everything, then toward avoid-false-alarms. The reveal: no setting wins both; the clinician, not the algorithm, picks the operating point. This is the ROC curve in their hands.', left=px+0.44, top=body_top+0.93, width=pw-0.62, height=1.78, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
         "lede": "",
         "section_label": "Live widgets (in the notebook)",
         "title": "Threshold slider"
@@ -83,15 +68,10 @@
     },
     {
       "content_hash": "0a9e9b78eb1ab9839794f0de0fc5e71c9d94b4cffb093fde03a18e85e595b1c7",
-      "kind": "figure-with-aside",
+      "kind": "freeform",
       "params": {
-        "alt": "",
-        "aside": {
-          "body": "The headline activity. Materials: seven cards on the whiteboard, each a way of looking at the eye. Run it (10 min): in pairs, rank the cards simplest to most complex, then star the one you bet is most accurate; compare across teams and argue. The reveal: their ladder is logreg to MLP to CNN to ResNet, and the borrowed pretrained brain beats the fancy from-scratch models. Complexity is not the same as accuracy.",
-          "icon": null,
-          "label": "Day 1, before the model ladder"
-        },
-        "image": "/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/fac_feature_ladder.png",
+        "_provenance": "composer",
+        "code": "fw = body_w*0.56\n_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/fac_feature_ladder.png', left=body_l, top=body_top+0.10, max_w=body_w*0.56, max_h=body_h-0.25)\npx = body_l + fw + 0.40\npw = body_w - fw - 0.40\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=body_h-0.15, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=0.09, fill_rgb=accent_rgb)\n_add_rect(slide, left=px+0.22, top=body_top+0.37, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'Day 1, before the model ladder', left=px+0.44, top=body_top+0.30, width=pw-0.62, height=0.28, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)\n_add_rect(slide, left=px+0.22, top=body_top+0.79, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'The headline activity. Materials: seven cards on the whiteboard, each a way of looking at the eye. Run it (10 min): in pairs, rank the cards simplest to most complex, then star the one you bet is most accurate; compare across teams and argue. The reveal: their ladder is logreg to MLP to CNN to ResNet, and the borrowed pretrained brain beats the fancy from-scratch models. Complexity is not the same as accuracy.', left=px+0.44, top=body_top+0.72, width=pw-0.62, height=2.42, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
         "lede": "",
         "section_label": "Unplugged activities",
         "title": "The Feature Ladder"
@@ -100,15 +80,10 @@
     },
     {
       "content_hash": "c25a78e35c6f85b137d9fd07ec585077a99b3465c33579462927b7aa0da30030",
-      "kind": "figure-with-aside",
+      "kind": "freeform",
       "params": {
-        "alt": "",
-        "aside": {
-          "body": "Materials: four corner signs, a few students secretly labeled sick or healthy. Run it (8 min): a model student guesses each person; everyone walks to the matching corner; count bodies to compute sensitivity and specificity. Then tell the model to be more cautious and re-sort. The reveal: caution moves people between corners, and sensitivity and specificity move in opposite directions, the threshold trade-off, felt with their feet.",
-          "icon": null,
-          "label": "Day 1, evaluation block"
-        },
-        "image": "/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/fac_human_confusion.png",
+        "_provenance": "composer",
+        "code": "fw = body_w*0.56\n_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/fac_human_confusion.png', left=body_l, top=body_top+0.10, max_w=body_w*0.56, max_h=body_h-0.25)\npx = body_l + fw + 0.40\npw = body_w - fw - 0.40\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=body_h-0.15, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=0.09, fill_rgb=accent_rgb)\n_add_rect(slide, left=px+0.22, top=body_top+0.37, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'Day 1, evaluation block', left=px+0.44, top=body_top+0.30, width=pw-0.62, height=0.28, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)\n_add_rect(slide, left=px+0.22, top=body_top+0.79, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'Materials: four corner signs, a few students secretly labeled sick or healthy. Run it (8 min): a model student guesses each person; everyone walks to the matching corner; count bodies to compute sensitivity and specificity. Then tell the model to be more cautious and re-sort. The reveal: caution moves people between corners, and sensitivity and specificity move in opposite directions, the threshold trade-off, felt with their feet.', left=px+0.44, top=body_top+0.72, width=pw-0.62, height=2.42, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
         "lede": "",
         "section_label": "Unplugged activities",
         "title": "Human Confusion Matrix"
@@ -117,15 +92,10 @@
     },
     {
       "content_hash": "afbdcfe21d79dbc1c7b2f9928223e530f56bb2786def9ddfb37e07b98bbbfccf",
-      "kind": "figure-with-aside",
+      "kind": "freeform",
       "params": {
-        "alt": "",
-        "aside": {
-          "body": "Materials: a marble and a curved surface, foam pipe insulation, bent cardboard, or a mixing bowl. Run it (5 min): roll the marble; it settles at the lowest point (least error). Now tilt the track steeper (a bigger learning rate) until the marble flies off the end. The reveal: learning is rolling downhill to less error, and the tilt is the learning rate, too small crawls, too big overshoots. Straight into the parameter playground.",
-          "icon": null,
-          "label": "Day 1, when introducing training"
-        },
-        "image": "/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/fac_marble_run.png",
+        "_provenance": "composer",
+        "code": "fw = body_w*0.56\n_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/fac_marble_run.png', left=body_l, top=body_top+0.10, max_w=body_w*0.56, max_h=body_h-0.25)\npx = body_l + fw + 0.40\npw = body_w - fw - 0.40\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=body_h-0.15, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=0.09, fill_rgb=accent_rgb)\n_add_rect(slide, left=px+0.22, top=body_top+0.37, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'Day 1, when introducing training', left=px+0.44, top=body_top+0.30, width=pw-0.62, height=0.28, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)\n_add_rect(slide, left=px+0.22, top=body_top+0.79, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'Materials: a marble and a curved surface, foam pipe insulation, bent cardboard, or a mixing bowl. Run it (5 min): roll the marble; it settles at the lowest point (least error). Now tilt the track steeper (a bigger learning rate) until the marble flies off the end. The reveal: learning is rolling downhill to less error, and the tilt is the learning rate, too small crawls, too big overshoots. Straight into the parameter playground.', left=px+0.44, top=body_top+0.72, width=pw-0.62, height=2.42, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
         "lede": "",
         "section_label": "Unplugged activities",
         "title": "Gradient-Descent Marble Run"
@@ -134,15 +104,10 @@
     },
     {
       "content_hash": "8c2f17eaf6a5cbea554f29d1f7119d1f7edaf02c55088a4560a24f92937f3b50",
-      "kind": "figure-with-aside",
+      "kind": "freeform",
       "params": {
-        "alt": "",
-        "aside": {
-          "body": "Materials: ten printed eye cards with answers, plus a few unseen ones. Run it (8 min): Team A memorizes the exact answer to each of the ten; Team B agrees on a simple rule. Then quiz both teams on brand-new eyes. The reveal: the memorizers fall apart on new data. That is overfitting, felt rather than lectured, and why we always test on held-out data.",
-          "icon": null,
-          "label": "Day 1, when overfitting comes up"
-        },
-        "image": "/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/fac_overfitting.png",
+        "_provenance": "composer",
+        "code": "fw = body_w*0.56\n_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/fac_overfitting.png', left=body_l, top=body_top+0.10, max_w=body_w*0.56, max_h=body_h-0.25)\npx = body_l + fw + 0.40\npw = body_w - fw - 0.40\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=body_h-0.15, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=0.09, fill_rgb=accent_rgb)\n_add_rect(slide, left=px+0.22, top=body_top+0.37, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'Day 1, when overfitting comes up', left=px+0.44, top=body_top+0.30, width=pw-0.62, height=0.28, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)\n_add_rect(slide, left=px+0.22, top=body_top+0.79, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'Materials: ten printed eye cards with answers, plus a few unseen ones. Run it (8 min): Team A memorizes the exact answer to each of the ten; Team B agrees on a simple rule. Then quiz both teams on brand-new eyes. The reveal: the memorizers fall apart on new data. That is overfitting, felt rather than lectured, and why we always test on held-out data.', left=px+0.44, top=body_top+0.72, width=pw-0.62, height=2.00, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
         "lede": "",
         "section_label": "Unplugged activities",
         "title": "Overfitting Showdown"
@@ -151,15 +116,10 @@
     },
     {
       "content_hash": "1a17aef38fa9801e1ba74c7c4acde494c3356d943572a73a834bb2db55e391ef",
-      "kind": "figure-with-aside-horizontal",
+      "kind": "freeform",
       "params": {
-        "alt": "",
-        "aside": {
-          "body": "Materials: printed word and word-piece tiles (common words whole, rare words split like “en” + “larged”). Run it (6 min): teams chop a short radiology sentence into tiles, then cover the last tile and predict it. The reveal: that guess-the-next-tile game is literally what a language model does, over and over. Tokenization plus next-token prediction, in their hands.",
-          "icon": null,
-          "label": "Day 2, tokenization"
-        },
-        "image": "/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/fac_word_tiles.png",
+        "_provenance": "composer",
+        "code": "fw = body_w*0.56\n_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/fac_word_tiles.png', left=body_l, top=body_top+0.10, max_w=body_w*0.56, max_h=body_h-0.25)\npx = body_l + fw + 0.40\npw = body_w - fw - 0.40\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=body_h-0.15, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=0.09, fill_rgb=accent_rgb)\n_add_rect(slide, left=px+0.22, top=body_top+0.37, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'Day 2, tokenization', left=px+0.44, top=body_top+0.30, width=pw-0.62, height=0.28, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)\n_add_rect(slide, left=px+0.22, top=body_top+0.79, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'Materials: printed word and word-piece tiles (common words whole, rare words split like “en” + “larged”). Run it (6 min): teams chop a short radiology sentence into tiles, then cover the last tile and predict it. The reveal: that guess-the-next-tile game is literally what a language model does, over and over. Tokenization plus next-token prediction, in their hands.', left=px+0.44, top=body_top+0.72, width=pw-0.62, height=2.21, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
         "lede": "",
         "section_label": "Unplugged activities",
         "title": "Word-Piece Tiles"
@@ -168,15 +128,10 @@
     },
     {
       "content_hash": "46e7221fafd2d4d43a79cfa711f4b651461cc630f8a309af957fa9bb975e2565",
-      "kind": "figure-with-aside-horizontal",
+      "kind": "freeform",
       "params": {
-        "alt": "",
-        "aside": {
-          "body": "Materials: none, just one volunteer as the confident narrator. Run it (3 min): ask increasingly obscure questions; the rule is they must always answer confidently and can never say “I don’t know”. The reveal: they start inventing fluent, confident nonsense, exactly what an LLM does when it does not know. Hence the rule of the day, use the model but verify it.",
-          "icon": null,
-          "label": "Day 2, right after “what an LLM does”"
-        },
-        "image": "/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/fac_hallucination.png",
+        "_provenance": "composer",
+        "code": "fw = body_w*0.56\n_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/fac_hallucination.png', left=body_l, top=body_top+0.10, max_w=body_w*0.56, max_h=body_h-0.25)\npx = body_l + fw + 0.40\npw = body_w - fw - 0.40\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=body_h-0.15, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=0.09, fill_rgb=accent_rgb)\n_add_rect(slide, left=px+0.22, top=body_top+0.37, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'Day 2, right after “what an LLM does”', left=px+0.44, top=body_top+0.30, width=pw-0.62, height=0.28, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)\n_add_rect(slide, left=px+0.22, top=body_top+0.79, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'Materials: none, just one volunteer as the confident narrator. Run it (3 min): ask increasingly obscure questions; the rule is they must always answer confidently and can never say “I don’t know”. The reveal: they start inventing fluent, confident nonsense, exactly what an LLM does when it does not know. Hence the rule of the day, use the model but verify it.', left=px+0.44, top=body_top+0.72, width=pw-0.62, height=2.21, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
         "lede": "",
         "section_label": "Unplugged activities",
         "title": "The Hallucination Game"
@@ -185,15 +140,10 @@
     },
     {
       "content_hash": "0a43a200c9d317f049772ee42abf6a4775d786d306de06dee9d40f96e7942c93",
-      "kind": "figure-with-aside",
+      "kind": "freeform",
       "params": {
-        "alt": "",
-        "aside": {
-          "body": "Materials: a printed feature table where one column is basically the answer. Run it (5 min): first pair to circle the column that is secretly the label, and explain why it is cheating, wins. The reveal: that is target leakage. A model using that column looks brilliant and has learned nothing, and catching it is the single most valuable skill of the day.",
-          "icon": null,
-          "label": "Day 2, before the leakage reveal"
-        },
-        "image": "/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/fac_spot_cheat.png",
+        "_provenance": "composer",
+        "code": "fw = body_w*0.56\n_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/fac_spot_cheat.png', left=body_l, top=body_top+0.10, max_w=body_w*0.56, max_h=body_h-0.25)\npx = body_l + fw + 0.40\npw = body_w - fw - 0.40\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=body_h-0.15, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=0.09, fill_rgb=accent_rgb)\n_add_rect(slide, left=px+0.22, top=body_top+0.37, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'Day 2, before the leakage reveal', left=px+0.44, top=body_top+0.30, width=pw-0.62, height=0.28, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)\n_add_rect(slide, left=px+0.22, top=body_top+0.79, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'Materials: a printed feature table where one column is basically the answer. Run it (5 min): first pair to circle the column that is secretly the label, and explain why it is cheating, wins. The reveal: that is target leakage. A model using that column looks brilliant and has learned nothing, and catching it is the single most valuable skill of the day.', left=px+0.44, top=body_top+0.72, width=pw-0.62, height=2.00, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
         "lede": "",
         "section_label": "Unplugged activities",
         "title": "Spot-the-Cheat (Leakage Race)"
@@ -202,15 +152,10 @@
     },
     {
       "content_hash": "6eab37fcf8383c8ec93e3a6ba802866631657a2e9e904610d79000dd81bf476e",
-      "kind": "figure-with-aside",
+      "kind": "freeform",
       "params": {
-        "alt": "",
-        "aside": {
-          "body": "Materials: priority cards (Safety, Fairness, Transparency, Evidence, Privacy, Monitoring, Accountability), printable from regulation_exercise.md. Run it (8 min): in pairs, physically rank what a medical AI must prove before it touches a patient, then for each of the top three, write one concrete way to enforce it. The reveal: there is no answer key, real US, EU, and Asian regulators land differently, and the disagreement is the lesson.",
-          "icon": null,
-          "label": "Day 3, the “you’re the regulator” exercise"
-        },
-        "image": "/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/fac_regulator_cards.png",
+        "_provenance": "composer",
+        "code": "fw = body_w*0.56\n_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/fac_regulator_cards.png', left=body_l, top=body_top+0.10, max_w=body_w*0.56, max_h=body_h-0.25)\npx = body_l + fw + 0.40\npw = body_w - fw - 0.40\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=body_h-0.15, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=0.09, fill_rgb=accent_rgb)\n_add_rect(slide, left=px+0.22, top=body_top+0.37, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'Day 3, the “you’re the regulator” exercise', left=px+0.44, top=body_top+0.30, width=pw-0.62, height=0.49, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)\n_add_rect(slide, left=px+0.22, top=body_top+1.00, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'Materials: priority cards (Safety, Fairness, Transparency, Evidence, Privacy, Monitoring, Accountability), printable from regulation_exercise.md. Run it (8 min): in pairs, physically rank what a medical AI must prove before it touches a patient, then for each of the top three, write one concrete way to enforce it. The reveal: there is no answer key, real US, EU, and Asian regulators land differently, and the disagreement is the lesson.', left=px+0.44, top=body_top+0.93, width=pw-0.62, height=2.42, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
         "lede": "",
         "section_label": "Unplugged activities",
         "title": "Regulator Card-Sort"
@@ -228,15 +173,10 @@
     },
     {
       "content_hash": "06c2314d9a1ee5d68779fc43fcb3acd158a816e89ee1041ca36fd58ae607179a",
-      "kind": "figure-with-aside",
+      "kind": "freeform",
       "params": {
-        "alt": "",
-        "aside": {
-          "body": "Mix to taste and to your room’s energy. Day 1 has the most on offer, from the Feature Ladder to open, through the Marble Run and Overfitting Showdown, to the two live widgets in the evaluation block. Day 2 leans on the language activities, and Day 3 closes with the regulator sort before students choose their projects.",
-          "icon": null,
-          "label": "You will not run all of these; two or three per day is plenty"
-        },
-        "image": "/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/fac_timing_map.png",
+        "_provenance": "composer",
+        "code": "fw = body_w*0.56\n_fit_image(slide, '/Users/jinchiwei/arcadia/teaching/outset-ai-healthcare/slides/figures/fac_timing_map.png', left=body_l, top=body_top+0.10, max_w=body_w*0.56, max_h=body_h-0.25)\npx = body_l + fw + 0.40\npw = body_w - fw - 0.40\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=body_h-0.15, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=0.09, fill_rgb=accent_rgb)\n_add_rect(slide, left=px+0.22, top=body_top+0.37, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'You will not run all of these; two or three per day is plenty', left=px+0.44, top=body_top+0.30, width=pw-0.62, height=0.49, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)\n_add_rect(slide, left=px+0.22, top=body_top+1.00, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'Mix to taste and to your room’s energy. Day 1 has the most on offer, from the Feature Ladder to open, through the Marble Run and Overfitting Showdown, to the two live widgets in the evaluation block. Day 2 leans on the language activities, and Day 3 closes with the regulator sort before students choose their projects.', left=px+0.44, top=body_top+0.93, width=pw-0.62, height=1.78, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
         "lede": "",
         "section_label": "Fitting it into the day",
         "title": "When to reach for what"
@@ -244,6 +184,6 @@
       "slide_id": "h1-fitting-it-into-the-day/h2-when-to-reach-for-what"
     }
   ],
-  "theme": null,
+  "theme": "bone",
   "version": 1
 }
