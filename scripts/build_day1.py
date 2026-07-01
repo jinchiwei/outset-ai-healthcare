@@ -425,15 +425,19 @@ thousand images. The next rung borrows a head start from millions.
 both(md("""
 ### 3.3 Your turn: the knobs that change everything
 
-A model isn't a fixed thing, it's a machine with **dials**. Two matter most:
+A model isn't a fixed thing, it's a machine with **dials**. The ones you'll touch most:
 
 - **Learning rate** -- the *step size* the model takes downhill while learning (remember the ball
-  rolling down a hill). Too small and it crawls; too big and it overshoots and bounces around
-  instead of settling.
-- **Epochs** -- how many times the model gets to see the whole training set. More isn't always
-  better (later you'll watch too many epochs cause *overfitting*).
+  rolling down a hill). Too small and it crawls; too big and it overshoots and bounces around.
+- **Epochs** -- how many times the model sees the whole training set. More isn't always better
+  (too many causes *overfitting* -- memorizing instead of learning).
+- **Regularization** -- deliberate handicaps that stop the model from memorizing. Two kinds here:
+  **dropout** (randomly ignore some neurons each step) and **weight decay** (an L2 penalty that
+  keeps the weights small). Turn them up when the model overfits.
+- **Activation function** -- the little nonlinearity after each layer that lets the network bend.
+  `relu` is the modern default; `sigmoid`/`tanh` are the classics (and can stall a deep net).
 
-Let's actually *see* the learning rate matter. The cell below trains the same small CNN at three
+First, let's *see* the learning rate matter: the cell below trains the same small CNN at three
 learning rates and overlays the curves. **Change the numbers and re-run** -- this is your playground.
 """))
 
@@ -467,6 +471,43 @@ Look at the shapes. The **middle** learning rate usually climbs fastest and sett
 zig-zags because each step overshoots. That's the whole intuition behind tuning: find the step
 size that's big enough to make progress but small enough to be stable. Try `1e-2` to watch it
 break, then `1e-5` to watch it crawl.
+"""))
+
+both(md("""
+### 3.4 The full dashboard: every dial in one place
+Now the real playground. The control panel below exposes **all** the knobs at once, learning rate,
+epochs, dropout, weight decay, and the activation function. Change any of them, re-run, and read
+the curve. Some things to try:
+
+- Set `DROPOUT = 0.0` and `WEIGHT_DECAY = 0.0` -- watch training loss fall fast but validation
+  accuracy stall or wobble (that gap is overfitting).
+- Push `DROPOUT = 0.5` or `WEIGHT_DECAY = 1e-3` -- training gets *harder* (loss falls slower) but
+  the model often *generalizes* better.
+- Swap `ACTIVATION = "sigmoid"` -- feel how a classic nonlinearity can slow a deeper network down.
+"""))
+
+both(code("""
+# ================= THE CONTROL PANEL: change anything, re-run =================
+LEARNING_RATE = 1e-3      # step size downhill
+EPOCHS        = 10        # passes over the data
+DROPOUT       = 0.3       # regularization: 0.0 = none, 0.5 = heavy
+WEIGHT_DECAY  = 0.0       # L2 regularization: try 1e-4, 1e-3
+ACTIVATION    = "relu"    # "relu", "leaky_relu", "gelu", "elu", "tanh", "sigmoid"
+# =============================================================================
+
+model = common.make_small_cnn(dropout=DROPOUT, activation=ACTIVATION).to(device)
+history = common.train_model(model, tr224, va224, epochs=EPOCHS, lr=LEARNING_RATE,
+                             weight_decay=WEIGHT_DECAY, device=device, verbose=False)
+
+print(f"lr={LEARNING_RATE}  dropout={DROPOUT}  weight_decay={WEIGHT_DECAY}  activation={ACTIVATION}")
+print(f"final validation accuracy: {history[-1][1]:.3f}")
+nbfig.learning_curve(history, text="Your custom CNN").show()
+"""))
+
+both(md("""
+Keep a little log as you go, `"dropout 0.3 -> 0.5: val_acc 0.71 -> 0.74"`, exactly like you'll do
+in the Day 3 capstone. That habit, change one dial, measure, write it down, is the entire craft of
+tuning a model. There's no secret best setting; there's only *measured* better.
 """))
 
 # =========================================================================== #

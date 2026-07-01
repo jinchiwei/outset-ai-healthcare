@@ -155,15 +155,30 @@ def make_mlp(in_features: int, num_classes: int = NUM_CLASSES, hidden=(256, 128)
     return nn.Sequential(*layers)
 
 
-def make_small_cnn(num_classes: int = NUM_CLASSES):
-    # BatchNorm after each conv: from-scratch CNNs train much more reliably with it,
-    # which matters on the small medical dataset used in class.
+def _activation(name: str):
+    """Fresh activation module by name -- used by the Day-1 parameter playground."""
+    table = {"relu": nn.ReLU, "leaky_relu": nn.LeakyReLU, "tanh": nn.Tanh,
+             "sigmoid": nn.Sigmoid, "gelu": nn.GELU, "elu": nn.ELU}
+    key = name.lower()
+    if key not in table:
+        raise ValueError(f"unknown activation {name!r}; try one of {list(table)}")
+    return table[key]()
+
+
+def make_small_cnn(num_classes: int = NUM_CLASSES, dropout: float = 0.3, activation: str = "relu"):
+    """A small from-scratch CNN with tunable knobs (for the parameter playground).
+
+    dropout: regularization strength before the final layer (0 = none, 0.5 = heavy).
+    activation: the nonlinearity after each conv ('relu', 'leaky_relu', 'tanh',
+        'sigmoid', 'gelu', 'elu'). BatchNorm after each conv keeps training stable.
+    """
+    A = lambda: _activation(activation)   # a fresh module each call
     return nn.Sequential(
-        nn.Conv2d(3, 32, 3, padding=1), nn.BatchNorm2d(32), nn.ReLU(), nn.MaxPool2d(2),
-        nn.Conv2d(32, 64, 3, padding=1), nn.BatchNorm2d(64), nn.ReLU(), nn.MaxPool2d(2),
-        nn.Conv2d(64, 128, 3, padding=1), nn.BatchNorm2d(128), nn.ReLU(), nn.MaxPool2d(2),
-        nn.Conv2d(128, 128, 3, padding=1), nn.BatchNorm2d(128), nn.ReLU(), nn.AdaptiveAvgPool2d(1),
-        nn.Flatten(), nn.Dropout(0.3), nn.Linear(128, num_classes),
+        nn.Conv2d(3, 32, 3, padding=1), nn.BatchNorm2d(32), A(), nn.MaxPool2d(2),
+        nn.Conv2d(32, 64, 3, padding=1), nn.BatchNorm2d(64), A(), nn.MaxPool2d(2),
+        nn.Conv2d(64, 128, 3, padding=1), nn.BatchNorm2d(128), A(), nn.MaxPool2d(2),
+        nn.Conv2d(128, 128, 3, padding=1), nn.BatchNorm2d(128), A(), nn.AdaptiveAvgPool2d(1),
+        nn.Flatten(), nn.Dropout(dropout), nn.Linear(128, num_classes),
     )
 
 
@@ -193,15 +208,19 @@ def make_vit_base(num_classes: int = NUM_CLASSES, pretrained: bool = True, freez
 # Train / eval
 # --------------------------------------------------------------------------- #
 def train_model(model, train_loader, val_loader, epochs: int = 3, lr: float = 1e-3,
-                device: str = "cpu", verbose: bool = True):
+                device: str = "cpu", verbose: bool = True, weight_decay: float = 0.0):
     """Standard supervised loop.
 
     Returns list of (epoch, val_acc, train_loss) per epoch. The val_acc stays at
     index [1] so older callers (history[-1][1]) keep working; train_loss at [2]
     lets the notebook draw a learning curve.
+
+    weight_decay: L2 regularization strength (0 = off). Another dial students can
+    turn in the parameter playground to fight overfitting.
     """
     model = model.to(device)
-    opt = torch.optim.Adam([p for p in model.parameters() if p.requires_grad], lr=lr)
+    opt = torch.optim.Adam([p for p in model.parameters() if p.requires_grad],
+                           lr=lr, weight_decay=weight_decay)
     loss_fn = nn.CrossEntropyLoss()
     history = []
     for epoch in range(epochs):
