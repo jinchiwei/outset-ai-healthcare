@@ -311,12 +311,15 @@ def show_augment(rotate=0, brightness=1.0, contrast=1.0, blur=0, zoom=1.0, hflip
 
 try:
     from ipywidgets import interact, FloatSlider, IntSlider, Checkbox
+    # coarse steps + continuous_update=False => it only redraws when you RELEASE the
+    # slider, not on every pixel, so it stays snappy even on a slow Colab runtime.
+    _S = dict(continuous_update=False)
     interact(show_augment,
-             rotate=IntSlider(value=0, min=-45, max=45, step=5),
-             brightness=FloatSlider(value=1.0, min=0.3, max=2.0, step=0.1),
-             contrast=FloatSlider(value=1.0, min=0.3, max=2.0, step=0.1),
-             blur=IntSlider(value=0, min=0, max=8, step=1),
-             zoom=FloatSlider(value=1.0, min=1.0, max=2.5, step=0.1),
+             rotate=IntSlider(value=0, min=-45, max=45, step=15, **_S),
+             brightness=FloatSlider(value=1.0, min=0.4, max=2.0, step=0.2, **_S),
+             contrast=FloatSlider(value=1.0, min=0.4, max=2.0, step=0.2, **_S),
+             blur=IntSlider(value=0, min=0, max=8, step=2, **_S),
+             zoom=FloatSlider(value=1.0, min=1.0, max=2.5, step=0.25, **_S),
              hflip=Checkbox(value=False))
 except ImportError:
     print("No live sliders here (ipywidgets missing). For the interactive version, run")
@@ -501,22 +504,26 @@ learning rates and overlays the curves. **Change the numbers and re-run** -- thi
 both(code("""
 # lets this cell run on its own -- e.g. if you restart the kernel and jump here
 try:
-    common, nbfig, device, tr224, va224
+    common, nbfig, device
 except NameError:
     import sys; sys.path.insert(0, ".")
     import common
-    nbfig, device, tr224, va224 = common.playground_setup()
+    nbfig, device, _, _ = common.playground_setup()
+
+# Small 64px images so the whole sweep finishes in seconds, not minutes -- we only
+# need the *shape* of the curves, not top accuracy. (Re-run freely during class.)
+trP, vaP = common.get_loaders(size=64, batch_size=64)
 
 # ---- the control panel: change these and re-run ----
 LEARNING_RATES = [3e-4, 1e-3, 3e-3]   # try adding 1e-2 (too big) or 1e-5 (too small)
-EPOCHS = 8
+EPOCHS = 6
 # ----------------------------------------------------
 
 runs = {}
 for lr in LEARNING_RATES:
     print(f"training a fresh CNN at lr={lr} ...")
     model = common.make_small_cnn().to(device)
-    runs[lr] = common.train_model(model, tr224, va224, epochs=EPOCHS, lr=lr, device=device, verbose=False)
+    runs[lr] = common.train_model(model, trP, vaP, epochs=EPOCHS, lr=lr, device=device, verbose=False)
 
 # overlay: validation accuracy (left) and training loss (right) for each learning rate
 fig, (a1, a2) = nbfig.fig(1, 2, figsize=(11, 4.2))
@@ -554,22 +561,25 @@ the curve. Some things to try:
 both(code("""
 # lets this cell run on its own -- e.g. if you restart the kernel and jump here
 try:
-    common, nbfig, device, tr224, va224
+    common, nbfig, device
 except NameError:
     import sys; sys.path.insert(0, ".")
     import common
-    nbfig, device, tr224, va224 = common.playground_setup()
+    nbfig, device, _, _ = common.playground_setup()
+
+# small 64px images keep this fast enough to re-run live (seconds, not minutes)
+trP, vaP = common.get_loaders(size=64, batch_size=64)
 
 # ================= THE CONTROL PANEL: change anything, re-run =================
 LEARNING_RATE = 1e-3      # step size downhill
-EPOCHS        = 10        # passes over the data
+EPOCHS        = 8         # passes over the data
 DROPOUT       = 0.3       # regularization: 0.0 = none, 0.5 = heavy
 WEIGHT_DECAY  = 0.0       # L2 regularization: try 1e-4, 1e-3
 ACTIVATION    = "relu"    # "relu", "leaky_relu", "gelu", "elu", "tanh", "sigmoid"
 # =============================================================================
 
 model = common.make_small_cnn(dropout=DROPOUT, activation=ACTIVATION).to(device)
-history = common.train_model(model, tr224, va224, epochs=EPOCHS, lr=LEARNING_RATE,
+history = common.train_model(model, trP, vaP, epochs=EPOCHS, lr=LEARNING_RATE,
                              weight_decay=WEIGHT_DECAY, device=device, verbose=False)
 
 print(f"lr={LEARNING_RATE}  dropout={DROPOUT}  weight_decay={WEIGHT_DECAY}  activation={ACTIVATION}")
@@ -790,7 +800,9 @@ def threshold_demo(threshold=0.5):
 print("scoring:", source)
 try:
     from ipywidgets import interact, FloatSlider
-    interact(threshold_demo, threshold=FloatSlider(value=0.5, min=0.0, max=1.0, step=0.05))
+    # coarse + continuous_update=False keeps it snappy: recompute on release, not every pixel
+    interact(threshold_demo,
+             threshold=FloatSlider(value=0.5, min=0.0, max=1.0, step=0.1, continuous_update=False))
 except ImportError:
     print("No live slider here (ipywidgets missing). Run  !pip install ipywidgets ,")
     print("restart the kernel, and re-run for the interactive version. Fixed cutoffs for now:")
