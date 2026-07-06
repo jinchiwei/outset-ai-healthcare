@@ -22,7 +22,7 @@ timm
 
 # datasets + the tabular foundation model (Day 2) + Day 3 capstone data
 datasets
-tabpfn
+tabpfn==2.2.1
 medmnist
 
 # notebook interface + the interactive sliders

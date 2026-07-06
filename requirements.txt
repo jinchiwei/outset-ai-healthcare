@@ -31,7 +31,7 @@ huggingface_hub
 datasets
 sentencepiece
 anthropic
-tabpfn
+tabpfn==2.2.1
 
 # Kaggle data download (APTOS, HAM10000)
 kaggle
