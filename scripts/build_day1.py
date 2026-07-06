@@ -844,6 +844,47 @@ If you finished early:
 3. Which model would you actually deploy in a clinic, and why? (Hint: it's not just accuracy.)
 """))
 
+both(md("""
+## Level up with Claude
+
+You have Claude Pro -- put it to work. Open **claude.ai** in another tab, pick a challenge, and
+paste the starter prompt (edit it to fit). **Golden rule: understand every line it gives you.**
+If you can't explain it, ask Claude to explain it more simply before you run it.
+
+**Beat the leaderboard.**
+> *"My best model on these fundus eye scans gets about ___% accuracy. Suggest ONE change to try,
+> tell me exactly where in the notebook to make it, and what number to watch. I'll measure if it
+> helped, then come back."*
+
+**Break it on purpose (see overfitting).**
+> *"Help me make the small CNN overfit deliberately -- train on very little data with no dropout
+> or weight decay -- so I can watch the training accuracy climb while validation accuracy stalls.
+> Explain what the gap means."*
+
+**Understand the engine.**
+> *"Walk me through what `common.train_model` does, line by line, like I'm new to this. What is
+> the optimizer actually doing each step?"*
+
+**Study its mistakes.**
+> *"Write code to show me 6 validation eyes the ResNet got wrong, with the image and its
+> confidence. What might these have in common?"*
+
+**Tune it scientifically.** (use the section 3.4 control panel)
+> *"Give me 3 experiments to run in the control panel to push accuracy up, one changed dial each,
+> and tell me what to look for in the curves."*
+
+**Swap the brain.**
+> *"Show me how to swap the ResNet50 for a different pretrained model from `timm`, and compare
+> their validation accuracy fairly."*
+
+**Think like a doctor.**
+> *"If this screener missed 1 in 10 people who actually have referable disease, is that okay? Help
+> me reason about where to set the decision threshold and what the trade-off costs."*
+
+Whatever you try: change **one** thing, measure, and write down what happened. That habit is the
+entire job, and it's exactly what tomorrow's capstone rewards.
+"""))
+
 # =========================================================================== #
 def build():
     sol = new_nb()
