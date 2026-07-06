@@ -63,12 +63,27 @@ Fill in the `# TODO`s. Ask Claude when stuck, then make sure you understand the 
 
 both(code("""
 # Setup: on Colab, grab the course files. Locally this is a no-op.
-import os, sys
+import os, sys, subprocess
 if not os.path.exists("common.py"):
     os.system("git clone -q https://github.com/jinchiwei/outset-ai-healthcare.git")
     os.chdir("outset-ai-healthcare/notebooks/day2_multimodal")
+else:
+    os.system("git pull -q 2>/dev/null")   # already cloned -> refresh the course code
 sys.path.insert(0, ".")
 sys.path.insert(0, "../_shared")
+
+# TabPFN weights: PIN 2.2.1. Newer (8.x) releases -- what Colab grabs by default --
+# gate the weight download behind a license token that can't be accepted on Colab
+# (TabPFNLicenseError). Force the working version explicitly, before anything imports it.
+# Belt-and-suspenders: also set a throwaway course token, so that even if a newer
+# TabPFN ends up loaded, its license check passes. (Disposable 30-day key; harmless
+# for 2.2.1, which ignores it. Instructor: let it expire / revoke after the course.)
+os.environ.setdefault("TABPFN_TOKEN", "tabpfn_sk_wHI64x4RQU89RmBI8R-JUGSy18LeLHHNuSm0VgVCRbw")
+subprocess.run([sys.executable, "-m", "pip", "install", "-q", "tabpfn==2.2.1"], check=False)
+if "tabpfn" in sys.modules and not getattr(sys.modules["tabpfn"], "__version__", "2.2").startswith("2.2"):
+    print("\\n*** ACTION NEEDED: an old TabPFN is still loaded in memory.")
+    print("    Go to  Runtime -> Restart session , then  Runtime -> Run all .  ***\\n")
+
 import colab_setup
 colab_setup.ensure(*colab_setup.DAY2)
 """))
