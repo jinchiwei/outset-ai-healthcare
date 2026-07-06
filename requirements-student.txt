@@ -1,0 +1,30 @@
+# Lean runtime set for students running the notebooks LOCALLY (not Colab).
+# Only what the notebooks actually import at run time -- no API keys, no Kaggle,
+# no build-from-source packages. Installed automatically by the START_HERE launchers.
+
+# core scientific stack
+numpy
+pandas
+scipy
+matplotlib
+seaborn
+pillow
+tqdm
+
+# classical ML + image features (Day 1 ladder, Day 2 radiomics contrast)
+scikit-learn
+scikit-image
+
+# deep learning (Day 1 models, Day 3 capstone)
+torch
+torchvision
+timm
+
+# datasets + the tabular foundation model (Day 2) + Day 3 capstone data
+datasets
+tabpfn
+medmnist
+
+# notebook interface + the interactive sliders
+jupyterlab
+ipywidgets

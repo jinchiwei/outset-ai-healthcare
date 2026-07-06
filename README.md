@@ -33,15 +33,29 @@ datasets/                          download scripts, pre-cached LLM JSON, no raw
 scripts/                           smoke runner, deck builder, instructor caching script
 ```
 
-## Local setup
+## Running the notebooks
 
-Conda env `outset` (Python 3.12.8) on instructor machine. Pip-only installs.
+### Option A — Google Colab (recommended, zero install)
+Open a day's notebook in Colab and run top to bottom. The first cell clones this repo and
+installs anything missing. For speed, enable a GPU: **Runtime → Change runtime type → T4 GPU**.
 
+### Option B — one-click local (Windows / macOS)
+For running on a laptop without Colab. **Download this repo** (green "Code" button → Download
+ZIP → unzip), then:
+
+- **Windows**: double-click **`START_HERE_windows.bat`** (if SmartScreen warns: More info → Run anyway)
+- **macOS**: double-click **`START_HERE_mac.command`** (if blocked: right-click → Open → Open)
+
+It installs a private Python + all the libraries (via [`uv`](https://astral.sh/uv), no prior
+Python needed) and opens JupyterLab in your browser. First run takes a few minutes; after that
+it's instant. Uses `requirements-student.txt` (the lean runtime set). No GPU required — the
+heavier cells are tuned to run in seconds on a CPU.
+
+### Instructor / dev env
+Conda env `outset` (Python 3.12.8). Full toolchain (slides, LLM caching, etc.):
 ```
 pip install -r requirements.txt
 ```
-
-Students use Google Colab; the local env exists for prototyping and the one-shot LLM caching script.
 
 ## Build commands
 

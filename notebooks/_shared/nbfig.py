@@ -38,8 +38,35 @@ _MONO = ["Geist Mono", "DejaVu Sans Mono", "monospace"]
 _SANS = ["Geist", "DejaVu Sans", "sans-serif"]
 
 
+_FONTS_REGISTERED = False
+
+
+def _register_fonts():
+    """Register the bundled Geist / Geist Mono TTFs so plots look branded even on
+    Colab (where the fonts aren't installed). Also quiets matplotlib's per-figure
+    'Font family Geist not found' warnings. Idempotent; safe if fonts are missing."""
+    global _FONTS_REGISTERED
+    # always silence the font-lookup warning, even if the TTFs aren't present
+    import logging
+    logging.getLogger("matplotlib.font_manager").setLevel(logging.ERROR)
+    if _FONTS_REGISTERED:
+        return
+    import os
+    from matplotlib import font_manager
+    fonts_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fonts")
+    if os.path.isdir(fonts_dir):
+        for fn in os.listdir(fonts_dir):
+            if fn.lower().endswith((".ttf", ".otf")):
+                try:
+                    font_manager.fontManager.addfont(os.path.join(fonts_dir, fn))
+                except Exception:
+                    pass
+    _FONTS_REGISTERED = True
+
+
 def use():
     """Apply the brand matplotlib defaults. Inline plots afterward adopt the canvas."""
+    _register_fonts()
     # Force the inline backend under Jupyter/Colab so figures render in the
     # notebook instead of popping a native window (which on macOS shows a
     # "save the photo" dialog). No-op outside IPython.
