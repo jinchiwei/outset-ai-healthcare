@@ -405,6 +405,34 @@ ax.set_xlabel("img_pred (image model's probability)"); ax.set_ylabel("patients")
 nbfig.show(fig, "The image vote separates the classes -- partly")
 """))
 
+both(md("""
+### 3.2 The image branch: *where* the model learned matters most
+The single biggest lever of the whole day is not the tabular model, it's the image model. The
+image vote can come from two very different places:
+
+- **`img_pred_imagenet`** -- a ResNet18 pretrained on **ImageNet** (cats, cars, everyday photos),
+  then pointed at chest X-rays. Generic transfer learning, like Day 1.
+- **`img_pred`** -- a DenseNet pretrained on **~500,000 real chest X-rays** (it has seen
+  cardiomegaly tens of thousands of times). Domain pretraining.
+
+**Design decision.** Which do you expect to win, and by how much? Guess, then **confirm with
+Claude: "for a medical imaging task with only ~700 examples, does it matter more what the model
+was pretrained on, or the exact architecture? why?"** Then run the cell.
+"""))
+
+both(code("""
+from sklearn.metrics import roc_auc_score
+for col, label in [("img_pred_imagenet", "ImageNet-pretrained (generic)"),
+                   ("img_pred",          "chest-X-ray-pretrained (domain)")]:
+    p = df[col].values
+    print(f"{label:34s}: accuracy={((p >= 0.5).astype(int) == df.label.values).mean():.3f}   "
+          f"AUC={roc_auc_score(df.label.values, p):.3f}")
+print("\\nSame task, same pixels. The model that learned on chest X-rays wins by a mile.")
+print("This is why cardiomegaly felt 'impossible' at ~0.72 -- that was a cat-photo model guessing.")
+print("A model that studied half a million chest X-rays makes it look easy. In medical AI,")
+print("WHERE a model was pretrained beats almost everything else, including a fancier tabular model.")
+"""))
+
 # =========================================================================== #
 # Section 4 -- Build + TabPFN
 # =========================================================================== #
@@ -417,7 +445,7 @@ text, or demographics? Now assemble the inputs: `X` is every feature column; `y`
 
 both(code("""
 # assemble the inputs: X = every feature column, y = the label
-feature_cols = [c for c in df.columns if c not in ("case_id", "label")]
+feature_cols = [c for c in df.columns if c not in ("case_id", "label", "img_pred_imagenet")]
 X = df[feature_cols].fillna(0).values
 y = df["label"].values
 print("X:", X.shape, " positives:", int(y.sum()), "/", len(y))
@@ -468,7 +496,10 @@ from sklearn.ensemble import RandomForestClassifier
 from catboost import CatBoostClassifier
 from tabpfn import TabPFNClassifier
 
-MODELS = {
+# the two branches of the late-fusion pipeline, each with real choices:
+IMAGE_BRANCH = {"chest-X-ray model (domain)": "img_pred",        # DenseNet, ~500k CXRs
+                "ImageNet model (baseline)": "img_pred_imagenet"} # ResNet18, everyday photos
+MODELS = {   # the tabular branch
     "Logistic Regression": lambda: LogisticRegression(max_iter=1000),
     "Random Forest":       lambda: RandomForestClassifier(n_estimators=200, random_state=0),
     "CatBoost":            lambda: CatBoostClassifier(verbose=0, random_state=0),
@@ -476,9 +507,10 @@ MODELS = {
 }
 
 def build_my_model(signals=("image", "text", "demographics"),
-                   model="TabPFN (foundation)", test_percent=25):
+                   image_model="chest-X-ray model (domain)",
+                   tabular_model="TabPFN (foundation)", test_percent=25):
     cols = []
-    if "image" in signals:        cols += ["img_pred"]
+    if "image" in signals:        cols += [IMAGE_BRANCH[image_model]]   # your chosen image branch
     if "text" in signals:         cols += [c for c in df.columns if c.startswith("llm_")]
     if "demographics" in signals: cols += ["age", "sex_male", "smoker"]
     if not cols:
@@ -486,13 +518,15 @@ def build_my_model(signals=("image", "text", "demographics"),
     Xc, yc = df[cols].fillna(0).values, df["label"].values
     Xa, Xb, ya, yb = train_test_split(Xc, yc, test_size=test_percent / 100, random_state=0, stratify=yc)
     try:
-        m = MODELS[model](); m.fit(Xa, ya)
+        m = MODELS[tabular_model](); m.fit(Xa, ya)
         pred = np.asarray(m.predict(Xb)).ravel()   # CatBoost returns 2D; flatten to be safe
         acc = (pred == yb).mean()
-        print(f"signals: {', '.join(signals)}")
-        print(f"model:   {model}")
-        print(f"test:    {test_percent}%  ({len(yb)} patients)   ->   ACCURACY = {acc:.3f}")
-        nbfig.confusion(yb, pred, ["no cardiomegaly", "cardiomegaly"], text=f"{model}").show()
+        print(f"signals:       {', '.join(signals)}")
+        if "image" in signals:
+            print(f"image branch:  {image_model}")
+        print(f"tabular model: {tabular_model}")
+        print(f"test {test_percent}% ({len(yb)} patients)   ->   ACCURACY = {acc:.3f}")
+        nbfig.confusion(yb, pred, ["no cardiomegaly", "cardiomegaly"], text=f"{tabular_model}").show()
     except Exception:
         print("That combination wouldn't train (too few / too flat features). Add a signal and retry.")
 
@@ -501,25 +535,32 @@ try:
     interact_manual(build_my_model,
         signals=SelectMultiple(options=["image", "text", "demographics"],
                                value=("image", "text", "demographics"), description="signals"),
-        model=RadioButtons(options=list(MODELS), value="TabPFN (foundation)", description="model"),
+        image_model=RadioButtons(options=list(IMAGE_BRANCH), value="chest-X-ray model (domain)", description="image"),
+        tabular_model=RadioButtons(options=list(MODELS), value="TabPFN (foundation)", description="tabular"),
         test_percent=IntSlider(value=25, min=10, max=40, step=5, description="test %"))
 except ImportError:
-    print("(no widgets -- ipywidgets missing; showing two example builds)\\n")
-    build_my_model(("image", "text", "demographics"), "Logistic Regression", 25)
-    build_my_model(("image", "demographics"), "TabPFN (foundation)", 25)
+    print("(no widgets -- ipywidgets missing; showing example builds)\\n")
+    build_my_model(("image", "demographics"), "chest-X-ray model (domain)", "TabPFN (foundation)", 25)
+    build_my_model(("image", "demographics"), "ImageNet model (baseline)", "TabPFN (foundation)", 25)
 """))
 
 both(md("""
 ### The big takeaway of Day 2
-Did you notice? **Swapping the model barely changed the number** -- logreg, Random Forest,
-CatBoost, and TabPFN all land in the same place on the same signals. But **adding or removing a
-signal moved it a lot.**
+Did you notice which knobs actually moved the number?
 
-That's the whole point, and it's the opposite of Day 1:
+- Swapping the **tabular model** (logreg -> Random Forest -> CatBoost -> TabPFN): **barely a blip.**
+- Swapping the **image branch** (ImageNet -> chest-X-ray-pretrained): **a huge jump.**
+- Adding or removing a **signal** (text): **a huge jump.**
+
+So the fancy tabular algorithm was never the point. What matters is **the data and where your
+models learned**: a domain-pretrained image model, and which signals you feed in.
+
+That's the whole lesson, and it's the opposite of Day 1:
 
 > **Day 1 was about the model** (the ladder climbed as the architecture got smarter).
-> **Day 2 is about the data.** Once you've picked a reasonable model, the way to win is
-> **better signals, not a fancier algorithm.**
+> **Day 2 is about the data.** Once you've picked a reasonable tabular model, the way to win is
+> **better signals and better pretraining** (what your image model already learned from real chest
+> X-rays), **not a fancier tabular algorithm.**
 
 Real ML engineers learn this the expensive way: they spend weeks tuning models when they should
 have spent them finding better data. You just saw it in 30 seconds. So the interesting question
@@ -649,7 +690,7 @@ print("\\nThe gap between them is the real signal. If shuffled were also high, w
 both(md("""
 ## 6. Wait -- will you *have* the report when it counts?
 
-Adding the text took you from ~0.72 to ~0.98. That's the power of fusion, real and worth it. But
+Adding the report text took you from ~0.82 to ~0.98. That's the power of fusion, real and worth it. But
 before you celebrate, ask the question a deployment engineer always asks: **when will each of
 these signals actually be available?**
 
@@ -777,9 +818,9 @@ both(md("""
 ## 8. You designed this
 
 Look at what you actually did today: you combined three kinds of data and saw **fusion work** --
-the report findings took the model from ~72% to ~98%. Then you asked the question that separates a
+the report findings took the model from ~82% to ~98%. Then you asked the question that separates a
 demo from a deployable system: *will I have that report when I need a prediction?* And you designed
-for the answer, a model that uses everything when it's there and **still works at ~72% when it
+for the answer, a model that uses everything when it's there and **still works at ~82% when it
 isn't.**
 
 Two lessons you'll carry a long way:
@@ -791,7 +832,7 @@ Two lessons you'll carry a long way:
 - *"How could I make my image + demographics model better? What signal would help, and would I
   actually have it at screening time?"*
 - *"If a hospital wanted to deploy this, what would you test before trusting it?"*
-- *"Is 72% good enough for a screening tool? How should I think about the trade-off?"*
+- *"Is ~82% good enough for a cardiomegaly screening tool? How should I think about the trade-off?"*
 
 The goal isn't the highest number. It's a system, and a set of choices, you can stand behind.
 """))
