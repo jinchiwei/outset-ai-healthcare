@@ -235,6 +235,11 @@ def train_model(model, train_loader, val_loader, epochs: int = 3, lr: float = 1e
     weight_decay: L2 regularization strength (0 = off). Another dial students can
     turn in the parameter playground to fight overfitting.
     """
+    # free any GPU memory left by a previous (re-)run so repeated re-runs don't OOM
+    import gc
+    gc.collect()
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
     model = model.to(device)
     opt = torch.optim.Adam([p for p in model.parameters() if p.requires_grad],
                            lr=lr, weight_decay=weight_decay)

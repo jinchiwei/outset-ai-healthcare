@@ -90,7 +90,8 @@ nbfig.use()
 
 device = "cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu")
 print("device:", device)
-results = {}   # we'll collect each model's validation accuracy here
+# keep the leaderboard across accidental re-runs of this cell (don't wipe what you trained)
+results = globals().get("results", {})   # each model's validation accuracy lands here
 """))
 
 # =========================================================================== #
