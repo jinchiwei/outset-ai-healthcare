@@ -22,7 +22,7 @@ DAY1 = [
 # (TabPFNLicenseError). 2.2.1 downloads weights freely from HuggingFace -- no token,
 # no per-student setup -- and gives identical results.
 DAY2 = ["pandas", "numpy", "scipy", "scikit-learn", "scikit-image", "matplotlib", "pillow",
-        "tabpfn==2.2.1"]
+        "tabpfn==2.2.1", "catboost"]
 
 REQUIRED = DAY1  # default = the Day 1 set
 

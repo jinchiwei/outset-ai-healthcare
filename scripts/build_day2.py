@@ -56,7 +56,8 @@ each casts a *vote*:
 ### By the end you'll be able to
 - Explain what an LLM does (predict the next token) and where it goes wrong (hallucination).
 - Turn three different data types into one table and let a foundation model (**TabPFN**) decide.
-- Spot **target leakage** -- the trap that makes a useless model look brilliant.
+- Ask the deployment question -- *which signals will I actually have when I need a prediction?* --
+  and design a model that stays useful when one goes missing.
 
 The code is all here and runs top to bottom, **your job is to understand it and make the calls**,
 not to type boilerplate. Run each cell, read what it prints, and watch for two things:
@@ -452,21 +453,25 @@ both(md("""
 ### 4.1 Now YOU are the model designer
 That was our baseline. Your turn: **build your own model from choices.** Pick which signals to
 feed it, pick the model, pick how much data to hold out for the test, and hit **Run Interact**.
-Try a few combinations, some will surprise you:
+Run a few combinations and watch closely, one thing will jump out:
 
-- Does a fancier model (TabPFN) always beat plain logistic regression here?
-- What happens to a "great" score if you make the test set bigger (harder)?
-- Which single signal, on its own, is doing most of the work? (keep that question for Section 6)
+- Swap the **model** (logreg -> Random Forest -> CatBoost -> TabPFN) but keep the same signals.
+  How much does the accuracy actually move?
+- Now instead keep the model and **add or remove a signal** (toggle "text"). How much does *that*
+  move it?
+- Which mattered more: changing the model, or changing the data?
 """))
 
 both(code("""
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
+from catboost import CatBoostClassifier
 from tabpfn import TabPFNClassifier
 
 MODELS = {
     "Logistic Regression": lambda: LogisticRegression(max_iter=1000),
     "Random Forest":       lambda: RandomForestClassifier(n_estimators=200, random_state=0),
+    "CatBoost":            lambda: CatBoostClassifier(verbose=0, random_state=0),
     "TabPFN (foundation)": lambda: TabPFNClassifier(),
 }
 
@@ -482,11 +487,12 @@ def build_my_model(signals=("image", "text", "demographics"),
     Xa, Xb, ya, yb = train_test_split(Xc, yc, test_size=test_percent / 100, random_state=0, stratify=yc)
     try:
         m = MODELS[model](); m.fit(Xa, ya)
-        acc = (m.predict(Xb) == yb).mean()
+        pred = np.asarray(m.predict(Xb)).ravel()   # CatBoost returns 2D; flatten to be safe
+        acc = (pred == yb).mean()
         print(f"signals: {', '.join(signals)}")
         print(f"model:   {model}")
         print(f"test:    {test_percent}%  ({len(yb)} patients)   ->   ACCURACY = {acc:.3f}")
-        nbfig.confusion(yb, m.predict(Xb), ["no cardiomegaly", "cardiomegaly"], text=f"{model}").show()
+        nbfig.confusion(yb, pred, ["no cardiomegaly", "cardiomegaly"], text=f"{model}").show()
     except Exception:
         print("That combination wouldn't train (too few / too flat features). Add a signal and retry.")
 
@@ -501,6 +507,24 @@ except ImportError:
     print("(no widgets -- ipywidgets missing; showing two example builds)\\n")
     build_my_model(("image", "text", "demographics"), "Logistic Regression", 25)
     build_my_model(("image", "demographics"), "TabPFN (foundation)", 25)
+"""))
+
+both(md("""
+### The big takeaway of Day 2
+Did you notice? **Swapping the model barely changed the number** -- logreg, Random Forest,
+CatBoost, and TabPFN all land in the same place on the same signals. But **adding or removing a
+signal moved it a lot.**
+
+That's the whole point, and it's the opposite of Day 1:
+
+> **Day 1 was about the model** (the ladder climbed as the architecture got smarter).
+> **Day 2 is about the data.** Once you've picked a reasonable model, the way to win is
+> **better signals, not a fancier algorithm.**
+
+Real ML engineers learn this the expensive way: they spend weeks tuning models when they should
+have spent them finding better data. You just saw it in 30 seconds. So the interesting question
+isn't "which model?" -- it's **"which signals, and will I actually have them when it counts?"**
+That question is the rest of today.
 """))
 
 # =========================================================================== #
@@ -620,19 +644,28 @@ print("\\nThe gap between them is the real signal. If shuffled were also high, w
 """))
 
 # =========================================================================== #
-# Section 6 -- Leakage
+# Section 6 -- Will you actually have these features?
 # =========================================================================== #
 both(md("""
-## 6. Wait -- that's too good. Target leakage.
+## 6. Wait -- will you *have* the report when it counts?
 
-That text boost should make you *suspicious*, not excited. Here's the catch, and it's the
-single most important lesson of the day.
+Adding the text took you from ~0.72 to ~0.98. That's the power of fusion, real and worth it. But
+before you celebrate, ask the question a deployment engineer always asks: **when will each of
+these signals actually be available?**
 
-![The report names the diagnosis we are predicting](img/leakage.png)
+![Where each finding comes from](img/leakage.png)
 
-The report we read the text from literally **states the diagnosis** we're trying to predict
-("IMPRESSION: Cardiomegaly"). So the LLM's `cardiomegaly: yes` matches the label almost
-perfectly. The model isn't detecting disease -- it's copying the answer off the report.
+These text findings are genuine, and they're powerful for a subtle reason: a radiologist wrote
+that report *after* examining the patient, so a finding like "cardiomegaly: yes" is almost a
+**restatement of the diagnosis**. That's exactly why it's such a strong feature -- and exactly
+why you might not have it when you need it:
+
+- At **screening time**, the X-ray exists but the report may not be written yet.
+- In a busy or under-resourced clinic, a full report may **never** arrive.
+- You're building a tool to *catch* disease -- leaning on a feature that already *names* it means
+  the model learned to copy the report, not to read the scan.
+
+Let's see just how much the model is leaning on that one finding.
 """))
 
 both(code("""
@@ -645,66 +678,66 @@ colors = [nbfig.DEEPPINK if abs(v) > 0.7 else nbfig.TURQUOISE for v in vals]
 ax.barh(names, vals, color=colors)
 ax.set_xlabel("correlation with the true label"); ax.set_xlim(-0.1, 1)
 ax.axvline(0, color=nbfig.MUTED, lw=0.8)
-nbfig.show(fig, "One text feature basically IS the answer")
+nbfig.show(fig, "The 'cardiomegaly' finding basically restates the answer")
 print("cardiomegaly_present vs label:", round(corrs.get("cardiomegaly_present", float('nan')), 2))
 """))
 
 both(md("""
-### 6.1 Prove it: remove the one leaked feature
-If `llm_cardiomegaly_present` really is the answer in disguise, deleting *just that one column*
-(keeping every other text feature) should make the near-perfect score collapse. Let's check.
+### 6.1 The stress test: what if the report vanishes?
+The honest question isn't "is this cheating" -- these are real findings. It's **"how does my
+model hold up if the report isn't there?"** Let's simulate exactly that: drop the report-derived
+text features and keep only what you'd *always* have at imaging time -- the image and the
+patient's demographics.
 """))
 
 both(code("""
-leaked = "llm_cardiomegaly_present"
-fair_cols = [c for c in feature_cols if c != leaked]
-Xf = df[fair_cols].fillna(0).values
-Xf_tr, Xf_te, _, _ = train_test_split(Xf, y, test_size=0.25, random_state=0, stratify=y)
+always_available = [c for c in feature_cols if not c.startswith("llm_")]   # image vote + demographics
+Xa2 = df[always_available].fillna(0).values
+Xa_tr, Xa_te, _, _ = train_test_split(Xa2, y, test_size=0.25, random_state=0, stratify=y)
 
-clf_fair = TabPFNClassifier()
-clf_fair.fit(Xf_tr, ytr)
-acc_fair = (clf_fair.predict(Xf_te) == yte).mean()
-print(f"with the leaked feature:    {acc_all:.3f}")
-print(f"after deleting just it:     {acc_fair:.3f}")
-print(f"one column was worth {acc_all - acc_fair:+.3f} -- it WAS the answer.")
+clf_robust = TabPFNClassifier()
+clf_robust.fit(Xa_tr, ytr)
+acc_robust = (clf_robust.predict(Xa_te) == yte).mean()
+print(f"with the full report (text present): {acc_all:.3f}")
+print(f"report GONE, image + demographics:   {acc_robust:.3f}")
+print(f"\\nso if the report disappears, this system still works at {acc_robust:.0%} -- it degrades, it doesn't die.")
 """))
 
 both(md("""
-### 6.2 The rule you just discovered
-That trap is **target leakage**: a feature that secretly carries the answer. The test for a
-*fair* feature is one question:
+### 6.2 The question that actually matters
+Notice the reframe. The findings aren't "bad" -- they're real and useful **when you have them.**
+The design question is about **availability**: which signals can you count on at prediction time?
 
-> **Would this information exist *before* the diagnosis was made, and does it avoid just
-> restating it?**
+> **When will this signal exist, relative to the moment you need a prediction?**
 
-- `img_pred` -- comes from the **raw pixels**. Exists before anyone writes a report. **Fair.**
-- age, sex, smoker -- known at intake. **Fair.**
-- the `llm_` findings -- all read off a report a radiologist wrote *knowing the diagnosis*. They
-  don't just correlate with the answer, they *are* a paraphrase of it. **Not fair.**
+- `img_pred` -- from the **pixels**, available the instant the X-ray is taken. **Always there.**
+- age, sex, smoker -- known at **intake**. **Always there.**
+- the `llm_` report findings -- written *later*, by someone who already saw the answer. **Maybe there, maybe not.**
 
-Catching this is real expertise. But finding the cheat isn't the finish line -- **building an
-honest model is.**
+A model that only works when the report is present is fragile. A model that stays useful without
+it is one you can actually deploy. So the finish line isn't "remove the strong feature" -- it's
+**design a system that uses everything when available and doesn't fall apart when it isn't.**
 """))
 
 # =========================================================================== #
-# Section 7 -- Design the honest model (student agency)
+# Section 7 -- Design a deployable model (student agency)
 # =========================================================================== #
 both(md("""
-## 7. Your turn: design a model you can defend
+## 7. Your turn: design a model you'd actually deploy
 
-You diagnosed the problem. Now **you** decide the fix. The one real design choice is: *which
-features are fair to keep?* There's no single right answer, only choices you can defend, so this
-is exactly the kind of question to think through **with Claude as a design partner** (not to fill
-in a blank for you).
+You've seen the whole picture: fusion makes the model strong, but its strength leans on a report
+you may not always have. Now **you** make the design call: *which features should your deployable
+model rely on?* There's no single right answer, only trade-offs, so this is exactly the kind of
+question to think through **with Claude as a design partner** (not to fill in a blank for you).
 
 **Ask Claude something like:**
-> *"I'm predicting cardiomegaly. My features are: img_pred (from the X-ray pixels), age, sex,
-> smoker, and several yes/no findings an LLM pulled from the radiology report. Which of these are
-> fair to use, and which risk leaking the answer? Walk me through your reasoning."*
+> *"I'm predicting cardiomegaly at screening time. My features are: img_pred (from the X-ray
+> pixels), age, sex, smoker, and yes/no findings an LLM pulled from the radiology report -- but the
+> report may not be written yet. Which features should my deployed model depend on, and why?"*
 
-Read its reasoning, decide if you agree, then **tick the features you'd keep** below and hit Run
-Interact. (Tip: hold Ctrl/Cmd to multi-select. Try keeping `llm_cardiomegaly_present`, then drop
-it, and watch what happens.)
+Read its reasoning, decide if you agree, then **tick the features you'd bet on** below and hit Run
+Interact. (Tip: hold Ctrl/Cmd to multi-select. Try keeping the report findings, then drop them,
+and think about which version you could actually ship.)
 """))
 
 both(code("""
@@ -717,15 +750,17 @@ def build_honest_model(keep_features=("img_pred", "age", "sex_male", "smoker")):
     Xh = df[cols].fillna(0).values
     Xa, Xb, ya, yb = train_test_split(Xh, df["label"].values, test_size=0.25, random_state=0, stratify=df["label"].values)
     m = TabPFNClassifier(); m.fit(Xa, ya)
-    acc = (m.predict(Xb) == yb).mean()
+    pred = np.asarray(m.predict(Xb)).ravel()
+    acc = (pred == yb).mean()
     print("features you kept:", cols)
-    print(f"accuracy: {acc:.3f}   (the everything-in leaky model got {acc_all:.3f})")
-    if "llm_cardiomegaly_present" in cols:
-        print("\\n  !! you kept llm_cardiomegaly_present -- that's the report restating the diagnosis.")
-        print("     high score, but you couldn't defend it to a doctor. that's leakage.")
+    print(f"accuracy: {acc:.3f}   (the everything-in model got {acc_all:.3f})")
+    if any(c.startswith("llm_") for c in cols):
+        print("\\n  you're depending on the report findings -- great WHEN the report exists,")
+        print("  but this model breaks the moment it doesn't. powerful, but fragile.")
     else:
-        print("\\n  you dropped the direct diagnosis mention. lower, but every feature is defensible. THIS is a real model.")
-    nbfig.confusion(yb, m.predict(Xb), ["no cardiomegaly", "cardiomegaly"], text="Your model").show()
+        print("\\n  image + demographics only: lower, but it runs on data you ALWAYS have at")
+        print("  imaging time. this is the version you could actually deploy for screening.")
+    nbfig.confusion(yb, pred, ["no cardiomegaly", "cardiomegaly"], text="Your model").show()
 
 try:
     from ipywidgets import interact_manual, SelectMultiple
@@ -734,36 +769,40 @@ try:
                                      value=("img_pred", "age", "sex_male", "smoker"),
                                      rows=len(ALL_FEATURES), description="keep"))
 except ImportError:
-    print("(no widgets -- ipywidgets missing; building the defensible default)\\n")
+    print("(no widgets -- ipywidgets missing; building the deployable default (image + demographics))\\n")
     build_honest_model(("img_pred", "age", "sex_male", "smoker"))
 """))
 
 both(md("""
 ## 8. You designed this
 
-Look at what you actually did today: you combined three kinds of data, you got a suspiciously
-perfect score, **you caught your own model cheating**, and then you made a design call and built
-a model whose every feature you can explain to a doctor. That last model is lower on paper and
-**worth far more** -- it's a real detector of disease, not a paraphrase of the answer.
+Look at what you actually did today: you combined three kinds of data and saw **fusion work** --
+the report findings took the model from ~72% to ~98%. Then you asked the question that separates a
+demo from a deployable system: *will I have that report when I need a prediction?* And you designed
+for the answer, a model that uses everything when it's there and **still works at ~72% when it
+isn't.**
 
-That whole loop -- build, distrust the too-good result, find the leak, redesign -- *is* the job.
-Most people never learn to do the third and fourth steps.
+Two lessons you'll carry a long way:
+- **Better signals beat a fancier model.** Swapping logreg -> CatBoost -> TabPFN barely moved the
+  number; adding a signal moved it a lot.
+- **Design for the data you'll actually have,** not the data that makes the demo look best.
 
 **Push it further with Claude, as your design partner:**
-- *"How could I make this honest model more trustworthy? What signal would actually help,
-  and how would I check it isn't leaking too?"*
+- *"How could I make my image + demographics model better? What signal would help, and would I
+  actually have it at screening time?"*
 - *"If a hospital wanted to deploy this, what would you test before trusting it?"*
-- *"Is my 72% good enough for a screening tool? How should I think about the trade-off?"*
+- *"Is 72% good enough for a screening tool? How should I think about the trade-off?"*
 
-The goal isn't a higher number. It's a model, and a set of choices, you can stand behind.
+The goal isn't the highest number. It's a system, and a set of choices, you can stand behind.
 """))
 
 both(md("""
 ## Two paradigms, both yours now, and onward
 
 In two days you built the two dominant approaches in medical AI: **end-to-end deep learning**
-(Day 1) and **combining signals with a foundation model** (Day 2). You also learned the habit that
-separates a careful engineer from a fooled one, distrust a too-good result and hunt the leak.
+(Day 1, where the *model* mattered) and **combining signals** (Day 2, where the *data* mattered
+more). You also learned the habit that separates a careful engineer from a fooled one: ask whether
+you'll actually have each signal at the moment you need to predict.
 
 One caution to carry forward: clinical **text** holds even more identifying detail than pixels;
 treat it like the patient record it is.

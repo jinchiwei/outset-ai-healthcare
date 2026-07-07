@@ -28,3 +28,4 @@ medmnist
 # notebook interface + the interactive sliders
 jupyterlab
 ipywidgets
+catboost
