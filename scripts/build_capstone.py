@@ -68,12 +68,15 @@ colab_setup.ensure(*colab_setup.DAY1, "medmnist")
 import torch
 sys.path.insert(0, "../..")
 import capstone_common as cc
+from medmnist import INFO
 
 device = "cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu")
 print("device:", device)
 
-train_loader, val_loader, test_loader, n_classes, task = cc.get_loaders("{kit['flag']}", size=64)
-print("classes:", n_classes, "| task:", task)
+FLAG = "{kit['flag']}"    # change this to any MedMNIST dataset (see project_options.md)
+train_loader, val_loader, test_loader, n_classes, task = cc.get_loaders(FLAG, size=64)
+CLASS_NAMES = list(INFO[FLAG]["label"].values())
+print("classes:", n_classes, "->", CLASS_NAMES, "| task:", task)
 """),
         md("## A look at the data"),
         code("""
@@ -93,34 +96,80 @@ test_acc = cc.evaluate(model, test_loader, device=device)["accuracy"]
 print(f"\\nbaseline TEST accuracy: {test_acc:.3f}")
 """),
         md("""
-## # IMPROVE ME
+## Build your own model (interactive)
 
-The baseline freezes the whole ResNet and trains only the last layer for 3 epochs.
-Real, easy wins to try (pick a few, with Claude's help):
+Same idea as Day 2's model builder: **pick your options, hit Run, read the TEST accuracy.**
+Change **one** thing at a time and watch what actually moves the number.
 
-- **Train longer**: more epochs.
-- **Unfreeze the backbone**: let more of the ResNet learn (lower the learning rate if you do).
-- **Augment**: add flips/rotations in the transform (see `capstone_common.get_loaders`).
-- **Bigger input**: try `size=128` or `size=224`.
-- **Class weighting**: if the classes are imbalanced, weight the loss.
-- **Different model**: try resnet50, or a timm model.
+- **backbone** -- the network architecture (resnet18 is small/fast; resnet50, densenet, etc. are bigger).
+- **pretrained** -- start from ImageNet weights (on) or from scratch (off). *This usually matters a lot.*
+- **unfreeze backbone** -- train the whole network (on) vs just a new head (off). More power, more overfitting risk.
+- **augment** -- add flips/rotations to training images.
+- **epochs** -- how long to train.
 
-After each change, re-check TEST accuracy. Did it actually help, or did you just overfit?
-"""),
-        md("""
-## Find a failure mode
-
-Pull some test images your model got **wrong** and look at them. Is there a pattern?
-Would a doctor have gotten them wrong too? This is rubric point 3, and often the most
-interesting thing you'll present.
+Log every result (`"resnet50 + augment: 0.86"`). That log is half your presentation.
 """),
         code("""
-import numpy as np
-res = cc.evaluate(model, test_loader, device=device)
-wrong = np.where(res["y"] != res["pred"])[0][:6]
-print("indices the model got wrong:", wrong.tolist())
-# IMPROVE ME: show these images with their true vs predicted labels, and write down
-# what you notice.
+from ipywidgets import interact_manual, Dropdown, Checkbox, IntSlider
+
+def build_model(backbone="resnet18", pretrained=True, unfreeze_backbone=False, augment=False, epochs=3):
+    global model, train_loader, val_loader, test_loader
+    # augment changes the TRAIN transform, so rebuild the loaders each time
+    train_loader, val_loader, test_loader, n_cls, _ = cc.get_loaders(FLAG, size=64, augment=augment)
+    model = cc.make_model(n_cls, backbone=backbone, pretrained=pretrained, unfreeze_backbone=unfreeze_backbone)
+    model = cc.train(model, train_loader, val_loader,
+                     epochs=epochs, lr=(1e-4 if unfreeze_backbone else 1e-3), device=device)
+    acc = cc.evaluate(model, test_loader, device=device)["accuracy"]
+    print(f"\\n>>> TEST accuracy = {acc:.3f}   "
+          f"[{backbone}, pretrained={pretrained}, unfreeze={unfreeze_backbone}, augment={augment}, {epochs}ep]")
+
+try:
+    interact_manual(build_model,
+        backbone=Dropdown(options=cc.BACKBONES, value="resnet18", description="backbone"),
+        pretrained=Checkbox(value=True, description="pretrained"),
+        unfreeze_backbone=Checkbox(value=False, description="unfreeze"),
+        augment=Checkbox(value=False, description="augment"),
+        epochs=IntSlider(value=3, min=1, max=10, description="epochs"))
+except ImportError:
+    build_model()   # no widgets -> just train the default
+"""),
+        md("""
+### Other ideas (not in the dropdown -- do these with Claude)
+- **Bigger input**: `cc.get_loaders(FLAG, size=128)` (or 224). Slower, sometimes better.
+- **Class weighting**: if the classes are imbalanced, weight the loss toward the rare one.
+- **Different learning rate / optimizer**: ask Claude what to try and why.
+
+After each change, re-check TEST accuracy. Did it help, or did you just overfit the training set?
+"""),
+        md("""
+## The regulator's toolkit: audit your own model
+
+Yesterday you decided the *rules* medical AI must follow. Now hold **your** model to them.
+Pick a priority below and run the audit on your trained model. A high accuracy is not enough
+if it fails one of these.
+
+- **Safety/Evidence** -- an honest confusion matrix on the held-out test set.
+- **Fairness** -- is accuracy even *across classes*, or does it quietly fail one?
+- **Transparency** -- Grad-CAM: is the model looking at the right part of the image?
+- **Monitoring** -- does accuracy survive noisier images (like it'll meet after deployment)?
+- **Failure analysis** -- the actual cases it got wrong (rubric point 3).
+
+*(Train a model first -- run the baseline or the builder above -- then pick a tool.)*
+"""),
+        code("""
+from ipywidgets import interact_manual, Dropdown
+
+def audit(tool):
+    if "model" not in globals():
+        print("Train a model first (run the baseline or the builder above)."); return
+    cc.REGULATOR_TOOLS[tool](model, test_loader, device=device, class_names=CLASS_NAMES)
+
+try:
+    interact_manual(audit, tool=Dropdown(options=list(cc.REGULATOR_TOOLS),
+                                          description="priority", style={"description_width": "initial"}))
+except ImportError:
+    for name in cc.REGULATOR_TOOLS:      # no widgets -> run them all
+        print("\\n==", name); audit(name)
 """),
     ]
     return nb
