@@ -58,7 +58,10 @@ each casts a *vote*:
 - Turn three different data types into one table and let a foundation model (**TabPFN**) decide.
 - Spot **target leakage** -- the trap that makes a useless model look brilliant.
 
-Fill in the `# TODO`s. Ask Claude when stuck, then make sure you understand the answer.
+Fill in the `# TODO`s, and watch for **Design decision** boxes along the way. At each one, real
+engineers face a genuine choice with no single right answer. Pick one, jot down *why*, then
+**confirm with Claude: "which makes the most sense here, and why?"** and see whether your
+reasoning survives. That habit, making a call and pressure-testing it, is the whole point of today.
 """))
 
 both(code("""
@@ -306,11 +309,17 @@ row per patient, and hand the table to one model.
 
 ![Late fusion: each signal becomes a column, then TabPFN decides](img/multimodal_stack.png)
 
-### 2.1 The image's vote (late fusion)
-How do we get the X-ray into the table? The classic way is **radiomics**: hand-craft numbers
-like brightness and texture (shown below for contrast). But there's a cleaner move: train an
-actual image model -- transfer learning, exactly like Day 1 -- and feed the table just *its
-prediction*, one probability `img_pred`. That's the image's vote.
+### 2.1 The image's vote -- your first design decision
+How do we get the X-ray into the table? Three real options:
+
+- dump all the **raw pixels** as thousands of columns,
+- hand-craft a dozen **radiomics** numbers (brightness, texture),
+- train an **image model** and feed the table just *its prediction*, one probability `img_pred`.
+
+> **Design decision.** Which makes the most sense for a small dataset (~700 patients), and why?
+> Pick one and jot down your reason, then **confirm with Claude: "for ~700 patients, what's the
+> smartest way to feed an X-ray into a tabular model, and why?"** (We'll use `img_pred` -- called
+> **late fusion** or **stacking** -- and the code below shows why the alternatives struggle.)
 
 **One honesty catch:** if the image model scores a patient it trained on, that score is too
 optimistic (it has seen the answer). So every `img_pred` was pre-computed **out-of-fold** --
@@ -415,9 +424,15 @@ print("X:", X.shape, " positives:", int(y.sum()), "/", len(y))
 )
 
 both(md("""
+> **Design decision.** You have a table of ~700 patients and ~10 columns. How should you model
+> it? (a) train a neural network from scratch, (b) a simple logistic regression, (c) a *pretrained*
+> tabular foundation model. Which fits this amount of data best, and why? Decide, then **confirm
+> with Claude: "for a small tabular medical dataset, which model makes the most sense and why?"**
+
 **TabPFN** is a foundation model pretrained on millions of synthetic tables. It doesn't train
 in the usual sense -- you `fit` (it just studies your examples) and `predict`, both in
-seconds. Same pretraining-and-reuse idea as ImageNet yesterday, now for tables.
+seconds. Same pretraining-and-reuse idea as ImageNet yesterday, now for tables. (A network from
+scratch would overfit ~700 rows; TabPFN's pretraining is exactly what a tiny dataset needs.)
 """))
 
 todo(
@@ -480,6 +495,12 @@ nbfig.show(fig, "Adding the text features looks amazing")
 
 both(md("""
 ### 5.1 The confusion matrix of the full model
+
+> **Design decision.** Accuracy is one number, but it hides *which* mistakes the model makes.
+> For a cardiomegaly screener, which error is worse: missing a truly enlarged heart (a false
+> negative), or a false alarm on a healthy one? Which metric should you optimize, accuracy or
+> sensitivity? Decide, then **confirm with Claude: "for a screening tool, what should I optimize
+> and why?"** Then read the matrix below with that answer in mind.
 """))
 
 both(code("""
