@@ -1,7 +1,7 @@
 """Build the Day 2 multimodal notebooks (lab + solution) from one source.
 
 Emits:
-  notebooks/day2_multimodal/day2.ipynb           (# TODO blanks)
+  notebooks/day2_multimodal/day2.ipynb           (runnable; design-decision + explore driven)
   notebooks/day2_multimodal/day2_solution.ipynb  (filled)
 
 MIT 6.S191 density: numbered sub-sections, an explanation before every code cell, and a
@@ -58,10 +58,14 @@ each casts a *vote*:
 - Turn three different data types into one table and let a foundation model (**TabPFN**) decide.
 - Spot **target leakage** -- the trap that makes a useless model look brilliant.
 
-Fill in the `# TODO`s, and watch for **Design decision** boxes along the way. At each one, real
-engineers face a genuine choice with no single right answer. Pick one, jot down *why*, then
-**confirm with Claude: "which makes the most sense here, and why?"** and see whether your
-reasoning survives. That habit, making a call and pressure-testing it, is the whole point of today.
+The code is all here and runs top to bottom, **your job is to understand it and make the calls**,
+not to type boilerplate. Run each cell, read what it prints, and watch for two things:
+
+- **Design decision** boxes -- a real choice with no single right answer. Pick one, jot down
+  *why*, then **confirm with Claude: "which makes the most sense here, and why?"**
+- **Explore** cells -- poke the sliders and dropdowns and see what changes.
+
+Making a call and pressure-testing it with Claude is the whole point of today.
 """))
 
 both(code("""
@@ -410,18 +414,14 @@ both(md("""
 text, or demographics? Now assemble the inputs: `X` is every feature column; `y` is the label.
 """))
 
-todo(
-    """
+both(code("""
+# assemble the inputs: X = every feature column, y = the label
 feature_cols = [c for c in df.columns if c not in ("case_id", "label")]
 X = df[feature_cols].fillna(0).values
 y = df["label"].values
 print("X:", X.shape, " positives:", int(y.sum()), "/", len(y))
-""",
-    [
-        ("feature_cols = [c for c in df.columns", "select every column except 'case_id' and 'label'"),
-        ("X = df[feature_cols]", "make X from those columns (use .fillna(0).values)"),
-    ],
-)
+print("feature columns:", feature_cols)
+"""))
 
 both(md("""
 > **Design decision.** You have a table of ~700 patients and ~10 columns. How should you model
@@ -435,23 +435,18 @@ seconds. Same pretraining-and-reuse idea as ImageNet yesterday, now for tables. 
 scratch would overfit ~700 rows; TabPFN's pretraining is exactly what a tiny dataset needs.)
 """))
 
-todo(
-    """
+both(code("""
 from sklearn.model_selection import train_test_split
 from tabpfn import TabPFNClassifier
 
+# hold out 25% to grade on -- the model never sees these during fit
 Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.25, random_state=0, stratify=y)
 
-clf = TabPFNClassifier()
-clf.fit(Xtr, ytr)
+clf = TabPFNClassifier()   # the foundation model you chose above
+clf.fit(Xtr, ytr)          # "fit" = it just studies your examples (seconds, no real training)
 acc_all = (clf.predict(Xte) == yte).mean()
 print(f"multimodal (image + text + demographics) accuracy: {acc_all:.3f}")
-""",
-    [
-        ("clf = TabPFNClassifier()", "make a TabPFNClassifier"),
-        ("clf.fit(Xtr, ytr)", "fit it on the training split Xtr, ytr"),
-    ],
-)
+"""))
 
 # =========================================================================== #
 # Section 5 -- Ablation
@@ -459,12 +454,12 @@ print(f"multimodal (image + text + demographics) accuracy: {acc_all:.3f}")
 both(md("""
 ## 5. How much did each modality help?
 
-**Predict:** drop the report (text) features and keep only the image vote + demographics --
-how much does accuracy fall? Fill in the ablation, then we'll plot the two side by side.
+**Predict first:** drop the report (text) features and keep only the image vote + demographics --
+how much do you think accuracy falls? Write down a guess, then run the cell and see.
 """))
 
-todo(
-    """
+both(code("""
+# drop the report (llm_) columns, keep image + demographics
 no_text_cols = [c for c in feature_cols if not c.startswith("llm_")]
 Xnt = df[no_text_cols].fillna(0).values
 Xnt_tr, Xnt_te, _, _ = train_test_split(Xnt, y, test_size=0.25, random_state=0, stratify=y)
@@ -475,12 +470,7 @@ acc_no_text = (clf2.predict(Xnt_te) == yte).mean()
 print(f"image + demographics only: {acc_no_text:.3f}")
 print(f"with text:                 {acc_all:.3f}")
 print(f"the text features were worth {acc_all - acc_no_text:+.3f}")
-""",
-    [
-        ("no_text_cols = [c for c in feature_cols", "keep feature columns that do NOT start with 'llm_'"),
-        ("clf2.fit(Xnt_tr, ytr)", "fit a fresh TabPFN on the no-text training data"),
-    ],
-)
+"""))
 
 both(code("""
 fig, ax = nbfig.fig(figsize=(6, 3.6))
