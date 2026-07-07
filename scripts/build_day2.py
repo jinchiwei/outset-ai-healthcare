@@ -604,50 +604,94 @@ print(f"one column was worth {acc_all - acc_fair:+.3f} -- it WAS the answer.")
 """))
 
 both(md("""
-### 6.2 What a fair test looks like
-This trap is **target leakage**, and catching it is real expertise.
+### 6.2 The rule you just discovered
+That trap is **target leakage**: a feature that secretly carries the answer. The test for a
+*fair* feature is one question:
 
-- **No peeking at the label.** A feature that encodes the answer is cheating. The report's
-  impression basically *is* the answer.
-- **Use inputs that come before the label.** Fair signals exist before the diagnosis is
-  known: the raw pixels (our `img_pred`), the demographics.
-- **Report it honestly.** Show the leaked and de-leaked numbers side by side. The honest
-  result -- the image vote + demographics, ~72% -- is lower, and real.
+> **Would this information exist *before* the diagnosis was made, and does it avoid just
+> restating it?**
+
+- `img_pred` -- comes from the **raw pixels**. Exists before anyone writes a report. **Fair.**
+- age, sex, smoker -- known at intake. **Fair.**
+- the `llm_` findings -- all read off a report a radiologist wrote *knowing the diagnosis*. They
+  don't just correlate with the answer, they *are* a paraphrase of it. **Not fair.**
+
+Catching this is real expertise. But finding the cheat isn't the finish line -- **building an
+honest model is.**
 """))
 
 # =========================================================================== #
-# Recap + stretch
+# Section 7 -- Design the honest model (student agency)
 # =========================================================================== #
 both(md("""
-## 7. Two paradigms, both yours now
+## 7. Your turn: design a model you can defend
 
-In two days you've built the two dominant approaches in medical AI:
+You diagnosed the problem. Now **you** decide the fix. The one real design choice is: *which
+features are fair to keep?* There's no single right answer, only choices you can defend, so this
+is exactly the kind of question to think through **with Claude as a design partner** (not to fill
+in a blank for you).
 
-- **Day 1 -- end-to-end deep learning:** feed raw data to one big network that learns its own
-  features.
-- **Day 2 -- combine signals + a foundation model:** turn everything into a table and let a
-  pretrained model handle it.
+**Ask Claude something like:**
+> *"I'm predicting cardiomegaly. My features are: img_pred (from the X-ray pixels), age, sex,
+> smoker, and several yes/no findings an LLM pulled from the radiology report. Which of these are
+> fair to use, and which risk leaking the answer? Walk me through your reasoning."*
 
-Knowing which to reach for -- and being able to *catch your own leakage* -- is half the job.
-A closing caution: clinical **text** carries even more identifying detail than pixels; handle
-it like the patient record it is.
+Read its reasoning, decide if you agree, then set your feature list below and build your model.
+"""))
+
+both(code("""
+from sklearn.model_selection import train_test_split
+from tabpfn import TabPFNClassifier
+
+# YOUR DESIGN DECISION -- edit this list to whatever you can defend.
+# Starting point: signals that exist independent of the diagnostic report.
+FAIR_COLS = ["img_pred", "age", "sex_male", "smoker"]
+
+Xfair = df[FAIR_COLS].fillna(0).values
+Xf_tr, Xf_te, yf_tr, yf_te = train_test_split(Xfair, df["label"].values,
+                                              test_size=0.25, random_state=0, stratify=df["label"].values)
+model = TabPFNClassifier(); model.fit(Xf_tr, yf_tr)
+acc_honest = (model.predict(Xf_te) == yf_te).mean()
+
+print("features you chose:", FAIR_COLS)
+print(f"honest model accuracy: {acc_honest:.3f}")
+print(f"(the leaky version got {acc_all:.3f} -- but you couldn't defend a single one of its text features)")
+nbfig.confusion(yf_te, model.predict(Xf_te), ["no cardiomegaly", "cardiomegaly"],
+                text="Your honest, defensible model").show()
 """))
 
 both(md("""
-## Stretch
+## 8. You designed this
 
-The image vote (`img_pred`) is the one honest signal -- it comes from pixels, not a report
-that names the answer. Train TabPFN on **just `img_pred`**, then on **just the demographics**,
-and compare. Which single modality is strongest on its own? You'll see the leaked text wins on
-paper, but the image vote is the number you could actually defend to a clinician.
+Look at what you actually did today: you combined three kinds of data, you got a suspiciously
+perfect score, **you caught your own model cheating**, and then you made a design call and built
+a model whose every feature you can explain to a doctor. That last model is lower on paper and
+**worth far more** -- it's a real detector of disease, not a paraphrase of the answer.
+
+That whole loop -- build, distrust the too-good result, find the leak, redesign -- *is* the job.
+Most people never learn to do the third and fourth steps.
+
+**Push it further with Claude, as your design partner:**
+- *"How could I make this honest model more trustworthy? What signal would actually help,
+  and how would I check it isn't leaking too?"*
+- *"If a hospital wanted to deploy this, what would you test before trusting it?"*
+- *"Is my 72% good enough for a screening tool? How should I think about the trade-off?"*
+
+The goal isn't a higher number. It's a model, and a set of choices, you can stand behind.
 """))
 
 both(md("""
-## Tomorrow: capstone
+## Two paradigms, both yours now, and onward
 
-You now have the whole toolkit: end-to-end deep learning, transfer learning, multimodal
-feature stacks, and a foundation model. Tomorrow you pick a problem and build it start to
-finish, with Claude as your engineer. See you there.
+In two days you built the two dominant approaches in medical AI: **end-to-end deep learning**
+(Day 1) and **combining signals with a foundation model** (Day 2). You also learned the habit that
+separates a careful engineer from a fooled one, distrust a too-good result and hunt the leak.
+
+One caution to carry forward: clinical **text** holds even more identifying detail than pixels;
+treat it like the patient record it is.
+
+**Tomorrow, the capstone:** you pick a problem and build it start to finish, making the design
+calls yourself, with Claude as your engineer. You're ready. See you there.
 """))
 
 
