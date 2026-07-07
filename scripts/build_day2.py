@@ -448,6 +448,61 @@ acc_all = (clf.predict(Xte) == yte).mean()
 print(f"multimodal (image + text + demographics) accuracy: {acc_all:.3f}")
 """))
 
+both(md("""
+### 4.1 Now YOU are the model designer
+That was our baseline. Your turn: **build your own model from choices.** Pick which signals to
+feed it, pick the model, pick how much data to hold out for the test, and hit **Run Interact**.
+Try a few combinations, some will surprise you:
+
+- Does a fancier model (TabPFN) always beat plain logistic regression here?
+- What happens to a "great" score if you make the test set bigger (harder)?
+- Which single signal, on its own, is doing most of the work? (keep that question for Section 6)
+"""))
+
+both(code("""
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+from tabpfn import TabPFNClassifier
+
+MODELS = {
+    "Logistic Regression": lambda: LogisticRegression(max_iter=1000),
+    "Random Forest":       lambda: RandomForestClassifier(n_estimators=200, random_state=0),
+    "TabPFN (foundation)": lambda: TabPFNClassifier(),
+}
+
+def build_my_model(signals=("image", "text", "demographics"),
+                   model="TabPFN (foundation)", test_percent=25):
+    cols = []
+    if "image" in signals:        cols += ["img_pred"]
+    if "text" in signals:         cols += [c for c in df.columns if c.startswith("llm_")]
+    if "demographics" in signals: cols += ["age", "sex_male", "smoker"]
+    if not cols:
+        print("Pick at least one signal!"); return
+    Xc, yc = df[cols].fillna(0).values, df["label"].values
+    Xa, Xb, ya, yb = train_test_split(Xc, yc, test_size=test_percent / 100, random_state=0, stratify=yc)
+    try:
+        m = MODELS[model](); m.fit(Xa, ya)
+        acc = (m.predict(Xb) == yb).mean()
+        print(f"signals: {', '.join(signals)}")
+        print(f"model:   {model}")
+        print(f"test:    {test_percent}%  ({len(yb)} patients)   ->   ACCURACY = {acc:.3f}")
+        nbfig.confusion(yb, m.predict(Xb), ["no cardiomegaly", "cardiomegaly"], text=f"{model}").show()
+    except Exception:
+        print("That combination wouldn't train (too few / too flat features). Add a signal and retry.")
+
+try:
+    from ipywidgets import interact_manual, SelectMultiple, RadioButtons, IntSlider
+    interact_manual(build_my_model,
+        signals=SelectMultiple(options=["image", "text", "demographics"],
+                               value=("image", "text", "demographics"), description="signals"),
+        model=RadioButtons(options=list(MODELS), value="TabPFN (foundation)", description="model"),
+        test_percent=IntSlider(value=25, min=10, max=40, step=5, description="test %"))
+except ImportError:
+    print("(no widgets -- ipywidgets missing; showing two example builds)\\n")
+    build_my_model(("image", "text", "demographics"), "Logistic Regression", 25)
+    build_my_model(("image", "demographics"), "TabPFN (foundation)", 25)
+"""))
+
 # =========================================================================== #
 # Section 5 -- Ablation
 # =========================================================================== #
@@ -647,28 +702,40 @@ in a blank for you).
 > smoker, and several yes/no findings an LLM pulled from the radiology report. Which of these are
 > fair to use, and which risk leaking the answer? Walk me through your reasoning."*
 
-Read its reasoning, decide if you agree, then set your feature list below and build your model.
+Read its reasoning, decide if you agree, then **tick the features you'd keep** below and hit Run
+Interact. (Tip: hold Ctrl/Cmd to multi-select. Try keeping `llm_cardiomegaly_present`, then drop
+it, and watch what happens.)
 """))
 
 both(code("""
-from sklearn.model_selection import train_test_split
-from tabpfn import TabPFNClassifier
+ALL_FEATURES = ["img_pred"] + [c for c in df.columns if c.startswith("llm_")] + ["age", "sex_male", "smoker"]
 
-# YOUR DESIGN DECISION -- edit this list to whatever you can defend.
-# Starting point: signals that exist independent of the diagnostic report.
-FAIR_COLS = ["img_pred", "age", "sex_male", "smoker"]
+def build_honest_model(keep_features=("img_pred", "age", "sex_male", "smoker")):
+    if not keep_features:
+        print("Select at least one feature."); return
+    cols = list(keep_features)
+    Xh = df[cols].fillna(0).values
+    Xa, Xb, ya, yb = train_test_split(Xh, df["label"].values, test_size=0.25, random_state=0, stratify=df["label"].values)
+    m = TabPFNClassifier(); m.fit(Xa, ya)
+    acc = (m.predict(Xb) == yb).mean()
+    print("features you kept:", cols)
+    print(f"accuracy: {acc:.3f}   (the everything-in leaky model got {acc_all:.3f})")
+    if "llm_cardiomegaly_present" in cols:
+        print("\\n  !! you kept llm_cardiomegaly_present -- that's the report restating the diagnosis.")
+        print("     high score, but you couldn't defend it to a doctor. that's leakage.")
+    else:
+        print("\\n  you dropped the direct diagnosis mention. lower, but every feature is defensible. THIS is a real model.")
+    nbfig.confusion(yb, m.predict(Xb), ["no cardiomegaly", "cardiomegaly"], text="Your model").show()
 
-Xfair = df[FAIR_COLS].fillna(0).values
-Xf_tr, Xf_te, yf_tr, yf_te = train_test_split(Xfair, df["label"].values,
-                                              test_size=0.25, random_state=0, stratify=df["label"].values)
-model = TabPFNClassifier(); model.fit(Xf_tr, yf_tr)
-acc_honest = (model.predict(Xf_te) == yf_te).mean()
-
-print("features you chose:", FAIR_COLS)
-print(f"honest model accuracy: {acc_honest:.3f}")
-print(f"(the leaky version got {acc_all:.3f} -- but you couldn't defend a single one of its text features)")
-nbfig.confusion(yf_te, model.predict(Xf_te), ["no cardiomegaly", "cardiomegaly"],
-                text="Your honest, defensible model").show()
+try:
+    from ipywidgets import interact_manual, SelectMultiple
+    interact_manual(build_honest_model,
+        keep_features=SelectMultiple(options=ALL_FEATURES,
+                                     value=("img_pred", "age", "sex_male", "smoker"),
+                                     rows=len(ALL_FEATURES), description="keep"))
+except ImportError:
+    print("(no widgets -- ipywidgets missing; building the defensible default)\\n")
+    build_honest_model(("img_pred", "age", "sex_male", "smoker"))
 """))
 
 both(md("""
