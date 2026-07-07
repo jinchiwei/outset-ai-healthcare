@@ -151,6 +151,42 @@ print("MeSH tags:  ", rec["mesh_majors"])
 """))
 
 both(md("""
+### 0.2b Explore: watch one patient become a row of numbers
+This is the single most important thing to *understand* today, so don't rush it. Use the dropdown
+to flip through real patients. For each one you're seeing the **whole pipeline**: the messy
+free-text report the LLM read, the tidy yes/no findings it pulled out, the demographics, the
+image model's vote, and finally the true label. **Everything to the right of the report is just
+numbers a model can use.**
+
+As you click through a few, watch one thing: does the LLM's `llm_cardiomegaly_present` line up
+with the true label? Keep that observation, it's the trap you'll spring in Section 6.
+"""))
+
+both(code("""
+def show_patient(case=list(reports)[0]):
+    rec = reports[case]
+    print("=" * 68)
+    print("THE REPORT (free text the LLM read):")
+    print("  FINDINGS:  ", (rec["findings"] or "(none)")[:280])
+    print("  IMPRESSION:", (rec["impression"] or "(none)")[:200])
+    print("-" * 68)
+    print("LLM-EXTRACTED TEXT FEATURES (numbers):")
+    for k, v in common.load_cached_llm_features(case).items():
+        print(f"    {k:28s} {v}")
+    print("DEMOGRAPHICS:", common.load_demographics(case))
+    print("IMAGE VOTE  : img_pred =", round(common.load_cached_image_pred(case)["img_pred"], 3))
+    print("-" * 68)
+    print("TRUE LABEL  :", "CARDIOMEGALY" if rec["label"] else "normal (no cardiomegaly)")
+
+try:
+    from ipywidgets import interact, Dropdown
+    interact(show_patient, case=Dropdown(options=list(reports), description="patient"))
+except ImportError:
+    print("(no dropdown -- ipywidgets missing; showing the first patient)\\n")
+    show_patient()
+"""))
+
+both(md("""
 ### 0.3 Where does the label come from?
 We didn't hand-label these. Each Open-i report carries **MeSH** tags -- standardized medical
 keywords a librarian assigned. Our label is simply: *does `Cardiomegaly` appear in the tags?*
@@ -321,6 +357,25 @@ df.head(3)
 """))
 
 both(md("""
+### 3.0b Read the table like a detective
+Don't model yet, just make sure you can *read* it. One row = one patient; one column = one number
+about them. Print a few rows and answer these for yourself (out loud with your partner):
+
+1. Which columns came from the **image**? the **report text**? the **demographics**?
+2. Look at each patient's `llm_cardiomegaly_present` next to their `label`. Do they match? Every
+   time? (Suspicious, isn't it. Remember this for Section 6.)
+"""))
+
+both(code("""
+show_cols = (["label", "img_pred"]
+             + [c for c in df.columns if c.startswith("llm_")][:3]
+             + ["age", "sex_male", "smoker"])
+print(df[show_cols].head(6).to_string())
+print("\\n^ 'label' is what we PREDICT. everything else is what we predict FROM.")
+print("  does llm_cardiomegaly_present always equal label? scroll up and check every row.")
+"""))
+
+both(md("""
 ### 3.1 Is the image vote any good on its own?
 Before modeling, look at the image vote split by the truth. If `img_pred` is a real signal,
 patients *with* cardiomegaly should score higher than those without -- the two histograms
@@ -430,6 +485,72 @@ both(md("""
 both(code("""
 nbfig.confusion(yte, clf.predict(Xte), ["no cardiomegaly", "cardiomegaly"],
                 text="Multimodal model").show()
+"""))
+
+both(md("""
+### 5.2 Explore: mix and match the signals yourself
+Now stop reading and start poking. Tick which signals to feed the model, hit **Run Interact**, and
+read the accuracy. Try to answer with experiments, not guesses:
+
+- Which **single** signal is strongest on its own? (image only vs text only vs demographics only)
+- Does adding demographics to the image actually help?
+- The text-only score should raise an eyebrow. Hold that thought for the next section.
+"""))
+
+both(code("""
+from sklearn.model_selection import train_test_split
+from tabpfn import TabPFNClassifier
+
+def try_signals(use_image=True, use_text=True, use_demographics=True):
+    cols = []
+    if use_image:        cols += ["img_pred"]
+    if use_text:         cols += [c for c in df.columns if c.startswith("llm_")]
+    if use_demographics: cols += ["age", "sex_male", "smoker"]
+    if not cols:
+        print("Pick at least one signal!"); return
+    Xc = df[cols].fillna(0).values
+    yc = df["label"].values
+    Xa, Xb, ya, yb = train_test_split(Xc, yc, test_size=0.25, random_state=0, stratify=yc)
+    used = ', '.join(c for c, u in [('image', use_image), ('text', use_text), ('demographics', use_demographics)] if u)
+    try:
+        m = TabPFNClassifier(); m.fit(Xa, ya)
+        acc = (m.predict(Xb) == yb).mean()
+        print(f"signals used: {used}")
+        print(f"  -> {len(cols)} feature columns,  test accuracy = {acc:.3f}")
+    except Exception:
+        # TabPFN refuses a set with too little variation (e.g. our synthetic demographics alone).
+        print(f"signals used: {used}")
+        print("  -> TabPFN couldn't train on just this -- too few / too flat features.")
+        print("     That's itself a finding: demographics alone barely move the needle. Add another signal.")
+
+try:
+    from ipywidgets import interact_manual, Checkbox
+    interact_manual(try_signals, use_image=Checkbox(True, description="image"),
+                    use_text=Checkbox(True, description="text"),
+                    use_demographics=Checkbox(True, description="demographics"))
+except ImportError:
+    print("(no checkboxes -- ipywidgets missing; running a few combos)\\n")
+    for combo in [(True, False, False), (False, True, False), (False, False, True), (True, False, True)]:
+        try_signals(*combo)
+"""))
+
+both(md("""
+### 5.3 Sanity check: is it learning real signal, or memorizing?
+Here's a trick real ML engineers use. If a model learns **real** patterns, then **scrambling the
+answers** should destroy it, accuracy should crash to a coin flip (~50%). If it *didn't* crash,
+the model was just memorizing noise. **Predict:** what accuracy will the shuffled-label model get?
+"""))
+
+both(code("""
+import numpy as np
+y_shuffled = np.random.RandomState(1).permutation(y)   # same features, scrambled answers
+Xs_tr, Xs_te, ys_tr, ys_te = train_test_split(X, y_shuffled, test_size=0.25, random_state=0, stratify=y_shuffled)
+clf_shuf = TabPFNClassifier(); clf_shuf.fit(Xs_tr, ys_tr)
+acc_shuf = (clf_shuf.predict(Xs_te) == ys_te).mean()
+
+print(f"accuracy with REAL labels    : {acc_all:.3f}")
+print(f"accuracy with SHUFFLED labels: {acc_shuf:.3f}   (~0.50 = pure chance)")
+print("\\nThe gap between them is the real signal. If shuffled were also high, we'd be fooling ourselves.")
 """))
 
 # =========================================================================== #
