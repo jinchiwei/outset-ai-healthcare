@@ -121,15 +121,13 @@ def cost_of_a_miss():
     ax.text(x1, y1, "false\nalarm", ha="center", va="center", fontsize=10.5, family="Geist Mono",
             color=sf.INK, zorder=6)
 
-    # consequence captions under each pan
-    ax.add_patch(FancyBboxPatch((x0 - 2.5, 0.15), 5.0, 1.15, boxstyle="round,pad=0.03,rounding_size=0.12",
-                                facecolor="#F4DCE6", edgecolor=sf.DEEPPINK, linewidth=1.2))
-    ax.text(x0, 0.72, "cancer keeps growing -- can be fatal", ha="center", va="center",
-            fontsize=10.5, color=sf.DEEPPINK, family="Geist Mono")
-    ax.add_patch(FancyBboxPatch((x1 - 2.1, 8.7), 4.2, 1.0, boxstyle="round,pad=0.03,rounding_size=0.12",
-                                facecolor="#F6EBCB", edgecolor="#B8860B", linewidth=1.2))
-    ax.text(x1, 9.2, "just one extra check-up", ha="center", va="center",
-            fontsize=10.5, color="#8A6D0B", family="Geist Mono")
+    # consequence captions under each pan -- bbox auto-sizes to the text so nothing spills out
+    ax.text(x0, 0.7, "cancer keeps growing -- can be fatal", ha="center", va="center",
+            fontsize=10, color=sf.DEEPPINK, family="Geist Mono",
+            bbox=dict(boxstyle="round,pad=0.45", facecolor="#F4DCE6", edgecolor=sf.DEEPPINK, linewidth=1.2))
+    ax.text(x1, 9.3, "just one extra check-up", ha="center", va="center",
+            fontsize=10, color="#8A6D0B", family="Geist Mono",
+            bbox=dict(boxstyle="round,pad=0.45", facecolor="#F6EBCB", edgecolor="#B8860B", linewidth=1.2))
 
     ax.text(9.0, 10.55, "The two mistakes are not equal", ha="center", fontsize=15,
             family="Geist Mono", color=sf.INK, fontweight="bold")

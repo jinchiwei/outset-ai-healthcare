@@ -37,8 +37,9 @@ def cas9_cutting():
     fig, ax = plt.subplots(figsize=(9.4, 5.4)); ax.axis("off")     # wide blank canvas
     ax.set_xlim(0, 20); ax.set_ylim(0, 11); ax.set_aspect("auto")
 
-    # --- the Cas9 protein: two big lobes (REC + NUC) drawn behind everything, tinted blueviolet ---
-    for cx, cy, w, h in [(8.4, 5.6, 12.6, 6.6), (12.2, 6.0, 7.2, 5.4)]:
+    # --- the Cas9 protein: two big lobes (REC + NUC) drawn behind everything, tinted blueviolet.
+    #     Kept clear of the PAM zone on the right so the pink PAM label sits in open space. ---
+    for cx, cy, w, h in [(7.8, 5.6, 11.4, 6.6), (10.8, 6.0, 5.6, 5.2)]:
         ax.add_patch(Ellipse((cx, cy), w, h, facecolor=sf.BLUEVIOLET, edgecolor="none", alpha=0.13, zorder=1))
         ax.add_patch(Ellipse((cx, cy), w, h, facecolor="none", edgecolor=sf.BLUEVIOLET, lw=1.6, alpha=0.55, zorder=1))
     ax.text(4.1, 8.7, "Cas9 protein", ha="center", fontsize=12, family="Geist Mono",
@@ -66,8 +67,13 @@ def cas9_cutting():
     # --- the PAM: a short deeppink segment on the DNA, immediately 3' of the target ---
     ax.add_patch(FancyBboxPatch((13.1, 3.75), 1.5, 0.75, boxstyle="round,pad=0.02,rounding_size=0.12",
                                 facecolor=sf.DEEPPINK, edgecolor="none", zorder=5))
-    ax.text(15.35, 4.1, "PAM\n(NGG)", ha="left", va="center", fontsize=10, family="Geist Mono",
-            color=sf.DEEPPINK, fontweight="bold", zorder=8)        # PAM label (to the right of the box)
+    ax.text(13.85, 5.35, "PAM", ha="center", va="center", fontsize=11, family="Geist Mono",
+            color=sf.DEEPPINK, fontweight="bold", zorder=8)        # PAM label above its box
+    ax.annotate("", xy=(13.85, 4.55), xytext=(13.85, 5.05),
+                arrowprops=dict(arrowstyle="-", color=sf.DEEPPINK, lw=1.2), zorder=7)
+    # define PAM in plain words, in clear space to the right of the protein
+    ax.text(15.2, 4.15, "PAM = a short DNA tag (the\nletters 'NGG') that Cas9 must\nfind right next to the target\nbefore it is allowed to cut.",
+            ha="left", va="center", fontsize=8.5, family="Geist Mono", color=sf.INK, zorder=8)
 
     # --- the cut: an amber scissor mark ~3 bp upstream of the PAM, through both strands ---
     for yy in [(3.9, 4.5), (6.0, 6.7)]:                            # cut both the target and non-target strands
