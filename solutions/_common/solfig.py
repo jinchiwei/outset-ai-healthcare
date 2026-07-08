@@ -71,3 +71,26 @@ def save_results(obj, base):
     """Write the deck's headline numbers to results.json (the notebook + deck read this)."""
     (Path(base) / "results.json").write_text(json.dumps(obj, indent=2, default=float))
     print("wrote results.json")
+
+
+def shap_bar(model, X, feature_names, base, name, headline, max_feats=12):
+    """SHAP feature-importance bar: mean |SHAP value| per feature (which inputs drive the model)."""
+    import shap
+    ex = shap.TreeExplainer(model)
+    sv = ex.shap_values(X)
+    if isinstance(sv, list):
+        sv = sv[1] if len(sv) > 1 else sv[0]
+    sv = np.asarray(sv)
+    if sv.ndim == 3:                                  # (n, features, classes)
+        sv = sv[..., -1]
+    imp = np.abs(sv).mean(axis=0)
+    order = np.argsort(imp)[::-1][:max_feats]
+    names = [feature_names[i] for i in order][::-1]
+    vals = imp[order][::-1]
+    fig, ax = plt.subplots(figsize=(6.2, 0.35 * len(names) + 1.2))
+    ax.barh(names, vals, color=TURQUOISE, edgecolor=INK, linewidth=0.5)
+    ax.set_xlabel("mean |SHAP| (how much this feature moves the prediction)")
+    title(ax, headline)
+    save(fig, base, name)
+    save_raw(pd.DataFrame({"feature": names[::-1], "importance": vals[::-1]}), base, name)
+    return dict(zip(names[::-1], vals[::-1]))

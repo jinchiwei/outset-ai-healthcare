@@ -22,7 +22,7 @@ from pathlib import Path
 import numpy as np
 
 N_PER_CLASS = 600          # balanced subset -> 1200 slices total
-SIZE = 64
+SIZE = 224
 OUT = Path(__file__).resolve().parent / "brain_ct.npz"
 N_TRAIN_SHARDS = 42
 

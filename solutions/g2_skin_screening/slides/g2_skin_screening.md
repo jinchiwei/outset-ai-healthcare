@@ -1,47 +1,89 @@
 ---
-title: "Never miss a melanoma"
+title: "Screening skin spots for melanoma"
 eyebrow: "Outset · AI in Healthcare · Day 3 · Group 2"
-subtitle: "Screening skin spots for cancer, where catching every melanoma matters more than raw accuracy"
+subtitle: "Can a model look at a photo of a skin spot and catch the melanomas before a dermatologist ever sees them?"
 name: "Jinchi Wei"
 org: "Outset"
 date: "2026-07-08"
+logos: false
 ---
 
 # Background
 
 ---
 
-## Two mistakes, and only one of them can be fatal
+## The spot that could be melanoma
 
-Dermatology-AI systems look at a photo of a skin spot and estimate how likely it is to be cancer, and landmark studies showed a neural network can match or beat dermatologists at exactly this task (Esteva 2017, Haenssle 2018). But for a screening tool the goal is not to be right on average -- it is to never wave a real melanoma through as harmless, because that missed cancer is the one mistake that can kill.
+A dermatologist puts a dermatoscope over a skin spot and asks one question: is this harmless, or is it melanoma? HAM10000 holds real dermatoscopy photos of seven lesion types, and exactly one of them is the deadly one we must not miss.
 
----
-
-## Screening tunes one dial: sensitivity versus specificity
-
-Every screening model has a decision threshold, and where you set it is a trade-off you cannot escape. Slide it one way and you catch more cancers but raise more false alarms; slide it the other way and you calm the false alarms but start missing real disease. Screening deliberately favors sensitivity -- catching the cancers -- because a false alarm just costs a follow-up visit (Trevethan 2017).
+![A dermatoscope examining a lesion, with the seven HAM10000 lesion types](figures/intro_dermatoscope.png)
 
 ---
 
-## We borrow a brain instead of starting blank
+## Why a miss is deadly
 
-We only have about ten thousand skin images, far too few to teach a network vision from scratch. So we use transfer learning: start from a network already trained on millions of everyday photos, keep everything it learned about edges, colors, and textures, and fine-tune only a small new head on the skin images (Kim 2022). That borrowed knowledge is why a model can learn skin cancer from thousands, not millions, of pictures.
+The two mistakes a screen can make are not equal. Waving a real melanoma through as harmless lets a cancer keep growing and can be fatal. A false alarm just costs one extra check-up. That asymmetry is the whole reason we build the tool the way we do.
 
----
-
-# Methods
+![A missed melanoma vastly outweighs a false alarm](figures/intro_cost_of_a_miss.png)
 
 ---
 
-## The task: seven kinds of skin spot, one that we cannot miss
+## Machines already match dermatologists
 
-Our data is DermaMNIST, a tidy version of the HAM10000 dermatoscopy collection with seven lesion types, including melanoma (Tschandl 2018). The catch is severe imbalance: harmless moles make up about two-thirds of every set, and melanoma is a small slice -- which is precisely the setup where a lazy model can look accurate while catching zero cancers.
+This is not science fiction. In 2017 a single neural network, trained on about 129,450 clinical images, matched 21 board-certified dermatologists at telling dangerous skin cancers from harmless spots. Our project is a small, honest version of that same idea.
+
+![Esteva 2017: one network matched 21 dermatologists](figures/intro_esteva_2017.png)
 
 ---
 
-## How we built it, and how we graded it honestly
+# The data
 
-We trained the network three ways -- from scratch, pretrained, and pretrained with augmentation -- and then audited the best one the way a regulator would. We did not grade on accuracy alone; we tracked melanoma recall, the share of true melanomas actually caught, because on this data that single number decides whether the tool is safe.
+---
+
+## Why HAM10000
+
+We need real clinical images, enough of them to train on, and a record of who each patient is so we can check fairness. HAM10000 gives us all three, which is exactly why it is the right dataset for a first melanoma screen.
+
+### 10,015 images
+Real dermatoscopy photos, not cartoons -- the same kind a clinic captures.
+
+### 7 lesion types
+Collapsed to one screening question: melanoma versus everything else.
+
+### 11% melanoma
+The rare, deadly class -- and it records age and sex, so we can audit fairness.
+
+---
+
+## Accuracy is a trap; sensitivity is the job
+
+Because only about 1 in 9 spots is melanoma, a lazy model that always says "not melanoma" scores nearly 89% accuracy and catches zero cancers. So we grade a screen on sensitivity, and we tune it with one dial: where we set the decision threshold.
+
+![The screening dial: sensitivity versus specificity](figures/intro_sensitivity_tradeoff.png)
+
+---
+
+# The model
+
+---
+
+## Borrow a brain: transfer learning
+
+We only have about ten thousand skin images, far too few to teach a network from scratch. So we start from a network already trained on millions of everyday photos, reuse what it learned about edges and color, and fine-tune it on skin.
+
+---
+
+## Why CAFormer, not ResNet18
+
+We did not guess which network to use -- we ran a bake-off and let held-out AUC decide. A plain ResNet18 was already good, but the stronger CAFormer backbone beat it, so CAFormer becomes our screen.
+
+![CAFormer beats ResNet18 on held-out AUC](figures/backbone_choice.png)
+
+---
+
+## Model and data processing
+
+Here is the exact recipe, so anyone could reproduce it. A frozen CAFormer backbone with a fresh two-class head, fed full-resolution images, with the rare class up-weighted, graded only on data the model never saw.
 
 ---
 
@@ -49,33 +91,43 @@ We trained the network three ways -- from scratch, pretrained, and pretrained wi
 
 ---
 
-## A better starting point beat a fancier model
+## A working screen
 
-The three training setups landed almost on top of each other, and that is the honest, humbling lesson: on a dataset this small the ceiling is set by the data, not by how clever the model is. A better starting point (transfer learning) matters more than any fancy trick you bolt on afterward.
+How we measure a screen: the ROC curve sweeps every possible cut-off and plots melanomas caught against false alarms, and AUC is the area underneath, where 0.5 is a coin flip and 1.0 is perfect. Our screen scores 0.885.
 
----
-
-## The confusion matrix tells the real story
-
-Overall accuracy is one number; the confusion matrix shows which mistakes the model actually makes. The diagonal is correct and everything off it is an error, and one column swallows almost everything -- the model funnels nearly every spot, cancer or not, into the common harmless-mole class.
+![The ROC curve, AUC 0.88](figures/roc.png)
 
 ---
 
-## Screening lives or dies on the rare classes
+## Tuning to miss fewer cancers
 
-Break accuracy down class by class and the average falls apart. The model is near-perfect on the one common class and near the floor on every rare one, including melanoma, highlighted in pink. A tool that works this differently across classes is not one you would ever deploy to screen a patient.
+The default cut-off is tuned for accuracy, not for catching cancers. So we lower the threshold on purpose: catch more melanomas, and accept the cost in false alarms. This is the fix that matters for a screen.
 
----
-
-## The one number that matters: melanoma recall
-
-Here is the sentence that should stop the room. Our model reached sixty-eight percent overall accuracy and still caught only ten of the two hundred twenty-three real melanomas in the test set. It missed two hundred thirteen cancers -- proof that a healthy-looking accuracy number can hide a screening tool that is dangerous.
+![Before and after tuning: recall 74% to 90%](figures/recall_tuning.png)
 
 ---
 
-## The cases it got wrong are the ones that matter
+## At the screening setting
 
-The most revealing slide in any talk is the model's mistakes. Look at how many true melanomas it labeled as harmless moles: every one of those is a false negative, the exact error a screening tool exists to prevent, and the reason a dermatologist would want a second look at all of them.
+Measured by the confusion matrix, the tuned screen catches 130 of 144 melanomas and misses only 14, at the price of 340 false alarms out of about 1,140 healthy spots. Those are the exact trade-offs a clinician would weigh.
+
+![Confusion matrix at the screening threshold](figures/confusion.png)
+
+---
+
+## Does it work for women and men?
+
+Measured by AUC computed separately for each sex, the screen clears 0.8 for both groups, but it is stronger for men than for women. Naming that gap out loud is part of building a screen you can trust.
+
+![Fairness by sex: AUC 0.91 for men, 0.85 for women](figures/fairness_by_sex.png)
+
+---
+
+## Where the screen looks
+
+Feature importance for an image is Grad-CAM: it highlights where on the photo the model looked. The bright areas sit on the pigmented lesion itself, the same cues a dermatologist uses -- not a hair, a ruler, or the corner of the frame.
+
+![Grad-CAM: the screen looks at the lesion](figures/gradcam.png)
 
 ---
 
@@ -83,12 +135,33 @@ The most revealing slide in any talk is the model's mistakes. Look at how many t
 
 ---
 
-## A toy model, and why that is exactly the point
+## What it can and cannot do
 
-This model is far too small and simple to trust on a real patient: sixty-four-pixel grayscale thumbnails throw away the color and fine texture that dermatologists and real systems rely on, and its melanoma recall is nowhere near safe (Wei 2024). A real tool would train on full-resolution color images, deliberately tune its threshold toward high sensitivity, and be validated across many hospitals first. The point was never the score -- it was learning the screening mindset: never miss the dangerous case, and never let a shiny number fool you.
+A good project names its own limits out loud. Ours is a genuinely working screen, but it is not ready for a patient, and here is exactly where the line sits.
+
+### It works
+A real melanoma screen on real dermatoscopy: AUC 0.885, tuned to catch 90% of melanomas.
+
+### But it is uneven
+A real gap by sex, and HAM10000 skews toward lighter skin, so darker skin is unproven here.
+
+### A real tool
+Would train on more diverse patients, be validated across many hospitals, and keep a dermatologist in the loop.
 
 ---
 
-## References, and thank you
+## References
 
-Seven papers grounded this project, from the dermatologist-level results that started the field to the plain-language guide on why sensitivity matters. Thank you for watching -- go build something you can honestly evaluate.
+The seven papers behind this project, from the landmark studies to the plain-language primers on what sensitivity really means.
+
+### Foundations
+[1] Esteva et al. 2017, Nature. [2] Tschandl, Rosendahl and Kittler 2018, Sci Data (HAM10000). [3] Haenssle et al. 2018, Ann Oncol. [4] Tschandl et al. 2019, Lancet Oncol.
+
+### Methods and primers
+[5] Kim et al. 2022, BMC Med Imaging (transfer learning). [6] Trevethan 2017, Front Public Health (sensitivity). [7] Wei et al. 2024, Front Med (AI and skin cancer).
+
+---
+
+## The honest bottom line
+
+A screen earns trust by catching the dangerous case, tuning its threshold on purpose, and checking who it works for. Use this to learn the screening mindset -- then use a validated tool and a dermatologist to actually screen a patient.
