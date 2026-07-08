@@ -8,7 +8,8 @@
       "kind": "section-divider",
       "params": {
         "accent_hex": "#40E0D0",
-        "label": "Background"
+        "label": "Background",
+        "notes": "This opening section sets up the problem: what a skin-screening model actually does, and why catching every melanoma matters more than raw accuracy. Keep the asymmetry of the two mistakes in mind throughout."
       },
       "slide_id": "divider-h1-background"
     },
@@ -17,8 +18,9 @@
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "_add_text(slide, 'Dermatology-AI systems look at a photo of a skin spot and estimate how likely it is to be cancer, and landmark studies showed a neural network can match or beat dermatologists at exactly this task (Esteva 2017, Haenssle 2018). But for a screening tool the goal is not to be right on average – it is to never wave a real melanoma through as harmless, because that missed cancer is the one mistake that can kill.', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=1.20, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "code": "fw = body_w*0.5\n_fit_image(slide, \"figures/intro_cost_of_a_miss.png\", left=body_l, top=body_top+0.05, max_w=fw, max_h=body_h-0.25)\npx = body_l + fw + 0.45\npw = body_w - fw - 0.45\n_add_rect(slide, left=px, top=body_top+0.18, width=0.08, height=body_h-0.72, fill_rgb=accent_rgb)\n_add_text(slide, \"Dermatology-AI looks at a photo of a skin spot and estimates how likely it is to be cancer, and landmark studies showed a neural network can match or beat dermatologists at exactly this task (Esteva 2017, Haenssle 2018). But for a screening tool the goal is not to be right on average -- it is to never wave a real melanoma through as harmless, because that missed cancer is the one mistake that can kill.\", left=px+0.30, top=body_top+0.05, width=pw-0.34, height=body_h-0.45, size=17, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT, anchor=MSO_ANCHOR.MIDDLE)",
         "lede": "",
+        "notes": "The core idea of the whole talk: the two kinds of mistake are not equal. A false alarm just costs a follow-up visit, but a missed melanoma can be fatal. That asymmetry is why we will judge the model on catching cancers, not on overall accuracy. Next we make the trade-off concrete with a single dial.",
         "section_label": "Background",
         "title": "Two mistakes, and only one of them can be fatal"
       },
@@ -29,8 +31,9 @@
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "_add_text(slide, 'Every screening model has a decision threshold, and where you set it is a trade-off you cannot escape. Slide it one way and you catch more cancers but raise more false alarms; slide it the other way and you calm the false alarms but start missing real disease. Screening deliberately favors sensitivity – catching the cancers – because a false alarm just costs a follow-up visit (Trevethan 2017).', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=1.20, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "code": "fw = body_w*0.58\n_fit_image(slide, \"figures/intro_sensitivity_tradeoff.png\", left=body_l, top=body_top+0.05, max_w=fw, max_h=body_h-0.25)\npx = body_l + fw + 0.45\npw = body_w - fw - 0.45\n_add_rect(slide, left=px, top=body_top+0.18, width=0.08, height=body_h-0.72, fill_rgb=accent_rgb)\n_add_text(slide, \"Every screening model has a decision threshold, and where you set it is a trade-off you cannot escape. Slide it one way and you catch more cancers but raise more false alarms; slide it the other way and you calm the false alarms but start missing real disease. Screening deliberately favors sensitivity -- catching the cancers -- because a false alarm just costs a follow-up visit (Trevethan 2017).\", left=px+0.30, top=body_top+0.05, width=pw-0.34, height=body_h-0.45, size=17, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT, anchor=MSO_ANCHOR.MIDDLE)",
         "lede": "",
+        "notes": "The two bell curves are the model's cancer scores for healthy spots (left) and true melanomas (right). The dashed line is the threshold that turns a score into a yes-or-no call. Sliding it left catches more melanomas at the cost of more false alarms. Screening tools deliberately live on the left. Next: how we teach the model to see with so few images.",
         "section_label": "Background",
         "title": "Screening tunes one dial: sensitivity versus specificity"
       },
@@ -41,8 +44,9 @@
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "_add_text(slide, 'We only have about ten thousand skin images, far too few to teach a network vision from scratch. So we use transfer learning: start from a network already trained on millions of everyday photos, keep everything it learned about edges, colors, and textures, and fine-tune only a small new head on the skin images (Kim 2022). That borrowed knowledge is why a model can learn skin cancer from thousands, not millions, of pictures.', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=1.20, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "code": "_fit_image(slide, \"figures/intro_transfer_learning.png\", left=body_l, top=body_top+0.05, max_w=body_w, max_h=body_h*0.58)\n_add_rect(slide, left=body_l+0.02, top=body_top+body_h*0.58+0.20, width=0.08, height=body_h*0.42000000000000004-0.35, fill_rgb=accent_rgb)\n_add_text(slide, \"We only have about ten thousand skin images, far too few to teach a network vision from scratch. So we use transfer learning: start from a network already trained on millions of everyday photos, keep everything it learned about edges, colors, and textures, and fine-tune only a small new head on the skin images (Kim 2022). That borrowed knowledge is why a model can learn skin cancer from thousands, not millions, of pictures.\", left=body_l+0.30, top=body_top+body_h*0.58+0.12, width=body_w-0.5, height=body_h*0.42000000000000004-0.15, size=16, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT, anchor=MSO_ANCHOR.MIDDLE)",
         "lede": "",
+        "notes": "Transfer learning is the trick that makes small medical datasets workable. A network pre-trained on ordinary photos already understands edges, colors, and textures, so we only teach it the last step -- melanoma versus not. Reusing that borrowed vision is why thousands of images are enough. Now we turn to the actual dataset and task.",
         "section_label": "Background",
         "title": "We borrow a brain instead of starting blank"
       },
@@ -53,7 +57,8 @@
       "kind": "section-divider",
       "params": {
         "accent_hex": "#FF1493",
-        "label": "Methods"
+        "label": "Methods",
+        "notes": "Now we describe the data and the experiment -- the seven-class DermaMNIST task and, crucially, the honest way we chose to grade the model."
       },
       "slide_id": "divider-h1-methods"
     },
@@ -62,8 +67,9 @@
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "_add_text(slide, 'Our data is DermaMNIST, a tidy version of the HAM10000 dermatoscopy collection with seven lesion types, including melanoma (Tschandl 2018). The catch is severe imbalance: harmless moles make up about two-thirds of every set, and melanoma is a small slice – which is precisely the setup where a lazy model can look accurate while catching zero cancers.', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=0.98, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "code": "_add_text(slide, \"Our data is DermaMNIST, a tidy version of the HAM10000 dermatoscopy collection with seven kinds of skin lesion, one of which is melanoma -- the class we cannot afford to miss (Tschandl 2018).\", left=body_l, top=body_top, width=body_w*0.52, height=body_h-0.40, size=18, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT, anchor=MSO_ANCHOR.MIDDLE)\nch = 2.05\nct = body_top + (body_h - 0.40 - ch)/2.0\n_add_card(slide, label=\"THE CATCH  --  IMBALANCE\", body=\"About two-thirds of every set is harmless moles. Melanoma is only a thin slice -- exactly the setup where a lazy model can look accurate while catching almost no cancers.\", left=body_l+body_w*0.575, top=ct, width=body_w*0.425, height=ch, accent_rgb=accent_rgb)",
         "lede": "",
+        "notes": "DermaMNIST is a clean, student-friendly version of the real HAM10000 dermatoscopy images, with seven lesion types. The key feature is severe class imbalance: harmless moles dominate. That imbalance is a trap, because a model can score high accuracy just by guessing mole every time. Next: how we trained, and more importantly how we graded honestly.",
         "section_label": "Methods",
         "title": "The task: seven kinds of skin spot, one that we cannot miss"
       },
@@ -74,8 +80,9 @@
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "_add_text(slide, 'We trained the network three ways – from scratch, pretrained, and pretrained with augmentation – and then audited the best one the way a regulator would. We did not grade on accuracy alone; we tracked melanoma recall, the share of true melanomas actually caught, because on this data that single number decides whether the tool is safe.', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=0.98, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "code": "_add_text(slide, \"We trained the network three ways -- from scratch, pretrained, and pretrained with augmentation -- and then audited the best one the way a regulator would, refusing to grade on accuracy alone.\", left=body_l, top=body_top, width=body_w*0.52, height=body_h-0.40, size=18, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT, anchor=MSO_ANCHOR.MIDDLE)\nch = 2.05\nct = body_top + (body_h - 0.40 - ch)/2.0\n_add_card(slide, label=\"WE GRADED ON\", body=\"Melanoma recall -- the share of true melanomas actually caught. On this data that single number, not overall accuracy, is what decides whether the tool is safe.\", left=body_l+body_w*0.575, top=ct, width=body_w*0.425, height=ch, accent_rgb=accent_rgb)",
         "lede": "",
+        "notes": "We ran three versions to see whether a better starting point or a fancier trick mattered more. Crucially we did not grade on accuracy alone. We tracked melanoma recall -- the fraction of real melanomas actually caught -- because on imbalanced data that is the number that reflects safety. The results section shows what we found.",
         "section_label": "Methods",
         "title": "How we built it, and how we graded it honestly"
       },
@@ -86,7 +93,8 @@
       "kind": "section-divider",
       "params": {
         "accent_hex": "#F0C840",
-        "label": "Results"
+        "label": "Results",
+        "notes": "Here are the real numbers. Watch how a respectable-looking accuracy falls apart the moment we look at the rare, dangerous classes."
       },
       "slide_id": "divider-h1-results"
     },
@@ -95,8 +103,9 @@
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "_add_text(slide, 'The three training setups landed almost on top of each other, and that is the honest, humbling lesson: on a dataset this small the ceiling is set by the data, not by how clever the model is. A better starting point (transfer learning) matters more than any fancy trick you bolt on afterward.', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=0.98, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "code": "fw = body_w*0.56\n_fit_image(slide, \"figures/data_beats_model.png\", left=body_l, top=body_top+0.05, max_w=fw, max_h=body_h-0.25)\npx = body_l + fw + 0.45\npw = body_w - fw - 0.45\n_add_rect(slide, left=px, top=body_top+0.18, width=0.08, height=body_h-0.72, fill_rgb=accent_rgb)\n_add_text(slide, \"The three training setups landed almost on top of each other, and that is the honest, humbling lesson: on a dataset this small the ceiling is set by the data, not by how clever the model is. A better starting point (transfer learning) matters more than any fancy trick you bolt on afterward.\", left=px+0.30, top=body_top+0.05, width=pw-0.34, height=body_h-0.45, size=17, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT, anchor=MSO_ANCHOR.MIDDLE)",
         "lede": "",
+        "notes": "All three bars sit at about 0.68 accuracy -- from-scratch, pretrained, and pretrained-plus-augmentation are basically tied. The lesson is humbling: when the data is this small and skewed, the data sets the ceiling, not the cleverness of the model. But this accuracy number is about to mislead us, which the next slide reveals.",
         "section_label": "Results",
         "title": "A better starting point beat a fancier model"
       },
@@ -107,8 +116,9 @@
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "_add_text(slide, 'Overall accuracy is one number; the confusion matrix shows which mistakes the model actually makes. The diagonal is correct and everything off it is an error, and one column swallows almost everything – the model funnels nearly every spot, cancer or not, into the common harmless-mole class.', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=0.98, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "code": "fw = body_w*0.52\n_fit_image(slide, \"figures/confusion.png\", left=body_l, top=body_top+0.05, max_w=fw, max_h=body_h-0.25)\npx = body_l + fw + 0.45\npw = body_w - fw - 0.45\n_add_rect(slide, left=px, top=body_top+0.18, width=0.08, height=body_h-0.72, fill_rgb=accent_rgb)\n_add_text(slide, \"Overall accuracy is one number; the confusion matrix shows which mistakes the model actually makes. The diagonal is correct and everything off it is an error, and one column swallows almost everything -- the model funnels nearly every spot, cancer or not, into the common harmless-mole class.\", left=px+0.30, top=body_top+0.05, width=pw-0.34, height=body_h-0.45, size=17, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT, anchor=MSO_ANCHOR.MIDDLE)",
         "lede": "",
+        "notes": "A confusion matrix lays truth (rows) against the model's guess (columns). Correct answers sit on the diagonal; everything else is a mistake. Notice the one dark column: the model dumps almost every lesion, including cancers, into the common mole class. That is how it scores 0.68 while being useless for screening. Next we break accuracy apart class by class.",
         "section_label": "Results",
         "title": "The confusion matrix tells the real story"
       },
@@ -119,8 +129,9 @@
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "_add_text(slide, 'Break accuracy down class by class and the average falls apart. The model is near-perfect on the one common class and near the floor on every rare one, including melanoma, highlighted in pink. A tool that works this differently across classes is not one you would ever deploy to screen a patient.', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=0.98, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "code": "fw = body_w*0.58\n_fit_image(slide, \"figures/per_class_fairness.png\", left=body_l, top=body_top+0.05, max_w=fw, max_h=body_h-0.25)\npx = body_l + fw + 0.45\npw = body_w - fw - 0.45\n_add_rect(slide, left=px, top=body_top+0.18, width=0.08, height=body_h-0.72, fill_rgb=accent_rgb)\n_add_text(slide, \"Break accuracy down class by class and the average falls apart. The model is near-perfect on the one common class and near the floor on every rare one, including melanoma, highlighted in pink. A tool that works this differently across classes is not one you would ever deploy to screen a patient.\", left=px+0.30, top=body_top+0.05, width=pw-0.34, height=body_h-0.45, size=17, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT, anchor=MSO_ANCHOR.MIDDLE)",
         "lede": "",
+        "notes": "The dashed line is the 0.68 overall accuracy. Only the common mole class rises above it; every rare class, melanoma in pink included, sits near zero. An average can hide this completely. A screening tool has to work on the rare, dangerous classes -- and this one does not. Next, the single number that makes it undeniable.",
         "section_label": "Results",
         "title": "Screening lives or dies on the rare classes"
       },
@@ -131,8 +142,9 @@
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "_add_text(slide, 'Here is the sentence that should stop the room. Our model reached sixty-eight percent overall accuracy and still caught only ten of the two hundred twenty-three real melanomas in the test set. It missed two hundred thirteen cancers – proof that a healthy-looking accuracy number can hide a screening tool that is dangerous.', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=0.98, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "code": "_add_text(slide, \"MELANOMA RECALL\", left=body_l+0.15, top=body_top+0.35, width=body_w*0.46, height=0.45, size=17, color_rgb=DEEPPINK_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, \"4.5%\", left=body_l, top=body_top+0.72, width=body_w*0.46, height=1.9, size=118, color_rgb=DEEPPINK_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, \"only 10 of 223 melanomas caught\", left=body_l+0.17, top=body_top+2.55, width=body_w*0.46, height=0.4, size=15, color_rgb=(WHITE_RGB if ON_DARK else MUTED_RGB), font=SANS_FONT)\n_add_rect(slide, left=body_l+body_w*0.50, top=body_top+0.45, width=0.02, height=2.45, fill_rgb=RULE_RGB)\n_add_text(slide, \"CANCERS MISSED\", left=body_l+body_w*0.545, top=body_top+0.35, width=body_w*0.44, height=0.45, size=17, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=MONO_FONT, bold=True)\n_add_text(slide, \"213\", left=body_l+body_w*0.535, top=body_top+0.72, width=body_w*0.44, height=1.9, size=118, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=MONO_FONT, bold=True)\n_add_text(slide, \"waved through as harmless\", left=body_l+body_w*0.545, top=body_top+2.55, width=body_w*0.44, height=0.4, size=15, color_rgb=(WHITE_RGB if ON_DARK else MUTED_RGB), font=SANS_FONT)\n_add_rect(slide, left=body_l+0.15, top=body_top+body_h-1.28, width=body_w-0.30, height=0.02, fill_rgb=accent_rgb)\n_add_text(slide, \"Sixty-eight percent overall accuracy hid a tool that missed almost every cancer. A healthy-looking number can conceal a screening tool that is dangerous.\", left=body_l+0.15, top=body_top+body_h-1.15, width=body_w-0.30, height=1.05, size=18, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT, italic=True, anchor=MSO_ANCHOR.MIDDLE)",
         "lede": "",
+        "notes": "The emotional peak. The model looks respectable at 68% accuracy, yet it caught only 10 of 223 melanomas and missed 213 of them. Recall of 4.5% means it would wave almost every real cancer through as harmless. The sentence to remember: a healthy-looking accuracy number can hide a dangerous screening tool. Next we look those mistakes in the eye.",
         "section_label": "Results",
         "title": "The one number that matters: melanoma recall"
       },
@@ -143,8 +155,9 @@
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "_add_text(slide, 'The most revealing slide in any talk is the model’s mistakes. Look at how many true melanomas it labeled as harmless moles: every one of those is a false negative, the exact error a screening tool exists to prevent, and the reason a dermatologist would want a second look at all of them.', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=0.98, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "code": "_add_text(slide, \"The most revealing slide in any talk is the model's mistakes. Look how many true melanomas it labeled as harmless moles: every one is a false negative, the exact error a screening tool exists to prevent, and the reason a dermatologist would want a second look at all of them.\", left=body_l+0.10, top=body_top+0.05, width=body_w-0.2, height=1.15, size=16, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)\n_fit_image(slide, \"figures/failures.png\", left=body_l, top=body_top+1.30, max_w=body_w, max_h=2.55)",
         "lede": "",
+        "notes": "These are real test lesions the model got wrong, with the truth and the guess printed above each. Count how many true melanomas it called melanocyti -- a harmless mole. Each is a false negative, the precise mistake screening exists to catch. Seeing the errors as images, not numbers, is what makes the risk real. Now let us be honest about what this toy can and cannot do.",
         "section_label": "Results",
         "title": "The cases it got wrong are the ones that matter"
       },
@@ -155,7 +168,8 @@
       "kind": "section-divider",
       "params": {
         "accent_hex": "#40E0D0",
-        "label": "Being honest"
+        "label": "Being honest",
+        "notes": "Finally, the limits: why this toy model is not safe for real patients, what a real tool would need, and the mindset that actually transfers."
       },
       "slide_id": "divider-h1-being-honest"
     },
@@ -164,8 +178,9 @@
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "_add_text(slide, 'This model is far too small and simple to trust on a real patient: sixty-four-pixel grayscale thumbnails throw away the color and fine texture that dermatologists and real systems rely on, and its melanoma recall is nowhere near safe (Wei 2024). A real tool would train on full-resolution color images, deliberately tune its threshold toward high sensitivity, and be validated across many hospitals first. The point was never the score – it was learning the screening mindset: never miss the dangerous case, and never let a shiny number fool you.', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=1.64, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "code": "_add_text(slide, \"This model is far too small and simple to trust on a real patient: sixty-four-pixel grayscale thumbnails throw away the color and fine texture that dermatologists and real systems rely on, and its melanoma recall is nowhere near safe (Wei 2024). The point was never the score -- it was learning the screening mindset: never miss the dangerous case, and never let a shiny number fool you.\", left=body_l, top=body_top, width=body_w*0.52, height=body_h-0.40, size=18, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT, anchor=MSO_ANCHOR.MIDDLE)\nch = 2.05\nct = body_top + (body_h - 0.40 - ch)/2.0\n_add_card(slide, label=\"A REAL TOOL WOULD\", body=\"Train on full-resolution color images. Deliberately tune its threshold toward high sensitivity. Be validated across many hospitals before it ever sees a patient.\", left=body_l+body_w*0.575, top=ct, width=body_w*0.425, height=ch, accent_rgb=accent_rgb)",
         "lede": "",
+        "notes": "Be honest about the limits. Our input is tiny 64-pixel grayscale thumbnails, which discard the color and texture real dermatology depends on, so a 4.5% recall is expected, not surprising. A deployable tool would use full-resolution color, tune the threshold for sensitivity, and be validated across many sites. The real lesson is the mindset: never miss the dangerous case, and never trust a shiny accuracy number.",
         "section_label": "Being honest",
         "title": "A toy model, and why that is exactly the point"
       },
@@ -176,8 +191,9 @@
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "_add_text(slide, 'Seven papers grounded this project, from the dermatologist-level results that started the field to the plain-language guide on why sensitivity matters. Thank you for watching – go build something you can honestly evaluate.', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=0.76, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "code": "_add_text(slide, \"SEVEN PAPERS GROUNDED THIS PROJECT\", left=body_l+0.05, top=body_top, width=body_w, height=0.40, size=15, color_rgb=accent_rgb, font=MONO_FONT, bold=True)\n_add_text(slide, \"[1] Esteva et al. 2017 -- Dermatologist-level classification of skin cancer with deep neural networks. Nature.\\n\\n[2] Tschandl et al. 2018 -- The HAM10000 dermatoscopy dataset. Scientific Data.\\n\\n[3] Haenssle et al. 2018 -- Man against machine: a CNN vs 58 dermatologists. Annals of Oncology.\\n\\n[4] Tschandl et al. 2019 -- Human readers vs machine learning for pigmented lesions. Lancet Oncology.\", left=body_l+0.05, top=body_top+0.60, width=body_w*0.48, height=body_h-1.70, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)\n_add_text(slide, \"[5] Kim et al. 2022 -- Transfer learning for medical image classification: a review. BMC Medical Imaging.\\n\\n[6] Trevethan 2017 -- Sensitivity, specificity, and predictive values. Frontiers in Public Health.\\n\\n[7] Wei et al. 2024 -- Artificial intelligence and skin cancer. Frontiers in Medicine.\", left=body_l+body_w*0.52, top=body_top+0.60, width=body_w*0.46, height=body_h-1.70, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)\n_add_rect(slide, left=body_l+0.05, top=body_top+body_h-0.80, width=body_w-0.10, height=0.02, fill_rgb=accent_rgb)\n_add_text(slide, \"Thank you for watching  --  go build something you can honestly evaluate.\", left=body_l+0.05, top=body_top+body_h-0.66, width=body_w-0.10, height=0.55, size=18, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=MONO_FONT, bold=True)",
         "lede": "",
+        "notes": "These are the seven references behind the project, from the landmark dermatologist-level results that launched the field to the plain-language primer on why sensitivity matters. The closing thought: the score was never the point -- honest evaluation was. Thank the audience and invite questions.",
         "section_label": "Being honest",
         "title": "References, and thank you"
       },
