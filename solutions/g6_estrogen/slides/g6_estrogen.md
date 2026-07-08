@@ -1,112 +1,168 @@
 ---
-title: "Does estrogen keep the mind sharp?"
+title: "Does estrogen keep older women's minds sharp?"
 eyebrow: "Outset · AI in Healthcare · Day 3 · Group 6"
-subtitle: "A twenty-year lesson in confounding, and why a survey can hint but only an experiment can prove"
+subtitle: "A causal question, where a naive analysis gets it wrong -- and the right method flips the answer."
 name: "Jinchi Wei"
 org: "Outset"
 date: "2026-07-08"
+logos: false
 ---
 
 # Background
 
 ---
 
-## A twenty-year detective story
+## The visit no test explains
 
-For years, studies that just watched women found estrogen users had sharper memory and less dementia. It looked like proof the pills protected the brain. Then a real experiment said the opposite. This is the story of why.
+A woman in her sixties describes daily brain fog -- losing words, forgetting why she walked into a room -- and the objective memory test comes back normal. The number on the chart cannot see what she is living. That gap is where this project starts.
 
----
-
-## When they flipped a coin, the benefit vanished
-
-The single most important slide. Just watching said hormones protect the brain; a randomized trial said they harm it. Same drug, opposite answer.
-
-![effect flip](figures/intro_effect_flip.png)
+![A woman describing brain fog while the objective test reads normal](figures/intro_doctor_office.png)
 
 ---
 
-## Healthy-user bias: a hidden third factor
+## The tests say fine; she says not fine
 
-The women who chose hormones were already healthier, wealthier, and more active. That hidden factor drove both the drug use and the good memory, faking a link that was never cause.
+Measured side by side, most women's objective cognitive scores land in the normal band, yet their self-reported brain fog is high and scattered. The lines cross. A good analyst takes both the number and the patient's account as real evidence.
 
-![confounding triangle](figures/intro_confounding_triangle.png)
-
----
-
-## Ice cream and shark attacks
-
-The same trap in a picture everyone already knows. When two things move together, always ask whether a hidden third factor is quietly driving both.
+![Objective test scores versus self-reported brain fog](figures/intro_objective_vs_subjective.png)
 
 ---
 
-# Methods
+## Twenty years of watching said estrogen helps
+
+For years, studies that simply watched women found estrogen users got Alzheimer's less often. Then a trial let a coin flip decide who got hormones, and the benefit did not just vanish, it reversed. Same drug, opposite answer.
+
+![Observational studies versus the WHIMS randomized trial](figures/intro_effect_flip.png)
 
 ---
 
-## Our data: NHANES women 60 and older
+## Why watching lied: healthy-user bias
 
-A real government health survey. For each woman we know whether she ever used estrogen, her background, and her score on a memory-and-attention test.
+The women who chose hormone therapy were also richer, more active, and saw doctors more often to begin with. That hidden head start drives both the drug use and the good memory, so the direct link only looks like cause.
 
----
-
-## The one question we can actually ask
-
-We cannot randomly assign estrogen in a survey. But we can ask: does the estrogen effect survive once we account for the background differences between users and non-users?
+![The confounding triangle: a hidden factor fakes the link](figures/intro_confounding_triangle.png)
 
 ---
 
-# Results
+# The data
+
+---
+
+## Why NHANES
+
+We need a real, national sample where each woman has both an objective cognition score and whether she used estrogen, plus the background facts that make confounding checkable. NHANES gives us all three.
+
+### 739 women
+All age 60+, from the NHANES 2013-14 US national health survey.
+
+### Used estrogen?
+Whether she ever took female hormones -- the treatment we are studying.
+
+### Her background
+Age, education, and family income -- the confounders we must adjust for.
+
+### Memory score
+A digit-symbol test; higher is sharper. We study who lands in the weaker half.
+
+---
+
+## The honest question we can actually ask
+
+We cannot randomly assign estrogen in a survey, so we cannot prove cause. But we can ask a narrower, honest question, and the answer to it is the whole deliverable.
+
+---
+
+# The model
+
+---
+
+## Prediction is not causation
+
+A causal question needs a model whose estrogen effect you can read as one number and watch change. A black box predicts but locks that number away. Here it does not even predict better, so the choice is easy.
+
+![A black box predicts but cannot give an adjustable effect size](figures/intro_prediction_vs_causation.png)
+
+---
+
+## Why logistic regression, and the exact recipe
+
+We choose logistic regression because its coefficient for estrogen is the effect size we read, and we can watch it shrink as we add confounders. Here is the full pipeline, so anyone could reproduce it.
+
+---
+
+# The results
 
 ---
 
 ## The tempting headline
 
-Take the naive look first. Average the memory-test score for users versus non-users, and users are eight points ahead. That is exactly the exciting clue the early studies chased.
+The naive look anyone would take first: average the memory score for users versus non-users. Users come out about eight points ahead. Taken at face value, the exciting headline writes itself.
 
-![raw means](figures/raw_means.png)
-
----
-
-## Two-thirds of the effect was confounding
-
-Now the honest test. Adjust for age, education, and income, and most of the estrogen effect melts away. Two-thirds of the apparent benefit was never the pill.
-
-![confounding](figures/confounding.png)
+![Estrogen users score higher on the raw memory test](figures/raw_means.png)
 
 ---
 
-## Does the model work for everyone?
+## Most of the gap was confounding
 
-A fairness check. One model, two groups. It is noticeably more accurate for estrogen-users than for non-users, and naming that gap out loud is the honest move.
+Now the honest test: measure estrogen's effect alone, then again after adjusting for age, education, and income. The effect collapses from crude to adjusted. Two-thirds of the apparent benefit was never the pill.
 
-![fairness by group](figures/fairness_by_group.png)
-
----
-
-# What the numbers can't capture
+![67 percent of the effect was confounding, not cause](figures/confounding.png)
 
 ---
 
-## The tests say "fine"; she says "not fine"
+## What actually predicts cognition
 
-Our data is a test score. But many women report real daily brain fog even when the test looks normal. The number and the lived experience can disagree, and both are evidence.
+Feature importance comes free from the same interpretable model: the standardized coefficients. Education and age dominate, and estrogen is the smallest bar. Prediction and causation agree, and neither points at the pill.
 
-![objective vs subjective](figures/intro_objective_vs_subjective.png)
+![Education and age dominate; estrogen is tiny](figures/feature_importance.png)
 
 ---
 
-## A survey can hint; only an experiment proves
+## Can it even predict?
 
-What this analysis can and cannot do. Adjusting exposes confounding, but it can only correct for what we measured. Proving cause needs a coin flip, not a survey.
+The causal answer is the deliverable, but it is fair to ask how well the model predicts low cognition at all. Measured honestly with cross-validation, it clears a real signal -- driven by age and education, not estrogen.
+
+---
+
+## Does it work for both groups?
+
+Measured by accuracy computed separately for each group, the model is a bit stronger for estrogen-users than for non-users. Naming that gap out loud is the honest move, the same habit you practiced all week.
+
+![Accuracy is uneven across the two groups](figures/fairness_by_group.png)
+
+---
+
+# The takeaway
+
+---
+
+## What a survey can and cannot do
+
+A good project names its own limits out loud. Ours shows a tempting headline is mostly a mirage, but it stops short of proving cause, and it says exactly what would.
+
+### What it can do
+Show a headline is mostly a mirage, and that adjusting shrinks the effect by 67%.
+
+### What it cannot do
+Prove cause -- we only corrected for confounders we measured and thought of.
+
+### What settles it
+A randomized trial, where a coin flip assigns the drug, so the groups start the same.
 
 ---
 
 ## References
 
-The papers and articles behind this project, from the first observational clue to the trial that overturned it.
+The eight papers behind this project, from the observational clues to the trial that overturned them, plus the healthy-user-bias and brain-fog primers.
+
+### Observational and trial
+[1] Tang et al. 1996, Lancet. [2] Zandi et al. 2002, JAMA (Cache County). [3] Shumaker et al. 2003, JAMA (WHIMS dementia). [4] Rapp et al. 2003, JAMA (WHIMS cognition).
+
+### Bias and symptoms
+[5] Wharton et al. 2009, Maturitas (healthy-user bias). [6] Vandenbroucke 2009, Lancet. [7] Maki 2024, Harvard Health (brain fog). [8] Chen and Shafir 2025, Harvard Health (dismissed symptoms).
 
 ---
 
-## The one habit to carry out the door
+## The one habit to carry with you
 
-When a group that chose a treatment looks healthier, suspect the chooser, not the treatment. And take the patient's account seriously, even when the test says fine.
+When a group that chose a treatment looks healthier, the head start usually belongs to the person, not the pill -- and only a coin-flip experiment can promote a correlation to a cause. And take the patient's account seriously, even when the test says fine.

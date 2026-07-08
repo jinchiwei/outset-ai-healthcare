@@ -1,7 +1,7 @@
 {
-  "deck_md_hash": "c172a84f2231443f3d797b0beaa39931c28865d0610a432b37ed3fb5a149bb1a",
+  "deck_md_hash": "ef724cd171b2e16cbc692c1100d1deb41ee21c858be4f84f414a463bce350962",
   "mode": "expressive",
-  "shake_seed": "c882664965d941878c2c973e309ea1c0",
+  "shake_seed": "20e05e663f2f406386d2639985fc1370",
   "slides": [
     {
       "content_hash": "28395391a8ae10db36d317a4157a69a916ba02c4899cb66cae293ffd5f76d294-divider",
@@ -9,208 +9,257 @@
       "params": {
         "accent_hex": "#40E0D0",
         "label": "Background",
-        "notes": "This opens the Background section. Everything ahead sets up the central mystery: how could years of just watching women and a single coin-flip trial reach opposite conclusions about the very same hormones? For now keep the audience curious, not yet informed. Transition: start with the twenty-year detective story."
+        "notes": "We open with the clinical scene so the statistics land later. Three ideas to plant: a real symptom (brain fog) that an objective test can miss, a drug whose answer flipped when researchers finally ran a trial, and the hidden reason why. Transition: meet the patient the number can't see."
       },
       "slide_id": "divider-h1-background"
     },
     {
-      "content_hash": "f0c50ea998337f121bdaed98a79da4de7d69211fa7c66ed572f3e36283b830fe",
+      "content_hash": "ccf18027483b5ee03109ca2466dd9abc522f4b01122568b089a5de01e90c9700",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "cw = (body_w - 0.5) / 2\nct = body_top + 1.0\nch = 2.55\ncards = [\n    (\"THE EXCITING CLUE  (1996-2002)\",\n     \"Studies that simply WATCHED women found that estrogen users developed Alzheimer's less often, and later, than women who never took it [1, 2]. For years this looked like solid proof that the pills protected the aging brain.\",\n     TURQUOISE_RGB, _rgb('#0C7A6A')),\n    (\"THE PLOT TWIST  (2003)\",\n     \"Then the WHIMS trial let a COIN FLIP -- not the woman herself -- decide who got hormones. The memory benefit vanished, and dementia risk actually ROSE in women aged 65 and older [3, 4].\",\n     DEEPPINK_RGB, DEEPPINK_RGB),\n]\nfor i, (lab, bod, stripe, lc) in enumerate(cards):\n    x = body_l + i * (cw + 0.5)\n    _add_rect(slide, left=x, top=ct, width=cw, height=ch, fill_rgb=PAPER_RGB)\n    _add_rect(slide, left=x, top=ct, width=cw, height=0.09, fill_rgb=stripe)\n    _add_text(slide, lab, left=x + 0.28, top=ct + 0.24, width=cw - 0.56, height=0.4,\n              size=15, color_rgb=lc, font=MONO_FONT, bold=True)\n    _add_text(slide, bod, left=x + 0.28, top=ct + 0.84, width=cw - 0.56, height=ch - 0.98,\n              size=15, color_rgb=INK_RGB, font=SANS_FONT)\nby = ct + ch + 0.4\n_add_rect(slide, left=body_l, top=by, width=body_w, height=0.75, fill_rgb=AMBER_RGB)\n_add_text(slide, \"Same drug, opposite answer. The rest of this talk is one question:  HOW?\",\n          left=body_l + 0.3, top=by, width=body_w - 0.6, height=0.75,\n          size=19, color_rgb=INK_RGB, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)",
+        "code": "img_h = body_h - 0.5\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g6_estrogen/slides/figures/intro_doctor_office.png', left=body_l, top=body_top, max_w=body_w, max_h=img_h)\n_add_text(slide, 'She describes real, daily brain fog. The objective test says \"normal.\" Both can be true -- and the gap is the whole project.',\n          left=body_l + 0.8, top=body_top + img_h + 0.12, width=body_w - 1.6, height=0.5,\n          size=14, color_rgb=INK_RGB, font=SANS_FONT, italic=True, align=PP_ALIGN.CENTER)",
         "lede": "",
-        "notes": "Open like a mystery, because it was one. For twenty years, observational studies -- just watching women, not assigning anything -- kept finding that estrogen users had sharper memory and less Alzheimer's [1, 2]. Doctors nearly started prescribing hormones for the brain. Then in 2003 the WHIMS randomized trial flipped a coin to decide who got hormones, and the benefit didn't just vanish, it reversed: dementia risk actually rose [3, 4]. Same drug, opposite answer. Set up the whole talk as: how can two honest studies disagree this badly? Transition: here it is in one picture.",
+        "notes": "Open concrete and human. A woman in her sixties says she loses words mid-sentence and forgets why she walked into a room -- real, daily brain fog. Then the objective digit-symbol memory test comes back NORMAL. The number on the chart cannot see what she is living, and women's symptoms get waved off as stress far too often. Do not mention models yet. Plant the idea that a test result and a patient's account can BOTH be real. Transition: measured across many women, how often do the two disagree?",
         "section_label": "Background",
-        "title": "A twenty-year detective story"
+        "title": "The visit no test explains"
       },
-      "slide_id": "h1-background/h2-a-twenty-year-detective-story"
+      "slide_id": "h1-background/h2-the-visit-no-test-explains"
     },
     {
-      "content_hash": "d2e482c9998cf12adf52ab93a1ed12e85cfb2daefbf84852724134821f29eadd",
+      "content_hash": "fbe945ad436e8b2f58b60517b4e023d77ed54f98838e74ad54f6281dd05c6504",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "_fit_image(slide, \"/home/jiwei/outset-ai-healthcare/solutions/g6_estrogen/slides/figures/intro_effect_flip.png\",\n           left=body_l, top=body_top, max_w=body_w, max_h=body_h - 0.85)\n_add_text(slide, \"Just watching (turquoise) said hormones PROTECT; the coin-flip trial (pink) said they HARM -- the study design, not the drug, decided the answer.\",\n          left=body_l + 1.0, top=body_bottom - 0.6, width=body_w - 2.0, height=0.6,\n          size=14, color_rgb=MUTED_RGB, font=SANS_FONT, italic=True, align=PP_ALIGN.CENTER)",
+        "code": "fw = body_w * 0.56\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g6_estrogen/slides/figures/intro_objective_vs_subjective.png', left=body_l + body_w - fw, top=body_top, max_w=fw, max_h=body_h)\nax = body_l\naw = body_w - fw - 0.45\nrows = [('THE MISMATCH', 'Objective scores mostly land in the normal band, yet self-reported fog is high and scattered. The lines cross.', DEEPPINK_RGB),\n        ('WHY IT MATTERS', 'A test that reads \"fine\" can miss a symptom a woman lives with every day.', BLUEVIOLET_RGB),\n        ('THE STANCE', 'Take both as real evidence: the number AND the account. Neither is noise.', TURQUOISE_RGB)]\ny = body_top + 0.15\nfor lab, bod, col in rows:\n    _add_text(slide, lab, left=ax, top=y, width=aw, height=0.4, size=15, color_rgb=col, font=MONO_FONT, bold=True)\n    _add_text(slide, bod, left=ax, top=y + 0.45, width=aw, height=1.0, size=15, color_rgb=INK_RGB, font=SANS_FONT)\n    y += 1.55",
         "lede": "",
-        "notes": "This is our most important slide -- read it slowly. Left bar, 'just watching': hormone users looked protected, risk about two-thirds of non-users. Right bar, the coin-flip trial: risk more than doubled. The amber arrow is the sign flip. The dashed line is 'no effect.' The point for a 15-year-old: the STUDY DESIGN, not the drug, decided the answer. Watching can lie; a coin flip cannot. Transition: so why does watching lie here?",
+        "notes": "Generalize the opening scene with data. Each connecting line is one woman: her objective cognitive score on the left, her self-reported brain fog on the right. Most objective scores sit in the shaded 'normal' band, but the fog reports are high and scattered, and the lines cross -- the test and the symptom disagree. The mature analyst holds both: the number is real AND the reported experience is real. This is a redraw of the Maki 2024 idea, attributed. Transition: now the drug itself, and a twenty-year plot twist.",
         "section_label": "Background",
-        "title": "When they flipped a coin, the benefit vanished"
+        "title": "The tests say fine; she says not fine"
       },
-      "slide_id": "h1-background/h2-when-they-flipped-a-coin-the-benefit-vanished"
+      "slide_id": "h1-background/h2-the-tests-say-fine-she-says-not-fine"
     },
     {
-      "content_hash": "1a73cc2bd79a1732fface87bada293dc478270d33fcb2dc396651b784b34b908",
+      "content_hash": "b4ae84f95306315abd446e6ebbf0ff3bc528f1fbe56890b9dd9f7c3f060cd609",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "fw = body_w * 0.60\n_fit_image(slide, \"/home/jiwei/outset-ai-healthcare/solutions/g6_estrogen/slides/figures/intro_confounding_triangle.png\", left=body_l, top=body_top+0.10, max_w=fw, max_h=body_h-0.2)\npx = body_l + fw + 0.35\npw = body_w - fw - 0.35\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=body_h-0.15, fill_rgb=PAPER_RGB)\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=0.10, fill_rgb=DEEPPINK_RGB)\nrows = [\n  (\"Who chose the pill?\", \"Users were richer, more active, and saw doctors more often to begin with [5].\"),\n  (\"The hidden factor\", \"That same head start drives BOTH the drug use AND the good memory.\"),\n  (\"So the bottom link\", \"only LOOKS like cause. It is a mirage -- confounding, a.k.a. healthy-user bias [6].\"),\n]\ny = 0.36\nfor lab, bod in rows:\n    _add_text(slide, lab, left=px+0.25, top=body_top+y, width=pw-0.5, height=0.32,\n              size=15, color_rgb=DEEPPINK_RGB, font=MONO_FONT, bold=True)\n    _add_text(slide, bod, left=px+0.25, top=body_top+y+0.36, width=pw-0.5, height=1.0,\n              size=13, color_rgb=INK_RGB, font=SANS_FONT)\n    y += 1.55",
+        "code": "img_h = body_h - 1.15\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g6_estrogen/slides/figures/intro_effect_flip.png', left=body_l + body_w * 0.13, top=body_top, max_w=body_w * 0.74, max_h=img_h)\nchip_y = body_top + img_h + 0.18\nchips = [('0.66x', 'the risk observational studies saw -- looks protective', TURQUOISE_RGB),\n         ('2.05x', 'the risk the coin-flip trial found -- actual harm', DEEPPINK_RGB),\n         ('2003', 'the year WHIMS overturned twenty years of headlines', BLUEVIOLET_RGB)]\ngap = 0.3\ncw = (body_w - gap * 2) / 3\nfor i, (num, lab, col) in enumerate(chips):\n    x = body_l + i * (cw + gap)\n    _add_text(slide, num, left=x, top=chip_y, width=cw, height=0.55, size=30, color_rgb=col, font=MONO_FONT, bold=True, align=PP_ALIGN.CENTER)\n    _add_text(slide, lab, left=x, top=chip_y + 0.58, width=cw, height=0.5, size=12.5, color_rgb=INK_RGB, font=SANS_FONT, align=PP_ALIGN.CENTER)",
         "lede": "",
-        "notes": "Now name the villain: confounding, or 'healthy-user bias.' The women who chose hormone therapy were, on average, richer, more active, and saw doctors more [5]. That hidden head start -- the pink box at the top -- pushes down on BOTH boxes: it makes them more likely to take the pill AND more likely to have good memory. So the dashed bottom arrow, 'takes pill -> better memory,' only LOOKS like cause. It's a mirage created by the third factor [6]. This one diagram is the whole statistical idea of the talk. Transition: you already know this trap from summer.",
+        "notes": "This is the most important background slide -- read it slowly. Left bar, 'just watching': hormone users looked protected, dementia risk about two-thirds of non-users. Right bar, the coin-flip randomized trial (WHIMS): risk more than doubled. The amber arrow is the sign flip; the dashed line is 'no effect.' The point for a fifteen-year-old: the STUDY DESIGN, not the drug, decided the answer -- watching can lie, a coin flip cannot. This redraws Tang/Zandi vs Shumaker, attributed. Transition: so WHY does watching lie here?",
         "section_label": "Background",
-        "title": "Healthy-user bias: a hidden third factor"
+        "title": "Twenty years of watching said estrogen helps"
       },
-      "slide_id": "h1-background/h2-healthy-user-bias-a-hidden-third-factor"
+      "slide_id": "h1-background/h2-twenty-years-of-watching-said-estrogen-helps"
     },
     {
-      "content_hash": "6b97a83ec6555cb99354f5db201072adee211ddaf9fd11f34bd5b3e61ac3c898",
+      "content_hash": "d20188c4bf7727c7f2eb9569e43ef7d8f43ab3a5ed9f3ae611736ed5eefd636e",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "_add_text(slide, \"On hot days, ice-cream sales and shark attacks BOTH rise together. Does ice cream summon sharks?\",\n          left=body_l, top=body_top + 0.1, width=body_w, height=0.85,\n          size=18, color_rgb=INK_RGB, font=SANS_FONT)\ncw = (body_w - 0.5) / 2\nct = body_top + 1.05\nch = 2.5\ncards = [\n    (\"THE ANALOGY\",\n     \"No -- the hot SUMMER WEATHER drives both at once: heat sells more ice cream AND sends more people into the ocean to swim. Neither one causes the other.\",\n     BLUEVIOLET_RGB, BLUEVIOLET_RGB),\n    (\"OUR VERSION\",\n     \"Estrogen use and good memory also rise together. But being HEALTHIER and better-off to start with can drive both -- so the pill itself may summon nothing.\",\n     TURQUOISE_RGB, _rgb('#0C7A6A')),\n]\nfor i, (lab, bod, stripe, lc) in enumerate(cards):\n    x = body_l + i * (cw + 0.5)\n    _add_rect(slide, left=x, top=ct, width=cw, height=ch, fill_rgb=PAPER_RGB)\n    _add_rect(slide, left=x, top=ct, width=cw, height=0.09, fill_rgb=stripe)\n    _add_text(slide, lab, left=x + 0.28, top=ct + 0.24, width=cw - 0.56, height=0.4,\n              size=15, color_rgb=lc, font=MONO_FONT, bold=True)\n    _add_text(slide, bod, left=x + 0.28, top=ct + 0.84, width=cw - 0.56, height=ch - 0.98,\n              size=15, color_rgb=INK_RGB, font=SANS_FONT)\nty = ct + ch + 0.42\n_add_text(slide, \"When two things move together, hunt for the hidden third factor before you believe one caused the other.\",\n          left=body_l, top=ty, width=body_w, height=0.7,\n          size=17, color_rgb=DEEPPINK_RGB, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)",
+        "code": "fw = body_w * 0.58\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g6_estrogen/slides/figures/intro_confounding_triangle.png', left=body_l, top=body_top, max_w=fw, max_h=body_h)\nax = body_l + fw + 0.4\naw = body_w - fw - 0.4\n_add_rect(slide, left=ax, top=body_top + 0.05, width=aw, height=body_h - 0.15, fill_rgb=PAPER_RGB)\n_add_rect(slide, left=ax, top=body_top + 0.05, width=aw, height=0.1, fill_rgb=DEEPPINK_RGB)\nrows = [('WHO CHOSE THE PILL', 'Users were richer, more active, and saw doctors more often to begin with.'),\n        ('THE HIDDEN FACTOR', 'That same head start drives BOTH the drug use AND the better memory.'),\n        ('SO THE DIRECT LINK', 'only looks like cause. It is a mirage -- confounding, a.k.a. healthy-user bias.')]\ny = 0.4\nfor lab, bod in rows:\n    _add_text(slide, lab, left=ax + 0.28, top=body_top + y, width=aw - 0.56, height=0.35, size=14, color_rgb=DEEPPINK_RGB, font=MONO_FONT, bold=True)\n    _add_text(slide, bod, left=ax + 0.28, top=body_top + y + 0.4, width=aw - 0.56, height=1.0, size=14.5, color_rgb=INK_RGB, font=SANS_FONT)\n    y += 1.5",
         "lede": "",
-        "notes": "Make it click with the classic. Ice-cream sales and shark attacks rise together every summer -- but ice cream doesn't summon sharks; hot weather drives both. Map it: estrogen use is the ice cream, good memory is the shark attacks, and 'being healthier to start with' is the summer heat. The takeaway line is the transferable habit: when two things move together, hunt for the hidden third factor before you believe one caused the other. Transition: now to our own toy data.",
+        "notes": "Name the villain: confounding, or 'healthy-user bias.' The women who chose hormone therapy were, on average, richer, more active, and saw doctors more. That hidden head start -- the pink box at the top -- pushes down on BOTH lower boxes: it makes them more likely to take the pill AND more likely to have good memory. So the dashed bottom arrow, 'takes pill -> better memory,' only LOOKS like cause. Think of ice-cream sales and shark attacks both rising in summer: the heat drives both, neither causes the other. This one diagram is the whole statistical idea of the talk. Transition: to catch it in our own data, we need the right dataset.",
         "section_label": "Background",
-        "title": "Ice cream and shark attacks"
+        "title": "Why watching lied: healthy-user bias"
       },
-      "slide_id": "h1-background/h2-ice-cream-and-shark-attacks"
+      "slide_id": "h1-background/h2-why-watching-lied-healthy-user-bias"
     },
     {
-      "content_hash": "6d31f4e259270667e8ee574d6c4e5e648f02fa4a9874453f92bbc9ac7bcdf10b-divider",
+      "content_hash": "7afb5fad15beed5ec921925bdd98d1f20d379372832130f7efd8a96d8dd397da-divider",
       "kind": "section-divider",
       "params": {
         "accent_hex": "#FF1493",
-        "label": "Methods",
-        "notes": "This opens the Methods section. We move from the big idea -- confounding -- to the concrete: the actual survey data we used and the one honest question a survey can answer. Plain-language framing: here is exactly what we looked at, and what we can fairly ask of it. Transition: meet the dataset."
+        "label": "The data",
+        "notes": "Now the raw material: a real national survey, why it is the right (and only) thing we have, and the one honest question a survey lets us ask. Transition: we can't randomize estrogen, so what CAN we ask?"
       },
-      "slide_id": "divider-h1-methods"
+      "slide_id": "divider-h1-the-data"
     },
     {
-      "content_hash": "57f543ae8ff2224776a5af8abdff9947acf71430f319f5f802e843e1b805df7e",
+      "content_hash": "b2e2a16ccca89071582780e53c49ed4645ea5084efe91b9a60519b372b979159",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "gap = 0.32\ncw = (body_w - 3 * gap) / 4\nch = 2.6\nct = body_top + (body_h - ch) / 2\ncards = [\n    (\"739 WOMEN\",\n     \"all aged 60 or older, drawn from NHANES 2013-14 -- a real US government health survey, not data we made up.\",\n     TURQUOISE_RGB, _rgb('#0C7A6A')),\n    (\"USED ESTROGEN?\",\n     \"whether she ever took female hormones -- a simple yes or no, self-reported by each woman.\",\n     DEEPPINK_RGB, DEEPPINK_RGB),\n    (\"HER BACKGROUND\",\n     \"her age, education, and family income -- the confounders we have to account for.\",\n     AMBER_RGB, _rgb('#8A6D00')),\n    (\"MEMORY SCORE\",\n     \"a digit-symbol attention test; higher = sharper. Our model tries to flag the weaker-scoring half.\",\n     BLUEVIOLET_RGB, BLUEVIOLET_RGB),\n]\nfor i, (lab, bod, stripe, lc) in enumerate(cards):\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=ct, width=cw, height=ch, fill_rgb=PAPER_RGB)\n    _add_rect(slide, left=x, top=ct, width=cw, height=0.09, fill_rgb=stripe)\n    _add_text(slide, lab, left=x + 0.22, top=ct + 0.22, width=cw - 0.44, height=0.4,\n              size=14, color_rgb=lc, font=MONO_FONT, bold=True)\n    _add_text(slide, bod, left=x + 0.22, top=ct + 0.8, width=cw - 0.44, height=ch - 0.92,\n              size=14, color_rgb=INK_RGB, font=SANS_FONT)",
+        "code": "cards = [('739 WOMEN', 'all age 60+, drawn from the NHANES 2013-14 US national health survey', TURQUOISE_RGB),\n         ('USED ESTROGEN?', 'whether she ever took female hormones -- the treatment we are studying', DEEPPINK_RGB),\n         ('HER BACKGROUND', 'age, education, and family income -- the confounders we must adjust for', AMBER_RGB),\n         ('MEMORY SCORE', 'a digit-symbol test; higher is sharper. We study who lands in the weaker half', BLUEVIOLET_RGB)]\ngap = 0.3\ncw = (body_w - gap * 3) / 4\nch = body_h - 0.1\nby = body_top + 0.55\nfor i, (lab, bod, col) in enumerate(cards):\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=ch, fill_rgb=WHITE_RGB)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=0.1, fill_rgb=col)\n    _add_text(slide, lab, left=x + 0.22, top=by, width=cw - 0.44, height=0.9, size=17, color_rgb=col, font=MONO_FONT, bold=True)\n    _add_text(slide, bod, left=x + 0.22, top=by + 1.15, width=cw - 0.44, height=ch - 1.9, size=14.5, color_rgb=INK_RGB, font=SANS_FONT)",
         "lede": "",
-        "notes": "Quick tour of the dataset so the results land. 739 women, all 60+, from NHANES -- a real US government health survey, not something we made up. For each woman we know: did she ever use estrogen; her age, education, and income (the possible confounders); and a memory/attention test score, where higher is sharper. Our model tries to predict who lands in the weaker-scoring half. Keep it light -- they don't need every column, just the shape. Transition: what can we actually ask of survey data?",
-        "section_label": "Methods",
-        "title": "Our data: NHANES women 60 and older"
+        "notes": "Justify the dataset in four cards. 739 real women aged 60+ from NHANES, a genuine US government survey -- not something we invented. For each we know whether she used estrogen (the treatment), her age/education/income (the possible confounders we will adjust for), and a digit-symbol memory score where higher is sharper. That combination -- a treatment, an outcome, AND the confounders in one table -- is exactly what lets us test for the confounding trap. Transition: but a survey can't randomize, so what can it honestly tell us?",
+        "section_label": "The data",
+        "title": "Why NHANES"
       },
-      "slide_id": "h1-methods/h2-our-data-nhanes-women-60-and-older"
+      "slide_id": "h1-the-data/h2-why-nhanes"
     },
     {
-      "content_hash": "41fa63b0f0ee2309834e4ae983f337a41a789287a2aa099825d7118ce5a1fb25",
+      "content_hash": "a54eccd3570bd87b4afbba3e03cef81c8a7ad2d33a93abed1b30bcd9a831a0b5",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "_add_text(slide, \"We cannot randomly ASSIGN estrogen in a survey -- so we can never prove cause here. But we can still ask a narrower, honest question:\",\n          left=body_l, top=body_top, width=body_w, height=0.6,\n          size=17, color_rgb=INK_RGB, font=SANS_FONT)\nqy = body_top + 0.75\n_add_rect(slide, left=body_l, top=qy, width=body_w, height=1.1, fill_rgb=PAPER_RGB)\n_add_rect(slide, left=body_l, top=qy, width=0.14, height=1.1, fill_rgb=DEEPPINK_RGB)\n_add_text(slide, \"Does the estrogen effect SURVIVE once we account for age, education, and income?\",\n          left=body_l + 0.45, top=qy, width=body_w - 0.75, height=1.1,\n          size=22, color_rgb=INK_RGB, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\ncw = (body_w - 0.5) / 2\ncy = qy + 1.35\nch = 1.75\ncards = [\n    (\"CRUDE\",\n     \"Estrogen's effect measured all by itself -- ignoring everything else about the woman.\",\n     DEEPPINK_RGB, DEEPPINK_RGB),\n    (\"ADJUSTED\",\n     \"Estrogen's effect AFTER we account for her age, education, and income.\",\n     TURQUOISE_RGB, _rgb('#0C7A6A')),\n]\nfor i, (lab, bod, stripe, lc) in enumerate(cards):\n    x = body_l + i * (cw + 0.5)\n    _add_rect(slide, left=x, top=cy, width=cw, height=ch, fill_rgb=PAPER_RGB)\n    _add_rect(slide, left=x, top=cy, width=cw, height=0.09, fill_rgb=stripe)\n    _add_text(slide, lab, left=x + 0.28, top=cy + 0.2, width=cw - 0.56, height=0.4,\n              size=15, color_rgb=lc, font=MONO_FONT, bold=True)\n    _add_text(slide, bod, left=x + 0.28, top=cy + 0.74, width=cw - 0.56, height=ch - 0.87,\n              size=14, color_rgb=INK_RGB, font=SANS_FONT)\nfy = cy + ch + 0.22\n_add_text(slide, \"If the effect SHRINKS from crude to adjusted, the exciting headline was mostly confounding -- not real cause.\",\n          left=body_l, top=fy, width=body_w, height=0.55,\n          size=14, color_rgb=MUTED_RGB, font=SANS_FONT, italic=True)",
+        "code": "_add_text(slide, 'We cannot flip a coin to assign estrogen in a survey -- so we cannot prove cause. Instead we ask a narrower, honest question:',\n          left=body_l, top=body_top, width=body_w, height=0.6, size=18, color_rgb=INK_RGB, font=SANS_FONT)\n_add_rect(slide, left=body_l, top=body_top + 0.8, width=body_w, height=1.15, fill_rgb=PAPER_RGB)\n_add_rect(slide, left=body_l, top=body_top + 0.8, width=0.14, height=1.15, fill_rgb=DEEPPINK_RGB)\n_add_text(slide, 'Does the estrogen effect SURVIVE once we account for age, education, and income?',\n          left=body_l + 0.4, top=body_top + 0.8, width=body_w - 0.7, height=1.15,\n          size=22, color_rgb=INK_RGB, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\ngap = 0.4\ncw = (body_w - gap) / 2\ncy = body_top + 2.3\nch = body_h - 2.9\n_add_card(slide, label='CRUDE', body='Estrogen\\'s effect all by itself -- ignoring everything else about the woman.',\n          left=body_l, top=cy, width=cw, height=ch, accent_rgb=DEEPPINK_RGB)\n_add_card(slide, label='ADJUSTED', body='Estrogen\\'s effect AFTER accounting for age, education, and income.',\n          left=body_l + cw + gap, top=cy, width=cw, height=ch, accent_rgb=TURQUOISE_RGB)\n_add_text(slide, 'If the effect shrinks from crude to adjusted, the headline was mostly confounding -- not cause.',\n          left=body_l, top=cy + ch + 0.15, width=body_w, height=0.5, size=14, color_rgb=MUTED_RGB, font=SANS_FONT, italic=True)",
         "lede": "",
-        "notes": "Set expectations honestly. We can't randomly assign estrogen in a survey -- so we can't prove cause. But we CAN ask the narrower question in the box: does the estrogen effect survive once we account for age, education, and income? We'll measure estrogen's effect two ways -- crude (alone) and adjusted (after the confounders). If it shrinks, the crude headline was mostly confounding. That crude-vs-adjusted move is the entire method. Transition: start with the naive, tempting look.",
-        "section_label": "Methods",
-        "title": "The one question we can actually ask"
+        "notes": "Set expectations honestly -- this is the intellectual pivot. We can't randomly assign estrogen in a survey, so we can't prove cause. But we CAN ask the boxed question: does the estrogen effect survive once we account for age, education, and income? We will measure estrogen's effect two ways -- CRUDE (alone) and ADJUSTED (after the confounders). If it shrinks, the crude headline was mostly confounding. That crude-versus-adjusted move is the entire method, and it needs a model whose effect we can actually read. Transition: which is exactly why the model choice matters so much.",
+        "section_label": "The data",
+        "title": "The honest question we can actually ask"
       },
-      "slide_id": "h1-methods/h2-the-one-question-we-can-actually-ask"
+      "slide_id": "h1-the-data/h2-the-honest-question-we-can-actually-ask"
     },
     {
-      "content_hash": "9d386fbbaab59eb494f4c12cf1b23fd4b5c5347b03eb22c1c97fb04f41376eef-divider",
-      "kind": "section-divider",
-      "params": {
-        "accent_hex": "#F0C840",
-        "label": "Results",
-        "notes": "This opens the Results section, the payoff. Three slides ahead: the tempting raw headline, the honest adjusted result that shrinks it, and a fairness check on the model. Signal that this is where the numbers finally land. Transition: start with the headline anyone would compute first."
-      },
-      "slide_id": "divider-h1-results"
-    },
-    {
-      "content_hash": "21c32fac50ad899f0f81de6d595b9ea77db3988d560e0b9f06c2f3957545ca25",
-      "kind": "freeform",
-      "params": {
-        "_provenance": "agent",
-        "code": "fw = body_w * 0.56\n_fit_image(slide, \"/home/jiwei/outset-ai-healthcare/solutions/g6_estrogen/slides/figures/raw_means.png\", left=body_l, top=body_top+0.10, max_w=fw, max_h=body_h-0.2)\npx = body_l + fw + 0.4\npw = body_w - fw - 0.4\n_add_text(slide, \"+8.1\", left=px, top=body_top+0.3, width=pw, height=1.2,\n          size=66, color_rgb=TURQUOISE_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, \"points -- the raw gap, users over non-users\", left=px, top=body_top+1.55,\n          width=pw, height=0.5, size=15, color_rgb=INK_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, \"51.8 versus 43.7. Taken at face value, the exciting headline writes itself: 'estrogen users think better.' But we never checked whether the two groups were the same kind of people to begin with.\",\n          left=px, top=body_top+2.2, width=pw, height=2.2, size=15, color_rgb=INK_RGB, font=SANS_FONT)",
-        "lede": "",
-        "notes": "The tempting headline, exactly as anyone would first compute it. Average the memory score for users versus non-users: 51.8 versus 43.7, an 8-point head start for the estrogen group. If you stopped here, you'd write 'estrogen users think better' -- the same clue the 1990s studies chased. The whole point of the next slide is that we did NOT stop here. Transition: now adjust for who these women were.",
-        "section_label": "Results",
-        "title": "The tempting headline"
-      },
-      "slide_id": "h1-results/h2-the-tempting-headline"
-    },
-    {
-      "content_hash": "86397939770aea398ec4e34720f3f08ed8eaa7611025996db241e18402b28507",
-      "kind": "freeform",
-      "params": {
-        "_provenance": "agent",
-        "code": "fw = body_w * 0.56\n_fit_image(slide, \"/home/jiwei/outset-ai-healthcare/solutions/g6_estrogen/slides/figures/confounding.png\", left=body_l, top=body_top+0.10, max_w=fw, max_h=body_h-0.2)\npx = body_l + fw + 0.4\npw = body_w - fw - 0.4\n_add_text(slide, \"67%\", left=px, top=body_top+0.3, width=pw, height=1.3,\n          size=76, color_rgb=DEEPPINK_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, \"of the effect was confounding\", left=px, top=body_top+1.65,\n          width=pw, height=0.5, size=15, color_rgb=INK_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, \"The crude effect (-0.33) shrank to just -0.11 once we adjusted for age, education, and income. That missing two-thirds was never the estrogen -- it was that users were healthier and better-off to start with.\",\n          left=px, top=body_top+2.3, width=pw, height=2.2, size=15, color_rgb=INK_RGB, font=SANS_FONT)",
-        "lede": "",
-        "notes": "The punchline slide. Same data, honest test. Crude effect: about -0.33 (negative = looks protective). Adjusted for age, education, and income: it collapses to -0.11. That's a 67% shrink -- two-thirds of the 'benefit' was never the estrogen, it was that users were healthier and better-off to begin with. This is confounding caught in the act, a miniature of exactly why WHIMS overturned the observational headlines. If they remember one number from this talk, make it 67%. Transition: one more check any people-model needs.",
-        "section_label": "Results",
-        "title": "Two-thirds of the effect was confounding"
-      },
-      "slide_id": "h1-results/h2-two-thirds-of-the-effect-was-confounding"
-    },
-    {
-      "content_hash": "a08539b8b42bf3fe6a20d9b1bb472c1a8e9e040d573ccd5e06fcd7cc9f220d5c",
-      "kind": "freeform",
-      "params": {
-        "_provenance": "agent",
-        "code": "fw = body_w * 0.56\n_fit_image(slide, \"/home/jiwei/outset-ai-healthcare/solutions/g6_estrogen/slides/figures/fairness_by_group.png\", left=body_l, top=body_top+0.10, max_w=fw, max_h=body_h-0.2)\npx = body_l + fw + 0.4\npw = body_w - fw - 0.4\nrows = [\n  (\"0.73\", \"test accuracy for estrogen-USERS\", TURQUOISE_RGB),\n  (\"0.65\", \"test accuracy for NON-users\", MUTED_RGB),\n]\ny = 0.2\nfor num, lab, col in rows:\n    _add_text(slide, num, left=px, top=body_top+y, width=pw, height=0.75,\n              size=44, color_rgb=col, font=MONO_FONT, bold=True)\n    _add_text(slide, lab, left=px, top=body_top+y+0.8, width=pw, height=0.4,\n              size=14, color_rgb=INK_RGB, font=MONO_FONT, bold=True)\n    y += 1.5\n_add_text(slide, \"A tool that is reliably right for one group and shakier for another can quietly do harm if a clinic trusts it equally. Naming the gap out loud is the honest move.\",\n          left=px, top=body_top+y+0.1, width=pw, height=1.6, size=14, color_rgb=INK_RGB, font=SANS_FONT)",
-        "lede": "",
-        "notes": "A fairness audit, the habit from earlier this week. We trained one model to predict low cognition, then split its accuracy by group: 0.73 for estrogen-users, 0.65 for non-users. A model can look fine overall yet work unequally across groups -- and a clinic that trusts it equally could quietly do more harm to the group it's worse at. The mature move isn't to hide the gap; it's to name it. Transition: and there's something no score in this dataset can see at all.",
-        "section_label": "Results",
-        "title": "Does the model work for everyone?"
-      },
-      "slide_id": "h1-results/h2-does-the-model-work-for-everyone"
-    },
-    {
-      "content_hash": "2bbf80b5bcbc38f64630c3c0a692c587eff2a82b1bfeb2a2dc9a413e165f98a3-divider",
+      "content_hash": "4ad649ac4fc7cb41e24a930e262600a5a7f4d2c9e5a01196f266bcf547508734-divider",
       "kind": "section-divider",
       "params": {
         "accent_hex": "#8A2BE2",
-        "label": "What the numbers can’t capture",
-        "notes": "This opens the final section, the honest limits. We step outside the numbers: a test score can say 'fine' while a woman lives with real daily brain fog, and a survey can only hint at cause, never prove it. Framing: good science names what it cannot do. Transition: the tests say fine; she says not fine."
+        "label": "The model",
+        "notes": "The key teaching point of the whole project. A causal question forces an interpretable model, because you must READ how the estrogen effect changes as you adjust. A black box predicts but can't answer. Transition: prediction is not causation."
       },
-      "slide_id": "divider-h1-what-the-numbers-can-t-capture"
+      "slide_id": "divider-h1-the-model"
     },
     {
-      "content_hash": "19f53298a150d8eb03e5b603dc4da6224edb571ec43ca556fdadcf64b4b259d5",
+      "content_hash": "3b69c6862321ed2e364e7dab670eac6650179c5a0aaa8cad43d2f862708ccbc0",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "fw = body_w * 0.58\n_fit_image(slide, \"/home/jiwei/outset-ai-healthcare/solutions/g6_estrogen/slides/figures/intro_objective_vs_subjective.png\", left=body_l, top=body_top+0.10, max_w=fw, max_h=body_h-0.2)\npx = body_l + fw + 0.4\npw = body_w - fw - 0.4\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=body_h-0.15, fill_rgb=PAPER_RGB)\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=0.10, fill_rgb=BLUEVIOLET_RGB)\nrows = [\n  (\"The mismatch\", \"Many women report real, daily brain fog even when the objective test looks perfectly normal [7].\"),\n  (\"Why it matters\", \"Women's symptoms are too often waved off as stress or emotion instead of investigated [8].\"),\n  (\"Hold both ideas\", \"The confounding is real AND the patient's account is real evidence -- not noise to dismiss.\"),\n]\ny = 0.36\nfor lab, bod in rows:\n    _add_text(slide, lab, left=px+0.25, top=body_top+y, width=pw-0.5, height=0.32,\n              size=15, color_rgb=BLUEVIOLET_RGB, font=MONO_FONT, bold=True)\n    _add_text(slide, bod, left=px+0.25, top=body_top+y+0.36, width=pw-0.5, height=1.05,\n              size=13, color_rgb=INK_RGB, font=SANS_FONT)\n    y += 1.55",
+        "code": "fw = body_w * 0.55\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g6_estrogen/slides/figures/intro_prediction_vs_causation.png', left=body_l, top=body_top + 0.1, max_w=fw, max_h=body_h - 0.2)\nax = body_l + fw + 0.4\naw = body_w - fw - 0.4\n_add_text(slide, 'A CAUSAL QUESTION FORCES THE MODEL', left=ax, top=body_top + 0.1, width=aw, height=0.4,\n          size=14, color_rgb=BLUEVIOLET_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, 'To answer it you must READ the estrogen coefficient and watch it change as you adjust. Only an interpretable model gives you that number.',\n          left=ax, top=body_top + 0.6, width=aw, height=1.5, size=15.5, color_rgb=INK_RGB, font=SANS_FONT)\nth = 0.95\n_add_rect(slide, left=ax, top=body_top + 2.15, width=(aw - 0.25) / 2, height=th, fill_rgb=TURQUOISE_RGB)\ntc = _text_on(TURQUOISE_RGB)\n_add_text(slide, '0.78', left=ax, top=body_top + 2.22, width=(aw - 0.25) / 2, height=0.55, size=28, color_rgb=tc, font=MONO_FONT, bold=True, align=PP_ALIGN.CENTER)\n_add_text(slide, 'logistic AUC', left=ax, top=body_top + 2.75, width=(aw - 0.25) / 2, height=0.3, size=12, color_rgb=tc, font=SANS_FONT, align=PP_ALIGN.CENTER)\nx2 = ax + (aw - 0.25) / 2 + 0.25\n_add_rect(slide, left=x2, top=body_top + 2.15, width=(aw - 0.25) / 2, height=th, fill_rgb=_rgb('#26262E'))\n_add_text(slide, '0.76', left=x2, top=body_top + 2.22, width=(aw - 0.25) / 2, height=0.55, size=28, color_rgb=WHITE_RGB, font=MONO_FONT, bold=True, align=PP_ALIGN.CENTER)\n_add_text(slide, 'black box AUC', left=x2, top=body_top + 2.75, width=(aw - 0.25) / 2, height=0.3, size=12, color_rgb=_rgb('#B8B4A6'), font=SANS_FONT, align=PP_ALIGN.CENTER)\n_add_text(slide, 'The black box does not even predict better here -- and it can never hand you the effect size. So we choose logistic regression.',\n          left=ax, top=body_top + 3.35, width=aw, height=1.3, size=15, color_rgb=INK_RGB, font=SANS_FONT, italic=True)",
         "lede": "",
-        "notes": "Step outside the numbers. Our data is a test SCORE. But many women in menopause report real, daily 'brain fog' even when their objective test looks normal [7] -- the slope lines cross exactly there. And women's symptoms get waved off as stress far too often [8]. The grown-up data-scientist stance holds two true things at once: the confounding is real (the pill may not be the hero), AND the patient's lived report is real evidence, not noise. Transition: so what can this project honestly claim?",
-        "section_label": "What the numbers can’t capture",
-        "title": "The tests say “fine”; she says “not fine”"
+        "notes": "The single most important teaching slide -- slow down here. Our question is causal, so we need a model whose estrogen effect we can READ as one number and watch shrink as we add confounders. A black box (CatBoost, TabPFN, random forest) can predict who scores low, but the estrogen effect is locked inside -- padlock on the left panel. Logistic regression is one readable equation whose coefficient IS the effect size. And the kicker, measured on our data: the black box (0.76) does not even predict better than logistic (0.78). So there is zero reason to reach for it. Prediction is not causation. Transition: here is the exact recipe.",
+        "section_label": "The model",
+        "title": "Prediction is not causation"
       },
-      "slide_id": "h1-what-the-numbers-can-t-capture/h2-the-tests-say-fine-she-says-not-fine"
+      "slide_id": "h1-the-model/h2-prediction-is-not-causation"
     },
     {
-      "content_hash": "c66fc9edd86e495cd20804816b41a7c0621c61faedbed653bd1ad833fa6562bc",
+      "content_hash": "3836c90201618e917401f4b93b1d59f24787a2866ab1bd13a55f2802b7fb4ad4",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "gap = 0.4\ncw = (body_w - 2 * gap) / 3\nch = 2.7\nct = body_top + (body_h - ch) / 2\ncards = [\n    (\"WHAT IT CAN DO\",\n     \"Show that a tempting headline is mostly a mirage, and that adjusting for background shrinks the apparent estrogen effect by about 67%.\",\n     TURQUOISE_RGB, _rgb('#0C7A6A')),\n    (\"WHAT IT CANNOT DO\",\n     \"Prove cause. We can only correct for the confounders we actually measured and thought of -- something unrecorded could still be doing the work.\",\n     DEEPPINK_RGB, DEEPPINK_RGB),\n    (\"WHAT SETTLES IT\",\n     \"A randomized trial: a coin flip, not the patient, assigns the drug, so the two groups start out identical. That is why WHIMS could overturn 20 years of headlines.\",\n     AMBER_RGB, _rgb('#8A6D00')),\n]\nfor i, (lab, bod, stripe, lc) in enumerate(cards):\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=ct, width=cw, height=ch, fill_rgb=PAPER_RGB)\n    _add_rect(slide, left=x, top=ct, width=cw, height=0.09, fill_rgb=stripe)\n    _add_text(slide, lab, left=x + 0.26, top=ct + 0.24, width=cw - 0.52, height=0.4,\n              size=15, color_rgb=lc, font=MONO_FONT, bold=True)\n    _add_text(slide, bod, left=x + 0.26, top=ct + 0.84, width=cw - 0.52, height=ch - 0.98,\n              size=14, color_rgb=INK_RGB, font=SANS_FONT)",
+        "code": "steps = [('1', 'MODEL', 'LogisticRegression -- one linear equation whose estrogen coefficient is the effect size', TURQUOISE_RGB),\n         ('2', 'FEATURES', 'age, education, income, used_estrogen, years_estrogen -- each standardized so coefficients compare', DEEPPINK_RGB),\n         ('3', 'THE CAUSAL MOVE', 'fit the estrogen effect TWICE: crude (alone) then adjusted (+ confounders); the change is the confounding', AMBER_RGB),\n         ('4', 'PREDICTIVE SCORE', 'AUC via 5-fold cross-validation, so no woman is graded by a model that trained on her', BLUEVIOLET_RGB),\n         ('5', 'FAIRNESS', 'a held-out train/test split, with accuracy reported separately for each group', TURQUOISE_RGB)]\nn = len(steps)\ngap = 0.22\nrh = (body_h - gap * (n - 1)) / n\nfor i, (num, lab, bod, col) in enumerate(steps):\n    y = body_top + i * (rh + gap)\n    _add_rect(slide, left=body_l, top=y, width=0.9, height=rh, fill_rgb=col)\n    _add_text(slide, num, left=body_l, top=y, width=0.9, height=rh, size=24, color_rgb=_text_on(col), font=MONO_FONT, bold=True, align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, lab, left=body_l + 1.15, top=y, width=2.9, height=rh, size=16, color_rgb=col, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, bod, left=body_l + 4.2, top=y, width=body_w - 4.2, height=rh, size=14.5, color_rgb=INK_RGB, font=SANS_FONT, anchor=MSO_ANCHOR.MIDDLE)",
         "lede": "",
-        "notes": "Be scrupulously honest about scope -- this is what earns trust. CAN DO: show a tempting headline is mostly a mirage and that adjusting shrinks it ~67%. CANNOT DO: prove cause -- we can only correct for confounders we measured and thought of; something unrecorded could still be doing the work. SETTLES IT: a randomized trial, where a coin flip (not the patient) assigns the drug, so the groups start identical. That's why WHIMS could do what twenty years of watching couldn't. Transition: the sources.",
-        "section_label": "What the numbers can’t capture",
-        "title": "A survey can hint; only an experiment proves"
+        "notes": "The reproducibility slide -- read it as a recipe, not trivia. (1) A logistic regression, one equation whose estrogen coefficient we read. (2) Five features, each standardized so the coefficients are comparable. (3) The causal move: fit the estrogen effect twice, crude then adjusted, and the difference is the confounding. (4) Predictive AUC by five-fold cross-validation so nothing is graded on data it trained on. (5) Fairness by a held-out split, accuracy per group. Any one of these done wrong quietly breaks the story. Transition: now the results, starting with the headline anyone would first compute.",
+        "section_label": "The model",
+        "title": "Why logistic regression, and the exact recipe"
       },
-      "slide_id": "h1-what-the-numbers-can-t-capture/h2-a-survey-can-hint-only-an-experiment-proves"
+      "slide_id": "h1-the-model/h2-why-logistic-regression-and-the-exact-recipe"
     },
     {
-      "content_hash": "df0cd1f55217ddb51b447b6841ca83ff85e3c7fe029394c0ee63feebb1b548ad",
+      "content_hash": "4a9d0af38d23e58ee0cdc69e55b0efcd5b6565e815f6c50e3ddd7a569f619ef6-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#F0C840",
+        "label": "The results",
+        "notes": "The payoff, and the naive answer getting corrected in real time. The tempting headline, the 67% that was confounding, what actually matters, an honest predictive score, and fairness. Transition: start with the headline anyone would first compute."
+      },
+      "slide_id": "divider-h1-the-results"
+    },
+    {
+      "content_hash": "1f58f99cac0057fdc68adc13a7355c60f5325117f613074721a2700b3e78b160",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "y = 0.15\n_add_text(slide, \"[1] Tang et al. 1996, Lancet -- observational; estrogen users got Alzheimer's less/later.\", left=body_l, top=body_top+y, width=(body_w-0.4)/2, height=1.0, size=13, color_rgb=INK_RGB, font=SANS_FONT)\ny += 1.15\n_add_text(slide, \"[2] Zandi et al. 2002, JAMA (Cache County) -- observational; long-term users lower risk.\", left=body_l, top=body_top+y, width=(body_w-0.4)/2, height=1.0, size=13, color_rgb=INK_RGB, font=SANS_FONT)\ny += 1.15\n_add_text(slide, \"[3] Shumaker et al. 2003, JAMA -- WHIMS RCT; hormones DOUBLED dementia risk in 65+.\", left=body_l, top=body_top+y, width=(body_w-0.4)/2, height=1.0, size=13, color_rgb=INK_RGB, font=SANS_FONT)\ny += 1.15\n_add_text(slide, \"[4] Rapp et al. 2003, JAMA -- WHIMS RCT; no cognitive benefit, scores trended worse.\", left=body_l, top=body_top+y, width=(body_w-0.4)/2, height=1.0, size=13, color_rgb=INK_RGB, font=SANS_FONT)\ny += 1.15\ny = 0.15\n_add_text(slide, \"[5] Wharton et al. 2009, Maturitas -- healthy-user bias; users start out healthier.\", left=body_l+(body_w-0.4)/2+0.4, top=body_top+y, width=(body_w-0.4)/2, height=1.0, size=13, color_rgb=INK_RGB, font=SANS_FONT)\ny += 1.15\n_add_text(slide, \"[6] Vandenbroucke 2009, Lancet -- why observational studies and RCTs disagreed.\", left=body_l+(body_w-0.4)/2+0.4, top=body_top+y, width=(body_w-0.4)/2, height=1.0, size=13, color_rgb=INK_RGB, font=SANS_FONT)\ny += 1.15\n_add_text(slide, \"[7] Maki 2024, Harvard Health -- menopause 'brain fog' vs. normal test scores.\", left=body_l+(body_w-0.4)/2+0.4, top=body_top+y, width=(body_w-0.4)/2, height=1.0, size=13, color_rgb=INK_RGB, font=SANS_FONT)\ny += 1.15\n_add_text(slide, \"[8] Chen & Shafir 2025, Harvard Health -- the dismissal of women's symptoms.\", left=body_l+(body_w-0.4)/2+0.4, top=body_top+y, width=(body_w-0.4)/2, height=1.0, size=13, color_rgb=INK_RGB, font=SANS_FONT)\ny += 1.15",
+        "code": "fw = body_w * 0.56\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g6_estrogen/slides/figures/raw_means.png', left=body_l, top=body_top + 0.1, max_w=fw, max_h=body_h - 0.2)\nax = body_l + fw + 0.4\naw = body_w - fw - 0.4\n_add_text(slide, '+8.1', left=ax, top=body_top + 0.3, width=aw, height=1.2, size=76, color_rgb=TURQUOISE_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, 'points -- the raw gap, users over non-users', left=ax, top=body_top + 1.7, width=aw, height=0.5, size=15, color_rgb=INK_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, '51.8 versus 43.7. Taken at face value, the exciting headline writes itself: \"estrogen users think better.\" It is the same clue the 1990s studies chased -- but we never checked whether the two groups were the same kind of people to begin with.',\n          left=ax, top=body_top + 2.35, width=aw, height=2.2, size=15, color_rgb=INK_RGB, font=SANS_FONT)",
         "lede": "",
-        "notes": "The paper trail, in order of the story. Top-left: the two observational studies that raised the exciting clue [1, 2]. Bottom of the left column into the trial: the WHIMS randomized results that overturned it [3, 4]. Right column: the healthy-user-bias explanation [5, 6] and the brain-fog / symptom-dismissal pieces [7, 8]. All were checked against PubMed or the journal page. Transition: one habit to take with you.",
-        "section_label": "What the numbers can’t capture",
+        "notes": "The tempting headline, exactly as anyone would first compute it. Average the memory score for users versus non-users: 51.8 versus 43.7, an eight-point head start for the estrogen group. If you stopped here you would write 'estrogen users think better' -- the same clue the 1990s observational studies chased. The whole point of the next slide is that we did NOT stop here; we asked who these women were. Transition: adjust for their background and watch what happens.",
+        "section_label": "The results",
+        "title": "The tempting headline"
+      },
+      "slide_id": "h1-the-results/h2-the-tempting-headline"
+    },
+    {
+      "content_hash": "10f7a3d040c43b0a204327f3a4eae7e7aeb0d064227d3cafb40be4979d174f28",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "fw = body_w * 0.54\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g6_estrogen/slides/figures/confounding.png', left=body_l + body_w - fw, top=body_top + 0.1, max_w=fw, max_h=body_h - 0.2)\nax = body_l\naw = body_w - fw - 0.45\n_add_text(slide, '67%', left=ax, top=body_top + 0.35, width=aw, height=1.4, size=92, color_rgb=DEEPPINK_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, 'of the apparent effect was confounding', left=ax, top=body_top + 1.85, width=aw, height=0.5, size=16, color_rgb=INK_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, 'The crude effect (-0.33) shrank to just -0.11 once we adjusted for age, education, and income. That missing two-thirds was never the estrogen -- it was that users were healthier and better-off to start with.',\n          left=ax, top=body_top + 2.5, width=aw, height=2.0, size=15.5, color_rgb=INK_RGB, font=SANS_FONT)",
+        "lede": "",
+        "notes": "The punchline of the entire project. Same data, honest test. Crude effect: about -0.33 (negative means 'less likely to score low,' i.e. looks protective). Adjusted for age, education, and income: it collapses to -0.11. That is a 67% shrink -- two-thirds of the 'benefit' was never the estrogen, it was that users were healthier and better-off to begin with. This is confounding caught in the act, a miniature of exactly why WHIMS overturned the observational headlines. If they remember one number from this talk, make it 67%. Transition: the same model shows what DID matter.",
+        "section_label": "The results",
+        "title": "Most of the gap was confounding"
+      },
+      "slide_id": "h1-the-results/h2-most-of-the-gap-was-confounding"
+    },
+    {
+      "content_hash": "15100a91cdf3a96c5d67f6b1dcfc634154ca2bb38b52d68ef9fd1d947ec2ce6c",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "fw = body_w * 0.58\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g6_estrogen/slides/figures/feature_importance.png', left=body_l, top=body_top + 0.1, max_w=fw, max_h=body_h - 0.2)\nax = body_l + fw + 0.4\naw = body_w - fw - 0.4\n_add_text(slide, 'FROM THE SAME MODEL', left=ax, top=body_top + 0.1, width=aw, height=0.4, size=14, color_rgb=AMBER_RGB, font=MONO_FONT, bold=True)\nranks = [('education', 'the biggest driver', TURQUOISE_RGB),\n         ('age', 'close behind', TURQUOISE_RGB),\n         ('income', 'still matters', TURQUOISE_RGB),\n         ('estrogen', 'the smallest bar', DEEPPINK_RGB)]\ny = body_top + 0.65\nfor name, note, col in ranks:\n    _add_text(slide, name, left=ax, top=y, width=aw * 0.5, height=0.42, size=17, color_rgb=col, font=MONO_FONT, bold=True)\n    _add_text(slide, note, left=ax + aw * 0.5, top=y, width=aw * 0.5, height=0.42, size=13.5, color_rgb=INK_RGB, font=SANS_FONT, anchor=MSO_ANCHOR.MIDDLE)\n    y += 0.62\n_add_text(slide, 'Feature importance is free from an interpretable model: it is the standardized coefficients. Prediction and causation agree, and neither points at the pill.',\n          left=ax, top=y + 0.15, width=aw, height=1.6, size=15, color_rgb=INK_RGB, font=SANS_FONT, italic=True)",
+        "lede": "",
+        "notes": "Feature importance, and it costs us nothing because we chose an interpretable model -- these bars ARE the standardized coefficients of the very model that answered the causal question. Education and age dominate, income follows, and used_estrogen is the SMALLEST bar (in pink). So the same model shows visually what the adjustment proved: once you know a woman's background, estrogen barely moves cognition. Prediction and causation point the same way, and neither points at the pill. Transition: fair question -- can this model even predict at all?",
+        "section_label": "The results",
+        "title": "What actually predicts cognition"
+      },
+      "slide_id": "h1-the-results/h2-what-actually-predicts-cognition"
+    },
+    {
+      "content_hash": "94c9ede2a859dbe01dafb8e9620235c36920f01ba9fb36b4b4f95fe82001ffe0",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_add_text(slide, '0.78', left=body_l, top=body_top + 0.35, width=body_w * 0.5, height=2.2, size=150, color_rgb=TURQUOISE_RGB, font=MONO_FONT, bold=True)\nax = body_l + body_w * 0.52\naw = body_w - body_w * 0.52\n_add_text(slide, 'predictive AUC', left=ax, top=body_top + 0.55, width=aw, height=0.6, size=26, color_rgb=INK_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, '5-fold cross-validation. 0.5 would be a coin flip, so 0.78 is a real signal -- but it is driven by age and education, not estrogen.',\n          left=ax, top=body_top + 1.25, width=aw, height=1.5, size=16, color_rgb=INK_RGB, font=SANS_FONT)\n_add_rect(slide, left=body_l, top=body_top + body_h - 1.1, width=body_w, height=0.9, fill_rgb=PAPER_RGB)\n_add_text(slide, 'An honest secondary number -- and a reminder: a black box scored 0.76 here, no better, and could give us no effect size at all.',\n          left=body_l + 0.35, top=body_top + body_h - 1.1, width=body_w - 0.7, height=0.9,\n          size=15, color_rgb=BLUEVIOLET_RGB, font=SANS_FONT, italic=True, anchor=MSO_ANCHOR.MIDDLE)",
+        "lede": "",
+        "notes": "Be honest about the secondary number. The deliverable is the causal answer, but it is fair to ask how well the model predicts low cognition at all. Five-fold cross-validated AUC is 0.78 -- 0.5 would be a coin flip, so this is a genuine signal, and it comes mostly from age and education, not estrogen. The bottom band closes the loop with the model slide: a black box scored 0.76 here, no better, and it could not hand us an effect size anyway. So the readable model wins on both counts. Transition: one more audit any people-model needs -- fairness.",
+        "section_label": "The results",
+        "title": "Can it even predict?"
+      },
+      "slide_id": "h1-the-results/h2-can-it-even-predict"
+    },
+    {
+      "content_hash": "bab89e1463c82d03ba5c98c64c0905f9374a578c0869419d8d9371bf048d4b47",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "fw = body_w * 0.56\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g6_estrogen/slides/figures/fairness_by_group.png', left=body_l, top=body_top, max_w=fw, max_h=body_h)\nax = body_l + fw + 0.45\naw = body_w - fw - 0.45\nth = 1.45\n_add_rect(slide, left=ax, top=body_top + 0.1, width=aw, height=th, fill_rgb=TURQUOISE_RGB)\ntc = _text_on(TURQUOISE_RGB)\n_add_text(slide, '0.73', left=ax + 0.28, top=body_top + 0.2, width=aw - 0.56, height=0.8, size=36, color_rgb=tc, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n_add_text(slide, 'accuracy for estrogen-USERS', left=ax + 0.28, top=body_top + 0.98, width=aw - 0.56, height=0.5, size=13.5, color_rgb=tc, font=SANS_FONT)\n_add_rect(slide, left=ax, top=body_top + 1.7, width=aw, height=th, fill_rgb=MUTED_RGB)\ntc2 = _text_on(MUTED_RGB)\n_add_text(slide, '0.65', left=ax + 0.28, top=body_top + 1.8, width=aw - 0.56, height=0.8, size=36, color_rgb=tc2, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n_add_text(slide, 'accuracy for NON-users', left=ax + 0.28, top=body_top + 2.58, width=aw - 0.56, height=0.5, size=13.5, color_rgb=tc2, font=SANS_FONT)\n_add_text(slide, 'A tool reliably right for one group and shakier for another can quietly do harm if a clinic trusts it equally. Naming the gap is the honest move.',\n          left=ax, top=body_top + 3.4, width=aw, height=1.2, size=14.5, color_rgb=INK_RGB, font=SANS_FONT, italic=True)",
+        "lede": "",
+        "notes": "A fairness audit, the habit from earlier this week. We trained one model to predict low cognition, then split its accuracy by group: 0.73 for estrogen-users, 0.65 for non-users. A model can look fine overall yet work unequally across groups -- and a clinic that trusts it equally could quietly do more harm to the group it is worse at. The mature move is not to hide the gap; it is to name it and, in a real deployment, work to close it. Transition: so what can this project honestly claim, and what can it not?",
+        "section_label": "The results",
+        "title": "Does it work for both groups?"
+      },
+      "slide_id": "h1-the-results/h2-does-it-work-for-both-groups"
+    },
+    {
+      "content_hash": "4715973bb4a776cf4b1afcf791928f799047c42a1780e4ae973909bed6dde812-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#40E0D0",
+        "label": "The takeaway",
+        "notes": "Good science states its own limits out loud. What a survey can and cannot do, the papers behind it, and the one habit to carry to any study you ever read. This is the section the rubric rewards most."
+      },
+      "slide_id": "divider-h1-the-takeaway"
+    },
+    {
+      "content_hash": "3ff1b552456fdf3742c25d80dadd95f0b5d84b763b0d5e2fc1ea9f4760ac7380",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "cards = [('WHAT IT CAN DO', 'Show a tempting headline is mostly a mirage, and that adjusting for background shrinks the effect by 67%.', 'the mirage, exposed', TURQUOISE_RGB),\n         ('WHAT IT CANNOT DO', 'Prove cause. We only corrected for confounders we measured and thought of; something unrecorded could still be doing the work.', 'a hint, not a proof', DEEPPINK_RGB),\n         ('WHAT SETTLES IT', 'A randomized trial: a coin flip, not the patient, assigns the drug, so the groups start the same. That is why WHIMS could overturn 20 years of headlines.', 'only an experiment', BLUEVIOLET_RGB)]\ngap = 0.35\ncw = (body_w - gap * 2) / 3\nch = body_h - 0.1\nby = body_top + 0.55\nfor i, (lab, bod, tag, col) in enumerate(cards):\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=ch, fill_rgb=WHITE_RGB)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=0.1, fill_rgb=col)\n    _add_text(slide, lab, left=x + 0.26, top=by, width=cw - 0.52, height=0.5, size=16, color_rgb=col, font=MONO_FONT, bold=True)\n    _add_text(slide, bod, left=x + 0.26, top=by + 0.7, width=cw - 0.52, height=ch - 2.15, size=15, color_rgb=INK_RGB, font=SANS_FONT)\n    _add_rect(slide, left=x, top=body_top + ch - 1.0, width=cw, height=0.02, fill_rgb=_rgb('#E4E1D9'))\n    _add_text(slide, tag, left=x + 0.26, top=body_top + ch - 0.85, width=cw - 0.52, height=0.6, size=14, color_rgb=col, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)",
+        "lede": "",
+        "notes": "Be scrupulously honest about scope -- this is what earns trust. CAN DO: show a tempting headline is mostly a mirage and that adjusting shrinks it by 67%. CANNOT DO: prove cause -- we can only correct for confounders we measured and thought of; something unrecorded could still be doing the work. SETTLES IT: a randomized trial, where a coin flip (not the patient) assigns the drug, so the groups start identical. That is why WHIMS could do what twenty years of watching could not. State the line plainly: this teaches the reasoning, it does not settle the medicine. Transition: the sources.",
+        "section_label": "The takeaway",
+        "title": "What a survey can and cannot do"
+      },
+      "slide_id": "h1-the-takeaway/h2-what-a-survey-can-and-cannot-do"
+    },
+    {
+      "content_hash": "f30859f1a3085beb7b92b2ca77c1de8cddb8ddeb24f5cbb16ba1e12b03a58ef5",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "colw = (body_w - 0.6) / 2\nleft_refs = ('[1] Tang et al. 1996, Lancet -- observational; users got Alzheimer\\'s less/later.\\n\\n'\n             '[2] Zandi et al. 2002, JAMA (Cache County) -- observational; long-term users lower risk.\\n\\n'\n             '[3] Shumaker et al. 2003, JAMA -- WHIMS RCT; hormones DOUBLED dementia risk in 65+.\\n\\n'\n             '[4] Rapp et al. 2003, JAMA -- WHIMS RCT; no cognitive benefit, scores trended worse.')\nright_refs = ('[5] Wharton et al. 2009, Maturitas -- healthy-user bias; users start out healthier.\\n\\n'\n              '[6] Vandenbroucke 2009, Lancet -- why observational studies and RCTs disagreed.\\n\\n'\n              '[7] Maki 2024, Harvard Health -- menopause brain fog vs. normal test scores.\\n\\n'\n              '[8] Chen & Shafir 2025, Harvard Health -- the dismissal of women\\'s symptoms.')\n_add_text(slide, 'OBSERVATIONAL & TRIAL', left=body_l, top=body_top + 0.05, width=colw, height=0.4, size=16, color_rgb=TURQUOISE_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, left_refs, left=body_l, top=body_top + 0.6, width=colw, height=body_h - 0.7, size=14, color_rgb=INK_RGB, font=SANS_FONT)\nrx = body_l + colw + 0.6\n_add_text(slide, 'BIAS & SYMPTOMS', left=rx, top=body_top + 0.05, width=colw, height=0.4, size=16, color_rgb=DEEPPINK_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, right_refs, left=rx, top=body_top + 0.6, width=colw, height=body_h - 0.7, size=14, color_rgb=INK_RGB, font=SANS_FONT)",
+        "lede": "",
+        "notes": "Give credit and show the trail, in the order of the story. Left column: the two observational studies that raised the exciting clue [1,2], then the WHIMS randomized results that overturned it [3,4]. Right column: the healthy-user-bias explanation [5,6] and the brain-fog / dismissed-symptoms pieces [7,8]. All were checked against PubMed or the journal page. Point out that [3] is the trial we redrew and [5,6] are the source of the confounding idea. Transition: the one habit to take with you.",
+        "section_label": "The takeaway",
         "title": "References"
       },
-      "slide_id": "h1-what-the-numbers-can-t-capture/h2-references"
+      "slide_id": "h1-the-takeaway/h2-references"
     },
     {
-      "content_hash": "dee5872e3a87a87e6468190f5e1b48055c916da9cf4ae42e39ecbe0eae76a5c7",
+      "content_hash": "1fd8c8a62f34faacf67d5d2f511601104122d84be4ae58577f146e8361ce7926",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "base = body_top + 0.75\n_add_rect(slide, left=body_l, top=base, width=0.16, height=2.4, fill_rgb=TURQUOISE_RGB)\n_add_text(slide, \"Suspect the chooser, not the treatment.\",\n          left=body_l + 0.5, top=base, width=body_w - 0.6, height=1.5,\n          size=38, color_rgb=INK_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, \"When a group that CHOSE a treatment looks healthier, the head start usually belongs to the person, not the pill -- and only a coin-flip experiment can promote a correlation to a cause.\",\n          left=body_l + 0.5, top=base + 1.7, width=body_w - 1.0, height=1.2,\n          size=18, color_rgb=INK_RGB, font=SANS_FONT)\n_add_text(slide, \"And take the patient's account seriously -- even when the test says 'fine.'\",\n          left=body_l + 0.5, top=base + 3.05, width=body_w - 1.0, height=0.8,\n          size=18, color_rgb=DEEPPINK_RGB, font=MONO_FONT, bold=True)",
+        "code": "q_top = body_top + body_h * 0.16\n_add_rect(slide, left=body_l, top=q_top, width=0.16, height=1.5, fill_rgb=TURQUOISE_RGB)\n_add_text(slide, 'Suspect the chooser, not the treatment.',\n          left=body_l + 0.5, top=q_top - 0.15, width=body_w - 0.6, height=1.5,\n          size=38, color_rgb=INK_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, 'When a group that CHOSE a treatment looks healthier, the head start usually belongs to the person, not the pill -- and only a coin-flip experiment can promote a correlation to a cause.',\n          left=body_l + 0.5, top=q_top + 1.7, width=body_w - 1.0, height=1.3, size=19, color_rgb=INK_RGB, font=SANS_FONT)\n_add_text(slide, 'And take the patient\\'s account seriously -- even when the test says \"fine.\"',\n          left=body_l + 0.5, top=q_top + 3.1, width=body_w - 1.0, height=0.7, size=19, color_rgb=DEEPPINK_RGB, font=MONO_FONT, bold=True)",
         "lede": "",
-        "notes": "Close on the transferable lesson, not the estrogen specifics. Suspect the chooser, not the treatment: whenever a group that CHOSE something looks healthier, the head start usually belongs to the person, and only a coin-flip experiment can turn a correlation into a cause. And -- because this is medicine, about real women -- take the patient's account seriously even when the test says 'fine.' That pair, statistical humility plus listening, is the whole point of the project. Thank you.",
-        "section_label": "What the numbers can’t capture",
-        "title": "The one habit to carry out the door"
+        "notes": "Close on the transferable lesson, not the estrogen specifics. Suspect the chooser, not the treatment: whenever a group that CHOSE something looks healthier, the head start usually belongs to the person, and only a coin-flip experiment can turn a correlation into a cause. That is why we insisted on a model we could read, and why a survey can hint but never prove. And -- because this is medicine, about real women -- take the patient's account seriously even when the test says 'fine.' That pair, statistical humility plus listening, is the whole point of the project. Thank them.",
+        "section_label": "The takeaway",
+        "title": "The one habit to carry with you"
       },
-      "slide_id": "h1-what-the-numbers-can-t-capture/h2-the-one-habit-to-carry-out-the-door"
+      "slide_id": "h1-the-takeaway/h2-the-one-habit-to-carry-with-you"
     }
   ],
   "theme": "bone",
