@@ -66,32 +66,106 @@ beats the one below it.*
 
 both(code("""
 # Setup: on Colab, grab the course files. Locally (already in the repo) this is a no-op.
-import os, sys
-if not os.path.exists("common.py"):
-    os.system("git clone -q https://github.com/jinchiwei/outset-ai-healthcare.git")
-    os.chdir("outset-ai-healthcare/notebooks/day1_ladder")
-sys.path.insert(0, ".")
-sys.path.insert(0, "../_shared")
-import colab_setup
-colab_setup.ensure()
-colab_setup.gpu_check()
+import os, sys                                    # os = talk to the computer; sys = talk to Python itself
+if not os.path.exists("common.py"):              # if the course file isn't here, we must be on a fresh Colab
+    os.system("git clone -q https://github.com/jinchiwei/outset-ai-healthcare.git")  # download the course repo
+    os.chdir("outset-ai-healthcare/notebooks/day1_ladder")  # step into the folder we just downloaded
+sys.path.insert(0, ".")                          # let Python find files in this folder (like common.py)
+sys.path.insert(0, "../_shared")                 # also look one folder up in _shared (for nbfig, colab_setup)
+import colab_setup                               # a helper that installs missing packages
+colab_setup.ensure()                             # actually install anything that's missing
+colab_setup.gpu_check()                          # print whether we have a fast GPU to train on
 """))
 
 both(code("""
-import os, sys
-import torch
-import numpy as np
-import common
+import os, sys           # os/sys again: file paths and Python settings
+import torch             # PyTorch: the deep-learning library that runs the models
+import numpy as np       # NumPy: fast math on arrays of numbers (nicknamed np)
+import common            # the course helper module with all the get_loaders/make_* functions
 # nbfig lives in notebooks/_shared; add it relative to common.py so this cell
 # works even if the setup cell above wasn't run, and from any working directory.
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(common.__file__)), "..", "_shared"))
 import nbfig            # Colab-safe branded plotting (matches the slide figures)
-nbfig.use()
+nbfig.use()             # switch matplotlib over to the course's plot styling
 
+# pick the fastest hardware we have: cuda (NVIDIA GPU) > mps (Apple GPU) > cpu (slow fallback)
 device = "cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu")
-print("device:", device)
+print("device:", device)   # show which one we ended up with
 # keep the leaderboard across accidental re-runs of this cell (don't wipe what you trained)
 results = globals().get("results", {})   # each model's validation accuracy lands here
+"""))
+
+# =========================================================================== #
+# Toolbox -- the functions you can call (reference for the TODOs)
+# =========================================================================== #
+both(md("""
+## Your toolbox: the functions you can call
+
+Every `# TODO` below is filled by calling one of these functions -- you never write a model from
+scratch. `common` is already imported for you. **Keep this section handy while you work.**
+
+**How the pieces connect:** `get_loaders()` gives you **loaders** -> a `make_*()` gives you a
+**model** -> `train_model(model, ...loaders...)` trains it -> `evaluate_classifier` / `gradcam`
+inspect the trained model.
+
+**What the data looks like** (so shapes never surprise you):
+- A **loader** hands out **batches**; one batch is a pair `(images, labels)`.
+- `images` has shape `(N, 3, H, W)`; `labels` has shape `(N,)` -- one 0 or 1 per image.
+- A **model** turns images into scores: `model(images)` -> shape `(N, 2)` (a score for "no" and "yes").
+"""))
+
+both(md("""
+### Get the data
+| function | what you pass in | what you get back |
+|---|---|---|
+| `common.get_loaders(size=64)` | `size` = `64` (for the MLP) or `224` (CNN / ResNet / ViT) | `train_loader, val_loader` |
+| `common.flatten_for_classical(loader)` | a loader | `X, y` -- flat rows of numbers for the logistic-regression step |
+
+### Build a model (pick one per rung)
+| function | what you pass in | what you get back |
+|---|---|---|
+| `common.make_mlp(in_features=3*64*64)` | `in_features` = pixels per image | a model |
+| `common.make_small_cnn()` | nothing (or `dropout=0.3`, `activation="relu"`) | a model |
+| `common.make_resnet50(pretrained=True)` | `pretrained=True` to reuse learned weights | a model |
+| `common.make_vit_base(pretrained=True)` | `pretrained=True` | a model |
+
+### Train it and score it
+| function | what you pass in | what you get back |
+|---|---|---|
+| `common.train_model(model, train_loader, val_loader, epochs=3, lr=1e-3, device=device)` | a model, the two loaders, `epochs` (int), `lr` (small float like `1e-3`) | the trained model; prints accuracy each epoch |
+| `common.evaluate_classifier(lambda b: model(b), val_loader, device=device)` | a small function that runs the model on a batch, plus a loader | accuracy and other metrics |
+
+### Look inside the model
+| function | what you pass in | what you get back |
+|---|---|---|
+| `common.gradcam(model, image, device=device)` | a trained model + one image `(3, H, W)` | a heatmap of *where* it looked |
+| `common.show_first_layer_filters(model)` | a model | the patterns the first layer learned |
+| `common.show_rgb_split(image)` | one image | the red / green / blue channels |
+| `common.show_pixel_histogram(image)` | one image | a chart of pixel brightness |
+"""))
+
+both(md(r"""
+### A full worked recipe
+
+Every "your turn" is a slice of this. Task: *train a ResNet and see where it looks.*
+
+```python
+# 1. data  -- get_loaders returns the two loaders
+train_loader, val_loader = common.get_loaders(size=224)
+
+# 2. model -- a make_* function returns a model
+model = common.make_resnet50(pretrained=True)
+
+# 3. train -- pass the model and both loaders into train_model
+common.train_model(model, train_loader, val_loader, epochs=3, lr=1e-3, device=device)
+
+# 4. inspect -- grab ONE image from a batch, then ask where the model looked
+images, labels = next(iter(val_loader))     # images is (N, 3, H, W); take images[0]
+common.gradcam(model, images[0], device=device)
+```
+
+Read it as a chain: `get_loaders` -> loaders -> `make_resnet50` -> model -> `train_model` -> `gradcam`.
+Once you see the chain, filling in a TODO is just choosing the right link.
 """))
 
 # =========================================================================== #
@@ -110,18 +184,18 @@ routine need, scarce expertise -- is exactly where AI screening helps. Let's loo
 """))
 
 both(code("""
-train_loader, val_loader = common.get_loaders(size=224, batch_size=32)
-images, labels = next(iter(train_loader))
-print("one batch:", images.shape, "  <- (batch, channels, height, width)")
+train_loader, val_loader = common.get_loaders(size=224, batch_size=32)  # data for training and for checking, 32 eyes per batch
+images, labels = next(iter(train_loader))   # pull the first batch: a stack of eye photos and their 0/1 labels
+print("one batch:", images.shape, "  <- (batch, channels, height, width)")  # e.g. (32, 3, 224, 224)
 
 # Look at eight real fundus images with their referable / not-referable labels.
-fig, axes = nbfig.fig(2, 4, figsize=(11, 5.6))
-for ax, img, lab in zip(axes.ravel(), images, labels):
-    ax.imshow(common._denorm(img).permute(1, 2, 0).numpy())
-    ax.set_title(common.GRADE_NAMES[int(lab)], fontsize=11,
-                 color=(nbfig.DEEPPINK if int(lab) else nbfig.INK))
-    ax.axis("off")
-nbfig.show(fig, "Eight eyes: can you tell which need a doctor?")
+fig, axes = nbfig.fig(2, 4, figsize=(11, 5.6))   # make a 2-row, 4-column grid of empty plots
+for ax, img, lab in zip(axes.ravel(), images, labels):   # walk through each plot slot with one image + its label
+    ax.imshow(common._denorm(img).permute(1, 2, 0).numpy())  # undo normalization, reorder to H,W,color, and draw it
+    ax.set_title(common.GRADE_NAMES[int(lab)], fontsize=11,   # title = the human-readable class name
+                 color=(nbfig.DEEPPINK if int(lab) else nbfig.INK))  # pink title if referable (label 1), dark if not
+    ax.axis("off")     # hide the x/y number axes; it's a photo, not a chart
+nbfig.show(fig, "Eight eyes: can you tell which need a doctor?")   # render the finished grid with a caption
 """))
 
 both(md("""
@@ -155,21 +229,22 @@ both(code("""
 raw_batch = torch.stack([common._denorm(im) for im in images])  # N,3,H,W back in 0..1
 ch_mean = raw_batch.mean(dim=(0, 2, 3))        # per-channel mean
 ch_std = raw_batch.std(dim=(0, 2, 3))          # per-channel std
+# subtract each channel's mean, then divide by its std -> every channel now centered at ~0
 standardized = (raw_batch - ch_mean[:, None, None]) / ch_std[:, None, None]
 
-raw0, std0 = raw_batch[0], standardized[0]
+raw0, std0 = raw_batch[0], standardized[0]     # first eye, before and after standardizing
 disp = (std0 - std0.min()) / (std0.max() - std0.min())  # rescale just to view
 
-fig, (a1, a2, a3) = nbfig.fig(1, 3, figsize=(11, 3.6))
-a1.imshow(raw0.permute(1, 2, 0).numpy()); a1.set_title("raw (0..1)", fontsize=11); a1.axis("off")
-a2.imshow(disp.permute(1, 2, 0).numpy()); a2.set_title("standardized (rescaled to view)", fontsize=11); a2.axis("off")
-x = np.arange(3)
-a3.bar(x - 0.2, raw_batch.mean((0, 2, 3)).numpy(), 0.4, color=nbfig.TURQUOISE, label="raw mean")
-a3.bar(x + 0.2, standardized.mean((0, 2, 3)).numpy(), 0.4, color=nbfig.DEEPPINK, label="standardized mean")
-a3.axhline(0, color=nbfig.MUTED, lw=0.8); a3.set_xticks(x); a3.set_xticklabels(["R", "G", "B"])
-a3.set_title("channel means: ~0 after", fontsize=11); a3.legend()
-nbfig.show(fig, "Standardization: subtract the mean, divide by the std -> centered at zero")
-print("standardized channel means:", [round(v, 3) for v in standardized.mean((0, 2, 3)).tolist()])
+fig, (a1, a2, a3) = nbfig.fig(1, 3, figsize=(11, 3.6))   # three side-by-side panels
+a1.imshow(raw0.permute(1, 2, 0).numpy()); a1.set_title("raw (0..1)", fontsize=11); a1.axis("off")   # left: original eye
+a2.imshow(disp.permute(1, 2, 0).numpy()); a2.set_title("standardized (rescaled to view)", fontsize=11); a2.axis("off")  # middle: after standardizing
+x = np.arange(3)     # positions 0,1,2 for the three color channels on the bar chart
+a3.bar(x - 0.2, raw_batch.mean((0, 2, 3)).numpy(), 0.4, color=nbfig.TURQUOISE, label="raw mean")     # bars: mean of each channel BEFORE
+a3.bar(x + 0.2, standardized.mean((0, 2, 3)).numpy(), 0.4, color=nbfig.DEEPPINK, label="standardized mean")  # bars: mean of each channel AFTER (~0)
+a3.axhline(0, color=nbfig.MUTED, lw=0.8); a3.set_xticks(x); a3.set_xticklabels(["R", "G", "B"])   # draw the zero line and label channels R/G/B
+a3.set_title("channel means: ~0 after", fontsize=11); a3.legend()   # title + a key for the two bar colors
+nbfig.show(fig, "Standardization: subtract the mean, divide by the std -> centered at zero")   # render all three panels
+print("standardized channel means:", [round(v, 3) for v in standardized.mean((0, 2, 3)).tolist()])  # confirm the means really are ~0
 """))
 
 both(md("""
@@ -189,18 +264,19 @@ Hold that thought -- we'll catch a model doing exactly that at the end.
 """))
 
 both(code("""
-import numpy as np
+import numpy as np       # NumPy for the counting math below
 # count classes across the validation set
-all_labels = np.concatenate([y.numpy() for _, y in val_loader])
-counts = [int((all_labels == c).sum()) for c in range(common.NUM_CLASSES)]
+all_labels = np.concatenate([y.numpy() for _, y in val_loader])   # gather every label from every batch into one long array
+counts = [int((all_labels == c).sum()) for c in range(common.NUM_CLASSES)]   # how many eyes fall in each class (0 and 1)
 
-fig, ax = nbfig.fig(figsize=(5.5, 3.2))
-bars = ax.bar(common.GRADE_NAMES, counts, color=[nbfig.TURQUOISE, nbfig.DEEPPINK])
-for b, c in zip(bars, counts):
-    ax.text(b.get_x() + b.get_width() / 2, c, str(c), ha="center", va="bottom",
+fig, ax = nbfig.fig(figsize=(5.5, 3.2))   # one small bar chart
+bars = ax.bar(common.GRADE_NAMES, counts, color=[nbfig.TURQUOISE, nbfig.DEEPPINK])   # one bar per class, sized by its count
+for b, c in zip(bars, counts):   # walk each bar with its number
+    ax.text(b.get_x() + b.get_width() / 2, c, str(c), ha="center", va="bottom",   # print the count on top of the bar
             fontweight="bold", family="DejaVu Sans Mono")
-ax.set_ylabel("validation images")
-nbfig.show(fig, "Class balance")
+ax.set_ylabel("validation images")   # y-axis label
+nbfig.show(fig, "Class balance")   # render the chart
+# if a lazy model always guessed the biggest class, this is the accuracy it would get for free
 print("majority-class baseline accuracy:", f"{max(counts) / sum(counts):.3f}")
 """))
 
@@ -213,15 +289,15 @@ training pipeline. Each one is a slightly different training example, for free.
 """))
 
 both(code("""
-import torchvision.transforms as T
-pil = T.ToPILImage()(common._denorm(images[0]))
+import torchvision.transforms as T   # torchvision's image-transform toolbox, nicknamed T
+pil = T.ToPILImage()(common._denorm(images[0]))   # turn the first eye tensor back into a normal image object
 aug = common._transform(224, train=True)   # the actual training-time augmentation
 
-fig, axes = nbfig.fig(3, 5, figsize=(11, 7))
-for ax in axes.ravel():
+fig, axes = nbfig.fig(3, 5, figsize=(11, 7))   # a 3x5 grid = 15 slots
+for ax in axes.ravel():   # fill each of the 15 slots
     shown = common._denorm(aug(pil))        # apply augmentation, then de-normalize to view
-    ax.imshow(shown.permute(1, 2, 0).numpy()); ax.axis("off")
-nbfig.show(fig, "The same eye, 15 random augmentations")
+    ax.imshow(shown.permute(1, 2, 0).numpy()); ax.axis("off")   # draw this random version, hide the axes
+nbfig.show(fig, "The same eye, 15 random augmentations")   # render the grid
 """))
 
 both(md("""
@@ -236,19 +312,19 @@ mangle. Below we crank each one up so you can *see* the damage, then we explain 
 
 both(code("""
 # Crank each "risky" augmentation way up so the damage is obvious.
-risky = {
-    "original":        pil,
-    "color jitter":    T.ColorJitter(brightness=0.0, contrast=0.0, saturation=0.0, hue=0.45)(pil),
-    "heavy shear":     T.functional.affine(pil, angle=0, translate=(0, 0), scale=1.0, shear=[35, 20]),
-    "perspective warp": T.RandomPerspective(distortion_scale=0.6, p=1.0)(pil),
-    "vertical flip":   T.functional.vflip(pil),
-    "huge zoom-crop":  T.RandomResizedCrop(224, scale=(0.15, 0.15))(pil),
+risky = {   # a dictionary mapping each label to one deliberately-overdone version of the eye
+    "original":        pil,   # the untouched image, for comparison
+    "color jitter":    T.ColorJitter(brightness=0.0, contrast=0.0, saturation=0.0, hue=0.45)(pil),   # shift only the hue, hard
+    "heavy shear":     T.functional.affine(pil, angle=0, translate=(0, 0), scale=1.0, shear=[35, 20]),   # slant the image
+    "perspective warp": T.RandomPerspective(distortion_scale=0.6, p=1.0)(pil),   # tilt it like viewing from an angle
+    "vertical flip":   T.functional.vflip(pil),   # flip top-to-bottom
+    "huge zoom-crop":  T.RandomResizedCrop(224, scale=(0.15, 0.15))(pil),   # zoom way in, keeping only 15% of the area
 }
-fig, axes = nbfig.fig(2, 3, figsize=(11, 7.2))
-for ax, (name, im) in zip(axes.ravel(), risky.items()):
-    ax.imshow(im); ax.set_title(name, fontsize=12,
-              color=(nbfig.INK if name == "original" else nbfig.DEEPPINK)); ax.axis("off")
-nbfig.show(fig, "Too far: augmentations that corrupt the diagnosis")
+fig, axes = nbfig.fig(2, 3, figsize=(11, 7.2))   # 2x3 grid = 6 slots, one per entry above
+for ax, (name, im) in zip(axes.ravel(), risky.items()):   # pair each slot with a (label, image)
+    ax.imshow(im); ax.set_title(name, fontsize=12,   # draw the image and label it
+              color=(nbfig.INK if name == "original" else nbfig.DEEPPINK)); ax.axis("off")   # pink title for the damaged ones
+nbfig.show(fig, "Too far: augmentations that corrupt the diagnosis")   # render the grid
 """))
 
 both(md("""
@@ -279,55 +355,55 @@ Jupyter widgets; if you don't see them, run the previous cells first.)
 """))
 
 both(code("""
-import torchvision.transforms.functional as TF
-import matplotlib.pyplot as plt
+import torchvision.transforms.functional as TF   # the one-shot versions of the transforms (nicknamed TF)
+import matplotlib.pyplot as plt                   # the plotting library, nicknamed plt
 
 # self-heal: works even if you jumped straight here after a kernel restart
 try:
-    common, device, tr224
-except NameError:
+    common, device, tr224     # check these already exist from earlier cells
+except NameError:             # if not (fresh kernel), rebuild them
     import sys; sys.path.insert(0, ".")
     import common
-    _nb, device, tr224, _va = common.playground_setup()
+    _nb, device, tr224, _va = common.playground_setup()   # quick setup that returns the pieces we need
 
 # one clean sample eye to experiment on
-_imgs, _ = next(iter(tr224))
-BASE = TF.to_pil_image(common._denorm(_imgs[0]))
+_imgs, _ = next(iter(tr224))                 # grab one batch (we ignore its labels with _)
+BASE = TF.to_pil_image(common._denorm(_imgs[0]))   # first eye as a plain image we can transform
 
-def show_augment(rotate=0, brightness=1.0, contrast=1.0, blur=0, zoom=1.0, hflip=False):
-    img = TF.adjust_contrast(TF.adjust_brightness(BASE, brightness), contrast)
-    if zoom > 1.0:
-        w, h = img.size
-        img = TF.resize(TF.center_crop(img, [int(h / zoom), int(w / zoom)]), [h, w])
-    img = TF.rotate(img, rotate)
-    if hflip:
-        img = TF.hflip(img)
-    if blur > 0:
-        img = TF.gaussian_blur(img, kernel_size=2 * blur + 1)
-    fig, ax = plt.subplots(figsize=(4.6, 4.6))
-    ax.imshow(img); ax.axis("off")
-    ax.set_title(f"rotate {rotate}deg | bright {brightness:.1f} | contrast {contrast:.1f} | "
+def show_augment(rotate=0, brightness=1.0, contrast=1.0, blur=0, zoom=1.0, hflip=False):   # runs once per slider change
+    img = TF.adjust_contrast(TF.adjust_brightness(BASE, brightness), contrast)   # apply brightness then contrast
+    if zoom > 1.0:                           # only zoom if the dial is above 1
+        w, h = img.size                      # current width and height
+        img = TF.resize(TF.center_crop(img, [int(h / zoom), int(w / zoom)]), [h, w])   # crop the center, then stretch back to full size
+    img = TF.rotate(img, rotate)             # rotate by the chosen number of degrees
+    if hflip:                                # if the checkbox is ticked
+        img = TF.hflip(img)                  # mirror left-to-right
+    if blur > 0:                             # if the blur dial is above 0
+        img = TF.gaussian_blur(img, kernel_size=2 * blur + 1)   # soften it (kernel size must be odd)
+    fig, ax = plt.subplots(figsize=(4.6, 4.6))   # one square plot
+    ax.imshow(img); ax.axis("off")           # draw the transformed eye, no axes
+    ax.set_title(f"rotate {rotate}deg | bright {brightness:.1f} | contrast {contrast:.1f} | "   # caption showing every dial's value
                  f"blur {blur} | zoom {zoom:.1f} | hflip {hflip}", fontsize=8)
-    plt.show()
+    plt.show()                               # display it
 
 try:
-    from ipywidgets import interact, FloatSlider, IntSlider, Checkbox
+    from ipywidgets import interact, FloatSlider, IntSlider, Checkbox   # the interactive slider widgets
     # coarse steps + continuous_update=False => it only redraws when you RELEASE the
     # slider, not on every pixel, so it stays snappy even on a slow Colab runtime.
-    _S = dict(continuous_update=False)
-    interact(show_augment,
-             rotate=IntSlider(value=0, min=-45, max=45, step=15, **_S),
-             brightness=FloatSlider(value=1.0, min=0.4, max=2.0, step=0.2, **_S),
-             contrast=FloatSlider(value=1.0, min=0.4, max=2.0, step=0.2, **_S),
-             blur=IntSlider(value=0, min=0, max=8, step=2, **_S),
-             zoom=FloatSlider(value=1.0, min=1.0, max=2.5, step=0.25, **_S),
-             hflip=Checkbox(value=False))
-except ImportError:
+    _S = dict(continuous_update=False)       # shared slider option: redraw on release, not while dragging
+    interact(show_augment,                   # wire the function above to a set of sliders
+             rotate=IntSlider(value=0, min=-45, max=45, step=15, **_S),        # rotation dial
+             brightness=FloatSlider(value=1.0, min=0.4, max=2.0, step=0.2, **_S),   # brightness dial
+             contrast=FloatSlider(value=1.0, min=0.4, max=2.0, step=0.2, **_S),     # contrast dial
+             blur=IntSlider(value=0, min=0, max=8, step=2, **_S),              # blur dial
+             zoom=FloatSlider(value=1.0, min=1.0, max=2.5, step=0.25, **_S),   # zoom dial
+             hflip=Checkbox(value=False))    # mirror on/off checkbox
+except ImportError:                          # ipywidgets not installed (some plain setups)
     print("No live sliders here (ipywidgets missing). For the interactive version, run")
     print("   !pip install ipywidgets   then restart the kernel and re-run this cell.")
     print("Showing a few fixed examples instead:")
-    for kw in [dict(), dict(rotate=25), dict(brightness=1.6), dict(blur=5), dict(zoom=1.8, hflip=True)]:
-        show_augment(**kw)
+    for kw in [dict(), dict(rotate=25), dict(brightness=1.6), dict(blur=5), dict(zoom=1.8, hflip=True)]:   # a few preset combos
+        show_augment(**kw)                   # draw each preset
 """))
 
 # =========================================================================== #
@@ -346,20 +422,20 @@ number you just printed. How much better can a straight line on raw pixels do? W
 
 todo(
     """
-from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import LogisticRegression   # a classic straight-line classifier from scikit-learn
 
-tr64, va64 = common.get_loaders(size=64, batch_size=64)
-Xtr, ytr = common.flatten_for_classical(tr64)
-Xva, yva = common.flatten_for_classical(va64)
-print("flattened features per image:", Xtr.shape[1])
+tr64, va64 = common.get_loaders(size=64, batch_size=64)   # small 64x64 loaders so this runs in seconds
+Xtr, ytr = common.flatten_for_classical(tr64)   # training set as flat rows of numbers (X) + labels (y)
+Xva, yva = common.flatten_for_classical(va64)   # same for the validation set
+print("flattened features per image:", Xtr.shape[1])   # how many numbers describe one eye (3*64*64)
 
 clf = LogisticRegression(max_iter=1000)
 clf.fit(Xtr, ytr)
 
-preds = clf.predict(Xva)
-acc = (preds == yva).mean()
-results["logreg"] = acc
-print(f"logistic regression val accuracy: {acc:.3f}")
+preds = clf.predict(Xva)         # ask the trained model for a 0/1 guess on each validation eye
+acc = (preds == yva).mean()      # fraction of guesses that matched the truth = accuracy
+results["logreg"] = acc          # save this score to the leaderboard
+print(f"logistic regression val accuracy: {acc:.3f}")   # show the accuracy
 """,
     [
         ("clf = LogisticRegression", "make a LogisticRegression with max_iter=1000"),
@@ -374,7 +450,7 @@ columns are the guess. The diagonal is correct; off-diagonal is where it slips.
 """))
 
 both(code("""
-nbfig.confusion(yva, preds, common.GRADE_NAMES, text="Logistic regression").show()
+nbfig.confusion(yva, preds, common.GRADE_NAMES, text="Logistic regression").show()   # truth vs guess grid: diagonal = correct
 """))
 
 both(md("""
@@ -398,8 +474,8 @@ todo(
     """
 mlp = common.make_mlp(in_features=3 * 64 * 64)
 history = common.train_model(mlp, tr64, va64, epochs=15, lr=1e-3, device=device)
-results["mlp"] = history[-1][1]
-print(f"mlp val accuracy: {history[-1][1]:.3f}")
+results["mlp"] = history[-1][1]   # history[-1] is the last epoch; [1] is its accuracy -> save to leaderboard
+print(f"mlp val accuracy: {history[-1][1]:.3f}")   # print that final-epoch accuracy
 """,
     [
         ("mlp = common.make_mlp", "build an MLP with common.make_mlp; in_features is 3*64*64 (the flattened size)"),
@@ -416,7 +492,7 @@ would mean trouble.
 """))
 
 both(code("""
-nbfig.learning_curve(history, text="MLP: accuracy up, loss down").show()
+nbfig.learning_curve(history, text="MLP: accuracy up, loss down").show()   # plot accuracy and loss over the epochs
 """))
 
 both(md("""
@@ -440,12 +516,12 @@ fires when it sees its pattern anywhere in the image. Now we switch to the full 
 
 todo(
     """
-tr224, va224 = common.get_loaders(size=224, batch_size=32)
+tr224, va224 = common.get_loaders(size=224, batch_size=32)   # full-size 224x224 loaders for the CNN
 
 cnn = common.make_small_cnn()
 history = common.train_model(cnn, tr224, va224, epochs=15, lr=1e-3, device=device)
-results["cnn"] = history[-1][1]
-print(f"cnn val accuracy: {history[-1][1]:.3f}")
+results["cnn"] = history[-1][1]   # last epoch's accuracy -> leaderboard
+print(f"cnn val accuracy: {history[-1][1]:.3f}")   # print the final accuracy
 """,
     [
         ("cnn = common.make_small_cnn()", "build the CNN with common.make_small_cnn()"),
@@ -454,7 +530,7 @@ print(f"cnn val accuracy: {history[-1][1]:.3f}")
 )
 
 both(code("""
-nbfig.learning_curve(history, text="CNN: a steeper climb").show()
+nbfig.learning_curve(history, text="CNN: a steeper climb").show()   # accuracy/loss curves for the CNN
 """))
 
 both(md("""
@@ -465,7 +541,19 @@ from trying to predict the label.
 """))
 
 both(code("""
-common.show_first_layer_filters(cnn)
+common.show_first_layer_filters(cnn)   # display the little edge/color detectors the first layer learned
+"""))
+
+both(md("""
+The first layer is only the beginning. As an image flows **deeper** into the network, each layer
+builds on the one before it: early layers react to fine edges, middle layers combine those into
+textures, and the deepest layers respond to big, abstract shapes. Here are real feature maps at three
+depths of your trained CNN, run on a single eye:
+"""))
+
+both(code("""
+imgs, _ = next(iter(tr224))   # grab one batch of eyes (labels ignored with _)
+common.show_feature_maps(cnn, imgs[0], device=device)   # early -> middle -> late, not just layer 1
 """))
 
 both(md("""
@@ -473,8 +561,9 @@ both(md("""
 """))
 
 both(code("""
+# run the CNN on the validation set; argmax(1) turns its two scores into a single 0/1 pick
 res = common.evaluate_classifier(lambda b: cnn(b).argmax(1), va224, device)
-nbfig.confusion(res["y"], res["pred"], common.GRADE_NAMES, text="CNN confusion matrix").show()
+nbfig.confusion(res["y"], res["pred"], common.GRADE_NAMES, text="CNN confusion matrix").show()   # truth vs guess grid
 """))
 
 both(md("""
@@ -505,8 +594,8 @@ learning rates and overlays the curves. **Change the numbers and re-run** -- thi
 both(code("""
 # lets this cell run on its own -- e.g. if you restart the kernel and jump here
 try:
-    common, nbfig, device
-except NameError:
+    common, nbfig, device     # do these already exist from earlier?
+except NameError:             # if not, rebuild them
     import sys; sys.path.insert(0, ".")
     import common
     nbfig, device, _, _ = common.playground_setup()
@@ -520,22 +609,22 @@ LEARNING_RATES = [3e-4, 1e-3, 3e-3]   # try adding 1e-2 (too big) or 1e-5 (too s
 EPOCHS = 6
 # ----------------------------------------------------
 
-runs = {}
-for lr in LEARNING_RATES:
-    print(f"training a fresh CNN at lr={lr} ...")
-    model = common.make_small_cnn().to(device)
-    runs[lr] = common.train_model(model, trP, vaP, epochs=EPOCHS, lr=lr, device=device, verbose=False)
+runs = {}                     # will hold each learning rate's training history
+for lr in LEARNING_RATES:     # train one fresh model per learning rate
+    print(f"training a fresh CNN at lr={lr} ...")   # progress message
+    model = common.make_small_cnn().to(device)      # brand-new CNN, moved onto the GPU/CPU
+    runs[lr] = common.train_model(model, trP, vaP, epochs=EPOCHS, lr=lr, device=device, verbose=False)   # train and store its history
 
 # overlay: validation accuracy (left) and training loss (right) for each learning rate
-fig, (a1, a2) = nbfig.fig(1, 2, figsize=(11, 4.2))
-colors = nbfig.palette(len(LEARNING_RATES))
-for c, (lr, hist) in zip(colors, runs.items()):
-    ep = [h[0] for h in hist]
-    a1.plot(ep, [h[1] for h in hist], "-o", color=c, label=f"lr={lr}")
-    a2.plot(ep, [h[2] for h in hist], "-o", color=c, label=f"lr={lr}")
-a1.set_title("validation accuracy"); a1.set_xlabel("epoch"); a1.set_ylabel("accuracy"); a1.legend()
-a2.set_title("training loss"); a2.set_xlabel("epoch"); a2.set_ylabel("loss"); a2.legend()
-nbfig.show(fig, "Same model, three learning rates")
+fig, (a1, a2) = nbfig.fig(1, 2, figsize=(11, 4.2))   # two panels side by side
+colors = nbfig.palette(len(LEARNING_RATES))   # one distinct color per learning rate
+for c, (lr, hist) in zip(colors, runs.items()):   # draw each run in its own color
+    ep = [h[0] for h in hist]     # the epoch numbers (x-axis)
+    a1.plot(ep, [h[1] for h in hist], "-o", color=c, label=f"lr={lr}")   # left panel: accuracy per epoch
+    a2.plot(ep, [h[2] for h in hist], "-o", color=c, label=f"lr={lr}")   # right panel: loss per epoch
+a1.set_title("validation accuracy"); a1.set_xlabel("epoch"); a1.set_ylabel("accuracy"); a1.legend()   # label left panel
+a2.set_title("training loss"); a2.set_xlabel("epoch"); a2.set_ylabel("loss"); a2.legend()   # label right panel
+nbfig.show(fig, "Same model, three learning rates")   # render both panels
 """))
 
 both(md("""
@@ -562,8 +651,8 @@ the curve. Some things to try:
 both(code("""
 # lets this cell run on its own -- e.g. if you restart the kernel and jump here
 try:
-    common, nbfig, device
-except NameError:
+    common, nbfig, device     # already defined from earlier cells?
+except NameError:             # if not, rebuild them
     import sys; sys.path.insert(0, ".")
     import common
     nbfig, device, _, _ = common.playground_setup()
@@ -579,13 +668,13 @@ WEIGHT_DECAY  = 0.0       # L2 regularization: try 1e-4, 1e-3
 ACTIVATION    = "relu"    # "relu", "leaky_relu", "gelu", "elu", "tanh", "sigmoid"
 # =============================================================================
 
-model = common.make_small_cnn(dropout=DROPOUT, activation=ACTIVATION).to(device)
-history = common.train_model(model, trP, vaP, epochs=EPOCHS, lr=LEARNING_RATE,
+model = common.make_small_cnn(dropout=DROPOUT, activation=ACTIVATION).to(device)   # build a CNN with your chosen dials
+history = common.train_model(model, trP, vaP, epochs=EPOCHS, lr=LEARNING_RATE,   # train it with the panel's settings
                              weight_decay=WEIGHT_DECAY, device=device, verbose=False)
 
-print(f"lr={LEARNING_RATE}  dropout={DROPOUT}  weight_decay={WEIGHT_DECAY}  activation={ACTIVATION}")
-print(f"final validation accuracy: {history[-1][1]:.3f}")
-nbfig.learning_curve(history, text="Your custom CNN").show()
+print(f"lr={LEARNING_RATE}  dropout={DROPOUT}  weight_decay={WEIGHT_DECAY}  activation={ACTIVATION}")   # echo the settings you used
+print(f"final validation accuracy: {history[-1][1]:.3f}")   # the last epoch's accuracy
+nbfig.learning_curve(history, text="Your custom CNN").show()   # plot how this run learned
 """))
 
 both(md("""
@@ -612,8 +701,8 @@ todo(
     """
 resnet = common.make_resnet50(pretrained=True)
 history = common.train_model(resnet, tr224, va224, epochs=3, lr=1e-3, device=device)
-results["resnet"] = history[-1][1]
-print(f"resnet val accuracy: {history[-1][1]:.3f}")
+results["resnet"] = history[-1][1]   # last epoch's accuracy -> leaderboard
+print(f"resnet val accuracy: {history[-1][1]:.3f}")   # print it (notice how high, after only 3 epochs)
 """,
     [
         ("resnet = common.make_resnet50", "build a pretrained ResNet50 with common.make_resnet50(pretrained=True)"),
@@ -622,7 +711,7 @@ print(f"resnet val accuracy: {history[-1][1]:.3f}")
 )
 
 both(code("""
-nbfig.learning_curve(history, text="ResNet: high accuracy in just 3 epochs").show()
+nbfig.learning_curve(history, text="ResNet: high accuracy in just 3 epochs").show()   # its accuracy/loss curves
 """))
 
 both(md("""
@@ -633,20 +722,20 @@ prediction. We want the heat on the retina, not the border.
 """))
 
 both(code("""
-import numpy as np
-from PIL import Image
+import numpy as np          # array math
+from PIL import Image        # image resizing
 
-imgs, _ = next(iter(va224))
-cam, predicted = common.gradcam(resnet, imgs[0], device=device)
-cam_up = np.array(Image.fromarray((cam * 255).astype("uint8")).resize((224, 224))) / 255.0
+imgs, _ = next(iter(va224))   # one batch of validation eyes (labels ignored)
+cam, predicted = common.gradcam(resnet, imgs[0], device=device)   # heatmap of where it looked + its 0/1 guess
+cam_up = np.array(Image.fromarray((cam * 255).astype("uint8")).resize((224, 224))) / 255.0   # scale the small heatmap up to the image size
 
-fig, (a1, a2) = nbfig.fig(1, 2, figsize=(8.5, 4.4))
-base = common._denorm(imgs[0]).permute(1, 2, 0).numpy()
-a1.imshow(base); a1.set_title("the eye", fontsize=11); a1.axis("off")
-a2.imshow(base); a2.imshow(cam_up, cmap="inferno", alpha=0.5)
-a2.set_title(f"where ResNet looked (pred: {common.GRADE_NAMES[predicted]})", fontsize=11)
+fig, (a1, a2) = nbfig.fig(1, 2, figsize=(8.5, 4.4))   # two panels: eye, and eye+heatmap
+base = common._denorm(imgs[0]).permute(1, 2, 0).numpy()   # the viewable version of the eye
+a1.imshow(base); a1.set_title("the eye", fontsize=11); a1.axis("off")   # left: the plain eye
+a2.imshow(base); a2.imshow(cam_up, cmap="inferno", alpha=0.5)   # right: the eye with the heatmap laid semi-transparently on top
+a2.set_title(f"where ResNet looked (pred: {common.GRADE_NAMES[predicted]})", fontsize=11)   # title shows the model's prediction
 a2.axis("off")
-nbfig.show(fig, "Grad-CAM: the model's attention")
+nbfig.show(fig, "Grad-CAM: the model's attention")   # render both panels
 """))
 
 both(md("""
@@ -673,8 +762,8 @@ todo(
     """
 vit = common.make_vit_base(pretrained=True)
 history = common.train_model(vit, tr224, va224, epochs=5, lr=1e-3, device=device)
-results["vit"] = history[-1][1]
-print(f"vit val accuracy: {history[-1][1]:.3f}")
+results["vit"] = history[-1][1]   # last epoch's accuracy -> leaderboard
+print(f"vit val accuracy: {history[-1][1]:.3f}")   # print the final accuracy
 """,
     [
         ("vit = common.make_vit_base", "build a pretrained ViT with common.make_vit_base(pretrained=True)"),
@@ -683,7 +772,7 @@ print(f"vit val accuracy: {history[-1][1]:.3f}")
 )
 
 both(code("""
-nbfig.learning_curve(history, text="Vision Transformer").show()
+nbfig.learning_curve(history, text="Vision Transformer").show()   # the ViT's accuracy/loss curves
 """))
 
 both(md("""
@@ -704,16 +793,16 @@ bought each step up.
 """))
 
 both(code("""
-names = list(results.keys())
-accs = [results[n] for n in names]
+names = list(results.keys())        # the model names we saved, e.g. ["logreg", "mlp", ...]
+accs = [results[n] for n in names]  # each model's accuracy, in the same order
 
-fig, ax = nbfig.fig(figsize=(7.5, 4))
-bars = ax.bar(names, accs, color=nbfig.palette(len(names)))
-for b, a in zip(bars, accs):
-    ax.text(b.get_x() + b.get_width() / 2, a + 0.01, f"{a:.2f}", ha="center",
+fig, ax = nbfig.fig(figsize=(7.5, 4))   # one bar chart
+bars = ax.bar(names, accs, color=nbfig.palette(len(names)))   # one colored bar per model
+for b, a in zip(bars, accs):   # walk each bar with its accuracy
+    ax.text(b.get_x() + b.get_width() / 2, a + 0.01, f"{a:.2f}", ha="center",   # print the score above the bar
             fontweight="bold", family="DejaVu Sans Mono")
-ax.set_ylabel("validation accuracy"); ax.set_ylim(0, 1)
-nbfig.show(fig, "Same data, five models")
+ax.set_ylabel("validation accuracy"); ax.set_ylim(0, 1)   # label y-axis, fix its range to 0..1
+nbfig.show(fig, "Same data, five models")   # render the leaderboard
 """))
 
 both(md("""
@@ -735,9 +824,10 @@ that matter most. Always read the confusion matrix, not just the headline number
 """))
 
 both(code("""
-best = common.evaluate_classifier(lambda b: resnet(b).argmax(1), va224, device)
-nbfig.confusion(best["y"], best["pred"], common.GRADE_NAMES,
+best = common.evaluate_classifier(lambda b: resnet(b).argmax(1), va224, device)   # run the ResNet on the validation set
+nbfig.confusion(best["y"], best["pred"], common.GRADE_NAMES,   # draw its truth-vs-guess grid
                 text="Best model: count the missed 'referable' eyes").show()
+# per-class recall = for each class, what fraction did it actually catch (the sick ones matter most)
 print("per-class recall:", {k: round(v, 2) for k, v in
       common.evaluate_classifier(lambda b: resnet(b).argmax(1), va224, device)["per_class"].items()})
 """))
@@ -757,12 +847,12 @@ that wins both, that's the whole lesson of the ROC curve, in your hands.
 """))
 
 both(code("""
-import numpy as np
-import matplotlib.pyplot as plt
+import numpy as np              # array math
+import matplotlib.pyplot as plt  # plotting
 
 # self-heal: make sure nbfig exists even if you jumped here after a restart
 try:
-    nbfig
+    nbfig                        # is the plotting helper already loaded?
 except NameError:
     import sys; sys.path.insert(0, "."); import common
     nbfig, device, tr224, va224 = common.playground_setup()
@@ -770,45 +860,45 @@ except NameError:
 # use your trained model's real probabilities if they're in memory, else clear example scores
 try:
     import torch
-    resnet, device, va224
-    resnet.eval(); _P, _Y = [], []
-    with torch.no_grad():
-        for xb, yb in va224:
-            _P.append(torch.softmax(resnet(xb.to(device)), 1)[:, 1].cpu().numpy())
-            _Y.append(yb.numpy())
-    scores, truth = np.concatenate(_P), np.concatenate(_Y)
+    resnet, device, va224        # do we still have a trained ResNet and the val data?
+    resnet.eval(); _P, _Y = [], []   # switch model to eval mode; empty lists for probabilities and truths
+    with torch.no_grad():        # no gradient tracking needed, we're only predicting
+        for xb, yb in va224:     # each batch of eyes (xb) and their labels (yb)
+            _P.append(torch.softmax(resnet(xb.to(device)), 1)[:, 1].cpu().numpy())   # probability of "referable" for each eye
+            _Y.append(yb.numpy())   # the true labels
+    scores, truth = np.concatenate(_P), np.concatenate(_Y)   # stitch batches into two long arrays
     source = "your ResNet's real predictions on the validation eyes"
-except NameError:
-    _rng = np.random.RandomState(0)
-    truth = np.r_[np.zeros(180), np.ones(120)].astype(int)
-    scores = np.r_[np.clip(_rng.beta(2, 5, 180), 0, 1), np.clip(_rng.beta(5, 2, 120), 0, 1)]
+except NameError:                # no trained model in memory -> fall back to made-up numbers
+    _rng = np.random.RandomState(0)   # fixed random seed so the example is reproducible
+    truth = np.r_[np.zeros(180), np.ones(120)].astype(int)   # 180 healthy + 120 referable fake labels
+    scores = np.r_[np.clip(_rng.beta(2, 5, 180), 0, 1), np.clip(_rng.beta(5, 2, 120), 0, 1)]   # low scores for healthy, high for referable
     source = "example scores (run the notebook top-to-bottom to use your real model)"
 
-def threshold_demo(threshold=0.5):
-    pred = (scores >= threshold).astype(int)
-    tp = int(((pred == 1) & (truth == 1)).sum()); fn = int(((pred == 0) & (truth == 1)).sum())
-    tn = int(((pred == 0) & (truth == 0)).sum()); fp = int(((pred == 1) & (truth == 0)).sum())
-    sens, spec = tp / max(tp + fn, 1), tn / max(tn + fp, 1)
-    fig, ax = plt.subplots(figsize=(8, 3.6))
-    ax.hist(scores[truth == 0], bins=20, alpha=0.6, color=nbfig.TURQUOISE, label="not referable")
-    ax.hist(scores[truth == 1], bins=20, alpha=0.6, color=nbfig.DEEPPINK, label="referable")
-    ax.axvline(threshold, color=nbfig.INK, lw=2.5, ls="--")
-    ax.set_xlabel("model's predicted probability of 'referable'"); ax.legend(loc="upper center")
-    ax.set_title(f"threshold {threshold:.2f}   ->   sensitivity {sens:.0%} (missed {fn}),  "
+def threshold_demo(threshold=0.5):   # redraws every time you move the slider
+    pred = (scores >= threshold).astype(int)   # call it "referable" when the score clears the cutoff
+    tp = int(((pred == 1) & (truth == 1)).sum()); fn = int(((pred == 0) & (truth == 1)).sum())   # true positives, missed cases
+    tn = int(((pred == 0) & (truth == 0)).sum()); fp = int(((pred == 1) & (truth == 0)).sum())   # true negatives, false alarms
+    sens, spec = tp / max(tp + fn, 1), tn / max(tn + fp, 1)   # sensitivity = caught sick; specificity = correctly cleared healthy
+    fig, ax = plt.subplots(figsize=(8, 3.6))   # one plot
+    ax.hist(scores[truth == 0], bins=20, alpha=0.6, color=nbfig.TURQUOISE, label="not referable")   # score spread for healthy eyes
+    ax.hist(scores[truth == 1], bins=20, alpha=0.6, color=nbfig.DEEPPINK, label="referable")   # score spread for referable eyes
+    ax.axvline(threshold, color=nbfig.INK, lw=2.5, ls="--")   # dashed line marking the current cutoff
+    ax.set_xlabel("model's predicted probability of 'referable'"); ax.legend(loc="upper center")   # label x-axis + key
+    ax.set_title(f"threshold {threshold:.2f}   ->   sensitivity {sens:.0%} (missed {fn}),  "   # live readout of the trade-off
                  f"specificity {spec:.0%} (false alarms {fp})", fontsize=9)
-    plt.show()
+    plt.show()                   # display it
 
-print("scoring:", source)
+print("scoring:", source)        # tell the reader whether these are real or example scores
 try:
-    from ipywidgets import interact, FloatSlider
+    from ipywidgets import interact, FloatSlider   # the slider widget
     # coarse + continuous_update=False keeps it snappy: recompute on release, not every pixel
-    interact(threshold_demo,
+    interact(threshold_demo,     # attach the function to a single threshold slider
              threshold=FloatSlider(value=0.5, min=0.0, max=1.0, step=0.1, continuous_update=False))
-except ImportError:
+except ImportError:              # no widgets available
     print("No live slider here (ipywidgets missing). Run  !pip install ipywidgets ,")
     print("restart the kernel, and re-run for the interactive version. Fixed cutoffs for now:")
-    for t in (0.75, 0.5, 0.25):
-        threshold_demo(t)
+    for t in (0.75, 0.5, 0.25):  # show three preset cutoffs instead
+        threshold_demo(t)        # draw each one
 """))
 
 # =========================================================================== #
