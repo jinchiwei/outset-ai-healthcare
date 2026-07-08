@@ -81,6 +81,79 @@ def _rubric_line():
             "it fails, defend one choice you made, and make sure *both* partners can explain everything.")
 
 
+def _stroke_tabular_cells():
+    """A 'Part 2' section (for G3): the fairness audit the CT can't give -- a tabular stroke set
+    that DOES record sex + age. Runnable baseline + a by-sex audit, same style as the image part."""
+    return [
+        md("""
+---
+## Part 2 -- the fairness the brain CT can't give you
+
+Your CT model works, but it records **nothing about the patient** -- no age, no sex, no race. So you
+**cannot check** whether it misses strokes more often in one group than another. That blank is the
+whole problem.
+
+The fix: bring in a **different** stroke dataset -- rows of numbers per patient (age, sex, blood
+pressure, glucose, smoking) that **does** record who each person is. Now you can build a stroke-risk
+model *and* audit it. This is the same idea as Day 2's tabular work.
+"""),
+        code("""
+# Install the tabular tools + load the stroke dataset (it ships with the course repo).
+colab_setup.ensure("catboost", "tabpfn==2.2.1", "scikit-learn", "pandas")
+import capstone_tabular as ct                      # the tabular helpers (like Day 2)
+df, meta = ct.load_stroke()                        # 5,110 patients, each a row of numbers
+print(meta["name"], "->", df.shape[0], "patients")
+print("features:", meta["features"])
+print("we can audit by:", meta["group"], meta["group_names"])
+df.head()
+"""),
+        md("""
+**A trap to notice first:** only about **5%** of these patients had a stroke. So a lazy model that
+says "no stroke" for *everyone* is right 95% of the time and completely useless. Accuracy is the wrong
+score here -- watch **AUC** (0.5 = coin flip, 1.0 = perfect) and, most of all, **how many real strokes
+you actually catch** in each group.
+"""),
+        code("""
+# Build a stroke-risk model: pick features + a model, hit Run, read the score.
+from ipywidgets import interact_manual, SelectMultiple, Dropdown
+
+def build(features, model):
+    if not features:
+        print("Pick at least one feature."); return
+    ct.fit_eval(df, list(features), meta["target"], model=model)
+
+try:
+    interact_manual(build,
+        features=SelectMultiple(options=meta["features"], value=tuple(meta["features"]),
+                                description="features", rows=10, style={"description_width": "initial"}),
+        model=Dropdown(options=list(ct.make_models()), value="Random Forest", description="model"))
+except ImportError:
+    ct.fit_eval(df, meta["features"], meta["target"], model="Random Forest")
+"""),
+        md("""
+### Audit by sex -- the check the CT could not do
+
+Train once, then measure how well the model does **separately for women and men**. This is exactly the
+fairness question the brain-CT dataset made impossible -- and here, because sex is recorded, you can
+answer it. If the model catches strokes less often in one group, that's a real problem to fix
+(e.g. a group-aware threshold).
+"""),
+        code("""
+from ipywidgets import interact_manual, Dropdown
+
+def fairness(model):
+    ct.audit_by_group(df, meta["features"], meta["target"],
+                      meta["group"], meta.get("group_names"), model=model)
+
+try:
+    interact_manual(fairness,
+        model=Dropdown(options=list(ct.make_models()), value="Random Forest", description="model"))
+except ImportError:
+    ct.audit_by_group(df, meta["features"], meta["target"], meta["group"], meta.get("group_names"))
+"""),
+    ]
+
+
 # =========================================================================== #
 # IMAGE template (G2, G3, G4)
 # =========================================================================== #
@@ -240,6 +313,7 @@ try:
 except ImportError:
     audit(DEFAULT)
 """),
+        *(_stroke_tabular_cells() if cfg.get("stroke_tabular") else []),
         md(f"""
 ### One strong approach (peek only if you're stuck)
 
@@ -615,7 +689,7 @@ GROUPS = [
                  "- Swap in the full HAM10000 set (Kaggle), then feed it a phone photo of a mole -- watch it "
                  "stumble on data that looks nothing like training."),
 
-    dict(builder=image_notebook, folder="g3_brain_ct", gid="G3", flag="brainct",
+    dict(builder=image_notebook, folder="g3_brain_ct", gid="G3", flag="brainct", stroke_tabular=True,
          title="Head trauma / stroke on brain CT -- and who's missing from the data",
          blurb="Brain CT scans, labeled normal vs stroke (a bleed or blockage -- what an ER checks a "
                "head-injury patient for). You'll build the classifier AND uncover a quieter problem: "

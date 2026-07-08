@@ -78,7 +78,35 @@ def load_estrogen():
     return df, meta
 
 
-DATASETS = {"heart": load_heart, "estrogen": load_estrogen}
+def load_stroke():
+    """Stroke Prediction dataset (5,110 patients). Returns (df, meta).
+
+    Unlike a brain-CT image set, this one RECORDS demographics (sex, age, health history), so you
+    can audit whether a stroke-risk model works equally for women and men. target 'stroke' (1 = had
+    a stroke); group 'gender'. Loads the committed copy at datasets/stroke.csv.
+    """
+    from pathlib import Path
+    from sklearn.preprocessing import LabelEncoder
+    p = Path(__file__).resolve().parents[2] / "datasets" / "stroke.csv"
+    raw = (pd.read_csv(p) if p.exists() else
+           pd.read_csv("https://raw.githubusercontent.com/jinchiwei/outset-ai-healthcare/main/datasets/stroke.csv"))
+    raw = raw.dropna(subset=["stroke"])
+    raw = raw[raw["gender"].isin(["Male", "Female"])].reset_index(drop=True)
+    df = raw.drop(columns=[c for c in ["id"] if c in raw]).copy()
+    for c in df.select_dtypes("object").columns:                    # text -> numbers (gender: F=0, M=1)
+        df[c] = LabelEncoder().fit_transform(df[c].astype(str))
+    df = df.fillna(df.median(numeric_only=True))
+    features = [c for c in df.columns if c != "stroke"]
+    meta = dict(
+        name="Stroke Prediction (records sex, age, history)",
+        target="stroke", features=features,
+        group="gender", group_names={0: "female", 1: "male"},
+        positive="stroke",
+    )
+    return df, meta
+
+
+DATASETS = {"heart": load_heart, "estrogen": load_estrogen, "stroke": load_stroke}
 
 
 # --------------------------------------------------------------------------- #
