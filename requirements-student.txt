@@ -29,3 +29,6 @@ medmnist
 jupyterlab
 ipywidgets
 catboost
+
+# Day 3 capstone: tabular kits (UCI Heart)
+ucimlrepo

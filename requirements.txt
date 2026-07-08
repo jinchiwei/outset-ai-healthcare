@@ -51,3 +51,4 @@ tqdm
 requests
 python-dotenv
 catboost
+ucimlrepo
