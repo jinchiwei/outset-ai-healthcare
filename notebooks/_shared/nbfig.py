@@ -164,6 +164,79 @@ def confusion(y, pred, labels, normalize=True, text="Confusion matrix"):
     return _Plot(f)
 
 
+def scatter_line(x, y, m=None, b=None, labels=False, text=None):
+    """Branded scatter of points + optional best-fit line y=m*x+b + optional (x,y) labels.
+
+    For the intro notebook: nbfig.scatter_line(x, y, *np.polyfit(x, y, 1), labels=True).show()
+    """
+    import numpy as _np
+    x = _np.asarray(x, float); y = _np.asarray(y, float)
+    f, ax = fig(figsize=(5, 4))
+    if m is not None:
+        xs = _np.linspace(x.min(), x.max(), 2)
+        ax.plot(xs, m * xs + b, color=DEEPPINK, lw=2.5, zorder=2)
+    ax.scatter(x, y, color=TURQUOISE, s=80, zorder=3, edgecolor=INK, linewidth=0.6)
+    if labels:
+        for xi, yi in zip(x, y):
+            ax.annotate(f"({xi:g}, {yi:g})", (xi, yi), textcoords="offset points",
+                        xytext=(7, 6), fontsize=8, color=MUTED, family=_MONO)
+    ax.set_xlabel("x"); ax.set_ylabel("y")
+    if text:
+        title(f, text)
+    return _Plot(f)
+
+
+def boundary(model, X, y, text=None, feature_names=("x", "y")):
+    """Branded 2-class decision boundary for any fitted sklearn model with .predict."""
+    import numpy as _np
+    X = _np.asarray(X, float); y = _np.asarray(y).astype(int)
+    pad = 0.4 * (X.max(0) - X.min(0)).clip(min=1e-6)
+    xx, yy = _np.meshgrid(
+        _np.linspace(X[:, 0].min() - pad[0], X[:, 0].max() + pad[0], 200),
+        _np.linspace(X[:, 1].min() - pad[1], X[:, 1].max() + pad[1], 200))
+    Z = model.predict(_np.c_[xx.ravel(), yy.ravel()]).reshape(xx.shape)
+    f, ax = fig(figsize=(5, 4)); ax.grid(False)
+    ax.contourf(xx, yy, Z, levels=[-0.5, 0.5, 1.5], colors=[TURQUOISE, DEEPPINK], alpha=0.22)
+    ax.scatter(X[:, 0], X[:, 1], c=[DEEPPINK if v else TURQUOISE for v in y],
+               s=55, edgecolor=INK, linewidth=0.5, zorder=3)
+    ax.set_xlabel(feature_names[0]); ax.set_ylabel(feature_names[1])
+    if text:
+        title(f, text)
+    return _Plot(f)
+
+
+def two_clusters(n=30, seed=0, blue_center=(4.0, 1.5), pink_center=(1.5, 4.0), spread=0.7):
+    """Two blobs for the intro: a BLUE cluster and a PINK cluster. Returns (blue, pink),
+    each an (n, 2) array of points. Change the centers to move the groups around."""
+    import numpy as _np
+    g = _np.random.default_rng(seed)
+    blue = g.normal(blue_center, spread, (n, 2))
+    pink = g.normal(pink_center, spread, (n, 2))
+    return blue, pink
+
+
+def show_line(blue, pink, m, b, text=None):
+    """Draw the blue & pink clusters and the line y = m*x + b, then report how many points
+    the line separates (whichever side each color falls on). For the intro's 'pick a line'."""
+    import numpy as _np
+    blue = _np.asarray(blue, float); pink = _np.asarray(pink, float)
+    lo = min(blue.min(), pink.min()) - 0.5
+    hi = max(blue.max(), pink.max()) + 0.5
+    f, ax = fig(figsize=(5, 4)); ax.grid(False)
+    xs = _np.array([lo, hi])
+    ax.plot(xs, m * xs + b, color=INK, lw=2, zorder=2)
+    ax.scatter(blue[:, 0], blue[:, 1], color=TURQUOISE, s=45, edgecolor=INK, linewidth=0.4, label="blue")
+    ax.scatter(pink[:, 0], pink[:, 1], color=DEEPPINK, s=45, edgecolor=INK, linewidth=0.4, label="pink")
+    ax.set_xlim(lo, hi); ax.set_ylim(lo, hi); ax.set_xlabel("x"); ax.set_ylabel("y")
+    ax.legend(loc="upper right")
+    pink_above = int((pink[:, 1] > m * pink[:, 0] + b).sum())
+    blue_below = int((blue[:, 1] < m * blue[:, 0] + b).sum())
+    total = len(blue) + len(pink)
+    correct = max(pink_above + blue_below, total - pink_above - blue_below)
+    title(f, text or f"your line separates {correct}/{total} points")
+    return _Plot(f)
+
+
 def learning_curve(history, text="Learning curve"):
     """Plot val accuracy + train loss per epoch from train_model's history.
 
