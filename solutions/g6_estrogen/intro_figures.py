@@ -57,20 +57,21 @@ def doctor_office():
     ax.add_patch(Circle((3.2, 6.55), 0.82, facecolor="none", edgecolor="#5B3A2E", linewidth=3.2, zorder=3))  # hair top
     ax.text(3.2, 1.05, "the patient", ha="center", fontsize=10.5, family="Geist Mono", color=sf.INK)
 
-    # her speech bubble (what the number can't capture)
-    ax.add_patch(FancyBboxPatch((4.6, 6.4), 5.2, 3.0, boxstyle="round,pad=0.05,rounding_size=0.3",
+    # her speech bubble (what the number can't capture) -- widened so the quote never spills out
+    bub_x, bub_w, bub_cx = 4.4, 6.7, 7.75
+    ax.add_patch(FancyBboxPatch((bub_x, 6.4), bub_w, 3.0, boxstyle="round,pad=0.05,rounding_size=0.3",
                                 facecolor="white", edgecolor=sf.DEEPPINK, linewidth=1.8, zorder=5))
     ax.add_patch(Polygon([(4.9, 6.6), (4.0, 6.0), (5.3, 6.7)], closed=True,
                          facecolor="white", edgecolor=sf.DEEPPINK, linewidth=1.8, zorder=5))  # tail
     ax.add_patch(Polygon([(4.95, 6.62), (4.25, 6.18), (5.25, 6.66)], closed=True,
                          facecolor="white", edgecolor="none", zorder=6))          # hide the tail seam
-    ax.text(7.2, 8.75, "“I lose words mid-sentence.", ha="center", fontsize=12.5,
+    ax.text(bub_cx, 8.75, "“I lose words mid-sentence.", ha="center", fontsize=10.5,
             family="Geist Mono", color=sf.DEEPPINK, zorder=7)
-    ax.text(7.2, 7.95, "I walk into a room and", ha="center", fontsize=12.5,
+    ax.text(bub_cx, 7.95, "I walk into a room and", ha="center", fontsize=10.5,
             family="Geist Mono", color=sf.DEEPPINK, zorder=7)
-    ax.text(7.2, 7.35, "forget why I'm there.”", ha="center", fontsize=12.5,
+    ax.text(bub_cx, 7.35, "forget why I'm there.”", ha="center", fontsize=10.5,
             family="Geist Mono", color=sf.DEEPPINK, zorder=7)
-    ax.text(7.2, 6.75, "— real, daily brain fog", ha="center", fontsize=9.5,
+    ax.text(bub_cx, 6.75, "— real, daily brain fog", ha="center", fontsize=9.5,
             style="italic", color=sf.MUTED, zorder=7)
 
     # ---- RIGHT: the doctor's screen / chart, reading NORMAL ----
