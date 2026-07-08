@@ -55,6 +55,6 @@ slides/realimg/.cover_*
 catboost_info/
 
 # solution deck QA renders (throwaway)
-solutions/**/slides/qa/
+solutions/**/*_qa/
 solutions/**/catboost_info/
 solutions/_common/slurm_logs/
