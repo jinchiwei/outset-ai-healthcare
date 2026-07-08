@@ -1,0 +1,189 @@
+{
+  "deck_md_hash": "f73c029dff1d4195164505699410a6a7286568da9b8400385d55caa9c75c828c",
+  "mode": "expressive",
+  "shake_seed": "5fafb8455e124bdcb252cfc469c6a1d2",
+  "slides": [
+    {
+      "content_hash": "28395391a8ae10db36d317a4157a69a916ba02c4899cb66cae293ffd5f76d294-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#40E0D0",
+        "label": "Background"
+      },
+      "slide_id": "divider-h1-background"
+    },
+    {
+      "content_hash": "6f5f101d1aec8e191e5d917dcfbac85c9a24fa88403577d0c2310705a2f6c349",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_add_text(slide, 'Dermatology-AI systems look at a photo of a skin spot and estimate how likely it is to be cancer, and landmark studies showed a neural network can match or beat dermatologists at exactly this task (Esteva 2017, Haenssle 2018). But for a screening tool the goal is not to be right on average – it is to never wave a real melanoma through as harmless, because that missed cancer is the one mistake that can kill.', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=1.20, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "lede": "",
+        "section_label": "Background",
+        "title": "Two mistakes, and only one of them can be fatal"
+      },
+      "slide_id": "h1-background/h2-two-mistakes-and-only-one-of-them-can-be-fatal"
+    },
+    {
+      "content_hash": "3c5bcc7160dd8d5574fe5b211a05931f2870cd6dc418a8d70a2fdfbed92740b3",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_add_text(slide, 'Every screening model has a decision threshold, and where you set it is a trade-off you cannot escape. Slide it one way and you catch more cancers but raise more false alarms; slide it the other way and you calm the false alarms but start missing real disease. Screening deliberately favors sensitivity – catching the cancers – because a false alarm just costs a follow-up visit (Trevethan 2017).', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=1.20, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "lede": "",
+        "section_label": "Background",
+        "title": "Screening tunes one dial: sensitivity versus specificity"
+      },
+      "slide_id": "h1-background/h2-screening-tunes-one-dial-sensitivity-versus-specificity"
+    },
+    {
+      "content_hash": "b54f1af4c27169f3a73cc0519b6799450f8361f95721ea2854d9791e1e762fdd",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_add_text(slide, 'We only have about ten thousand skin images, far too few to teach a network vision from scratch. So we use transfer learning: start from a network already trained on millions of everyday photos, keep everything it learned about edges, colors, and textures, and fine-tune only a small new head on the skin images (Kim 2022). That borrowed knowledge is why a model can learn skin cancer from thousands, not millions, of pictures.', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=1.20, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "lede": "",
+        "section_label": "Background",
+        "title": "We borrow a brain instead of starting blank"
+      },
+      "slide_id": "h1-background/h2-we-borrow-a-brain-instead-of-starting-blank"
+    },
+    {
+      "content_hash": "6d31f4e259270667e8ee574d6c4e5e648f02fa4a9874453f92bbc9ac7bcdf10b-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#FF1493",
+        "label": "Methods"
+      },
+      "slide_id": "divider-h1-methods"
+    },
+    {
+      "content_hash": "f855b3413f1ef5917c2e625eae7ab0d3c02f3350290270f16d4bbe009bc1a33f",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_add_text(slide, 'Our data is DermaMNIST, a tidy version of the HAM10000 dermatoscopy collection with seven lesion types, including melanoma (Tschandl 2018). The catch is severe imbalance: harmless moles make up about two-thirds of every set, and melanoma is a small slice – which is precisely the setup where a lazy model can look accurate while catching zero cancers.', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=0.98, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "lede": "",
+        "section_label": "Methods",
+        "title": "The task: seven kinds of skin spot, one that we cannot miss"
+      },
+      "slide_id": "h1-methods/h2-the-task-seven-kinds-of-skin-spot-one-that-we-cannot-miss"
+    },
+    {
+      "content_hash": "f939a6dd4d9f40f43b4ea70acf71d66cd9c52125ea01a597a4f04362a700d6f4",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_add_text(slide, 'We trained the network three ways – from scratch, pretrained, and pretrained with augmentation – and then audited the best one the way a regulator would. We did not grade on accuracy alone; we tracked melanoma recall, the share of true melanomas actually caught, because on this data that single number decides whether the tool is safe.', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=0.98, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "lede": "",
+        "section_label": "Methods",
+        "title": "How we built it, and how we graded it honestly"
+      },
+      "slide_id": "h1-methods/h2-how-we-built-it-and-how-we-graded-it-honestly"
+    },
+    {
+      "content_hash": "9d386fbbaab59eb494f4c12cf1b23fd4b5c5347b03eb22c1c97fb04f41376eef-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#F0C840",
+        "label": "Results"
+      },
+      "slide_id": "divider-h1-results"
+    },
+    {
+      "content_hash": "0656ddfda3cca22a19e7504b164d15aa6693f45b755a44f30687370ef0babdeb",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_add_text(slide, 'The three training setups landed almost on top of each other, and that is the honest, humbling lesson: on a dataset this small the ceiling is set by the data, not by how clever the model is. A better starting point (transfer learning) matters more than any fancy trick you bolt on afterward.', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=0.98, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "lede": "",
+        "section_label": "Results",
+        "title": "A better starting point beat a fancier model"
+      },
+      "slide_id": "h1-results/h2-a-better-starting-point-beat-a-fancier-model"
+    },
+    {
+      "content_hash": "53d0162634df48bfd749a1efb7df06301da08b1c243f500b4f3a9674f163f020",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_add_text(slide, 'Overall accuracy is one number; the confusion matrix shows which mistakes the model actually makes. The diagonal is correct and everything off it is an error, and one column swallows almost everything – the model funnels nearly every spot, cancer or not, into the common harmless-mole class.', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=0.98, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "lede": "",
+        "section_label": "Results",
+        "title": "The confusion matrix tells the real story"
+      },
+      "slide_id": "h1-results/h2-the-confusion-matrix-tells-the-real-story"
+    },
+    {
+      "content_hash": "f1b763b0a3857ac205499400a3958e646e9a610fcf38b852ada1b65bbbb6d1c6",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_add_text(slide, 'Break accuracy down class by class and the average falls apart. The model is near-perfect on the one common class and near the floor on every rare one, including melanoma, highlighted in pink. A tool that works this differently across classes is not one you would ever deploy to screen a patient.', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=0.98, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "lede": "",
+        "section_label": "Results",
+        "title": "Screening lives or dies on the rare classes"
+      },
+      "slide_id": "h1-results/h2-screening-lives-or-dies-on-the-rare-classes"
+    },
+    {
+      "content_hash": "9c4e3b9a6a241e93639e249e31c0188cf88e0176dcca3e4c3331c2338010b48e",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_add_text(slide, 'Here is the sentence that should stop the room. Our model reached sixty-eight percent overall accuracy and still caught only ten of the two hundred twenty-three real melanomas in the test set. It missed two hundred thirteen cancers – proof that a healthy-looking accuracy number can hide a screening tool that is dangerous.', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=0.98, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "lede": "",
+        "section_label": "Results",
+        "title": "The one number that matters: melanoma recall"
+      },
+      "slide_id": "h1-results/h2-the-one-number-that-matters-melanoma-recall"
+    },
+    {
+      "content_hash": "1c60fe372cbc86ee5bcc960d73efa5199608f472c1a4ace4bd6c7c5dcd784713",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_add_text(slide, 'The most revealing slide in any talk is the model’s mistakes. Look at how many true melanomas it labeled as harmless moles: every one of those is a false negative, the exact error a screening tool exists to prevent, and the reason a dermatologist would want a second look at all of them.', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=0.98, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "lede": "",
+        "section_label": "Results",
+        "title": "The cases it got wrong are the ones that matter"
+      },
+      "slide_id": "h1-results/h2-the-cases-it-got-wrong-are-the-ones-that-matter"
+    },
+    {
+      "content_hash": "7c0dc2d925d36d99296a4ce7cc3eaa774cb534f4b5c34fe2b804bdb2ad0a2caf-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#40E0D0",
+        "label": "Being honest"
+      },
+      "slide_id": "divider-h1-being-honest"
+    },
+    {
+      "content_hash": "384f2e8b3be7ad7ebdbd5463e79016f4c39afa5b244872fbb0c2ba272d7d7bec",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_add_text(slide, 'This model is far too small and simple to trust on a real patient: sixty-four-pixel grayscale thumbnails throw away the color and fine texture that dermatologists and real systems rely on, and its melanoma recall is nowhere near safe (Wei 2024). A real tool would train on full-resolution color images, deliberately tune its threshold toward high sensitivity, and be validated across many hospitals first. The point was never the score – it was learning the screening mindset: never miss the dangerous case, and never let a shiny number fool you.', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=1.64, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "lede": "",
+        "section_label": "Being honest",
+        "title": "A toy model, and why that is exactly the point"
+      },
+      "slide_id": "h1-being-honest/h2-a-toy-model-and-why-that-is-exactly-the-point"
+    },
+    {
+      "content_hash": "b1eefc3a316b94deb44777d63b248cceb9dcd81a64e042b4c063df858549bd6a",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_add_text(slide, 'Seven papers grounded this project, from the dermatologist-level results that started the field to the plain-language guide on why sensitivity matters. Thank you for watching – go build something you can honestly evaluate.', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=0.76, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "lede": "",
+        "section_label": "Being honest",
+        "title": "References, and thank you"
+      },
+      "slide_id": "h1-being-honest/h2-references-and-thank-you"
+    }
+  ],
+  "theme": "bone",
+  "version": 1
+}
