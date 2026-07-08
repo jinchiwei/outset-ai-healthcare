@@ -1,0 +1,7 @@
+group,accuracy,measurable
+overall,0.71,True
+younger,,False
+older,,False
+female,,False
+male,,False
+scanner B,,False
