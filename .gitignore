@@ -58,3 +58,4 @@ catboost_info/
 solutions/**/*_qa/
 solutions/**/catboost_info/
 solutions/_common/slurm_logs/
+solutions/**/slides/png/
