@@ -1,17 +1,16 @@
 {
-  "dataset": "dermamnist",
-  "n_classes": 7,
-  "accuracy": 0.6783042394014963,
-  "per_class_acc": {
-    "actinic": 0.0,
-    "basal": 0.06796116504854369,
-    "benign": 0.09090909090909091,
-    "dermatofib": 0.0,
-    "melanoma": 0.04932735426008968,
-    "melanocyti": 0.9858314690529456,
-    "vascular": 0.0
+  "dataset": "PAD-UFES-20 (records Fitzpatrick skin type)",
+  "n": 1494,
+  "overall_auc_baseline": 0.830962162710489,
+  "overall_auc_mitigated": 0.8106233515926151,
+  "auc_by_tone_baseline": {
+    "I-II (light)": 0.8359484777517565,
+    "III-IV (medium)": 0.8289719626168224
   },
-  "worst_class": "actinic",
-  "best_class": "melanocyti",
-  "equity_gap": 0.9858314690529456
+  "auc_by_tone_mitigated": {
+    "I-II (light)": 0.8084699453551913,
+    "III-IV (medium)": 0.792834890965732
+  },
+  "gap_baseline": 0.006976515134934136,
+  "gap_mitigated": 0.015635054389459335
 }
