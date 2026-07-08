@@ -55,6 +55,18 @@ print(name, "is", age, "years old")   # print several things in a row, separated
 print(age + 1)    # you can do math with number variables
 """))
 
+pair(
+    code("""
+# your turn: make a variable called heart_rate set to 72, then print it in a sentence
+heart_rate = 0                              # TODO: change 0 to the patient's heart rate, 72
+print("resting heart rate is", heart_rate, "bpm")
+"""),
+    code("""
+heart_rate = 72                             # the patient's resting heart rate
+print("resting heart rate is", heart_rate, "bpm")
+"""),
+)
+
 both(md("""
 ## Lists
 
@@ -68,6 +80,25 @@ print("how many:", len(scores))    # len() tells you how many items are in the l
 scores.append(100)          # add one to the end
 print(scores)               # show the whole list
 """))
+
+pair(
+    code("""
+# your turn: temps holds three temperature readings. print how many there are,
+# then add one more reading, 38.5, to the end.
+temps = [37.0, 36.8, 37.2]
+print("first reading:", temps[0])   # done for you
+print("how many:", 0)               # TODO: use len(temps) instead of 0
+# TODO: add 38.5 to the end with temps.append(38.5)
+print(temps)
+"""),
+    code("""
+temps = [37.0, 36.8, 37.2]
+print("first reading:", temps[0])
+print("how many:", len(temps))      # count the readings
+temps.append(38.5)                  # add one more reading to the end
+print(temps)
+"""),
+)
 
 both(md("""
 ## Making decisions: `if` / `else`
@@ -83,6 +114,24 @@ if temperature > 37.5:    # is it above the fever threshold?
 else:                     # otherwise
     print("normal")       # runs when the test is false
 """))
+
+pair(
+    code("""
+# your turn: print "high" if the heart rate is above 100, otherwise "normal"
+heart_rate = 120
+if heart_rate > 0:        # TODO: change 0 to 100 (the high-heart-rate threshold)
+    print("high")
+else:
+    print("normal")
+"""),
+    code("""
+heart_rate = 120
+if heart_rate > 100:      # above 100 bpm counts as high
+    print("high")
+else:
+    print("normal")
+"""),
+)
 
 both(md("""
 ## Repeating: `for` loops
@@ -108,17 +157,21 @@ print("total:", total)      # show the final sum
 
 pair(
     code("""
-# your turn: finish the loop so it adds up these numbers
-total = 0                   # start the running total at zero
-for n in [10, 20, 30]:      # go through each number in turn
-    total = total           # TODO: add n onto total
-print("total:", total)      # should print 60
+# your turn: count how many temperatures are a fever (above 37.5)
+temps = [36.9, 38.2, 37.1, 39.0]
+fevers = 0                  # start the count at zero
+for t in temps:             # look at each temperature
+    if t > 100:             # TODO: change 100 to 37.5 (the fever threshold)
+        fevers = fevers + 1 # add one to the count
+print("fevers:", fevers)    # should print 2
 """),
     code("""
-total = 0                   # start the running total at zero
-for n in [10, 20, 30]:      # go through each number in turn
-    total = total + n       # add each number onto the running total
-print("total:", total)      # should print 60
+temps = [36.9, 38.2, 37.1, 39.0]
+fevers = 0                  # start the count at zero
+for t in temps:             # look at each temperature
+    if t > 37.5:            # a fever is above 37.5
+        fevers = fevers + 1 # add one to the count
+print("fevers:", fevers)    # should print 2
 """),
 )
 
@@ -163,17 +216,25 @@ print(average([10, 20]))                 # call it again on two numbers
 
 pair(
     code("""
-# your turn: finish this function so it returns the number doubled
-def double(x):          # a function that takes one number, x
-    return              # TODO: return x times 2
+# your turn: finish this function so it returns "fever" if temp is above 37.5, else "normal"
+def check_temp(temp):       # a function that takes one temperature
+    if temp > 100:          # TODO: change 100 to 37.5 (the fever threshold)
+        return "fever"      # hand back "fever"
+    else:
+        return "normal"     # otherwise hand back "normal"
 
-print(double(4))        # should print 8
+print(check_temp(38.0))     # should print fever
+print(check_temp(36.9))     # should print normal
 """),
     code("""
-def double(x):          # a function that takes one number, x
-    return x * 2        # hand back x times 2
+def check_temp(temp):       # a function that takes one temperature
+    if temp > 37.5:         # a fever is above 37.5
+        return "fever"      # hand back "fever"
+    else:
+        return "normal"     # otherwise hand back "normal"
 
-print(double(4))        # should print 8
+print(check_temp(38.0))     # should print fever
+print(check_temp(36.9))     # should print normal
 """),
 )
 
