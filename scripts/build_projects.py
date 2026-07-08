@@ -241,6 +241,14 @@ except ImportError:
     audit(DEFAULT)
 """),
         md(f"""
+### One strong approach (peek only if you're stuck)
+
+*This is roughly what the worked solution does. It's a nudge, not the code -- describe these steps to
+Claude and build them yourself, then be ready to explain why.*
+
+{cfg['solution_hint']}
+"""),
+        md(f"""
 ### Where to take it (ask Claude to help)
 {cfg['levelup']}
 """),
@@ -384,6 +392,14 @@ except ImportError:
     ct.association(df, "{cfg['confound_feature']}", meta["target"], list({cfg['confound_controls']!r}))
 """),
         ]
+    cells.append(md(f"""
+### One strong approach (peek only if you're stuck)
+
+*This is roughly what the worked solution does. It's a nudge, not the code -- describe these steps to
+Claude and build them yourself, then be ready to explain why.*
+
+{cfg['solution_hint']}
+"""))
     cells.append(md(f"""
 ### Where to take it (ask Claude to help)
 {cfg['levelup']}
@@ -536,6 +552,14 @@ A black box you can explain is a black box people will trust.
 """),
         code('cs.position_importance(df)'),
         md(f"""
+### One strong approach (peek only if you're stuck)
+
+*This is roughly what the worked solution does. It's a nudge, not the code -- describe these steps to
+Claude and build them yourself, then be ready to explain why.*
+
+{cfg['solution_hint']}
+"""),
+        md(f"""
 ### Where to take it (ask Claude to help)
 {cfg['levelup']}
 """),
@@ -555,6 +579,13 @@ GROUPS = [
          priority_why="A lab scientist won't trust a mystery box telling them which guide to order -- your "
                       "model has to *show* it reads the DNA the way the biology actually works.",
          default_tool_label="Interpretability",
+         solution_hint="Turn each guide into numbers with **one-hot encoding** (four on/off slots per "
+                       "position, which keeps the letter *order*). Frame the task as **clearly-good vs "
+                       "clearly-poor** cutters (the top third vs the bottom third of efficiency) -- a cleaner, "
+                       "easier target than a fuzzy middle. **Bake off a few models** and let the score pick "
+                       "the winner: a gradient-boosted tree (CatBoost) tends to win here, even beating TabPFN. "
+                       "Then look at **which positions** the model relies on -- they should cluster in the "
+                       "**seed region next to the PAM**. If they do, your model rediscovered real CRISPR biology.",
          levelup="- Train on all genes but one, then test on the held-out gene -- does guide design carry "
                  "over to a gene it never saw?\n"
                  "- Invent your own clue by hand (e.g. 'is there a G right before the PAM?') and see if it helps.\n"
@@ -573,6 +604,12 @@ GROUPS = [
                       "- **Fairness** -- is accuracy even across all 7 spot types, or does it flunk the rare ones?\n"
                       "- **Confusion matrix** -- a scorecard of truth vs guess. **Grad-CAM** -- a heat-map of where it looked. "
                       "**Monitoring** -- does it survive blurrier photos?",
+         solution_hint="Screening cares about **sensitivity** (catching every melanoma) far more than raw "
+                       "accuracy. So after you train, don't just accept the default 0.5 cutoff -- **lower the "
+                       "decision threshold** so the model flags more suspicious spots, catching more melanomas "
+                       "even at the cost of a few extra false alarms. Report melanoma **recall before vs after** "
+                       "tuning. Also try a **stronger backbone** than a small ResNet, and check with **Grad-CAM** "
+                       "that the model is looking at the lesion, not the background.",
          levelup="- Which class does it miss most? Try **class weighting** or **augment** to fix it, and prove "
                  "the fix on the confusion matrix.\n"
                  "- Swap in the full HAM10000 set (Kaggle), then feed it a phone photo of a mole -- watch it "
@@ -592,6 +629,13 @@ GROUPS = [
                       "- **Fairness** -- here it can only compare *classes* (normal vs stroke), because the data "
                       "records no age/sex/race at all. Notice what you're *unable* to check -- that's the point.\n"
                       "- **Grad-CAM** -- is it looking at brain tissue, or cheating off the skull / scanner edges?",
+         solution_hint="Build the stroke detector first (transfer learning on the CT slices). Then notice the "
+                       "honest catch: this image dataset records **no demographics** (age/sex/race), so you "
+                       "literally **cannot audit** whether it is fair. The strong move is to bring in a separate "
+                       "**tabular stroke dataset that DOES record sex and age**, build a stroke-risk model there, "
+                       "and check whether it catches strokes as often in women as in men (equalize with "
+                       "group-aware thresholds if not). The lesson: **recording demographics is what makes "
+                       "fairness checkable** -- the imaging set hides who is in it.",
          levelup="- List every fact a hospital would need before trusting this (age, sex, race, scanner, site) "
                  "and which ones this dataset gives you. The gap is your headline.\n"
                  "- Use **Monitoring** to add noise -- a real ER scanner is messier than clean training data.\n"
@@ -610,6 +654,12 @@ GROUPS = [
                       "problem: the model helps some patients more than others.\n"
                       "- **Failure analysis** -- who does it fail, and could they even get a second opinion?\n"
                       "- **Confusion matrix / Grad-CAM / Monitoring** -- the other angles.",
+         solution_hint="Don't report one accuracy number -- **break it down by group**. Use a dataset that "
+                       "records **skin tone** (the Fitzpatrick scale) and measure accuracy separately for light, "
+                       "medium, and dark skin. You'll likely find the real problem isn't the model, it's the "
+                       "**data**: there are almost no dark-skin patients. The honest finding is that **you cannot "
+                       "validate a model for a group that's barely in the dataset** -- and the fix is collecting "
+                       "representative data, not a coding trick.",
          levelup="- Research the **skin-tone gap** in dermatology data (the Fitzpatrick scale). Does this dataset "
                  "even tell you which skin tones it trained on? (It doesn't -- like G3, that blank is a finding.)\n"
                  "- Debate it: if this model runs in a clinic with no dermatologist, does it help or harm? "
@@ -623,6 +673,11 @@ GROUPS = [
          priority_why="Heart disease shows up differently in women and has long been under-diagnosed in them. "
                       "A model trained on mostly-male data can be accurate overall yet worse for women.",
          group_desc="women vs men",
+         solution_hint="**Bake off a few models** (logistic regression, random forest, CatBoost, TabPFN) and let "
+                       "the AUC pick the winner. Then ask **which clues actually matter**: compare a "
+                       "cholesterol-only model to the full one (cholesterol alone is surprisingly weak), and use "
+                       "**SHAP** to see the real drivers. Finally, **audit accuracy separately for women and men** "
+                       "-- heart disease is historically under-diagnosed in women, and this data skews male.",
          levelup="- Does **cholesterol alone** predict much? Compare a cholesterol-only model to the full one -- "
                  "you may be surprised which clues carry the signal.\n"
                  "- The data is about 2-to-1 male. Could that explain any accuracy gap by sex? What would you "
@@ -640,6 +695,12 @@ GROUPS = [
          group_desc="estrogen users vs non-users",
          confounding=True, confound_feature="used_estrogen",
          confound_controls=("age", "education", "income_ratio"),
+         solution_hint="This is a **causation** question, not a prediction one -- so use an **interpretable model "
+                       "(logistic regression)** whose effect size you can actually read. Measure estrogen's "
+                       "apparent effect on cognition **alone**, then **again after controlling for age, education, "
+                       "and income**. Watch the effect **shrink** -- most of the 'estrogen helps' signal is "
+                       "**healthy-user bias** (users were healthier and wealthier to begin with). A black-box "
+                       "model would predict just as well but couldn't answer the *why*, which is the whole point.",
          levelup="- After controlling for age/education/income, how much of the 'estrogen helps memory' effect "
                  "is left? Write the honest one-sentence conclusion.\n"
                  "- The test is *objective* (a number); brain fog is *subjective* (a feeling). Argue why the gap "
