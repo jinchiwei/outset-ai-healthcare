@@ -83,6 +83,21 @@ def main():
     # sex balance of the cohort
     results["sex_balance"] = {gmap.get(g, str(g)): int((df[meta["group"]] == g).sum()) for g in groups}
 
+    # headline working result: AUC (ROC) + SHAP feature importance
+    from sklearn.metrics import roc_auc_score, roc_curve
+    Xa, Xb, ya, yb = train_test_split(df[feats].astype(float).values, df[ct_target].astype(int).values,
+                                      test_size=0.25, random_state=0, stratify=df[ct_target])
+    cb = ct.make_models()["CatBoost"](); cb.fit(Xa, ya)
+    pr = cb.predict_proba(Xb)[:, 1]
+    auc = float(roc_auc_score(yb, pr)); results["auc"] = auc
+    fpr, tpr, _ = roc_curve(yb, pr)
+    fig, ax = sf.plt.subplots(figsize=(4.6, 4.4))
+    ax.plot(fpr, tpr, color=sf.TURQUOISE, lw=2.5); ax.plot([0, 1], [0, 1], "--", color=sf.MUTED, lw=1)
+    ax.set_xlabel("false-alarm rate"); ax.set_ylabel("disease caught")
+    sf.title(ax, f"A working risk tool  (AUC {auc:.2f})")
+    sf.save(fig, HERE, "roc"); sf.save_raw(sf.pd.DataFrame({"fpr": fpr, "tpr": tpr}), HERE, "roc")
+    sf.shap_bar(cb, Xb, feats, HERE, "shap_importance", "Which measurements drive the risk call (SHAP)")
+
     sf.save_results(results, HERE)
     print("\nG5 DONE:", {k: v for k, v in results.items() if not isinstance(v, dict)})
 

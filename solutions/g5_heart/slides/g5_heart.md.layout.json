@@ -1,7 +1,7 @@
 {
-  "deck_md_hash": "4ff71a23c5fd04eaacc78975b4611ebe0c0b1d80f8ed85cb6572b9fd9ca722ee",
+  "deck_md_hash": "44f042fa2929a39d19b8c94df9f919fcf52efeace022a0bc99529d4e334db8e9",
   "mode": "expressive",
-  "shake_seed": "241768eed4864a7db88241eb02602051",
+  "shake_seed": "4812dfb703fe4021a7fb8ef4cc204e2a",
   "slides": [
     {
       "content_hash": "28395391a8ae10db36d317a4157a69a916ba02c4899cb66cae293ffd5f76d294-divider",
@@ -9,71 +9,133 @@
       "params": {
         "accent_hex": "#40E0D0",
         "label": "Background",
-        "notes": "This first section sets up the medical problem before any code. Two facts matter: heart risk is built from many measurements at once, and women's heart disease is systematically missed. Both will shape how we read our model later."
+        "notes": "Open with the clinical scene before any modeling. Three ideas to plant: a doctor combines many checkup clues into one risk number; that risk score has been done by hand since 1998 and is sex-specific; and heart disease is under-diagnosed in women. Transition: what does that one risk number actually combine?"
       },
       "slide_id": "divider-h1-background"
     },
     {
-      "content_hash": "9218af75ba9d7d04723e25a8391d204b6a246b4a8e883845900aa4b2694d1dc1",
+      "content_hash": "d854da466ad6e9877a261d0c3427e44ab65aa4ad018748e51fd70eb12e1e5af8",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "fw = body_w*0.56\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g5_heart/slides/figures/intro_risk_factor_stack.png', left=body_l, top=body_top+0.10, max_w=body_w*0.56, max_h=body_h-0.25)\npx = body_l + fw + 0.40\npw = body_w - fw - 0.40\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=body_h-0.15, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=0.09, fill_rgb=accent_rgb)\ngy = body_top + body_h*0.5 - 1.30\n_add_rect(slide, left=px+0.24, top=gy+0.07, width=0.11, height=0.11, fill_rgb=accent_rgb)\n_add_text(slide, 'No doctor diagnoses heart disease from one number', left=px+0.48, top=gy, width=pw-0.70, height=0.60, size=16, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT, bold=True)\n_add_rect(slide, left=px+0.24, top=gy+0.85, width=0.11, height=0.11, fill_rgb=accent_rgb)\n_add_text(slide, 'They combine several routine checkup measurements into a single risk estimate, the way the Framingham Risk Score does. Worldwide, about nine risk factors led by cholesterol and smoking explain over 90% of first heart attacks. Risk is a stack of factors, not a single cause.', left=px+0.48, top=gy+0.78, width=pw-0.70, height=2.10, size=15, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "code": "IMG = '/home/jiwei/outset-ai-healthcare/solutions/g5_heart/slides/figures/'\nimg_h = body_h - 0.55\n_fit_image(slide, IMG+'intro_heart_risk_engine.png', left=body_l, top=body_top, max_w=body_w, max_h=img_h)\n_add_text(slide, \"The checkup measures many clues; a good risk tool combines them into one number -- never trusting a single measurement alone.\",\n          left=body_l+1.0, top=body_top+img_h+0.12, width=body_w-2.0, height=0.5,\n          size=14, color_rgb=INK_RGB, font=SANS_FONT, italic=True, align=PP_ALIGN.CENTER)",
         "lede": "",
-        "notes": "The takeaway is that no single measurement decides heart risk -- doctors add up many factors, the way the Framingham score does. The bars show how much each factor multiplies risk; cholesterol and smoking lead, but none acts alone. Hold this 'stack of factors' idea for when we test cholesterol by itself.",
+        "notes": "Open concrete and physical. A doctor measures cholesterol, blood pressure, age, chest-pain type -- and eleven more -- and combines them into ONE risk read-out, the gauge on the right. No single number decides. Do not mention machine learning yet. Transition: people have been doing this exact math by hand for decades.",
         "section_label": "Background",
-        "title": "How doctors actually estimate heart risk"
+        "title": "One risk score from many clues"
       },
-      "slide_id": "h1-background/h2-how-doctors-actually-estimate-heart-risk"
+      "slide_id": "h1-background/h2-one-risk-score-from-many-clues"
     },
     {
-      "content_hash": "1e5312d2978ea0f435e3364604973b443ab931095ea0449edbaddfaed1204697",
+      "content_hash": "c8b7d2ec879a916a246c8879df8b0faf294b38930a8e454f290757285b293866",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "fw = body_w*0.56\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g5_heart/slides/figures/intro_symptom_presentation.png', left=body_l, top=body_top+0.10, max_w=body_w*0.56, max_h=body_h-0.25)\npx = body_l + fw + 0.40\npw = body_w - fw - 0.40\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=body_h-0.15, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=0.09, fill_rgb=accent_rgb)\ngy = body_top + body_h*0.5 - 1.30\n_add_rect(slide, left=px+0.24, top=gy+0.07, width=0.11, height=0.11, fill_rgb=accent_rgb)\n_add_text(slide, 'Here is the problem that drives our project', left=px+0.48, top=gy, width=pw-0.70, height=0.60, size=16, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT, bold=True)\n_add_rect(slide, left=px+0.24, top=gy+0.85, width=0.11, height=0.11, fill_rgb=accent_rgb)\n_add_text(slide, 'The “textbook” heart attack, crushing chest pain down the left arm, is the male picture. Women more often feel back pain, nausea, and shortness of breath, so their heart attacks get missed. The American Heart Association documents that women are misdiagnosed and under-treated more than men.', left=px+0.48, top=gy+0.78, width=pw-0.70, height=2.10, size=15, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "code": "IMG = '/home/jiwei/outset-ai-healthcare/solutions/g5_heart/slides/figures/'\nimg_h = body_h - 1.15\n_fit_image(slide, IMG+'intro_framingham_1998.png', left=body_l+body_w*0.14, top=body_top, max_w=body_w*0.72, max_h=img_h)\nchip_y = body_top + img_h + 0.18\nchips = [('1998', 'the year Framingham turned checkup clues into a 10-year risk', TURQUOISE_RGB),\n         ('10-yr', 'the horizon it predicts -- not just today, but the decade ahead', DEEPPINK_RGB),\n         ('by sex', 'men and women get different math, because the same numbers mean different things', BLUEVIOLET_RGB)]\ngap = 0.3\ncw = (body_w - gap*2) / 3\nfor i, (num, lab, col) in enumerate(chips):\n    x = body_l + i*(cw+gap)\n    _add_text(slide, num, left=x, top=chip_y, width=cw, height=0.55, size=30, color_rgb=col, font=MONO_FONT, bold=True, align=PP_ALIGN.CENTER)\n    _add_text(slide, lab, left=x, top=chip_y+0.6, width=cw, height=0.5, size=12.5, color_rgb=INK_RGB, font=SANS_FONT, align=PP_ALIGN.CENTER)",
         "lede": "",
-        "notes": "This slide is the motivation for the whole project. The classic chest-pain picture is the male one, so women's often different symptoms get missed, and the AHA has documented that women are under-diagnosed and under-treated. That real-world bias is exactly what we will look for inside our own model.",
+        "notes": "The landmark that makes this project credible. The Framingham Risk Score (Wilson 1998) turns combined risk factors into a 10-year risk of heart disease -- and the two curves show it is sex-specific: men (turquoise) sit above women (pink) at the same risk-factor burden. This is a redraw of their idea, attributed. Our model is a small, honest version. Transition: why combine so many factors at all?",
         "section_label": "Background",
-        "title": "Women’s heart disease is under-diagnosed"
+        "title": "Doctors already do this math"
       },
-      "slide_id": "h1-background/h2-women-s-heart-disease-is-under-diagnosed"
+      "slide_id": "h1-background/h2-doctors-already-do-this-math"
     },
     {
-      "content_hash": "6d31f4e259270667e8ee574d6c4e5e648f02fa4a9874453f92bbc9ac7bcdf10b-divider",
+      "content_hash": "7c66e8831d21ecd1491e117668b21291837edc1921080281de6223e44606ad2e",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "IMG = '/home/jiwei/outset-ai-healthcare/solutions/g5_heart/slides/figures/'\nfw = body_w * 0.58\n_fit_image(slide, IMG+'intro_risk_factor_stack.png', left=body_l, top=body_top, max_w=fw, max_h=body_h)\nax = body_l + fw + 0.45\naw = body_w - fw - 0.45\n_add_text(slide, 'RISK IS A STACK', left=ax, top=body_top+0.12, width=aw, height=0.4, size=15, color_rgb=DEEPPINK_RGB, font=MONO_FONT, bold=True)\nbullets = [('No single cause', 'Nine factors together explain over 90% of first heart attacks.', TURQUOISE_RGB),\n           ('Cholesterol leads', 'Abnormal cholesterol sits near the top -- and it is one of our 13 features.', DEEPPINK_RGB),\n           ('So we measure many', 'A checkup captures several clues at once, never just one number.', BLUEVIOLET_RGB)]\ny = body_top + 0.75\nfor lab, bod, col in bullets:\n    _add_rect(slide, left=ax, top=y+0.05, width=0.12, height=0.92, fill_rgb=col)\n    _add_text(slide, lab, left=ax+0.3, top=y, width=aw-0.3, height=0.4, size=15, color_rgb=col, font=MONO_FONT, bold=True)\n    _add_text(slide, bod, left=ax+0.3, top=y+0.42, width=aw-0.3, height=0.75, size=13.5, color_rgb=INK_RGB, font=SANS_FONT)\n    y = y + 1.35",
+        "lede": "",
+        "notes": "Why a checkup measures many things. The INTERHEART study (Yusuf 2004) found nine modifiable factors -- led by abnormal cholesterol and smoking -- explain over 90% of first heart attacks. No single clue is the whole story. Note cholesterol is near the top of the risk stack AND is a column in our data -- hold that thought, because it gets a surprising twist in the results. Transition: but the same heart attack does not look the same in everyone.",
+        "section_label": "Background",
+        "title": "No single cause: risk is a stack"
+      },
+      "slide_id": "h1-background/h2-no-single-cause-risk-is-a-stack"
+    },
+    {
+      "content_hash": "beaee0c3c8cc7591c77bdfa53ecd9da745dd0c332ab8a14a7803f85b7936c548",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "IMG = '/home/jiwei/outset-ai-healthcare/solutions/g5_heart/slides/figures/'\nfw = body_w * 0.60\n_fit_image(slide, IMG+'intro_symptom_presentation.png', left=body_l, top=body_top+0.1, max_w=fw, max_h=body_h-0.2)\nax = body_l + fw + 0.4\naw = body_w - fw - 0.4\n_add_text(slide, 'THE TEXTBOOK IS MALE', left=ax, top=body_top+0.25, width=aw, height=0.4, size=15, color_rgb=DEEPPINK_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, \"Men more often get the classic crushing chest pain. Women more often get back pain, nausea, or shortness of breath.\",\n          left=ax, top=body_top+0.8, width=aw, height=1.3, size=15.5, color_rgb=INK_RGB, font=SANS_FONT)\n_add_text(slide, \"Because the classic picture is the male one, women's heart attacks are more often missed.\",\n          left=ax, top=body_top+2.15, width=aw, height=1.2, size=15.5, color_rgb=BLUEVIOLET_RGB, font=SANS_FONT, italic=True)\n_add_text(slide, 'Watch this thread -- it returns in our fairness check.', left=ax, top=body_top+3.5, width=aw, height=0.7, size=13.5, color_rgb=MUTED_RGB, font=SANS_FONT, italic=True)",
+        "lede": "",
+        "notes": "The fairness problem, stated plainly. Women more often present with back pain, nausea, or shortness of breath rather than the classic chest pain (AHA statement, Mehta 2016; van Oosterhout 2020). The textbook heart-attack picture is the male one, so women's attacks get missed and under-treated. This is the thread we deliberately follow all the way to the fairness audit. Transition: to build our own tool, we need the right data.",
+        "section_label": "Background",
+        "title": "The textbook heart attack is the male one"
+      },
+      "slide_id": "h1-background/h2-the-textbook-heart-attack-is-the-male-one"
+    },
+    {
+      "content_hash": "7afb5fad15beed5ec921925bdd98d1f20d379372832130f7efd8a96d8dd397da-divider",
       "kind": "section-divider",
       "params": {
         "accent_hex": "#FF1493",
-        "label": "Methods",
-        "notes": "Now we turn to what we actually built. This section covers the prediction task, the dataset, and the four models we compared -- and why the choice of algorithm turns out to be the least interesting decision of all."
+        "label": "The data",
+        "notes": "Now the raw material. Why the UCI Cleveland set is right: real clinical records, free and open to learn on, and it records sex so we can audit fairness. Then look at it -- the 2:1 male skew that comes back to bite us. Transition: 303 patients, 13 features, and one uncomfortable imbalance."
       },
-      "slide_id": "divider-h1-methods"
+      "slide_id": "divider-h1-the-data"
     },
     {
-      "content_hash": "88cec85c54bf7bb3f0ec9bba009aaf86d2a4d70af9a4ac99d7aad889a355c100",
+      "content_hash": "469a3cacbafe1d004938938de485ad7d905553f6b23b813d4317d0be0a4cae3f",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "accents = [TURQUOISE_RGB, DEEPPINK_RGB, AMBER_RGB]\ngap = 0.35\ncw = (body_w - gap*2) / 3.0\nch = body_h\ncx = body_l + 0*(cw+gap)\nac = accents[0]\n_add_rect(slide, left=cx, top=body_top, width=cw, height=ch, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=cx, top=body_top, width=cw, height=0.10, fill_rgb=ac)\ngy = body_top + ch*0.5 - 0.98\n_add_text(slide, '303 patients', left=cx+0.30, top=gy, width=cw-0.60, height=0.60, size=19, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=MONO_FONT, bold=True)\n_add_rect(slide, left=cx+0.32, top=gy+0.64, width=0.72, height=0.035, fill_rgb=ac)\n_add_text(slide, 'The Cleveland Heart Disease dataset, from a 1980s study.', left=cx+0.30, top=gy+0.86, width=cw-0.60, height=ch*0.5, size=15, color_rgb=(WHITE_RGB if ON_DARK else MUTED_RGB), font=SANS_FONT)\ncx = body_l + 1*(cw+gap)\nac = accents[1]\n_add_rect(slide, left=cx, top=body_top, width=cw, height=ch, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=cx, top=body_top, width=cw, height=0.10, fill_rgb=ac)\ngy = body_top + ch*0.5 - 0.98\n_add_text(slide, '13 features', left=cx+0.30, top=gy, width=cw-0.60, height=0.60, size=19, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=MONO_FONT, bold=True)\n_add_rect(slide, left=cx+0.32, top=gy+0.64, width=0.72, height=0.035, fill_rgb=ac)\n_add_text(slide, 'Age, sex, blood pressure, cholesterol, chest-pain type, exercise-ECG results.', left=cx+0.30, top=gy+0.86, width=cw-0.60, height=ch*0.5, size=15, color_rgb=(WHITE_RGB if ON_DARK else MUTED_RGB), font=SANS_FONT)\ncx = body_l + 2*(cw+gap)\nac = accents[2]\n_add_rect(slide, left=cx, top=body_top, width=cw, height=ch, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=cx, top=body_top, width=cw, height=0.10, fill_rgb=ac)\ngy = body_top + ch*0.5 - 0.98\n_add_text(slide, 'Predict disease', left=cx+0.30, top=gy, width=cw-0.60, height=0.60, size=19, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=MONO_FONT, bold=True)\n_add_rect(slide, left=cx+0.32, top=gy+0.64, width=0.72, height=0.035, fill_rgb=ac)\n_add_text(slide, '1 = has heart disease, 0 = does not. Graded on held-out patients.', left=cx+0.30, top=gy+0.86, width=cw-0.60, height=ch*0.5, size=15, color_rgb=(WHITE_RGB if ON_DARK else MUTED_RGB), font=SANS_FONT)",
+        "code": "tiles = [('303', 'real patient records from a 1980s coronary-disease study, each with a verified yes/no answer', DEEPPINK_RGB),\n         ('13', 'routine checkup numbers -- age, blood pressure, cholesterol, chest-pain type, exercise-test results', BLUEVIOLET_RGB),\n         ('free', 'downloads straight from the UCI repository with no gate -- and it records sex, so we can audit fairness', TURQUOISE_RGB)]\ngap = 0.35\ncw = (body_w - gap*2) / 3\nch = body_h - 0.10\nnum_h = 1.5\nlab_h = 2.0\nblock_top = body_top + (ch - (num_h + 0.2 + lab_h)) / 2\nfor i, (num, lab, col) in enumerate(tiles):\n    x = body_l + i*(cw+gap)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=ch, fill_rgb=col)\n    tc = _text_on(col)\n    _add_text(slide, num, left=x+0.28, top=block_top, width=cw-0.56, height=num_h, size=58, color_rgb=tc, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, lab, left=x+0.28, top=block_top+num_h+0.2, width=cw-0.56, height=lab_h, size=15, color_rgb=tc, font=SANS_FONT)",
         "lede": "",
-        "notes": "Our job is a simple yes/no prediction from a routine checkup, using the classic Cleveland dataset: 303 patients, 13 features, graded on patients the model never saw. Because tabular data like this is easy for any model, the real questions are which features matter and who the model works for, not which algorithm wins.",
-        "section_label": "Methods",
-        "title": "The task and the data"
+        "notes": "Justify the dataset in three facts. 303 real clinical records with verified answers; 13 ordinary checkup features; and free + open, so any student can fetch it in seconds with no login. The quiet reason it beats a bare pile of numbers: it records sex, which is what later lets us audit fairness. Transition: and the first thing we do with any dataset is look at who is in it.",
+        "section_label": "The data",
+        "title": "Why the Cleveland dataset"
       },
-      "slide_id": "h1-methods/h2-the-task-and-the-data"
+      "slide_id": "h1-the-data/h2-why-the-cleveland-dataset"
     },
     {
-      "content_hash": "d2bd2e302f063c118fe654b692c0a06d04696eea7b4d06d74930c34759634fb3",
+      "content_hash": "7e4081dd280539417e335f89b92a8abcdaa4d811c97b2bb0005d22b2b1e28ba2",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "accents = [TURQUOISE_RGB, DEEPPINK_RGB, AMBER_RGB]\ngap = 0.35\ncw = (body_w - gap*2) / 3.0\nch = body_h\ncx = body_l + 0*(cw+gap)\nac = accents[0]\n_add_rect(slide, left=cx, top=body_top, width=cw, height=ch, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=cx, top=body_top, width=cw, height=0.10, fill_rgb=ac)\ngy = body_top + ch*0.5 - 0.98\n_add_text(slide, 'Logistic Regression', left=cx+0.30, top=gy, width=cw-0.60, height=0.60, size=19, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=MONO_FONT, bold=True)\n_add_rect(slide, left=cx+0.32, top=gy+0.64, width=0.72, height=0.035, fill_rgb=ac)\n_add_text(slide, 'Simple, explainable, and here the best of the four.', left=cx+0.30, top=gy+0.86, width=cw-0.60, height=ch*0.5, size=15, color_rgb=(WHITE_RGB if ON_DARK else MUTED_RGB), font=SANS_FONT)\ncx = body_l + 1*(cw+gap)\nac = accents[1]\n_add_rect(slide, left=cx, top=body_top, width=cw, height=ch, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=cx, top=body_top, width=cw, height=0.10, fill_rgb=ac)\ngy = body_top + ch*0.5 - 0.98\n_add_text(slide, 'Random Forest & CatBoost', left=cx+0.30, top=gy, width=cw-0.60, height=0.60, size=19, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=MONO_FONT, bold=True)\n_add_rect(slide, left=cx+0.32, top=gy+0.64, width=0.72, height=0.035, fill_rgb=ac)\n_add_text(slide, 'Tree ensembles, the workhorses of tabular data.', left=cx+0.30, top=gy+0.86, width=cw-0.60, height=ch*0.5, size=15, color_rgb=(WHITE_RGB if ON_DARK else MUTED_RGB), font=SANS_FONT)\ncx = body_l + 2*(cw+gap)\nac = accents[2]\n_add_rect(slide, left=cx, top=body_top, width=cw, height=ch, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=cx, top=body_top, width=cw, height=0.10, fill_rgb=ac)\ngy = body_top + ch*0.5 - 0.98\n_add_text(slide, 'TabPFN', left=cx+0.30, top=gy, width=cw-0.60, height=0.60, size=19, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=MONO_FONT, bold=True)\n_add_rect(slide, left=cx+0.32, top=gy+0.64, width=0.72, height=0.035, fill_rgb=ac)\n_add_text(slide, 'A foundation model for tables, like the one from Day 2.', left=cx+0.30, top=gy+0.86, width=cw-0.60, height=ch*0.5, size=15, color_rgb=(WHITE_RGB if ON_DARK else MUTED_RGB), font=SANS_FONT)",
+        "code": "IMG = '/home/jiwei/outset-ai-healthcare/solutions/g5_heart/slides/figures/'\nimg_h = body_h - 1.25\n_fit_image(slide, IMG+'intro_dataset_sex_skew.png', left=body_l+body_w*0.06, top=body_top, max_w=body_w*0.88, max_h=img_h)\nband_y = body_top + img_h + 0.14\nband_h = 1.0\ngap = 0.35\nhalf = (body_w - gap) / 2\n_add_rect(slide, left=body_l, top=band_y, width=half, height=band_h, fill_rgb=TURQUOISE_RGB)\ntc = _text_on(TURQUOISE_RGB)\n_add_text(slide, '2 : 1', left=body_l+0.3, top=band_y, width=1.7, height=band_h, size=34, color_rgb=tc, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n_add_text(slide, 'men to women -- the model gets far more practice on men', left=body_l+2.1, top=band_y, width=half-2.4, height=band_h, size=13.5, color_rgb=tc, font=SANS_FONT, anchor=MSO_ANCHOR.MIDDLE)\nx2 = body_l + half + gap\n_add_rect(slide, left=x2, top=band_y, width=half, height=band_h, fill_rgb=DEEPPINK_RGB)\ntc2 = _text_on(DEEPPINK_RGB)\n_add_text(slide, 'the honest catch', left=x2+0.3, top=band_y+0.14, width=half-0.6, height=0.4, size=16, color_rgb=tc2, font=MONO_FONT, bold=True)\n_add_text(slide, 'a model only learns from who is in its data -- this skew returns in our fairness check', left=x2+0.3, top=band_y+0.54, width=half-0.6, height=0.4, size=12.5, color_rgb=tc2, font=SANS_FONT)",
         "lede": "",
-        "notes": "We trained four different models -- a simple logistic regression, two tree ensembles, and a tabular foundation model -- and always compared them to the 'just guess the majority' baseline of about 0.54. Anything that cannot beat that baseline is useless. They all beat it, and they all basically tie.",
-        "section_label": "Methods",
-        "title": "Four models, one honest test"
+        "notes": "Look before you model. The waffle shows the Cleveland cohort is about two men for every woman (201 vs 96). A model learns from examples, so with fewer women it gets less practice on them. Name the honest catch now: a model only learns from who is in its data, and this skew is exactly why the fairness audit later will not be clean. Transition: with the data understood, which model should we use?",
+        "section_label": "The data",
+        "title": "Who is in the data?"
       },
-      "slide_id": "h1-methods/h2-four-models-one-honest-test"
+      "slide_id": "h1-the-data/h2-who-is-in-the-data"
+    },
+    {
+      "content_hash": "4ad649ac4fc7cb41e24a930e262600a5a7f4d2c9e5a01196f266bcf547508734-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#9D4DEB",
+        "label": "The model",
+        "notes": "How we turn 13 numbers into a risk score. We do not guess the model -- we run a bake-off, then write down the exact recipe. Transition: four models walk in; do any of them actually win?"
+      },
+      "slide_id": "divider-h1-the-model"
+    },
+    {
+      "content_hash": "813f354e5c5ed06a8ebda2d9dee2c4e97ea98110fc8c71d7e2aa9f3903152ab8",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "IMG = '/home/jiwei/outset-ai-healthcare/solutions/g5_heart/slides/figures/'\nfw = body_w * 0.56\n_fit_image(slide, IMG+'model_comparison.png', left=body_l, top=body_top, max_w=fw, max_h=body_h)\nax = body_l + fw + 0.45\naw = body_w - fw - 0.45\n_add_text(slide, 'WE TESTED, WE DID NOT GUESS', left=ax, top=body_top+0.2, width=aw, height=0.4, size=14, color_rgb=BLUEVIOLET_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, '~0.80', left=ax, top=body_top+0.75, width=aw, height=1.1, size=70, color_rgb=INK_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, 'test accuracy -- and all four models land within a whisker of it.', left=ax, top=body_top+2.0, width=aw, height=1.0, size=15, color_rgb=INK_RGB, font=SANS_FONT)\n_add_text(slide, 'On clean tabular data the model barely matters. The data sets the ceiling -- 300 patients hold only so much signal.', left=ax, top=body_top+3.15, width=aw, height=1.5, size=15, color_rgb=BLUEVIOLET_RGB, font=SANS_FONT, italic=True)",
+        "lede": "",
+        "notes": "The which-tool decision, made honestly. We trained Logistic Regression, Random Forest, CatBoost, and a TabPFN foundation model the same way and graded each on held-out patients. They all land near 0.80 -- a dead heat, well above the 0.54 coin-flip line. The lesson: on clean tabular data the model barely matters; the data sets the ceiling. So we stop model-shopping. Transition: here is the exact recipe so anyone could rebuild it.",
+        "section_label": "The model",
+        "title": "Four models, one bake-off"
+      },
+      "slide_id": "h1-the-model/h2-four-models-one-bake-off"
+    },
+    {
+      "content_hash": "b94621d5cfff4e6e7393abf5f4ceec589e4c28ff713363cc28db10345cef6ddf",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "steps = [('1', 'SPLIT', 'one clean 75/25 train-test split, fixed seed, stratified so both halves carry the same disease rate', TURQUOISE_RGB),\n         ('2', 'FEATURES', 'all 13 checkup measurements, each read as a plain number -- no hand-picking', DEEPPINK_RGB),\n         ('3', 'MODEL', 'CatBoost for the headline score (a calibrated probability we grade by AUC); logistic regression for the clean feature tests', AMBER_RGB),\n         ('4', 'GRADE', 'every number reported on the held-out test set the model never trained on -- no leakage', BLUEVIOLET_RGB)]\nn = len(steps)\ngap = 0.28\nrh = (body_h - gap*(n-1)) / n\nfor i, (num, lab, bod, col) in enumerate(steps):\n    y = body_top + i*(rh+gap)\n    _add_rect(slide, left=body_l, top=y, width=0.9, height=rh, fill_rgb=col)\n    _add_text(slide, num, left=body_l, top=y, width=0.9, height=rh, size=26, color_rgb=_text_on(col), font=MONO_FONT, bold=True, align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, lab, left=body_l+1.15, top=y, width=2.4, height=rh, size=17, color_rgb=col, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, bod, left=body_l+3.7, top=y, width=body_w-3.7, height=rh, size=14.5, color_rgb=INK_RGB, font=SANS_FONT, anchor=MSO_ANCHOR.MIDDLE)",
+        "lede": "",
+        "notes": "The reproducibility slide -- read it as a recipe, not trivia. One clean stratified 75/25 split with a fixed seed; all 13 features as plain numbers; CatBoost for the headline probability we grade by AUC, and logistic regression for the clean feature comparisons; and every reported number is on the held-out test set, so there is no leakage. Any one of these done wrong quietly breaks the result. Transition: so how well does it actually score?",
+        "section_label": "The model",
+        "title": "Model and data processing"
+      },
+      "slide_id": "h1-the-model/h2-model-and-data-processing"
     },
     {
       "content_hash": "9d386fbbaab59eb494f4c12cf1b23fd4b5c5347b03eb22c1c97fb04f41376eef-divider",
@@ -81,107 +143,110 @@
       "params": {
         "accent_hex": "#F0C840",
         "label": "Results",
-        "notes": "Here are the three findings. Watch for a pattern: the flashy model comparison teaches the least, while the two 'boring' experiments -- one feature, and a fairness split -- teach the most."
+        "notes": "The payoff, each number named by how we measured it. Graded by AUC the tool hits 0.90; SHAP shows which clues drive it; cholesterol alone is a coin flip; and the fairness audit by sex is the whole point. Transition: first, how do you even grade a risk tool?"
       },
       "slide_id": "divider-h1-results"
     },
     {
-      "content_hash": "697c8cb064a80cb5abe19ffa91ecf536f77b3af7d146cb14b44a1b95f99ec9a9",
+      "content_hash": "2299068784956441258cd6d42d16fff09d5a7abad90cbd3b0c259997113c3a22",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "fw = body_w*0.56\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g5_heart/slides/figures/model_comparison.png', left=body_l, top=body_top+0.10, max_w=body_w*0.56, max_h=body_h-0.25)\npx = body_l + fw + 0.40\npw = body_w - fw - 0.40\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=body_h-0.15, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=0.09, fill_rgb=accent_rgb)\n_add_rect(slide, left=px+0.24, top=body_top+body_h*0.5-0.55, width=0.11, height=0.11, fill_rgb=accent_rgb)\n_add_text(slide, 'All four models land between 0.79 and 0.81, comfortably above the coin-flip baseline, and they basically tie each other. That is the lesson: on clean tabular data the model barely matters. Swapping a plain logistic regression for a fancy foundation model buys almost nothing. Three hundred patients from the 1980s contain only so much signal, and no model can invent more.', left=px+0.48, top=body_top+0.30, width=pw-0.70, height=body_h-0.70, size=15, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT, anchor=MSO_ANCHOR.MIDDLE)",
+        "code": "IMG = '/home/jiwei/outset-ai-healthcare/solutions/g5_heart/slides/figures/'\nfw = body_w * 0.50\n_fit_image(slide, IMG+'roc.png', left=body_l, top=body_top, max_w=fw, max_h=body_h)\nax = body_l + fw + 0.5\naw = body_w - fw - 0.5\n_add_text(slide, '0.90', left=ax, top=body_top+0.2, width=aw, height=1.3, size=84, color_rgb=AMBER_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, 'AUC -- the area under the ROC curve', left=ax, top=body_top+1.55, width=aw, height=0.5, size=17, color_rgb=INK_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, 'The ROC curve sweeps every cut-off and plots disease caught against false alarms. AUC is the area underneath.', left=ax, top=body_top+2.2, width=aw, height=1.35, size=15, color_rgb=INK_RGB, font=SANS_FONT)\n_add_text(slide, '0.5 = a coin flip     1.0 = perfect', left=ax, top=body_top+3.55, width=aw, height=0.5, size=15, color_rgb=BLUEVIOLET_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, 'Plain accuracy was only 0.81 -- AUC credits the tool for ranking the sickest patients first.', left=ax, top=body_top+4.15, width=aw, height=0.8, size=15, color_rgb=INK_RGB, font=SANS_FONT, italic=True)",
         "lede": "",
-        "notes": "All four models land within a whisker of each other, around 0.80. The lesson is that on clean tabular data the algorithm barely matters -- a plain logistic regression matches a fancy foundation model. The ceiling is set by the data itself, not by how clever the model is.",
+        "notes": "Name the metric before the number. A risk tool outputs a score, not a yes/no, so we grade it with the ROC curve -- every cut-off, plotting disease caught against false alarms -- and AUC, the area underneath, where 0.5 is a coin flip and 1.0 is perfect. Our AUC is 0.90 and the curve hugs the top-left. Point out the gap: accuracy was only 0.81, but AUC rewards the model for ranking the sickest patients first. Transition: and we can see WHICH clues it ranked on.",
         "section_label": "Results",
-        "title": "The data sets the ceiling"
+        "title": "A working risk tool"
       },
-      "slide_id": "h1-results/h2-the-data-sets-the-ceiling"
+      "slide_id": "h1-results/h2-a-working-risk-tool"
     },
     {
-      "content_hash": "481dd4cbd07729c96fc5f69579fb9a3e0d20dd917ad061e09f70f7edc00fec57",
+      "content_hash": "59bea6f4709b780bfe33f810651738771cfe6148aacd43700eaffff75c3ea5f5",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "fw = body_w*0.56\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g5_heart/slides/figures/feature_ablation.png', left=body_l, top=body_top+0.10, max_w=body_w*0.56, max_h=body_h-0.25)\npx = body_l + fw + 0.40\npw = body_w - fw - 0.40\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=body_h-0.15, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=0.09, fill_rgb=accent_rgb)\n_add_rect(slide, left=px+0.24, top=body_top+body_h*0.5-0.55, width=0.11, height=0.11, fill_rgb=accent_rgb)\n_add_text(slide, 'Everyone “knows” cholesterol causes heart disease, so we gave a model only the cholesterol column. It scored about 0.52, basically a coin flip. Meanwhile the checkup with cholesterol removed scored about 0.80. Cholesterol is a major cause of heart disease over decades, but on its own it is a poor clue for who has disease right now. That is why doctors combine many measurements.', left=px+0.48, top=body_top+0.30, width=pw-0.70, height=body_h-0.70, size=15, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT, anchor=MSO_ANCHOR.MIDDLE)",
+        "code": "IMG = '/home/jiwei/outset-ai-healthcare/solutions/g5_heart/slides/figures/'\nfw = body_w * 0.52\n_fit_image(slide, IMG+'shap_importance.png', left=body_l, top=body_top+0.1, max_w=fw, max_h=body_h-0.2)\nax = body_l + fw + 0.4\naw = body_w - fw - 0.4\ncallouts = [('ca', 'vessels seen on imaging -- the top signal', TURQUOISE_RGB),\n            ('thal', 'a heart stress-test result', DEEPPINK_RGB),\n            ('cp', 'chest-pain type -- the cue a cardiologist weighs', AMBER_RGB)]\nrh = 1.02\nfor i, (num, lab, col) in enumerate(callouts):\n    y = body_top + 0.1 + i*(rh+0.12)\n    _add_rect(slide, left=ax, top=y, width=0.14, height=rh, fill_rgb=col)\n    _add_text(slide, num, left=ax+0.3, top=y, width=1.6, height=rh, size=30, color_rgb=col, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, lab, left=ax+1.95, top=y, width=aw-1.95, height=rh, size=13.5, color_rgb=INK_RGB, font=SANS_FONT, anchor=MSO_ANCHOR.MIDDLE)\ny2 = body_top + 0.1 + 3*(rh+0.12)\nbh = body_h - 0.2 - (y2 - body_top)\n_add_rect(slide, left=ax, top=y2, width=aw, height=bh, fill_rgb=DEEPPINK_RGB)\n_add_text(slide, 'And cholesterol (chol) sits near the bottom -- a real surprise we test next.', left=ax+0.25, top=y2, width=aw-0.5, height=bh, size=14.5, color_rgb=_text_on(DEEPPINK_RGB), font=SANS_FONT, italic=True, anchor=MSO_ANCHOR.MIDDLE)",
         "lede": "",
-        "notes": "We gave one model only the cholesterol column and it scored near a coin flip, while dropping cholesterol entirely barely hurt. Cholesterol matters over decades, but on its own it is a weak clue for who has disease right now -- which is why doctors combine many measurements. This is the 'stack of factors' idea made concrete.",
+        "notes": "Feature importance for a table is SHAP: how much each measurement moves the prediction, averaged. The heavy hitters are ca (vessels on imaging), thal (a stress-test result), and cp (chest-pain type) -- the same cues a cardiologist leans on, which is reassuring. The twist is at the bottom of the chart: cholesterol ranks LOW. That is surprising enough to deserve its own test. Transition: so is cholesterol actually a good predictor on its own?",
         "section_label": "Results",
-        "title": "Cholesterol alone is a weak predictor"
+        "title": "Which clues drive the call"
       },
-      "slide_id": "h1-results/h2-cholesterol-alone-is-a-weak-predictor"
+      "slide_id": "h1-results/h2-which-clues-drive-the-call"
     },
     {
-      "content_hash": "3a104888bdb4147813e6168d7a6be83fdef6965a832652dda823cbda5468595d",
+      "content_hash": "e45979ff28ee696132aba577b4a46bdf366b96c1575a681c81e53bbff801a161",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "fw = body_w*0.56\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g5_heart/slides/figures/fairness_by_sex.png', left=body_l, top=body_top+0.10, max_w=body_w*0.56, max_h=body_h-0.25)\npx = body_l + fw + 0.40\npw = body_w - fw - 0.40\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=body_h-0.15, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=0.09, fill_rgb=accent_rgb)\ngy = body_top + body_h*0.5 - 1.30\n_add_rect(slide, left=px+0.24, top=gy+0.07, width=0.11, height=0.11, fill_rgb=accent_rgb)\n_add_text(slide, 'This is the point of the project', left=px+0.48, top=gy, width=pw-0.70, height=0.60, size=16, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT, bold=True)\n_add_rect(slide, left=px+0.24, top=gy+0.85, width=0.11, height=0.11, fill_rgb=accent_rgb)\n_add_text(slide, 'One accuracy number can hide unfairness. When we grade the model separately for women and men, it is about 0.88 accurate for women and 0.78 for men, a gap of about 0.09. An accuracy gap in either direction means the model behaves differently depending on your sex. You only see it because you looked.', left=px+0.48, top=gy+0.78, width=pw-0.70, height=2.10, size=15, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "code": "IMG = '/home/jiwei/outset-ai-healthcare/solutions/g5_heart/slides/figures/'\nfw = body_w * 0.56\n_fit_image(slide, IMG+'feature_ablation.png', left=body_l, top=body_top, max_w=fw, max_h=body_h)\nax = body_l + fw + 0.45\naw = body_w - fw - 0.45\n_add_rect(slide, left=ax, top=body_top+0.2, width=aw, height=1.5, fill_rgb=AMBER_RGB)\ntc = _text_on(AMBER_RGB)\n_add_text(slide, '0.52', left=ax+0.28, top=body_top+0.32, width=aw-0.56, height=0.78, size=40, color_rgb=tc, font=MONO_FONT, bold=True)\n_add_text(slide, 'cholesterol ALONE -- barely better than a coin flip', left=ax+0.28, top=body_top+1.12, width=aw-0.56, height=0.5, size=14, color_rgb=tc, font=SANS_FONT)\n_add_rect(slide, left=ax, top=body_top+1.88, width=aw, height=1.5, fill_rgb=TURQUOISE_RGB)\ntc2 = _text_on(TURQUOISE_RGB)\n_add_text(slide, '0.80', left=ax+0.28, top=body_top+2.0, width=aw-0.56, height=0.78, size=40, color_rgb=tc2, font=MONO_FONT, bold=True)\n_add_text(slide, 'the checkup WITHOUT cholesterol -- still strong', left=ax+0.28, top=body_top+2.8, width=aw-0.56, height=0.5, size=14, color_rgb=tc2, font=SANS_FONT)\n_add_text(slide, 'Causing disease slowly is not the same as detecting it today.', left=ax, top=body_top+3.65, width=aw, height=1.0, size=15, color_rgb=INK_RGB, font=SANS_FONT, italic=True)",
         "lede": "",
-        "notes": "This is the heart of the project. A single accuracy number looked fine, but grading women and men separately reveals about a nine-point gap. The point is not the direction of the gap -- it is that you only discover unfairness when you deliberately look for it.",
+        "notes": "The fair test SHAP set up. Give the model only cholesterol: it scores 0.52, basically a coin flip. Remove cholesterol and keep the other twelve: still 0.80. So in this data cholesterol is a weak one-shot diagnostic clue, even though INTERHEART is right that it is a major CAUSAL factor over decades. That is the causing-versus-detecting distinction -- and it is why doctors combine many measurements instead of trusting one number. Transition: last and most important -- does the tool work equally for women and men?",
         "section_label": "Results",
-        "title": "Accurate overall, but not equally by sex"
+        "title": "Cholesterol alone is a weak clue"
       },
-      "slide_id": "h1-results/h2-accurate-overall-but-not-equally-by-sex"
+      "slide_id": "h1-results/h2-cholesterol-alone-is-a-weak-clue"
     },
     {
-      "content_hash": "7c0dc2d925d36d99296a4ce7cc3eaa774cb534f4b5c34fe2b804bdb2ad0a2caf-divider",
+      "content_hash": "18545933632996efb37541e03355f89ea44694e6c4b0a66893e0f7571da18d82",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "IMG = '/home/jiwei/outset-ai-healthcare/solutions/g5_heart/slides/figures/'\nfw = body_w * 0.54\n_fit_image(slide, IMG+'fairness_by_sex.png', left=body_l, top=body_top, max_w=fw, max_h=body_h)\nax = body_l + fw + 0.45\naw = body_w - fw - 0.45\nth = 1.4\n_add_rect(slide, left=ax, top=body_top+0.1, width=aw, height=th, fill_rgb=DEEPPINK_RGB)\ntc = _text_on(DEEPPINK_RGB)\n_add_text(slide, '0.88', left=ax+0.28, top=body_top+0.2, width=aw-0.56, height=0.85, size=38, color_rgb=tc, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n_add_text(slide, 'accuracy for women', left=ax+0.28, top=body_top+1.0, width=aw-0.56, height=0.45, size=14, color_rgb=tc, font=SANS_FONT)\n_add_rect(slide, left=ax, top=body_top+1.65, width=aw, height=th, fill_rgb=TURQUOISE_RGB)\ntc2 = _text_on(TURQUOISE_RGB)\n_add_text(slide, '0.78', left=ax+0.28, top=body_top+1.75, width=aw-0.56, height=0.85, size=38, color_rgb=tc2, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n_add_text(slide, 'accuracy for men', left=ax+0.28, top=body_top+2.55, width=aw-0.56, height=0.45, size=14, color_rgb=tc2, font=SANS_FONT)\n_add_text(slide, 'A 0.09 gap -- and the honest cause is the 2:1 male data. One overall number would have hidden it.', left=ax, top=body_top+3.4, width=aw, height=1.3, size=15, color_rgb=INK_RGB, font=SANS_FONT, italic=True)",
+        "lede": "",
+        "notes": "The point of the whole project. We trained once, then graded the model separately by sex: 0.88 for women, 0.78 for men -- a 0.09 gap. The twist is that it is MORE accurate for women, mostly because so few women here had disease that predict-healthy is usually right. That is not good news: an accuracy gap in either direction means behavior depends on sex, and accurate-because-it-rarely-says-sick is the exact failure behind real under-diagnosis. You only saw it because you looked. Transition: so where does that leave us honestly?",
+        "section_label": "Results",
+        "title": "Does it work for women and men?"
+      },
+      "slide_id": "h1-results/h2-does-it-work-for-women-and-men"
+    },
+    {
+      "content_hash": "567f7f55982768386406f4ceaa86ed7f049bacbf9763466b237821b79b3094ac-divider",
       "kind": "section-divider",
       "params": {
         "accent_hex": "#40E0D0",
-        "label": "Being honest",
-        "notes": "Good medical-AI work states loudly what it cannot claim. This section covers where our result comes from -- a small, skewed, decades-old dataset -- and what we are and are not allowed to conclude from it."
+        "label": "The honest picture",
+        "notes": "Good science states its own limits out loud. What the tool genuinely does, where it is skewed, the papers behind it, and the one habit to remember. This is the section the rubric rewards most."
       },
-      "slide_id": "divider-h1-being-honest"
+      "slide_id": "divider-h1-the-honest-picture"
     },
     {
-      "content_hash": "853e981c2517afb7a5426fb575841bf99cead8e3c67cd25dd0ee780510f995bd",
+      "content_hash": "d470d39946e3dc3ae9d304a9893f40e6ab40c349adcac2ad0f8cd6436bef1d18",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "fw = body_w*0.56\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g5_heart/slides/figures/intro_dataset_sex_skew.png', left=body_l, top=body_top+0.10, max_w=body_w*0.56, max_h=body_h-0.25)\npx = body_l + fw + 0.40\npw = body_w - fw - 0.40\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=body_h-0.15, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=0.09, fill_rgb=accent_rgb)\ngy = body_top + body_h*0.5 - 1.30\n_add_rect(slide, left=px+0.24, top=gy+0.07, width=0.11, height=0.11, fill_rgb=accent_rgb)\n_add_text(slide, 'A model can only learn from who is in its data, and ours is about 2:1 male', left=px+0.48, top=gy, width=pw-0.70, height=0.60, size=16, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT, bold=True)\n_add_rect(slide, left=px+0.24, top=gy+0.85, width=0.11, height=0.11, fill_rgb=accent_rgb)\n_add_text(slide, 'With far fewer women, the model gets less practice on them, and the way patients were selected in the 1980s made the male rows sicker. That skew is not a bug we can fix with a better model, it is a property of the data, and it is exactly the bias that makes heart disease harder to catch in women.', left=px+0.48, top=gy+0.78, width=pw-0.70, height=2.10, size=15, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "code": "cards = [('IT WORKS', 'A real risk tool on real checkup data: AUC 0.90, leaning on the same cues (ca, thal, chest-pain type) a cardiologist uses.', 'AUC 0.90', TURQUOISE_RGB),\n         ('BUT IT IS SKEWED', 'The accuracy gap by sex is real, and the data is about 2:1 male -- so it may serve women worse in the real world.', '0.09 gap by sex', DEEPPINK_RGB),\n         ('A REAL TOOL', \"Would use today's diverse patients, a sex-specific design, multi-hospital validation, and a clinician in the loop.\", 'not ready for a patient', BLUEVIOLET_RGB)]\ngap = 0.35\ncw = (body_w - gap*2) / 3\nch = body_h - 0.1\nby = body_top + 0.6\nfor i, (lab, bod, tag, col) in enumerate(cards):\n    x = body_l + i*(cw+gap)\n    _add_rect(slide, left=x+0.05, top=body_top+0.06, width=cw, height=ch, fill_rgb=_rgb('#E4E1D9'))\n    _add_rect(slide, left=x, top=body_top, width=cw, height=ch, fill_rgb=WHITE_RGB)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=0.1, fill_rgb=col)\n    _add_text(slide, lab, left=x+0.28, top=by, width=cw-0.56, height=0.5, size=17, color_rgb=col, font=MONO_FONT, bold=True)\n    _add_text(slide, bod, left=x+0.28, top=by+0.75, width=cw-0.56, height=ch-2.3, size=16, color_rgb=INK_RGB, font=SANS_FONT)\n    _add_rect(slide, left=x, top=body_top+ch-1.05, width=cw, height=0.02, fill_rgb=_rgb('#E4E1D9'))\n    _add_text(slide, tag, left=x+0.28, top=body_top+ch-0.9, width=cw-0.56, height=0.6, size=15, color_rgb=col, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)",
         "lede": "",
-        "notes": "Our data is about two men for every woman, so the model simply gets less practice on women. That skew is not a bug we can code away -- it is baked into how the 1980s study was collected, and it mirrors the same real-world bias that makes women's heart disease harder to catch. Every result above must be read through this limitation.",
-        "section_label": "Being honest",
-        "title": "The data is small and male-skewed"
+        "notes": "Model the honesty the rubric rewards. Green: this genuinely works -- AUC 0.90, reading the cues a cardiologist uses. Pink: it is skewed -- the sex gap is real and the data is 2:1 male, so it may serve women worse. Purple: a real tool would add today's diverse patients, a sex-specific design, multi-hospital validation, and a clinician in the loop. State it plainly: this teaches judgment, it does not care for a patient. Transition: the papers behind it.",
+        "section_label": "The honest picture",
+        "title": "What it can and cannot do"
       },
-      "slide_id": "h1-being-honest/h2-the-data-is-small-and-male-skewed"
+      "slide_id": "h1-the-honest-picture/h2-what-it-can-and-cannot-do"
     },
     {
-      "content_hash": "a672e355dc1b2632aa6da77f3c9fcfea9f9d70c621a5a95acecbd8b6b3e42637",
+      "content_hash": "2141831ce3743e2efac11902e8701a3dc58c371b691b60ab1bc5843fb51b70cc",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "accents = [TURQUOISE_RGB, DEEPPINK_RGB, AMBER_RGB]\ngap = 0.35\ncw = (body_w - gap*2) / 3.0\nch = body_h\ncx = body_l + 0*(cw+gap)\nac = accents[0]\n_add_rect(slide, left=cx, top=body_top, width=cw, height=ch, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=cx, top=body_top, width=cw, height=0.10, fill_rgb=ac)\ngy = body_top + ch*0.5 - 0.98\n_add_text(slide, 'It can', left=cx+0.30, top=gy, width=cw-0.60, height=0.60, size=19, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=MONO_FONT, bold=True)\n_add_rect(slide, left=cx+0.32, top=gy+0.64, width=0.72, height=0.035, fill_rgb=ac)\n_add_text(slide, 'Show that checkup features carry real signal, that no single number is the whole story, and that accuracy can be unequal across sex.', left=cx+0.30, top=gy+0.86, width=cw-0.60, height=ch*0.5, size=15, color_rgb=(WHITE_RGB if ON_DARK else MUTED_RGB), font=SANS_FONT)\ncx = body_l + 1*(cw+gap)\nac = accents[1]\n_add_rect(slide, left=cx, top=body_top, width=cw, height=ch, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=cx, top=body_top, width=cw, height=0.10, fill_rgb=ac)\ngy = body_top + ch*0.5 - 0.98\n_add_text(slide, 'It cannot', left=cx+0.30, top=gy, width=cw-0.60, height=0.60, size=19, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=MONO_FONT, bold=True)\n_add_rect(slide, left=cx+0.32, top=gy+0.64, width=0.72, height=0.035, fill_rgb=ac)\n_add_text(slide, 'Say anything trustworthy about today’s patients. This is 303 people from one 1980s study.', left=cx+0.30, top=gy+0.86, width=cw-0.60, height=ch*0.5, size=15, color_rgb=(WHITE_RGB if ON_DARK else MUTED_RGB), font=SANS_FONT)\ncx = body_l + 2*(cw+gap)\nac = accents[2]\n_add_rect(slide, left=cx, top=body_top, width=cw, height=ch, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=cx, top=body_top, width=cw, height=0.10, fill_rgb=ac)\ngy = body_top + ch*0.5 - 0.98\n_add_text(slide, 'Watch the metric', left=cx+0.30, top=gy, width=cw-0.60, height=0.60, size=19, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=MONO_FONT, bold=True)\n_add_rect(slide, left=cx+0.32, top=gy+0.64, width=0.72, height=0.035, fill_rgb=ac)\n_add_text(slide, 'Missing a real heart attack is far worse than a false alarm. A deployed tool would be tuned for sensitivity, not raw accuracy.', left=cx+0.30, top=gy+0.86, width=cw-0.60, height=ch*0.5, size=15, color_rgb=(WHITE_RGB if ON_DARK else MUTED_RGB), font=SANS_FONT)",
+        "code": "colw = (body_w - 0.6) / 2\nleft_refs = ('[1] Detrano et al. 1989, Am J Cardiol -- the Cleveland dataset we use.\\n\\n'\n             '[2] Wilson et al. 1998, Circulation -- the Framingham Risk Score.\\n\\n'\n             '[3] Yusuf et al. 2004, Lancet -- INTERHEART: nine factors, 90% of risk.\\n\\n'\n             '[7] UCI Machine Learning Repository -- Heart Disease Data Set.')\nright_refs = ('[4] Mehta et al. 2016, Circulation -- AHA statement on heart attacks in women.\\n\\n'\n              '[5] van Oosterhout et al. 2020, JAHA -- sex differences in symptoms.\\n\\n'\n              '[6] Bugiardini & Bairey Merz 2005, JAMA -- angina with \"normal\" arteries.')\n_add_text(slide, 'FOUNDATIONS & DATA', left=body_l, top=body_top+0.05, width=colw, height=0.4, size=16, color_rgb=TURQUOISE_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, left_refs, left=body_l, top=body_top+0.6, width=colw, height=body_h-0.7, size=14.5, color_rgb=INK_RGB, font=SANS_FONT)\nrx = body_l + colw + 0.6\n_add_text(slide, 'SEX DIFFERENCES & UNDER-DIAGNOSIS', left=rx, top=body_top+0.05, width=colw, height=0.4, size=16, color_rgb=DEEPPINK_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, right_refs, left=rx, top=body_top+0.6, width=colw, height=body_h-0.7, size=14.5, color_rgb=INK_RGB, font=SANS_FONT)",
         "lede": "",
-        "notes": "This is the most important slide in any medical-AI talk. Our toy model earns the right to say checkup features carry signal, no single number is the whole story, and accuracy can be unequal -- but it cannot say anything trustworthy about today's patients. And in a real tool, missing a heart attack is far worse than a false alarm, so you would tune for sensitivity, not raw accuracy.",
-        "section_label": "Being honest",
-        "title": "What this project can and cannot say"
+        "notes": "Give credit and show the trail. Left column is the foundations and the data: the Cleveland dataset we used [1], the Framingham risk score we echo [2], INTERHEART on the risk stack [3], and the UCI repository [7]. Right column is the fairness literature that set our theme: the AHA statement on women's heart attacks [4], the symptom-difference meta-analysis [5], and the normal-arteries paper [6]. Point out that [2] is the score we redrew and [4]-[6] are why we audit by sex. Transition: the one habit to remember.",
+        "section_label": "The honest picture",
+        "title": "References"
       },
-      "slide_id": "h1-being-honest/h2-what-this-project-can-and-cannot-say"
+      "slide_id": "h1-the-honest-picture/h2-references"
     },
     {
-      "content_hash": "dd24868b7b6fc880b2d69f84839816bb8ebf7609e3e03c2b5b93e25028eeff66-divider",
-      "kind": "section-divider",
-      "params": {
-        "accent_hex": "#40E0D0",
-        "label": "References",
-        "notes": "Every claim in this deck traces to a peer-reviewed source. These are the papers behind the risk factors, the under-diagnosis of women, and the dataset itself."
-      },
-      "slide_id": "divider-h1-references"
-    },
-    {
-      "content_hash": "98a303b125a373c73f076824eb09e2bc170ac1abeb16168bed1f30d2fe3e7c55",
+      "content_hash": "bf7878c413c75ece3de844ecc826c9ae1daf421540c0b03dcf4576d73bf8ae39",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "accents = [TURQUOISE_RGB, DEEPPINK_RGB, AMBER_RGB]\ngap = 0.35\ncw = (body_w - gap*2) / 3.0\nch = body_h\ncx = body_l + 0*(cw+gap)\nac = accents[0]\n_add_rect(slide, left=cx, top=body_top, width=cw, height=ch, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=cx, top=body_top, width=cw, height=0.10, fill_rgb=ac)\ngy = body_top + ch*0.5 - 0.98\n_add_text(slide, 'Cardiac risk scoring', left=cx+0.30, top=gy, width=cw-0.60, height=0.60, size=19, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=MONO_FONT, bold=True)\n_add_rect(slide, left=cx+0.32, top=gy+0.64, width=0.72, height=0.035, fill_rgb=ac)\n_add_text(slide, 'Wilson 1998, Framingham Risk Score, Circulation. Yusuf 2004, the INTERHEART study, Lancet.', left=cx+0.30, top=gy+0.86, width=cw-0.60, height=ch*0.5, size=15, color_rgb=(WHITE_RGB if ON_DARK else MUTED_RGB), font=SANS_FONT)\ncx = body_l + 1*(cw+gap)\nac = accents[1]\n_add_rect(slide, left=cx, top=body_top, width=cw, height=ch, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=cx, top=body_top, width=cw, height=0.10, fill_rgb=ac)\ngy = body_top + ch*0.5 - 0.98\n_add_text(slide, 'Under-diagnosis in women', left=cx+0.30, top=gy, width=cw-0.60, height=0.60, size=19, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=MONO_FONT, bold=True)\n_add_rect(slide, left=cx+0.32, top=gy+0.64, width=0.72, height=0.035, fill_rgb=ac)\n_add_text(slide, 'Mehta 2016, AHA scientific statement, Circulation. van Oosterhout 2020, JAHA. Bugiardini and Bairey Merz 2005, JAMA.', left=cx+0.30, top=gy+0.86, width=cw-0.60, height=ch*0.5, size=15, color_rgb=(WHITE_RGB if ON_DARK else MUTED_RGB), font=SANS_FONT)\ncx = body_l + 2*(cw+gap)\nac = accents[2]\n_add_rect(slide, left=cx, top=body_top, width=cw, height=ch, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=cx, top=body_top, width=cw, height=0.10, fill_rgb=ac)\ngy = body_top + ch*0.5 - 0.98\n_add_text(slide, 'The dataset', left=cx+0.30, top=gy, width=cw-0.60, height=0.60, size=19, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=MONO_FONT, bold=True)\n_add_rect(slide, left=cx+0.32, top=gy+0.64, width=0.72, height=0.035, fill_rgb=ac)\n_add_text(slide, 'Detrano 1989, American Journal of Cardiology. UCI Machine Learning Repository, Heart Disease Data Set.', left=cx+0.30, top=gy+0.86, width=cw-0.60, height=ch*0.5, size=15, color_rgb=(WHITE_RGB if ON_DARK else MUTED_RGB), font=SANS_FONT)",
+        "code": "q_top = body_top + body_h*0.22\n_add_text(slide, 'Grade with the right metric. Ask which clues matter. Check who it works for.',\n          left=body_l, top=q_top, width=body_w, height=1.5, size=30, color_rgb=TURQUOISE_RGB, font=MONO_FONT, bold=True, align=PP_ALIGN.CENTER)\nrule_w = 2.4\n_add_rect(slide, left=body_l+(body_w-rule_w)/2, top=q_top+1.7, width=rule_w, height=0.05, fill_rgb=TURQUOISE_RGB)\n_add_text(slide, 'That is how a risk tool earns trust. Use this to learn the judgment -- then use a validated, sex-specific tool and a real clinician to actually care for a patient.',\n          left=body_l+1.0, top=q_top+2.25, width=body_w-2.0, height=1.3, size=19, color_rgb=INK_RGB, font=SANS_FONT, align=PP_ALIGN.CENTER)",
         "lede": "",
-        "notes": "These are the primary references. The risk-scoring and INTERHEART work back the 'stack of factors' framing; the AHA statement and its follow-ups document the under-diagnosis of women; and Detrano 1989 is the origin of the Cleveland dataset we used.",
-        "section_label": "References",
-        "title": "Sources"
+        "notes": "Land the deck on one habit: grade with the right metric (AUC, not accuracy), ask which clues actually matter (SHAP + the cholesterol ablation), and always check who the model works for (the fairness audit). Our tool did all three. Leave them with the working rule of medical AI -- a model you can measure honestly beats a fancy one nobody can check -- then hand the real decision to a validated tool and a clinician. Thank them.",
+        "section_label": "The honest picture",
+        "title": "The honest bottom line"
       },
-      "slide_id": "h1-references/h2-sources"
+      "slide_id": "h1-the-honest-picture/h2-the-honest-bottom-line"
     }
   ],
   "theme": "bone",

@@ -1,0 +1,24 @@
+{
+  "dataset": "Stroke Prediction (records sex/age/history)",
+  "n": 5109,
+  "stroke_rate": 0.04873752201996477,
+  "auc": 0.8066026520347508,
+  "model_auc": {
+    "Logistic Reg": 0.8340649291266575,
+    "Random Forest": 0.8211522633744857,
+    "CatBoost": 0.8066026520347508,
+    "TabPFN": 0.8297759487882945
+  },
+  "operating_point_overall_recall": 0.8,
+  "shared_threshold": 0.1032623937003258,
+  "recall_by_sex_before": {
+    "Female": 0.7619047619047619,
+    "Male": 0.8484848484848485
+  },
+  "recall_by_sex_after": {
+    "Female": 0.8333333333333334,
+    "Male": 0.8484848484848485
+  },
+  "gap_before": 0.08658008658008665,
+  "gap_after": 0.015151515151515138
+}

@@ -23,16 +23,25 @@ def main():
     stroke = names.index("stroke")
     results = {"dataset": FLAG, "classes": names}
 
-    tr, va, te, ncls, _ = cc.get_loaders(FLAG, size=64)
-    tr_aug, _, _, _, _ = cc.get_loaders(FLAG, size=64, augment=True)
+    tr, va, te, ncls, _ = cc.get_loaders(FLAG, size=224, augment=True)   # 224px CT + augmentation
 
-    m = cc.make_model(ncls, backbone="resnet18", pretrained=True)
-    m = cc.train(m, tr, va, epochs=5, lr=1e-3, device=st.DEVICE)
+    m = cc.make_model(ncls, backbone="caformer_s18", pretrained=True)    # strong modern backbone
+    m = cc.train(m, tr, va, epochs=6, lr=1e-3, device=st.DEVICE)
     y, p, prob = st.get_preds(m, te)
     acc = float((y == p).mean())
     sens = float((p[y == stroke] == stroke).mean())                # catch-the-stroke rate
     spec = float((p[y != stroke] != stroke).mean())
-    results.update(accuracy=acc, sensitivity=sens, specificity=spec)
+    from sklearn.metrics import roc_auc_score, roc_curve
+    auc = float(roc_auc_score(y, prob[:, stroke]))
+    results.update(accuracy=acc, sensitivity=sens, specificity=spec, auc=auc, backbone="caformer_s18")
+
+    # headline: a working stroke detector (ROC / AUC)
+    fpr, tpr, _ = roc_curve(y, prob[:, stroke])
+    fig, ax = sf.plt.subplots(figsize=(4.8, 4.6))
+    ax.plot(fpr, tpr, color=sf.TURQUOISE, lw=2.5); ax.plot([0, 1], [0, 1], "--", color=sf.MUTED, lw=1)
+    ax.set_xlabel("false-alarm rate"); ax.set_ylabel("strokes caught")
+    sf.title(ax, f"A working stroke detector  (AUC {auc:.2f})")
+    sf.save(fig, HERE, "roc"); sf.save_raw(sf.pd.DataFrame({"fpr": fpr, "tpr": tpr}), HERE, "roc")
 
     st.fig_confusion(y, p, names, HERE, "confusion", f"Stroke detector: test accuracy {acc:.2f}")
     st.fig_gradcam(te, m, names, HERE, "gradcam", "Is it reading the brain, or cheating off the edges?")

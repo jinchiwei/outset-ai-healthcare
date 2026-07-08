@@ -1,7 +1,7 @@
 {
-  "deck_md_hash": "c627bebdb0d743356a633809c333e98c6b5a20b8298b71f72a4eac8c6b630f56",
+  "deck_md_hash": "a73c0a1633c631eb009cfd7fafee8159c3680f04329bf9086787bf140d571317",
   "mode": "expressive",
-  "shake_seed": "26799fbc15764f9785efd1f6594df40a",
+  "shake_seed": "d88d9dbbecd747f1a26400f6a544fdc2",
   "slides": [
     {
       "content_hash": "28395391a8ae10db36d317a4157a69a916ba02c4899cb66cae293ffd5f76d294-divider",
@@ -9,84 +9,146 @@
       "params": {
         "accent_hex": "#40E0D0",
         "label": "Background",
-        "notes": "We open with the biology so the modeling lands later. Three ideas to plant here: CRISPR is a 20-letter guided cut, real scientists SCORE a guide from its sequence instead of testing every one, and the seed region next to the PAM matters most. Transition: let's start with what a guide actually is."
+        "notes": "Open with the clinical scene, no ML yet. Three ideas to plant: CRISPR is molecular scissors aimed by 20 letters; that cut is already a real therapy; and only guides that truly cut are useful. Transition: meet the scissors."
       },
       "slide_id": "divider-h1-background"
     },
     {
-      "content_hash": "b7363da037efe873c57444fa8926c2661e35afbff5963b3925e2d18467958fce",
+      "content_hash": "76e5e787e5a124e47e1b1095bbb95d37a674fa879d0e73c907d7b3fe894d2faf",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "img_h = body_h - 1.05\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g1_crispr/slides/figures/intro_guide_anatomy.png', left=body_l, top=body_top + 0.05, max_w=body_w, max_h=img_h)\n_add_text(slide, 'The 20 letters in our dataset ARE this guide sequence. Cas9 locks onto the PAM (the NGG landmark), then cuts a few letters upstream.',\n          left=body_l + 1.0, top=body_top + img_h + 0.18, width=body_w - 2.0, height=0.62,\n          size=15, color_rgb=INK_RGB, font=SANS_FONT, italic=True, align=PP_ALIGN.CENTER)",
-        "lede": "CRISPR-Cas9 is a pair of molecular scissors you aim at one spot in DNA using a short 20-letter guide (the letters are A, C, G, T). Where the guide matches, the scissors cut -- and that cut turns a gene off or repairs a mutation.",
-        "notes": "Open concrete and physical. CRISPR-Cas9 is scissors plus a 20-letter address label. Point at the\nfigure: the turquoise block is the guide/protospacer, the pink block just to its right is the PAM\n(always NGG), and Cas9 snips a few letters upstream. Every guide in our dataset is one of these\n20-letter strings. Do not mention machine learning yet -- just make sure they can read the picture.\nTransition: so how do real scientists decide which 20 letters to use?",
+        "code": "img_h = body_h - 0.55\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g1_crispr/slides/figures/intro_cas9_cutting.png', left=body_l, top=body_top, max_w=body_w, max_h=img_h)\n_add_text(slide, 'A 20-letter guide RNA steers Cas9 to one spot in DNA; it cuts about three letters from the PAM -- and the letters in the seed, next to the PAM, matter most.',\n          left=body_l + 0.8, top=body_top + img_h + 0.12, width=body_w - 1.6, height=0.5,\n          size=14, color_rgb=INK_RGB, font=SANS_FONT, italic=True, align=PP_ALIGN.CENTER)",
+        "lede": "",
+        "notes": "Start concrete and physical. CRISPR-Cas9 is a protein (purple blob) that carries a 20-letter guide RNA (turquoise). The guide base-pairs to a matching DNA target; Cas9 grabs the PAM landmark (pink, NGG) and cuts about 3 letters upstream (amber). The pink bracket marks the seed -- the letters nearest the PAM, which matter most. Those 20 letters are exactly the input our model reads. No machine learning yet. Transition: why does that cut matter?",
         "section_label": "Background",
-        "title": "What CRISPR actually is"
+        "title": "Molecular scissors, aimed by 20 letters"
       },
-      "slide_id": "h1-background/h2-what-crispr-actually-is"
+      "slide_id": "h1-background/h2-molecular-scissors-aimed-by-20-letters"
     },
     {
-      "content_hash": "0f9131c9aa714f830b94cd5203879fcd77a0e02a445f90bdecb44e87e33e2a07",
+      "content_hash": "db677c7fba6049f99e9a0c0e0d5891a6127e9b34fb8d7e4622389ac59224a638",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "cards = [\n    ('SCORE, DO NOT EYEBALL', 'The go-to tool is Doench 2016 Rule Set 2 / Azimuth, which scores a guide straight from its sequence [1], built on the earlier position-and-PAM rules of Rule Set 1 [2].', TURQUOISE_RGB),\n    ('THE SEED IS KING', 'Cas9 grabs a landmark called the PAM, then checks the handful of letters right next to it -- the seed. Guides that mismatch there usually fail to cut [3][4].', DEEPPINK_RGB),\n    ('NEURAL NETS PUSH FURTHER', 'Newer tools like DeepCRISPR learn the same job with a neural network and far more data, beating hand-built rules [5][6].', BLUEVIOLET_RGB),\n]\ngap = 0.35\ncw = (body_w - gap * 2) / 3\nch = body_h - 0.15\nblock_h = 1.9\nby = body_top + (ch - block_h) / 2\nbh = (body_top + ch) - (by + 0.58) - 0.30\nfor i, (lab, bod, col) in enumerate(cards):\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x + 0.05, top=body_top + 0.06, width=cw, height=ch, fill_rgb=_rgb('#E4E1D9'))\n    _add_rect(slide, left=x, top=body_top, width=cw, height=ch, fill_rgb=WHITE_RGB)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=0.08, fill_rgb=col)\n    _add_text(slide, lab, left=x + 0.28, top=by, width=cw - 0.56, height=0.45,\n              size=15, color_rgb=col, font=MONO_FONT, bold=True)\n    _add_text(slide, bod, left=x + 0.28, top=by + 0.58, width=cw - 0.56, height=bh,\n              size=14, color_rgb=INK_RGB, font=SANS_FONT)",
-        "lede": "Two guides that look almost identical can behave completely differently -- one cutting beautifully, the other barely at all. Testing each one in the lab takes weeks, so scientists predict cutting efficiency from the 20 letters instead of measuring it.",
-        "notes": "This is the professional context. Real guide selection is a scoring problem, not a guessing game.\nName-drop the three ideas the way the field actually thinks about them: (1) the Doench Rule Set 2 /\nAzimuth model scores sequence directly [1][2]; (2) the seed region near the PAM dominates [3][4]; and\n(3) modern neural nets like DeepCRISPR push accuracy further with more data [5][6]. Students should\nleave knowing the seed idea. Transition: let's look at that seed effect as a picture.",
+        "code": "fw = body_w * 0.56\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g1_crispr/slides/figures/intro_therapy_stakes.png', left=body_l, top=body_top, max_w=fw, max_h=body_h)\nax = body_l + fw + 0.5\naw = body_w - fw - 0.5\n_add_text(slide, 'THE CLINICAL SETTING', left=ax, top=body_top + 0.1, width=aw, height=0.4,\n          size=14, color_rgb=DEEPPINK_RGB, font=MONO_FONT, bold=True)\nchips = [('Who', 'patients with a genetic disease -- sickle-cell today, many more in trials'),\n         ('Where', 'research labs and gene-therapy clinics deciding what to build'),\n         ('The decision', 'which 20-letter guide to make -- the one that will actually cut')]\ncy = body_top + 0.7\nch = (body_h - 0.7) / 3\nfor lab, bod in chips:\n    _add_rect(slide, left=ax, top=cy + 0.06, width=0.12, height=ch - 0.35, fill_rgb=DEEPPINK_RGB)\n    _add_text(slide, lab, left=ax + 0.3, top=cy, width=aw - 0.3, height=0.45,\n              size=17, color_rgb=INK_RGB, font=MONO_FONT, bold=True)\n    _add_text(slide, bod, left=ax + 0.3, top=cy + 0.5, width=aw - 0.3, height=ch - 0.7,\n              size=15, color_rgb=INK_RGB, font=SANS_FONT)\n    cy = cy + ch",
+        "lede": "",
+        "notes": "Make the stakes real. This is not a toy: the same Cas9 cut is now an approved therapy for sickle-cell disease (2023). A broken letter in a disease gene is cut and corrected into a healthy one -- but only if the guide actually cuts. A dud guide fixes nothing. The three chips name the clinical setting the rubric asks for: who (patients with genetic disease), where (labs and clinics), and the decision (which 20-letter guide to build). Transition: so which guides cut? Not all letters count the same.",
         "section_label": "Background",
-        "title": "How real scientists pick a guide"
+        "title": "CRISPR as therapy: fixing a broken gene"
       },
-      "slide_id": "h1-background/h2-how-real-scientists-pick-a-guide"
+      "slide_id": "h1-background/h2-crispr-as-therapy-fixing-a-broken-gene"
     },
     {
-      "content_hash": "84aab6d0ce9fa3ad77ca2b5b148d7e6bc67d8660b6a9f58c2ed6c1214eb5743c",
+      "content_hash": "9599618291abd9096ca604adfdf671cc4ba629492d89bed4113fae561363c4ff",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "fw = body_w * 0.60\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g1_crispr/slides/figures/intro_seed_importance.png', left=body_l, top=body_top, max_w=fw, max_h=body_h)\nax = body_l + fw + 0.35\naw = body_w - fw - 0.35\n_add_text(slide, 'READ THE SHAPE', left=ax, top=body_top + 0.10, width=aw, height=0.4,\n          size=16, color_rgb=DEEPPINK_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, 'The bars stay low across the far end of the guide, then rise sharply toward the PAM. That rising block is the seed, or core region.',\n          left=ax, top=body_top + 0.62, width=aw, height=1.7, size=15, color_rgb=INK_RGB, font=SANS_FONT)\n_add_text(slide, 'Keep this picture in mind. With no biology lessons at all, our own model is about to rediscover this exact shape.',\n          left=ax, top=body_top + 2.45, width=aw, height=1.9, size=15, color_rgb=INK_RGB, font=SANS_FONT)",
-        "lede": "Not all 20 letters count the same. The letters nearest the PAM -- the seed, roughly positions 13 to 20 -- carry far more of the signal about whether a guide will cut.",
-        "notes": "Plant the single most important intuition: the 20 letters are not equal. The chart rises toward the\nPAM end -- that block is the seed. This is a redraw of the Zheng 2017 / Doench 2016 finding [4][1].\nTell them to remember the shape, because the payoff slide later shows OUR model reproducing it from\nscratch. Transition: now to our actual project -- the task and the data.",
+        "code": "tw = body_w * 0.40\n_add_text(slide, 'THE ONE BIT OF BIOLOGY', left=body_l, top=body_top + 0.15, width=tw, height=0.4,\n          size=14, color_rgb=DEEPPINK_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, 'Cas9 lands on the PAM, then reads the handful of letters right beside it -- the seed.',\n          left=body_l, top=body_top + 0.75, width=tw, height=1.3, size=17, color_rgb=INK_RGB, font=SANS_FONT)\n_add_text(slide, 'Mismatch a seed letter and the guide usually fails to cut. So the letters near the PAM should carry the most signal -- far more than the ones at the far end.',\n          left=body_l, top=body_top + 2.05, width=tw, height=2.0, size=17, color_rgb=INK_RGB, font=SANS_FONT)\n_add_text(slide, 'Remember this -- our model will rediscover it.',\n          left=body_l, top=body_top + body_h - 0.8, width=tw, height=0.7, size=15,\n          color_rgb=BLUEVIOLET_RGB, font=SANS_FONT, italic=True)\nfx = body_l + tw + 0.45\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g1_crispr/slides/figures/intro_seed_importance.png', left=fx, top=body_top, max_w=body_w - tw - 0.45, max_h=body_h)",
+        "lede": "",
+        "notes": "The single biological intuition that makes the whole project work. Cas9 checks the seed -- the letters nearest the PAM -- most carefully, so mismatches there break cutting (Zheng 2017; Doench 2016). The bars rise toward position 20 (next to the PAM): those positions matter most, the far end barely at all. Plant this now, because in the Results section the model -- given only sequences and cut-scores -- will rediscover exactly this shape on its own. Transition: but there is a catch that makes a predictor worth building.",
         "section_label": "Background",
-        "title": "The seed region matters most"
+        "title": "Not all 20 letters count equally"
       },
-      "slide_id": "h1-background/h2-the-seed-region-matters-most"
+      "slide_id": "h1-background/h2-not-all-20-letters-count-equally"
     },
     {
-      "content_hash": "6d31f4e259270667e8ee574d6c4e5e648f02fa4a9874453f92bbc9ac7bcdf10b-divider",
+      "content_hash": "ec1fdeb78e0c2eed9bd8095d99706c3b9ccea75839139f62c4db40407721ff2e",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "img_h = body_h - 1.35\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g1_crispr/slides/figures/intro_pick_before_lab.png', left=body_l, top=body_top, max_w=body_w, max_h=img_h)\nby = body_top + img_h + 0.15\nbh = body_h - img_h - 0.2\ngap = 0.4\nhalf = (body_w - gap) / 2\n_add_rect(slide, left=body_l, top=by, width=half, height=bh, fill_rgb=DEEPPINK_RGB)\ntc = _text_on(DEEPPINK_RGB)\n_add_text(slide, 'the old way', left=body_l + 0.3, top=by + 0.12, width=half - 0.6, height=0.4,\n          size=15, color_rgb=tc, font=MONO_FONT, bold=True)\n_add_text(slide, 'test dozens of guides in the lab, one by one -- weeks of work, and most turn out to be duds',\n          left=body_l + 0.3, top=by + 0.55, width=half - 0.6, height=bh - 0.65, size=14, color_rgb=tc, font=SANS_FONT)\nx2 = body_l + half + gap\n_add_rect(slide, left=x2, top=by, width=half, height=bh, fill_rgb=TURQUOISE_RGB)\ntc2 = _text_on(TURQUOISE_RGB)\n_add_text(slide, 'the tool', left=x2 + 0.3, top=by + 0.12, width=half - 0.6, height=0.4,\n          size=15, color_rgb=tc2, font=MONO_FONT, bold=True)\n_add_text(slide, 'score all of them from the letters in seconds, then order only the top few most likely to cut',\n          left=x2 + 0.3, top=by + 0.55, width=half - 0.6, height=bh - 0.65, size=14, color_rgb=tc2, font=SANS_FONT)",
+        "lede": "",
+        "notes": "This is the motivation for the whole tool. For one gene there are dozens of possible guides, and many barely cut. The funnel shows the fix: instead of testing each candidate in the lab (weeks of work, mostly duds -- the pink band), score them all from their letters in seconds and order only the top few (the turquoise band). That shortlist is what saves real lab time. Transition: to build that scorer, we need data -- guides whose cutting was actually measured.",
+        "section_label": "Background",
+        "title": "The catch: most candidate guides are duds"
+      },
+      "slide_id": "h1-background/h2-the-catch-most-candidate-guides-are-duds"
+    },
+    {
+      "content_hash": "7afb5fad15beed5ec921925bdd98d1f20d379372832130f7efd8a96d8dd397da-divider",
       "kind": "section-divider",
       "params": {
         "accent_hex": "#FF1493",
-        "label": "Methods",
-        "notes": "Now we turn that biology into a machine-learning task. Coming up: the exact dataset, the class imbalance, and the single decision that dominates everything -- how we turn DNA letters into numbers. Keep the seed idea handy, because it drives the prediction we are about to make."
+        "label": "The data",
+        "notes": "Now the raw material. Why Doench 2016 is the right dataset -- real measured cut-scores, a spread of genes, and the benchmark the whole field trusts. Transition: what makes 5,300 lab-measured guides enough?"
       },
-      "slide_id": "divider-h1-methods"
+      "slide_id": "divider-h1-the-data"
     },
     {
-      "content_hash": "1b69ebb5286a81fe114ccbf15a363fbdb3df59dd02c045ba74021f2886a60079",
+      "content_hash": "a37f42166e7640ffec4acfbf4400a37f251cff5b38c26d2db90f31df1ef25787",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "tiles = [\n    ('5,310', 'real 20-letter guides, each with a measured cutting score from 0 to 1', DEEPPINK_RGB),\n    ('17', 'different human genes, so the model must learn sequence rules, not memorize one gene', BLUEVIOLET_RGB),\n    ('~20%', 'of guides cut well, so a lazy \"always low\" guesser looks 80 percent accurate and is useless', TURQUOISE_RGB),\n]\ngap = 0.35\ncw = (body_w - gap * 2) / 3\nch = body_h - 0.10\nnum_h = 1.55\nlab_h = 1.75\nblock_top = body_top + (ch - (num_h + 0.15 + lab_h)) / 2\nfor i, (num, lab, col) in enumerate(tiles):\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=ch, fill_rgb=col)\n    tc = _text_on(col)\n    _add_text(slide, num, left=x + 0.28, top=block_top, width=cw - 0.56, height=num_h,\n              size=62, color_rgb=tc, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, lab, left=x + 0.28, top=block_top + num_h + 0.15, width=cw - 0.56, height=lab_h,\n              size=16, color_rgb=tc, font=SANS_FONT)",
-        "lede": "We use the exact dataset behind the famous Rule Set 2 model [1]: real guides that scientists actually measured in the lab. Our job is to predict, from the 20 letters alone, whether a guide is a strong cutter.",
-        "notes": "Set up the task in numbers. 5,310 real, lab-measured guides across 17 genes -- the same data behind\nthe Rule Set 2 model [1]. The number to dwell on is the last one: only about 1 in 5 guides is a good\ncutter. That class imbalance is why, two slides from now, we refuse to trust plain accuracy. Say it\nout loud: an 'always low' model would be 80 percent accurate and completely useless. Transition: the\nfirst real decision -- how do we hand DNA letters to a model?",
-        "section_label": "Methods",
-        "title": "The question we are asking"
+        "code": "tiles = [('5,310', 'guides, each ACTUALLY tested in the lab -- so every cut-score is a real measurement, not a simulation', DEEPPINK_RGB),\n         ('17', 'genes targeted, a spread wide enough that the model learns sequence rules, not the quirks of one gene', BLUEVIOLET_RGB),\n         ('the', 'benchmark: the dataset Doench built Rule Set 2 / Azimuth on -- what the whole field still compares against', TURQUOISE_RGB)]\ngap = 0.35\ncw = (body_w - gap * 2) / 3\nch = body_h - 0.1\nnum_h = 1.4\nblock_top = body_top + 0.5\nfor i in range(3):\n    num, lab, col = tiles[i]\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=ch, fill_rgb=col)\n    tc = _text_on(col)\n    _add_text(slide, num, left=x + 0.3, top=block_top, width=cw - 0.6, height=num_h,\n              size=58, color_rgb=tc, font=MONO_FONT, bold=True)\n    _add_text(slide, lab, left=x + 0.3, top=block_top + num_h + 0.1, width=cw - 0.6, height=2.2,\n              size=15, color_rgb=tc, font=SANS_FONT)",
+        "lede": "",
+        "notes": "Justify the dataset in three facts. 5,310 guides, each one really tested in a lab, so the cut-scores are ground truth, not guesses. 17 different genes, so the model has to learn rules about the sequence itself rather than memorizing one gene. And it is THE benchmark -- the exact data behind Doench's Rule Set 2 / Azimuth, which the field still measures itself against. Real, broad, and trusted. Transition: even that landmark model is not perfect -- and that sets our expectations.",
+        "section_label": "The data",
+        "title": "Why Doench 2016"
       },
-      "slide_id": "h1-methods/h2-the-question-we-are-asking"
+      "slide_id": "h1-the-data/h2-why-doench-2016"
     },
     {
-      "content_hash": "5a0b49f43c086cd9e5cd0d263c6fad024f369a4458b6f3dfe84f318037bd1cf5",
+      "content_hash": "ccd18aecd07ff6a8c4773bb849d2708d5d19c6a39b0608974d65a54cd7242094",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "gap = 0.35\nstrip_h = 1.55\ninner_gap = 0.40\ncard_h = body_h - strip_h - inner_gap - 0.15\ncw = (body_w - gap) / 2\ncards = [\n    ('ONE-HOT  (keeps the order)', 'Four on/off switches per position, so the model always knows which letter sits where. That is 20 positions times 4 = 80 numbers per guide.', TURQUOISE_RGB),\n    ('K-MER  (ignores the order)', 'Just counts how many of each letter and letter-pair appear, throwing the position away. Only 21 numbers per guide.', AMBER_RGB),\n]\nblock_h = 1.35\nby = body_top + (card_h - block_h) / 2\nbh = (body_top + card_h) - (by + 0.60) - 0.25\nfor i, (lab, bod, col) in enumerate(cards):\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x + 0.05, top=body_top + 0.06, width=cw, height=card_h, fill_rgb=_rgb('#E4E1D9'))\n    _add_rect(slide, left=x, top=body_top, width=cw, height=card_h, fill_rgb=WHITE_RGB)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=0.08, fill_rgb=col)\n    _add_text(slide, lab, left=x + 0.28, top=by, width=cw - 0.56, height=0.45,\n              size=16, color_rgb=col, font=MONO_FONT, bold=True)\n    _add_text(slide, bod, left=x + 0.28, top=by + 0.60, width=cw - 0.56, height=bh,\n              size=15, color_rgb=INK_RGB, font=SANS_FONT)\nsy = body_top + card_h + inner_gap\n_add_rect(slide, left=body_l, top=sy, width=body_w, height=strip_h, fill_rgb=DEEPPINK_RGB)\ntc = _text_on(DEEPPINK_RGB)\n_add_text(slide, 'LISTEN   vs   SILENT', left=body_l + 0.32, top=sy + 0.24, width=body_w - 0.64, height=0.5,\n          size=24, color_rgb=tc, font=MONO_FONT, bold=True)\n_add_text(slide, 'Same letters, different words. k-mer cannot tell them apart, but one-hot can -- and since biology cares exactly WHERE a letter sits (the seed!), one-hot should win.',\n          left=body_l + 0.32, top=sy + 0.88, width=body_w - 0.64, height=0.55, size=15, color_rgb=tc, font=SANS_FONT)",
-        "lede": "A computer cannot do math on the letter A, so we turn each guide into numbers -- and how we do that is the single most important choice in the whole project. We tried two ways and let the results decide.",
-        "notes": "The conceptual heart of the project. Featurizing = turning letters into numbers, and the choice\nencodes what you think matters. one-hot keeps position (80 numbers); k-mer keeps only counts (21\nnumbers) and throws order away. The LISTEN/SILENT analogy is the whole lesson in two words: same\nletters, different meaning -- order matters. Because the seed is a POSITION effect, we predict one-hot\nwins. Make them commit to that prediction before the next slide. Transition: let's test it.",
-        "section_label": "Methods",
-        "title": "Turning letters into numbers"
+        "code": "tw = body_w * 0.42\n_add_text(slide, 'SET HONEST EXPECTATIONS', left=body_l, top=body_top + 0.15, width=tw, height=0.4,\n          size=14, color_rgb=DEEPPINK_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, 'Doench 2016 built Rule Set 2 (Azimuth) on exactly these guides -- the state of the art.',\n          left=body_l, top=body_top + 0.75, width=tw, height=1.3, size=17, color_rgb=INK_RGB, font=SANS_FONT)\n_add_text(slide, 'Even so, its predicted scores only loosely track the measured ones (the cloud scatters around the line).',\n          left=body_l, top=body_top + 2.0, width=tw, height=1.5, size=17, color_rgb=INK_RGB, font=SANS_FONT)\n_add_text(slide, 'So our goal is to capture the real signal -- not to expect a perfect predictor.',\n          left=body_l, top=body_top + body_h - 1.0, width=tw, height=0.9, size=15,\n          color_rgb=BLUEVIOLET_RGB, font=SANS_FONT, italic=True)\nfx = body_l + tw + 0.45\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g1_crispr/slides/figures/intro_doench_scatter.png', left=fx, top=body_top, max_w=body_w - tw - 0.45, max_h=body_h)",
+        "lede": "",
+        "notes": "A redraw of the landmark result, and a reality check. Doench 2016's Rule Set 2 is the best-known guide scorer, built on this very data -- yet its predicted-vs-measured plot scatters (correlation ~0.77), not a tight line. That is honest and important: guide cutting is only partly predictable from sequence, so a good model captures the signal without nailing every guide. It frames what counts as success for us. Transition: now our turn -- and the first job is turning letters into numbers.",
+        "section_label": "The data",
+        "title": "The benchmark that set the standard"
       },
-      "slide_id": "h1-methods/h2-turning-letters-into-numbers"
+      "slide_id": "h1-the-data/h2-the-benchmark-that-set-the-standard"
+    },
+    {
+      "content_hash": "4ad649ac4fc7cb41e24a930e262600a5a7f4d2c9e5a01196f266bcf547508734-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#8A2BE2",
+        "label": "The model",
+        "notes": "How we turn a DNA sequence into a prediction. First encode the letters as numbers, then let a bake-off pick the model, then pin down the exact recipe. Transition: a computer cannot multiply the letter A."
+      },
+      "slide_id": "divider-h1-the-model"
+    },
+    {
+      "content_hash": "bf1cf79427220920a425ee6633a412b86ec3a3c78fc3f4b54c86366d288164f7",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_add_text(slide, 'a computer cannot do math on the letter A -- so one-hot flips 4 switches per position:',\n          left=body_l, top=body_top + 0.1, width=body_w, height=0.45, size=16,\n          color_rgb=BLUEVIOLET_RGB, font=MONO_FONT, bold=True)\nletters = ['G', 'A', 'C', 'T', 'G', 'A', 'A', 'C', 'A', 'G']\nrows = ['A', 'C', 'G', 'T']\nn = 10\ncell = 0.62\ngw = cell * n\ngl = body_l + (body_w - gw) / 2 + 0.25\ngtop = body_top + 1.25\nfor j in range(n):\n    _add_text(slide, letters[j], left=gl + j * cell, top=gtop - 0.55, width=cell, height=0.5,\n              size=17, color_rgb=INK_RGB, font=MONO_FONT, bold=True, align=PP_ALIGN.CENTER)\nfor i in range(4):\n    base = rows[i]\n    _add_text(slide, base, left=gl - 0.6, top=gtop + i * cell, width=0.45, height=cell,\n              size=15, color_rgb=MUTED_RGB, font=MONO_FONT, bold=True, align=PP_ALIGN.RIGHT, anchor=MSO_ANCHOR.MIDDLE)\n    for j in range(n):\n        on = (letters[j] == base)\n        _add_rect(slide, left=gl + j * cell + 0.03, top=gtop + i * cell + 0.03,\n                  width=cell - 0.06, height=cell - 0.06, fill_rgb=(TURQUOISE_RGB if on else _rgb('#E7E4DB')))\n        if on:\n            _add_text(slide, '1', left=gl + j * cell, top=gtop + i * cell, width=cell, height=cell,\n                      size=13, color_rgb=_text_on(TURQUOISE_RGB), font=MONO_FONT, bold=True,\n                      align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)\ncap_y = gtop + cell * 4 + 0.35\n_add_text(slide, 'One switch ON per column -> 80 numbers that KEEP the order, so the seed near the PAM stays visible.',\n          left=body_l, top=cap_y, width=body_w, height=0.5, size=15, color_rgb=INK_RGB, font=SANS_FONT)\n_add_text(slide, 'k-mer would just count letters and throw the order away -- so we use one-hot.',\n          left=body_l, top=cap_y + 0.55, width=body_w, height=0.5, size=15,\n          color_rgb=DEEPPINK_RGB, font=SANS_FONT, italic=True)",
+        "lede": "",
+        "notes": "The core new idea of a sequence task: text has to become numbers before any model can touch it. Read the grid as a truth table -- each column is one position of the guide, and exactly one of the four rows (A/C/G/T) is switched ON. Twenty positions times four switches gives 80 numbers, and crucially they KEEP the order, so the seed near the PAM is still visible. The alternative, k-mer, just counts letters and loses the order -- useless when position is the whole point. Transition: with numbers in hand, which model reads them best?",
+        "section_label": "The model",
+        "title": "First, turn letters into numbers"
+      },
+      "slide_id": "h1-the-model/h2-first-turn-letters-into-numbers"
+    },
+    {
+      "content_hash": "22cfed801e9f1ce262b73ddae8d5c874ed8ff111d26b2f4a99e2a1513ad198f2",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "fw = body_w * 0.55\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g1_crispr/slides/figures/model_choice.png', left=body_l, top=body_top, max_w=fw, max_h=body_h)\nax = body_l + fw + 0.45\naw = body_w - fw - 0.45\n_add_rect(slide, left=ax, top=body_top + 0.1, width=aw, height=body_h - 0.3, fill_rgb=WHITE_RGB)\n_add_rect(slide, left=ax, top=body_top + 0.1, width=aw, height=0.1, fill_rgb=TURQUOISE_RGB)\n_add_text(slide, 'WE TESTED, WE DID NOT GUESS', left=ax + 0.28, top=body_top + 0.4, width=aw - 0.56, height=0.4,\n          size=14, color_rgb=TURQUOISE_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, '0.88', left=ax + 0.28, top=body_top + 0.95, width=aw - 0.56, height=0.95,\n          size=54, color_rgb=INK_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, 'the two TREE models (CatBoost and Random Forest) tie here -- both beat TabPFN (0.83) and crush logistic regression (0.75).',\n          left=ax + 0.28, top=body_top + 2.0, width=aw - 0.56, height=1.5, size=15, color_rgb=INK_RGB, font=SANS_FONT)\n_add_text(slide, 'We pick CatBoost -- fast, strong, and reproducible.',\n          left=ax + 0.28, top=body_top + body_h - 1.0, width=aw - 0.56, height=0.8, size=15,\n          color_rgb=BLUEVIOLET_RGB, font=SANS_FONT, italic=True)",
+        "lede": "",
+        "notes": "The which-tool decision, made honestly. We ran four candidate models on held-out guides and let AUC judge: logistic regression (a straight-line rule) lagged at 0.75, TabPFN reached 0.83, and the two tree models -- CatBoost and Random Forest -- tied at the top, 0.88. Trees win because they can combine letters at different positions, which is exactly how seed biology works. Both tree models are essentially equal, so we pick CatBoost for speed and reproducibility. The habit to teach: measure, do not guess. Transition: here is the exact recipe.",
+        "section_label": "The model",
+        "title": "We tested four models – we did not guess"
+      },
+      "slide_id": "h1-the-model/h2-we-tested-four-models-we-did-not-guess"
+    },
+    {
+      "content_hash": "f2635d555d42b04fe1dbe630fc00c470f66f16d1c8c818e743bfdb00373b5359",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "steps = [('1', 'TASK', 'clearly-good (top-third efficiency) vs clearly-poor (bottom-third); the muddy middle is dropped', DEEPPINK_RGB),\n         ('2', 'ENCODE', 'each 20-letter guide becomes an 80-number one-hot vector that keeps the position of every letter', TURQUOISE_RGB),\n         ('3', 'SPLIT', 'a stratified 75% train / 25% test split -- every number we report is on guides the model never saw', AMBER_RGB),\n         ('4', 'MODEL', 'CatBoostClassifier, 600 trees, depth 6, learning rate 0.05, random_state 0 so it is reproducible', BLUEVIOLET_RGB),\n         ('5', 'GRADE', 'AUC on the held-out test set -- not accuracy -- so a lazy one-class guess cannot game the score', DEEPPINK_RGB)]\ngap = 0.22\nrh = (body_h - gap * 4) / 5\nfor i in range(5):\n    num, lab, bod, col = steps[i]\n    y = body_top + i * (rh + gap)\n    _add_rect(slide, left=body_l, top=y, width=0.85, height=rh, fill_rgb=col)\n    _add_text(slide, num, left=body_l, top=y, width=0.85, height=rh,\n              size=24, color_rgb=_text_on(col), font=MONO_FONT, bold=True, align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, lab, left=body_l + 1.1, top=y, width=2.3, height=rh,\n              size=17, color_rgb=col, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, bod, left=body_l + 3.5, top=y, width=body_w - 3.5, height=rh,\n              size=14.5, color_rgb=INK_RGB, font=SANS_FONT, anchor=MSO_ANCHOR.MIDDLE)",
+        "lede": "",
+        "notes": "The reproducibility slide -- read it as a recipe, not trivia. One, we ask a clean question: clearly-good vs clearly-poor cutters, dropping the ambiguous middle third. Two, one-hot encode each guide into 80 order-preserving numbers. Three, a stratified 75/25 split so we always test on unseen guides. Four, the exact CatBoost settings, seeded for reproducibility. Five, grade on AUC, not accuracy, so nothing can be gamed. Any one of these done wrong quietly breaks the result. Transition: so how well does it actually pick?",
+        "section_label": "The model",
+        "title": "Model and data processing"
+      },
+      "slide_id": "h1-the-model/h2-model-and-data-processing"
     },
     {
       "content_hash": "9d386fbbaab59eb494f4c12cf1b23fd4b5c5347b03eb22c1c97fb04f41376eef-divider",
@@ -94,110 +156,110 @@
       "params": {
         "accent_hex": "#F0C840",
         "label": "Results",
-        "notes": "Time for what we found. Three beats here: keeping the letter order (one-hot) wins, why we grade with AUC instead of accuracy, and the payoff -- the model rediscovering the seed on its own. Then a harder task, predicting the exact cutting score."
+        "notes": "The payoff, every number named by how we measured it. A working AUC, the concrete 97 percent win, the biology the model rediscovered, and an honest word on fairness. Transition: first, how do you even grade a picker?"
       },
       "slide_id": "divider-h1-results"
     },
     {
-      "content_hash": "dfa44f606e0f615a35f189fafec38d071800237f04908f8f737514039b1e8adc",
+      "content_hash": "0048e83294104273c35eab6d1ceca9ffd7180ff223cc3100840e70feea0fd1c6",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "fw = body_w * 0.62\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g1_crispr/slides/figures/representation_auc.png', left=body_l, top=body_top, max_w=fw, max_h=body_h)\nax = body_l + fw + 0.35\naw = body_w - fw - 0.35\n_add_text(slide, 'THE REAL LESSON', left=ax, top=body_top + 0.10, width=aw, height=0.4,\n          size=16, color_rgb=DEEPPINK_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, 'The one-hot bars (turquoise) top the k-mer bars (gold) for every one of the four models. How you prepared the data mattered more than which fancy model you picked.',\n          left=ax, top=body_top + 0.62, width=aw, height=2.0, size=15, color_rgb=INK_RGB, font=SANS_FONT)\n_add_text(slide, '0.77', left=ax, top=body_top + 2.75, width=aw, height=1.0,\n          size=54, color_rgb=BLUEVIOLET_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, 'best AUC -- Random Forest on one-hot', left=ax, top=body_top + 3.75, width=aw, height=0.5,\n          size=14, color_rgb=INK_RGB, font=SANS_FONT)",
-        "lede": "We trained the same four models on each way of making numbers and compared them. Every single model did better with one-hot than with k-mer.",
-        "notes": "First result, and the transferable one. Same four models, two featurizations; one-hot wins across the\nboard. The takeaway is bigger than CRISPR: data representation beat model choice. The prediction they\nmade last slide came true, and for the right reason -- one-hot kept the position information where the\nsignal lives. Best score is Random Forest on one-hot at AUC 0.77. Transition: wait, why AUC and not\njust accuracy?",
+        "code": "sw = body_w * 0.46\n_add_text(slide, '0.88', left=body_l, top=body_top + 0.35, width=sw, height=1.5,\n          size=96, color_rgb=AMBER_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, 'AUC -- the area under the ROC curve', left=body_l, top=body_top + 1.85, width=sw, height=0.5,\n          size=17, color_rgb=INK_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, 'The picker outputs a score, not a yes/no. The ROC curve sweeps every possible cut-off and plots good guides caught against false alarms; AUC is the area underneath.',\n          left=body_l, top=body_top + 2.5, width=sw, height=1.6, size=16, color_rgb=INK_RGB, font=SANS_FONT)\n_add_text(slide, '0.5 = a coin flip     1.0 = perfect', left=body_l, top=body_top + body_h - 0.9, width=sw, height=0.5,\n          size=15, color_rgb=BLUEVIOLET_RGB, font=MONO_FONT, bold=True)\nfx = body_l + sw + 0.5\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g1_crispr/slides/figures/roc.png', left=fx, top=body_top, max_w=body_w - sw - 0.5, max_h=body_h)",
+        "lede": "",
+        "notes": "Name the metric before the number. A picker outputs a score, so we grade it with the ROC curve -- every possible cut-off, plotting good guides correctly flagged against false alarms -- and AUC, the area underneath, where 0.5 is a coin flip and 1.0 is perfect. We use AUC, not accuracy, because our classes are balanced and AUC rewards good ranking. Ours is 0.88 and the curve hugs the top-left corner: a genuinely working picker. Transition: but what does 0.88 mean for a scientist at the bench?",
         "section_label": "Results",
-        "title": "Keeping the letter order wins"
+        "title": "How we grade it: ROC and AUC"
       },
-      "slide_id": "h1-results/h2-keeping-the-letter-order-wins"
+      "slide_id": "h1-results/h2-how-we-grade-it-roc-and-auc"
     },
     {
-      "content_hash": "41b1a383d460fb0a1d5b53a8fbb0dc875389d5513fc46b6354d8d89b1b59b057",
+      "content_hash": "2c3ee9703fcc6b9552376404c93a3b8161e202a8039fcc452bfbe270dcb0dc6f",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "gap = 0.40\ncw = (body_w - gap) / 2\nch = body_h - 0.10\nnum_h = 1.7\ntxt_h = 1.9\nblock_top = body_top + (ch - (num_h + 0.15 + txt_h)) / 2\n_add_rect(slide, left=body_l, top=body_top, width=cw, height=ch, fill_rgb=DEEPPINK_RGB)\ntc = _text_on(DEEPPINK_RGB)\n_add_text(slide, '80%', left=body_l + 0.30, top=block_top, width=cw - 0.6, height=num_h,\n          size=76, color_rgb=tc, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n_add_text(slide, 'accuracy of a lazy model that ALWAYS guesses \"low\" -- and never finds a single good guide. Accuracy is fooled by the imbalance.',\n          left=body_l + 0.30, top=block_top + num_h + 0.15, width=cw - 0.6, height=txt_h, size=17, color_rgb=tc, font=SANS_FONT)\nx2 = body_l + cw + gap\n_add_rect(slide, left=x2, top=body_top, width=cw, height=ch, fill_rgb=BLUEVIOLET_RGB)\ntc2 = _text_on(BLUEVIOLET_RGB)\n_add_text(slide, '0.77', left=x2 + 0.30, top=block_top, width=cw - 0.6, height=num_h,\n          size=76, color_rgb=tc2, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n_add_text(slide, 'AUC of our best model. AUC asks a fairer question: does it rank GOOD guides above bad ones? 0.5 is a coin flip, 1.0 is perfect.',\n          left=x2 + 0.30, top=block_top + num_h + 0.15, width=cw - 0.6, height=txt_h, size=17, color_rgb=tc2, font=SANS_FONT)",
-        "lede": "Because only about 20 percent of guides cut well, plain accuracy is easy to fake. AUC asks a fairer question.",
-        "notes": "The judgment slide. On imbalanced data accuracy lies: an 'always low' model scores 80 percent and is\nworthless because it never flags a usable guide. AUC sidesteps the trick -- it measures whether the\nmodel RANKS good guides above bad ones, so 0.5 is a coin flip and 1.0 is perfect. Our 0.77 means real\nranking skill. This same trap (accuracy on imbalanced data) shows up everywhere in medical AI, so it\nis worth over-teaching. Transition: now the most satisfying result.",
+        "code": "fw = body_w * 0.56\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g1_crispr/slides/figures/precision_at_top.png', left=body_l, top=body_top + 0.1, max_w=fw, max_h=body_h - 0.2)\nax = body_l + fw + 0.4\naw = body_w - fw - 0.4\ncallouts = [('97%', 'of the model\\'s TOP 10% actually cut well', TURQUOISE_RGB),\n            ('50%', 'if you pick guides at random -- the baseline', DEEPPINK_RGB),\n            ('weeks', 'of lab time saved, because the shortlist is almost all winners', AMBER_RGB)]\nrh = 1.35\nfor i in range(3):\n    num, lab, col = callouts[i]\n    y = body_top + 0.15 + i * (rh + 0.15)\n    _add_rect(slide, left=ax, top=y, width=0.14, height=rh, fill_rgb=col)\n    _add_text(slide, num, left=ax + 0.3, top=y, width=2.1, height=rh,\n              size=40, color_rgb=col, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, lab, left=ax + 2.5, top=y, width=aw - 2.5, height=rh,\n              size=15, color_rgb=INK_RGB, font=SANS_FONT, anchor=MSO_ANCHOR.MIDDLE)",
+        "lede": "",
+        "notes": "The number a scientist actually feels. Rank every guide by the model's score and order only the top 10 percent: 97 percent of those really do cut well, versus 50 percent if you picked at random. The chart shows the shortlist stays clean even as you widen it (94 percent at the top 20 percent, 89 percent at 30). Put plainly: the tool hands you a shortlist that is almost all winners, which is weeks of bench work saved. This is the concrete, usable win. Transition: and it did not just work -- it worked for the right reason.",
         "section_label": "Results",
-        "title": "Why we grade with AUC, not accuracy"
+        "title": "The win: order its top picks"
       },
-      "slide_id": "h1-results/h2-why-we-grade-with-auc-not-accuracy"
+      "slide_id": "h1-results/h2-the-win-order-its-top-picks"
     },
     {
-      "content_hash": "bb1fcce97433e7b560b3450241a2ab6f62e733a45e27996a47d9d75b0703772d",
+      "content_hash": "fc2dd9973a9f4fecf725d81180575e22be1f6ddd50ffcaf4d7373ac1ac4fcb53",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "fw = body_w * 0.62\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g1_crispr/slides/figures/position_importance.png', left=body_l, top=body_top, max_w=fw, max_h=body_h)\nax = body_l + fw + 0.35\naw = body_w - fw - 0.35\n_add_text(slide, 'WHAT IT FOUND', left=ax, top=body_top + 0.10, width=aw, height=0.4,\n          size=16, color_rgb=DEEPPINK_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, 'Its importance climbs toward the right end of the guide and peaks at position 20, right next to the PAM. That is the seed region -- exactly where the biology said the action is.',\n          left=ax, top=body_top + 0.62, width=aw, height=2.2, size=15, color_rgb=INK_RGB, font=SANS_FONT)\n_add_text(slide, 'The model learned real CRISPR biology from nothing but sequences and cut-scores. A model that agrees with known science is one people will trust.',\n          left=ax, top=body_top + 2.85, width=aw, height=2.0, size=15, color_rgb=INK_RGB, font=SANS_FONT)",
-        "lede": "Now the payoff. We asked a simple, explainable model which positions along the guide it leaned on. Nobody ever told it about seeds.",
-        "notes": "The wow moment -- put it up and pause. We asked a plain logistic-regression model which of the 20\npositions it relied on, and the importance peaks at position 20, right at the PAM: the seed. Flip back\nto the background seed chart -- same shape. Nobody encoded that; the model recovered decades of CRISPR\nbiology from sequences and cut-scores alone. Tie it to trust: an explainable model that matches known\nscience is one clinicians and biologists will believe. Transition: can it predict the exact score,\nnot just high vs low?",
+        "code": "img_h = body_h - 0.85\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g1_crispr/slides/figures/position_importance.png', left=body_l, top=body_top, max_w=body_w, max_h=img_h)\nby = body_top + img_h + 0.1\n_add_rect(slide, left=body_l, top=by, width=body_w, height=body_h - img_h - 0.15, fill_rgb=_rgb('#EDEAE1'))\n_add_text(slide, 'Feature importance = which positions the model leaned on. It peaks at position 20 -- right next to the PAM, the seed -- matching decades of CRISPR biology it was never told.',\n          left=body_l + 0.3, top=by + 0.08, width=body_w - 0.6, height=0.6,\n          size=14.5, color_rgb=INK_RGB, font=SANS_FONT, anchor=MSO_ANCHOR.MIDDLE)",
+        "lede": "",
+        "notes": "The trust-building payoff, and the callback to the Background. Feature importance for this model asks which positions it relied on -- the sequence-task version of SHAP. The tall bars cluster at the PAM end, peaking at position 20: the seed. Compare it to the seed slide from the intro -- the model, given only sequences and cut-scores, independently rediscovered biology that took the field years to establish. A model that is accurate AND agrees with known science is one people can trust. Transition: one honest word on fairness.",
         "section_label": "Results",
-        "title": "The model rediscovered the seed"
+        "title": "It rediscovered the biology"
       },
-      "slide_id": "h1-results/h2-the-model-rediscovered-the-seed"
+      "slide_id": "h1-results/h2-it-rediscovered-the-biology"
     },
     {
-      "content_hash": "12c20eeafc1e978b2a7d9baea0ea96e52eeb4998a702695562d8595bf408ccaf",
+      "content_hash": "22b387de0fe56bc6b75ffe5deff797dffcb4af577451080bbd6572184e41cb9c",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "fw = body_w * 0.54\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g1_crispr/slides/figures/regression_fit.png', left=body_l, top=body_top, max_w=fw, max_h=body_h)\nax = body_l + fw + 0.40\naw = body_w - fw - 0.40\n_add_text(slide, '0.36', left=ax, top=body_top + 0.05, width=aw, height=0.95,\n          size=52, color_rgb=BLUEVIOLET_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, 'R-squared: the share of the ups-and-downs the model explained (0 = guessing the average, 1 = perfect).',\n          left=ax, top=body_top + 1.05, width=aw, height=1.0, size=14, color_rgb=INK_RGB, font=SANS_FONT)\n_add_text(slide, '0.61', left=ax, top=body_top + 2.15, width=aw, height=0.95,\n          size=52, color_rgb=DEEPPINK_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, 'correlation between predicted and true efficiency.',\n          left=ax, top=body_top + 3.15, width=aw, height=0.7, size=14, color_rgb=INK_RGB, font=SANS_FONT)\n_add_text(slide, 'Real signal, but far from perfect -- and that is honest. The pro tools scatter the same way [1][5][6].',\n          left=ax, top=body_top + 3.95, width=aw, height=1.0, size=14, color_rgb=INK_RGB, font=SANS_FONT, italic=True)",
-        "lede": "High versus low throws away detail, so we also tried to predict the exact 0-to-1 cutting score. R-squared says how much of the real variation we explained.",
-        "notes": "Second, harder task: predict the exact 0-to-1 score, not just a yes/no. Explain R-squared plainly --\nthe fraction of the real variation the model captures, 0 is guessing the mean, 1 is perfect. We get\n0.36 (correlation 0.61): a real but loose trend, visible as a tilted cloud around the diagonal. The\nhonest point: the professional predicted-vs-measured plots scatter just like ours [1][5][6]. Useful\ndoes not mean perfect. Transition: so let's be clear-eyed about what this toy can and cannot do.",
+        "code": "cw = body_w * 0.82\ncx = body_l + (body_w - cw) / 2\nch = body_h * 0.74\ncy = body_top + (body_h - ch) / 2\n_add_rect(slide, left=cx, top=cy, width=cw, height=ch, fill_rgb=WHITE_RGB)\n_add_rect(slide, left=cx, top=cy, width=cw, height=0.12, fill_rgb=BLUEVIOLET_RGB)\n_add_text(slide, 'No patient. No demographics. Nothing to be unfair about.',\n          left=cx + 0.5, top=cy + 0.45, width=cw - 1.0, height=1.0,\n          size=25, color_rgb=BLUEVIOLET_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, 'Most medical-AI projects must check they work equally across sex, age, or skin tone. This one has no such groups -- the input is a 20-letter DNA sequence. Forcing a fake fairness analysis would be less honest than simply saying so.',\n          left=cx + 0.5, top=cy + 1.65, width=cw - 1.0, height=1.6, size=17, color_rgb=INK_RGB, font=SANS_FONT)\n_add_text(slide, 'The real equity question for CRISPR lives one step later -- in which patients a therapy is tested on and reaches -- outside this sequence model.',\n          left=cx + 0.5, top=cy + ch - 1.05, width=cw - 1.0, height=0.9, size=15,\n          color_rgb=DEEPPINK_RGB, font=SANS_FONT, italic=True)",
+        "lede": "",
+        "notes": "Handle fairness honestly instead of performatively. The rubric asks about fairness across demographic groups -- but this task has none. The input is a DNA sequence: no patient, no sex, no age, nothing to be unfair about. The right move is to say that plainly rather than invent a hollow analysis. Then point to where equity really does matter for CRISPR -- which patients a therapy reaches -- which sits one step beyond this sequence model. Naming the limit of the question is itself good science. Transition: so where does this leave us?",
         "section_label": "Results",
-        "title": "Predicting the exact score"
+        "title": "Fairness? There is nothing to audit – honestly"
       },
-      "slide_id": "h1-results/h2-predicting-the-exact-score"
+      "slide_id": "h1-results/h2-fairness-there-is-nothing-to-audit-honestly"
     },
     {
-      "content_hash": "7c0dc2d925d36d99296a4ce7cc3eaa774cb534f4b5c34fe2b804bdb2ad0a2caf-divider",
+      "content_hash": "b96a87917dc0391b1f7484a6e47d3e8fa677bfdda608f83c7a14b14bb0bd1eed-divider",
       "kind": "section-divider",
       "params": {
-        "accent_hex": "#8A2BE2",
-        "label": "Being honest",
-        "notes": "Good science states its own limits out loud. We lay out what this toy model genuinely shows, what it cannot do, and the off-target-safety question it says nothing about. Then the references and the one-sentence takeaway. This is the section the rubric rewards most."
+        "accent_hex": "#40E0D0",
+        "label": "The bottom line",
+        "notes": "Good science states its own limits out loud. What the picker genuinely does, where the line sits, the papers behind it, and the one sentence to remember."
       },
-      "slide_id": "divider-h1-being-honest"
+      "slide_id": "divider-h1-the-bottom-line"
     },
     {
-      "content_hash": "2c296c1ca02969e0457902373687a4f486b71a1b0b18680d1142e10ca745809e",
+      "content_hash": "530149bb3b37a089bdfb00d5d5b603c7f23091476ea13174e6e64f802f27aa38",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "cards = [\n    ('IT CAN', \"Show that a guide's sequence really carries signal, and that the seed region matters -- on the very same data the professionals use [1].\", TURQUOISE_RGB),\n    ('IT CANNOT MATCH THE PROS', 'It will not beat a production tool, and it ignores the cell-type and chromatin effects that change cutting inside a living cell [7].', DEEPPINK_RGB),\n    ('IT CANNOT JUDGE SAFETY', 'It says nothing about off-target risk -- whether the guide also cuts the wrong places elsewhere in the genome [8].', BLUEVIOLET_RGB),\n]\ngap = 0.35\ncw = (body_w - gap * 2) / 3\nch = body_h - 0.15\nblock_h = 1.7\nby = body_top + (ch - block_h) / 2\nbh = (body_top + ch) - (by + 0.58) - 0.30\nfor i, (lab, bod, col) in enumerate(cards):\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x + 0.05, top=body_top + 0.06, width=cw, height=ch, fill_rgb=_rgb('#E4E1D9'))\n    _add_rect(slide, left=x, top=body_top, width=cw, height=ch, fill_rgb=WHITE_RGB)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=0.08, fill_rgb=col)\n    _add_text(slide, lab, left=x + 0.28, top=by, width=cw - 0.56, height=0.45,\n              size=15, color_rgb=col, font=MONO_FONT, bold=True)\n    _add_text(slide, bod, left=x + 0.28, top=by + 0.58, width=cw - 0.56, height=bh,\n              size=14, color_rgb=INK_RGB, font=SANS_FONT)",
-        "lede": "A good project names its own limits out loud. Ours is a demonstration of an idea, not a design tool -- and here is exactly where the line sits.",
-        "notes": "Model the intellectual honesty the rubric rewards. Green light: it genuinely shows sequence carries\nsignal and the seed matters, on the pros' own data [1]. Red lights: it will not beat a production tool\nand cannot see cell-type or chromatin effects [7]; and crucially it says NOTHING about off-target\nsafety [8] -- the single most important question for real CRISPR use. State plainly: this builds\nintuition, it does not choose a clinical guide. Transition: the papers, then the bottom line.",
-        "section_label": "Being honest",
-        "title": "What this toy model can and cannot do"
+        "code": "cards = [('IT WORKS', 'A real guide-picker on the field\\'s benchmark: AUC 0.88, and its top-10% shortlist is 97% good guides -- real lab time saved.', 'AUC 0.88 · 97% precision', TURQUOISE_RGB),\n         ('IT LEARNED REAL BIOLOGY', 'Importance peaks at the seed next to the PAM, matching decades of CRISPR science -- so we can trust WHY it works.', 'rediscovered the seed', BLUEVIOLET_RGB),\n         ('BUT IT IS A DEMO', 'It cannot match a production tool, capture cell-type or chromatin effects, or say anything about off-target safety.', 'not a design tool -- yet', DEEPPINK_RGB)]\ngap = 0.35\ncw = (body_w - gap * 2) / 3\nch = body_h - 0.1\nby = body_top + 0.55\nfor i in range(3):\n    lab, bod, tag, col = cards[i]\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x + 0.05, top=body_top + 0.06, width=cw, height=ch, fill_rgb=_rgb('#E4E1D9'))\n    _add_rect(slide, left=x, top=body_top, width=cw, height=ch, fill_rgb=WHITE_RGB)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=0.1, fill_rgb=col)\n    _add_text(slide, lab, left=x + 0.28, top=by, width=cw - 0.56, height=0.85,\n              size=17, color_rgb=col, font=MONO_FONT, bold=True)\n    _add_text(slide, bod, left=x + 0.28, top=by + 0.95, width=cw - 0.56, height=ch - 2.5,\n              size=15.5, color_rgb=INK_RGB, font=SANS_FONT)\n    _add_rect(slide, left=x, top=body_top + ch - 1.0, width=cw, height=0.02, fill_rgb=_rgb('#E4E1D9'))\n    _add_text(slide, tag, left=x + 0.28, top=body_top + ch - 0.85, width=cw - 0.56, height=0.6,\n              size=14, color_rgb=col, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)",
+        "lede": "",
+        "notes": "Model the honesty the rubric rewards. Green: it genuinely works -- AUC 0.88 on benchmark data and a 97-percent-clean top-10-percent shortlist, which saves real lab time. Purple: it learned real biology, peaking at the seed, so we trust why it works, not just that it works. Pink: it is still a demo -- it cannot match a production tool like Azimuth, handle cell-type or chromatin effects, or judge off-target safety. State plainly: use it to build intuition and shortlist, not to finalize a guide. Transition: the papers behind it.",
+        "section_label": "The bottom line",
+        "title": "What it can and cannot do"
       },
-      "slide_id": "h1-being-honest/h2-what-this-toy-model-can-and-cannot-do"
+      "slide_id": "h1-the-bottom-line/h2-what-it-can-and-cannot-do"
     },
     {
-      "content_hash": "53cf0908e5ebf4fabc42b57560920602c374e2ebf04caaf86f6363e27f21c8d5",
+      "content_hash": "61ad2f4c17f8385221208955ff1eff3bb6226ef3a8e8f832c9e3b93cb52ddfa8",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "colw = (body_w - 0.6) / 2\nleft_refs = ('[1] Doench et al. 2016, Nat Biotechnol -- Rule Set 2 / Azimuth; source of our dataset.\\n\\n'\n             '[2] Doench et al. 2014, Nat Biotechnol -- Rule Set 1; position + PAM rules.\\n\\n'\n             '[3] Hsu, Lander & Zhang 2014, Cell -- landmark plain-English CRISPR review.\\n\\n'\n             '[4] Zheng et al. 2017, Sci Rep -- direct evidence the seed / core matters most.')\nright_refs = ('[5] Chuai et al. 2018, Genome Biol -- DeepCRISPR, a CNN guide-efficiency model.\\n\\n'\n              '[6] Kim et al. 2019, Sci Adv -- DeepSpCas9, trained on 12,832 sites.\\n\\n'\n              '[7] Konstantakos et al. 2022, NAR -- survey comparing guide predictors.\\n\\n'\n              '[8] Abbaszadeh & Shahlai 2025, arXiv -- explainable AI + off-target safety.')\n_add_text(slide, 'FOUNDATIONS', left=body_l, top=body_top + 0.05, width=colw, height=0.4,\n          size=16, color_rgb=BLUEVIOLET_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, left_refs, left=body_l, top=body_top + 0.6, width=colw, height=body_h - 0.7,\n          size=14, color_rgb=INK_RGB, font=SANS_FONT)\nrx = body_l + colw + 0.6\n_add_text(slide, 'MODERN MODELS & REVIEWS', left=rx, top=body_top + 0.05, width=colw, height=0.4,\n          size=16, color_rgb=DEEPPINK_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, right_refs, left=rx, top=body_top + 0.6, width=colw, height=body_h - 0.7,\n          size=14, color_rgb=INK_RGB, font=SANS_FONT)",
-        "lede": "The eight papers behind this project -- from the plain-English CRISPR reviews to the models we measured ourselves against.",
-        "notes": "Give credit and show the trail. Left column is the foundation: the two Doench Rule Sets [1][2], the\nHsu/Lander/Zhang review [3], and the Zheng seed paper [4]. Right column is the modern neural-net line\nand the surveys [5][6][7][8]. Do not read every line -- point out that [1] gave us the data, [4] is\nthe seed evidence our model reproduced, and [8] is the off-target-safety gap we cannot address.\nTransition: the one sentence to remember.",
-        "section_label": "Being honest",
+        "code": "colw = (body_w - 0.6) / 2\nleft_refs = ('[1] Doench et al. 2016, Nat Biotechnol -- Rule Set 2 / Azimuth, and the dataset we use.\\n\\n'\n             '[2] Doench et al. 2014, Nat Biotechnol -- Rule Set 1: position + PAM predict cutting.\\n\\n'\n             '[3] Hsu, Lander & Zhang 2014, Cell -- how Cas9 is steered to a DNA site (the seed).\\n\\n'\n             '[4] Zheng et al. 2017, Sci Rep -- direct evidence the PAM-proximal seed matters most.')\nright_refs = ('[5] Chuai et al. 2018, Genome Biol -- DeepCRISPR: deep learning for guide design.\\n\\n'\n              '[6] Kim et al. 2019, Sci Adv -- DeepSpCas9: more data + neural nets push accuracy further.\\n\\n'\n              '[7] Konstantakos et al. 2022, NAR -- a survey of guide-efficiency predictors.\\n\\n'\n              '[8] Abbaszadeh & Shahlai 2025, arXiv -- explainable AI + off-target safety.')\n_add_text(slide, 'FOUNDATIONS & DATA', left=body_l, top=body_top + 0.05, width=colw, height=0.4,\n          size=16, color_rgb=TURQUOISE_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, left_refs, left=body_l, top=body_top + 0.6, width=colw, height=body_h - 0.7,\n          size=14.5, color_rgb=INK_RGB, font=SANS_FONT)\nrx = body_l + colw + 0.6\n_add_text(slide, 'METHODS & REVIEWS', left=rx, top=body_top + 0.05, width=colw, height=0.4,\n          size=16, color_rgb=DEEPPINK_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, right_refs, left=rx, top=body_top + 0.6, width=colw, height=body_h - 0.7,\n          size=14.5, color_rgb=INK_RGB, font=SANS_FONT)",
+        "lede": "",
+        "notes": "Give credit and show the trail. Left column, the foundations and the data: Doench's Rule Set 2 and the dataset [1], the earlier position/PAM rules [2], the Hsu review that explains the seed [3], and the direct seed evidence [4] -- [1], [3] and [4] are the papers we redrew in the intro. Right column, the methods and reviews: the deep-learning tools that push further [5][6], a survey of predictors [7], and a recent explainable-AI + off-target piece [8]. Transition: the one sentence to remember.",
+        "section_label": "The bottom line",
         "title": "References"
       },
-      "slide_id": "h1-being-honest/h2-references"
+      "slide_id": "h1-the-bottom-line/h2-references"
     },
     {
-      "content_hash": "ff7a1dd42adc50a3c709209e03aa5f81bc88b3d9046e6201d3eff2b15832974e",
+      "content_hash": "2daed386d9e870106cf572709fbc25a21f4d2c45d9e35d39b2a781e2caba3b71",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "q_top = body_top + body_h * 0.28\n_add_text(slide, 'A model you can explain is a model people trust.',\n          left=body_l, top=q_top, width=body_w, height=1.1,\n          size=32, color_rgb=BLUEVIOLET_RGB, font=MONO_FONT, bold=True, align=PP_ALIGN.CENTER)\nrule_w = 2.4\n_add_rect(slide, left=body_l + (body_w - rule_w) / 2, top=q_top + 1.35, width=rule_w, height=0.05, fill_rgb=BLUEVIOLET_RGB)\n_add_text(slide, 'Use this project to build intuition -- then use a validated tool and the lab to actually choose a guide.',\n          left=body_l + 1.0, top=q_top + 1.90, width=body_w - 2.0, height=1.0,\n          size=19, color_rgb=INK_RGB, font=SANS_FONT, align=PP_ALIGN.CENTER)",
+        "code": "q_top = body_top + body_h * 0.22\n_add_text(slide, 'A guide-picker earns its keep by shortlisting the winners -- and explaining itself.',\n          left=body_l + 0.5, top=q_top, width=body_w - 1.0, height=1.4,\n          size=30, color_rgb=TURQUOISE_RGB, font=MONO_FONT, bold=True, align=PP_ALIGN.CENTER)\nrule_w = 2.4\n_add_rect(slide, left=body_l + (body_w - rule_w) / 2, top=q_top + 1.55, width=rule_w, height=0.05, fill_rgb=TURQUOISE_RGB)\n_add_text(slide, 'Use it to build intuition and narrow the field -- then use a validated tool and the lab to actually choose and confirm a guide.',\n          left=body_l + 1.0, top=q_top + 2.05, width=body_w - 2.0, height=1.2,\n          size=19, color_rgb=INK_RGB, font=SANS_FONT, align=PP_ALIGN.CENTER)",
         "lede": "",
-        "notes": "Land the whole deck on one idea: explainability builds trust. Our toy model earned a little trust by\nagreeing with known biology and by being honest about R-squared 0.36 and about off-target safety.\nLeave them with the working rule for all of medical AI: a simple model you can explain and honestly\nevaluate beats a fancy black box nobody can check. Then use the real tools and the lab to actually\npick a guide. Thank them.",
-        "section_label": "Being honest",
+        "notes": "Land the deck on one idea: a guide-picker is worth building when it both shortlists the winners AND explains itself -- ours did both, with AUC 0.88, a 97-percent-clean top slice, and importance that peaks at the seed. Leave them with the working habit of medical AI: a model you can measure and explain beats a fancy one nobody can check. Then hand the real decision back to a validated tool and the lab. Thank them.",
+        "section_label": "The bottom line",
         "title": "The honest bottom line"
       },
-      "slide_id": "h1-being-honest/h2-the-honest-bottom-line"
+      "slide_id": "h1-the-bottom-line/h2-the-honest-bottom-line"
     }
   ],
   "theme": "bone",

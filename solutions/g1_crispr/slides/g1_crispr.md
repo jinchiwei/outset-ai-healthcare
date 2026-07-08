@@ -1,78 +1,97 @@
 ---
-title: "Predicting good CRISPR guides"
+title: "Picking good CRISPR guides before the lab"
 eyebrow: "Outset · AI in Healthcare · Day 3 · Group 1"
-subtitle: "Can a model read 20 letters of DNA and guess how well the molecular scissors will cut?"
+subtitle: "Given the 20 letters of a guide RNA, can a model tell -- before any lab work -- whether CRISPR-Cas9 will actually cut?"
 name: "Jinchi Wei"
 org: "Outset"
 date: "2026-07-08"
+logos: false
 ---
 
 # Background
 
 ---
 
-## What CRISPR actually is
+## Molecular scissors, aimed by 20 letters
 
-CRISPR-Cas9 is a pair of molecular scissors that you aim at one exact spot in DNA using a short 20-letter guide (the letters are A, C, G, and T). Where the guide matches, the scissors cut, and that cut is how scientists turn a gene off or repair a mutation.
+CRISPR-Cas9 is a pair of molecular scissors you aim at one spot in DNA with a 20-letter guide. Where the guide matches, the Cas9 protein cuts -- and that cut is how we switch a gene off or repair it.
 
-![Anatomy of a guide and its DNA target](figures/intro_guide_anatomy.png)
-
----
-
-## How real scientists pick a guide
-
-Here is the catch: two guides that look almost the same can behave completely differently, one cutting beautifully and the other barely at all. Testing every guide in the lab takes weeks, so scientists predict a guide's cutting efficiency from its 20 letters instead of measuring it.
-
-### Score, do not eyeball
-The best-known tool is Doench 2016's "Rule Set 2" / Azimuth, a model that scores a guide from its sequence [1], built on the earlier position-and-PAM rules of Rule Set 1 [2].
-
-### The seed is king
-Cas9 grabs a landmark called the PAM, then checks the handful of letters right next to it -- the "seed." Guides that mismatch there usually fail to cut [3][4].
-
-### Neural nets push further
-Newer tools like DeepCRISPR learn the same job with a neural network and more data, beating hand-built rules [5][6].
+![The Cas9 protein, aimed by a 20-letter guide RNA, cutting DNA next to the PAM](figures/intro_cas9_cutting.png)
 
 ---
 
-## The seed region matters most
+## CRISPR as therapy: fixing a broken gene
 
-Not all 20 letters count the same. The letters nearest the PAM -- the seed, roughly positions 13 to 20 -- carry far more of the signal about whether a guide will cut. Keep this picture in mind, because our own model is about to rediscover it on its own.
+This is not hypothetical. The very same tool already treats sickle-cell disease. But a therapy only works if the guide actually cuts the target gene -- a dud guide fixes nothing.
 
-![The seed region matters most](figures/intro_seed_importance.png)
-
----
-
-# Methods
+![A disease mutation cut and corrected into a healthy gene](figures/intro_therapy_stakes.png)
 
 ---
 
-## The question we are asking
+## Not all 20 letters count equally
 
-We use the exact dataset behind the famous Rule Set 2 model [1]: real guides that scientists actually measured in the lab. Our job is to predict, from the 20 letters alone, whether a guide is a strong cutter. Notice the imbalance -- only about 1 in 5 guides is high-efficiency -- because it will change how we grade ourselves.
+Cas9 grabs a landmark called the PAM, then reads the letters right next to it -- the "seed." Guides that mismatch there usually fail to cut, so the letters near the PAM should carry the most signal.
+
+![The seed region, next to the PAM, matters most](figures/intro_seed_importance.png)
+
+---
+
+## The catch: most candidate guides are duds
+
+For any gene there are dozens of possible guides, and many barely cut. Testing each one in the lab costs weeks. So we score them all first and order only the top few -- that is the tool we are building.
+
+![Score every candidate guide, order only the top few](figures/intro_pick_before_lab.png)
+
+---
+
+# The data
+
+---
+
+## Why Doench 2016
+
+We need real, measured cut-scores, enough of them, from a source the field trusts. The Doench 2016 benchmark gives us all three.
 
 ### 5,310 guides
-Every one is a real 20-letter sequence with a measured cutting score from 0 to 1.
+Each one actually tested in the lab, so every cut-score is a real measurement, not a simulation.
 
 ### 17 genes
-The guides target 17 different human genes, so the model must learn sequence rules, not memorize one gene.
+A spread of targets, so the model learns sequence rules -- not the quirks of one gene.
 
-### 20% are "high"
-Only about a fifth of guides cut well, so a lazy "always say low" guesser would look 80% accurate and be useless.
+### The benchmark
+The dataset Doench's Rule Set 2 / Azimuth was built on -- what the whole field compares against.
 
 ---
 
-## Turning letters into numbers
+## The benchmark that set the standard
 
-A computer cannot do math on the letter "A," so we turn each guide into numbers -- and how we do that is the single most important choice in the whole project. We tried two ways and let the results decide.
+Doench 2016 built "Rule Set 2" (Azimuth) on exactly these guides -- and even that landmark model's predictions scatter around the truth. That sets our honest expectation: capture the signal, do not expect perfection.
 
-### one-hot (keeps order)
-Four on/off switches per position, so the model always knows which letter sits where. 20 positions times 4 = 80 numbers.
+![Doench 2016 predicted vs measured efficiency: real but loose](figures/intro_doench_scatter.png)
 
-### k-mer (ignores order)
-Just counts how many of each letter and letter-pair appear, throwing the position away. Only 21 numbers.
+---
 
-### LISTEN vs SILENT
-Those two words share the same letters, so k-mer cannot tell them apart, but one-hot can. Since biology cares exactly where a letter sits (the seed!), one-hot should win.
+# The model
+
+---
+
+## First, turn letters into numbers
+
+A computer cannot do math on the letter "A." one-hot flips four switches per position, keeping WHERE each letter sits; k-mer just counts letters and throws the order away. Since the seed is about position, one-hot wins.
+
+---
+
+## We tested four models -- we did not guess
+
+Four models could learn this. We baked them off on held-out guides and let AUC decide. The two tree models tie at 0.88; both beat TabPFN and crush logistic regression.
+
+![We tested four models -- the tree models win](figures/model_choice.png)
+
+---
+
+## Model and data processing
+
+The full recipe, so anyone could rebuild it: define the clean question, encode the letters, split honestly, train CatBoost, and grade on data it never saw.
 
 ---
 
@@ -80,67 +99,67 @@ Those two words share the same letters, so k-mer cannot tell them apart, but one
 
 ---
 
-## Keeping the letter order wins
+## How we grade it: ROC and AUC
 
-We trained the same four models on each way of making numbers and compared them. Every single model did better with one-hot than with k-mer. The lesson is bigger than CRISPR: how you prepared the data mattered more than which fancy model you picked.
+The picker outputs a score, not a yes/no. The ROC curve sweeps every cut-off; AUC is the area underneath, where 0.5 is a coin flip and 1.0 is perfect. Ours is 0.88.
 
-![One-hot beats k-mer for every model](figures/representation_auc.png)
-
----
-
-## Why we grade with AUC, not accuracy
-
-Because only 20% of guides are high-efficiency, a model that blindly says "low" every time scores 80% accuracy while being completely useless. AUC ignores that cheap trick: it measures whether the model ranks good guides above bad ones, where 0.5 is a coin flip and 1.0 is perfect. Our best model reaches 0.77, real signal from sequence alone.
+![A working guide-picker, AUC 0.88](figures/roc.png)
 
 ---
 
-## The model rediscovered the seed
+## The win: order its top picks
 
-Now the payoff. We asked a simple, explainable model which positions along the guide it leaned on. Nobody told it about seeds -- yet its importance peaks at position 20, right next to the PAM, exactly the seed region that decades of CRISPR biology point to.
+AUC is abstract; here is the number a scientist feels. Rank guides by the model's score and order the top 10% -- 97% of them actually cut well, versus 50% if you picked at random.
 
-![Importance peaks at position 20, the seed](figures/position_importance.png)
-
----
-
-## Predicting the exact score
-
-"High versus low" throws away detail, so we also tried to predict the exact 0-to-1 cutting score. R-squared tells us how much of the real ups-and-downs we explained: 0 is no better than guessing the average, 1.0 is perfect. We hit 0.36, a real but loose trend -- and that is honest, because the professional tools scatter the same way.
-
-![Predicted versus true efficiency, R-squared 0.36](figures/regression_fit.png)
+![Order the model's top picks, get mostly good guides](figures/precision_at_top.png)
 
 ---
 
-# Being honest
+## It rediscovered the biology
+
+Feature importance asks which positions the model relied on. It peaks at position 20 -- right next to the PAM, the seed region -- matching decades of CRISPR science it was never told about.
+
+![Importance peaks at the seed, next to the PAM](figures/position_importance.png)
 
 ---
 
-## What this toy model can and cannot do
+## Fairness? There is nothing to audit -- honestly
 
-A good project names its own limits out loud. Ours is a demonstration of an idea, not a design tool, and here is exactly where the line sits.
+Most medical-AI projects must check they work equally across patient groups. This one has none: the input is a DNA sequence -- no patient, no demographics, nothing to be unfair about. Saying so plainly beats forcing a fake analysis.
 
-### It CAN
-Show that a guide's sequence really does carry signal, and that the seed region matters, on the very same data the professionals use [1].
+---
 
-### It CANNOT match the pros
-It will not beat a production tool, and it ignores cell-type and chromatin effects that change cutting inside a living cell [7].
+# The bottom line
 
-### It CANNOT judge safety
-It says nothing about off-target risk -- whether the guide also cuts the wrong places in the genome [8].
+---
+
+## What it can and cannot do
+
+A good project names its own limits out loud. Ours is a genuinely working guide-picker, but it is a demonstration -- and here is exactly where the line sits.
+
+### It works
+AUC 0.88 on the field's benchmark, and its top-10% shortlist is 97% good guides -- real lab time saved.
+
+### It learned real biology
+Importance peaks at the seed next to the PAM, matching decades of CRISPR science, so we can trust why it works.
+
+### But it is a demo
+It cannot match a production tool, handle cell-type effects, or say anything about off-target safety.
 
 ---
 
 ## References
 
-The eight papers behind this project, from the plain-English CRISPR reviews to the models we compared ourselves against.
+The eight papers behind this project, from the landmark models to the plain-language reviews.
 
-### Foundations
-[1] Doench et al. 2016, Nat Biotechnol (Rule Set 2). [2] Doench et al. 2014, Nat Biotechnol (Rule Set 1). [3] Hsu, Lander and Zhang 2014, Cell. [4] Zheng et al. 2017, Sci Rep.
+### Foundations and data
+[1] Doench et al. 2016, Nat Biotechnol (Rule Set 2 + the data). [2] Doench et al. 2014, Nat Biotechnol. [3] Hsu, Lander and Zhang 2014, Cell. [4] Zheng et al. 2017, Sci Rep.
 
-### Modern models and reviews
+### Methods and reviews
 [5] Chuai et al. 2018, Genome Biol (DeepCRISPR). [6] Kim et al. 2019, Sci Adv (DeepSpCas9). [7] Konstantakos et al. 2022, NAR. [8] Abbaszadeh and Shahlai 2025, arXiv.
 
 ---
 
 ## The honest bottom line
 
-A model you can explain, that agrees with known biology, is one people will trust. Use this to build intuition -- then use a validated tool and the lab to actually choose a guide.
+A guide-picker earns its keep by shortlisting the winners and explaining itself. Use this to build intuition and narrow the field -- then use a validated tool and the lab to actually choose and confirm a guide.

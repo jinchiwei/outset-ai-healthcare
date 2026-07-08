@@ -4,7 +4,9 @@
     "normal",
     "stroke"
   ],
-  "accuracy": 0.7111111111111111,
-  "sensitivity": 0.8372093023255814,
-  "specificity": 0.5957446808510638
+  "accuracy": 0.7333333333333333,
+  "sensitivity": 0.6511627906976745,
+  "specificity": 0.8085106382978723,
+  "auc": 0.8172934190994557,
+  "backbone": "caformer_s18"
 }

@@ -1,63 +1,91 @@
 ---
 title: "Predicting heart disease from a checkup"
 eyebrow: "Outset · AI in Healthcare · Day 3 · Group 5"
-subtitle: "A tabular model, and the fairness question at its center: does it work for women?"
+subtitle: "Can a model read 13 routine checkup numbers and flag who is at risk for heart disease -- fairly, for women and men alike?"
 name: "Jinchi Wei"
 org: "Outset"
 date: "2026-07-08"
+logos: false
 ---
 
 # Background
 
 ---
 
-## How doctors actually estimate heart risk
+## One risk score from many clues
 
-No doctor diagnoses heart disease from one number. They combine several routine checkup measurements into a single risk estimate, the way the Framingham Risk Score does. Worldwide, about nine risk factors led by cholesterol and smoking explain over 90% of first heart attacks. Risk is a stack of factors, not a single cause.
+A doctor never diagnoses heart disease from a single number. They combine many routine checkup measurements -- cholesterol, blood pressure, age, chest-pain type -- into one risk estimate. That is exactly the job we are asking a model to learn.
 
-![Risk factors stack up](figures/intro_risk_factor_stack.png)
-
----
-
-## Women's heart disease is under-diagnosed
-
-Here is the problem that drives our project. The "textbook" heart attack, crushing chest pain down the left arm, is the male picture. Women more often feel back pain, nausea, and shortness of breath, so their heart attacks get missed. The American Heart Association documents that women are misdiagnosed and under-treated more than men.
-
-![Men and women present differently](figures/intro_symptom_presentation.png)
+![A heart and its risk factors feeding one risk gauge](figures/intro_heart_risk_engine.png)
 
 ---
 
-# Methods
+## Doctors already do this math
+
+The Framingham Risk Score has combined checkup clues into a 10-year risk since 1998, and it is deliberately sex-specific: men and women with the same risk factors sit on different curves. Our model is a small, honest version of the same idea.
+
+![Framingham 1998: combined risk factors to a 10-year risk, by sex](figures/intro_framingham_1998.png)
 
 ---
 
-## The task and the data
+## No single cause: risk is a stack
 
-We predict a yes/no answer, does this patient have heart disease, from a checkup. This is tabular data, rows of numbers, which is the easy part: any standard model handles it without tuning. So the interesting questions are not which model wins, but which clues matter and who the model works for.
+The worldwide INTERHEART study found that about nine risk factors, led by abnormal cholesterol and smoking, explain over 90% of first heart attacks. No one clue is the whole story, which is why a checkup measures many at once.
+
+![INTERHEART: the biggest modifiable risk factors stack up](figures/intro_risk_factor_stack.png)
+
+---
+
+## The textbook heart attack is the male one
+
+Women more often feel a heart attack as back pain, nausea, or shortness of breath rather than the classic crushing chest pain. Because the textbook picture is the male one, women's heart attacks are more often missed. This is the fairness problem we keep watching.
+
+![Men vs women: different symptom presentation](figures/intro_symptom_presentation.png)
+
+---
+
+# The data
+
+---
+
+## Why the Cleveland dataset
+
+We need real clinical data, freely available to learn on, that records who each patient is so we can check fairness. The UCI Cleveland Heart Disease set gives us all three, which is exactly why it is the right dataset for a first risk tool.
 
 ### 303 patients
-The Cleveland Heart Disease dataset, from a 1980s study.
+Real clinical records from a 1980s coronary-disease study, each with a verified yes/no answer.
 
 ### 13 features
-Age, sex, blood pressure, cholesterol, chest-pain type, exercise-ECG results.
+Ordinary checkup numbers -- age, blood pressure, cholesterol, chest-pain type, exercise-test results.
 
-### Predict disease
-1 = has heart disease, 0 = does not. Graded on held-out patients.
+### Free and open
+Downloads straight from the UCI repository, no gate or login -- and it records sex, so we can audit fairness.
 
 ---
 
-## Four models, one honest test
+## Who is in the data?
 
-We train four models and compare their accuracy on patients they never saw. We always compare against the "just guess the more common answer" baseline, about 0.54 here. A real model has to beat that. On clean tabular data, the model choice barely matters, so we spend our effort on the two questions that teach us something.
+The golden rule is to look at the data before you model. The very first thing to check here, because our whole project is about fairness, is who the data actually contains. It is roughly two men for every woman.
 
-### Logistic Regression
-Simple, explainable, and here the best of the four.
+![The Cleveland cohort is about 2:1 male](figures/intro_dataset_sex_skew.png)
 
-### Random Forest & CatBoost
-Tree ensembles, the workhorses of tabular data.
+---
 
-### TabPFN
-A foundation model for tables, like the one from Day 2.
+# The model
+
+---
+
+## Four models, one bake-off
+
+We did not guess which model to use -- we ran a bake-off, training four models the same way and grading each on patients it never saw. Logistic Regression, Random Forest, CatBoost, and a TabPFN foundation model all landed in a tie.
+
+![Four models, similar scores -- the data sets the ceiling](figures/model_comparison.png)
+
+---
+
+## Model and data processing
+
+Here is the exact recipe, so anyone could reproduce it. One clean train and test split, all 13 features, graded only on held-out patients, with CatBoost giving the calibrated probability we grade by AUC.
 
 ---
 
@@ -65,70 +93,69 @@ A foundation model for tables, like the one from Day 2.
 
 ---
 
-## The data sets the ceiling
+## A working risk tool
 
-All four models land between 0.79 and 0.81, comfortably above the coin-flip baseline, and they basically tie each other. That is the lesson: on clean tabular data the model barely matters. Swapping a plain logistic regression for a fancy foundation model buys almost nothing. Three hundred patients from the 1980s contain only so much signal, and no model can invent more.
+How we grade a risk tool: the ROC curve sweeps every cut-off and plots disease caught against false alarms, and AUC is the area underneath, where 0.5 is a coin flip and 1.0 is perfect. Graded this way, our tool scores 0.90.
 
-![Four models, similar scores](figures/model_comparison.png)
-
----
-
-## Cholesterol alone is a weak predictor
-
-Everyone "knows" cholesterol causes heart disease, so we gave a model only the cholesterol column. It scored about 0.52, basically a coin flip. Meanwhile the checkup with cholesterol removed scored about 0.80. Cholesterol is a major cause of heart disease over decades, but on its own it is a poor clue for who has disease right now. That is why doctors combine many measurements.
-
-![Cholesterol alone is weak](figures/feature_ablation.png)
+![The ROC curve, AUC 0.90](figures/roc.png)
 
 ---
 
-## Accurate overall, but not equally by sex
+## Which clues drive the call
 
-This is the point of the project. One accuracy number can hide unfairness. When we grade the model separately for women and men, it is about 0.88 accurate for women and 0.78 for men, a gap of about 0.09. An accuracy gap in either direction means the model behaves differently depending on your sex. You only see it because you looked.
+Feature importance for a table is SHAP: it measures how much each measurement moves the prediction. The heavy hitters are the imaging and stress-test results and chest-pain type -- and cholesterol, surprisingly, sits near the bottom.
 
-![A fairness gap by sex](figures/fairness_by_sex.png)
-
----
-
-# Being honest
+![SHAP: which measurements drive the risk call](figures/shap_importance.png)
 
 ---
 
-## The data is small and male-skewed
+## Cholesterol alone is a weak clue
 
-A model can only learn from who is in its data, and ours is about 2:1 male. With far fewer women, the model gets less practice on them, and the way patients were selected in the 1980s made the male rows sicker. That skew is not a bug we can fix with a better model, it is a property of the data, and it is exactly the bias that makes heart disease harder to catch in women.
+Everyone knows cholesterol matters for the heart, so here is a fair test: give the model only cholesterol. It scores barely better than a coin flip, while the checkup without cholesterol stays strong. Causing disease slowly is not the same as detecting it today.
 
-![Our dataset is 2 to 1 male](figures/intro_dataset_sex_skew.png)
-
----
-
-## What this project can and cannot say
-
-Being honest about limits is the most important slide in any medical-AI talk. Here is what our toy model earns the right to claim, and what it does not.
-
-### It can
-Show that checkup features carry real signal, that no single number is the whole story, and that accuracy can be unequal across sex.
-
-### It cannot
-Say anything trustworthy about today's patients. This is 303 people from one 1980s study.
-
-### Watch the metric
-Missing a real heart attack is far worse than a false alarm. A deployed tool would be tuned for sensitivity, not raw accuracy.
+![Cholesterol alone is a weak predictor](figures/feature_ablation.png)
 
 ---
 
-# References
+## Does it work for women and men?
+
+The point of the whole project: one accuracy number can hide unfairness. So we grade the model separately for each sex. It is more accurate for women than men -- a real gap, and an honest consequence of the 2:1 male data.
+
+![Accuracy by sex: 0.88 for women, 0.78 for men](figures/fairness_by_sex.png)
 
 ---
 
-## Sources
+# The honest picture
 
-Every claim in this deck traces to a real, peer-reviewed source. The dataset is the public Cleveland Heart Disease set curated from Detrano 1989.
+---
 
-### Cardiac risk scoring
-Wilson 1998, Framingham Risk Score, Circulation. Yusuf 2004, the INTERHEART study, Lancet.
+## What it can and cannot do
 
-### Under-diagnosis in women
-Mehta 2016, AHA scientific statement, Circulation. van Oosterhout 2020, JAHA. Bugiardini and Bairey Merz 2005, JAMA.
+A good project names its own limits out loud. Ours is a genuinely working risk tool, but it is not ready for a patient, and here is exactly where the line sits.
 
-### The dataset
-Detrano 1989, American Journal of Cardiology. UCI Machine Learning Repository, Heart Disease Data Set.
+### It works
+A real risk tool on real checkup data: AUC 0.90, leaning on the same cues a cardiologist uses.
+
+### But it is skewed
+The accuracy gap by sex is real, and the data is about 2:1 male, so it may serve women worse.
+
+### A real tool
+Would use today's diverse patients, a sex-specific design, multi-hospital validation, and a clinician in the loop.
+
+---
+
+## References
+
+The seven papers behind this project, from the landmark risk scores to the statements on why women get under-diagnosed.
+
+### Foundations and data
+[1] Detrano et al. 1989, Am J Cardiol (the Cleveland dataset). [2] Wilson et al. 1998, Circulation (Framingham Risk Score). [3] Yusuf et al. 2004, Lancet (INTERHEART). [7] UCI Machine Learning Repository.
+
+### Sex differences and under-diagnosis
+[4] Mehta et al. 2016, Circulation (AHA statement on heart attacks in women). [5] van Oosterhout et al. 2020, JAHA (symptom differences). [6] Bugiardini and Bairey Merz 2005, JAMA (angina with normal arteries).
+
+---
+
+## The honest bottom line
+
+A risk tool earns trust by grading with the right metric, asking which clues actually matter, and checking who it works for. Use this to learn that judgment -- then use a validated, sex-specific tool and a real clinician to actually care for a patient.

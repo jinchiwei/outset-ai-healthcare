@@ -1,7 +1,7 @@
 {
-  "deck_md_hash": "b278107bc80b32812a75c732db02068e557c0a7337e7d0660551c6ae922dc19e",
+  "deck_md_hash": "b16063c921d4ca6f9fd2c6b5965cabc8c97cd9f09ecbb8c5bbf6de67c45d3550",
   "mode": "expressive",
-  "shake_seed": "15a08eb00cb942b4a2599e0c005b587c",
+  "shake_seed": "752c41b9ff294054ac66b4c61abe0ea8",
   "slides": [
     {
       "content_hash": "28395391a8ae10db36d317a4157a69a916ba02c4899cb66cae293ffd5f76d294-divider",
@@ -9,84 +9,133 @@
       "params": {
         "accent_hex": "#40E0D0",
         "label": "Background",
-        "notes": "This first section sets up WHY the project matters before any code: what head-CT AI actually does in a hospital, and why any fairness question needs data about who each scan came from. Keep it concrete -- the payoff is the missing-metadata twist later."
+        "notes": "Open on the clinical stakes so the modeling lands later. Three beats: a bleed is bright on CT and every minute costs ~1.9M neurons; triage AI reads the dangerous scans first; and the catch that runs through the whole talk -- a dataset can hide who is in it. Transition: meet the scan."
       },
       "slide_id": "divider-h1-background"
     },
     {
-      "content_hash": "2912f510a04fc45331b45b8ab36b73efc92a86b9fb78530dafdcd38220b75efa",
+      "content_hash": "8f744d7b85ad8716d69bb9a415a89346735e5d043b940a39f05e0611fb17624f",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "fw = body_w * 0.60\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g3_brain_ct/slides/figures/intro_triage_queue.png', left=body_l, top=body_top + 0.15, max_w=fw, max_h=body_h - 0.30)\npx = body_l + fw + 0.35\npw = body_w - fw - 0.35\n_add_card(slide, surface_rgb=_rgb('#FFFFFF'), label='Triage, not diagnosis',\n          body='In the ER a bleed is an emergency and minutes matter. Deployed head-CT AI -- Chilamkurthy 2018 on ~313,000 scans, the RSNA 2019 challenge, Seyam 2022 -- reorders the radiologist reading queue so likely bleeds are read first. Real tools clear ~0.90+ AUC, and still do worse on some bleed subtypes.',\n          left=px, top=body_top + 0.20, width=pw, height=body_h - 0.55, accent_rgb=accent_rgb)",
+        "code": "img_h = body_h - 0.55\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g3_brain_ct/slides/figures/intro_head_ct.png', left=body_l, top=body_top, max_w=body_w, max_h=img_h)\n_add_text(slide, 'A fresh bleed is bright (hyperdense) on CT -- and every minute of delay costs about 1.9 million neurons, so it must be found and read first.',\n          left=body_l + 0.8, top=body_top + img_h + 0.12, width=body_w - 1.6, height=0.5,\n          size=14, color_rgb=INK_RGB, font=SANS_FONT, italic=True, align=PP_ALIGN.CENTER)",
         "lede": "",
-        "notes": "Open concrete. The single most real, deployed use of AI on brain CT is triage: a network scans the whole\nstack and pushes probable bleeds to the top of the list so a radiologist reads the dangerous ones first,\ninstead of in arrival order. In a busy ER that saves minutes that matter for a stroke. Ground it in real\nsystems: Chilamkurthy 2018 (Lancet) trained on ~313,000 head CTs at AUC>0.90; the RSNA 2019 challenge had\n60+ neuroradiologists label 25,000+ exams; Seyam 2022 is a deployed tool at ~93% accuracy. Then the catch:\nthese tools are NOT equally good on every case. Transition: to even ask 'fair for whom', the data has to\nrecord who each scan came from.",
+        "notes": "Open concrete and physical. A head CT: the bright blob is an acute hemorrhage (blood is hyperdense), pointed out in pink. The clock on the right is the stakes -- in a large stroke ~1.9 million neurons die every minute (Saver 2006), so the bleed has to be found and read first. Do not mention datasets yet. Transition: that is exactly the job triage AI does.",
         "section_label": "Background",
-        "title": "Head-CT triage AI, in one picture"
+        "title": "A stroke is a race against the clock"
       },
-      "slide_id": "h1-background/h2-head-ct-triage-ai-in-one-picture"
+      "slide_id": "h1-background/h2-a-stroke-is-a-race-against-the-clock"
     },
     {
-      "content_hash": "067c2a19475b50d81ec0909fb164f5c8240604fae1805ac4116ce14bc9a3a187",
+      "content_hash": "81261e8dd5e4404eb815dc1a292cebbde76988c45d74f935039154226b005109",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "fw = body_w * 0.60\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g3_brain_ct/slides/figures/intro_datasheet_checklist.png', left=body_l, top=body_top + 0.15, max_w=fw, max_h=body_h - 0.30)\npx = body_l + fw + 0.35\npw = body_w - fw - 0.35\n_add_card(slide, surface_rgb=_rgb('#FFFFFF'), label='Who is in the data?',\n          body='To test fairness you compare accuracy across groups -- age, sex, race, scanner. That only works if the dataset records who each scan came from. Datasheets for Datasets (Gebru 2021) says every dataset should ship that documentation; radiology-AI reviews (Tripathi 2023) show it often does not. Ours has only the image and a label.',\n          left=px, top=body_top + 0.20, width=pw, height=body_h - 0.55, accent_rgb=accent_rgb)",
+        "code": "fw = body_w * 0.56\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g3_brain_ct/slides/figures/intro_triage_queue.png', left=body_l, top=body_top, max_w=fw, max_h=body_h)\nax = body_l + fw + 0.45\naw = body_w - fw - 0.45\n_add_text(slide, 'SORT, DON\\'T JUST QUEUE', left=ax, top=body_top + 0.2, width=aw, height=0.45,\n          size=15, color_rgb=DEEPPINK_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, 'A radiologist faces a long list of scans. Read in arrival order, a bleed can wait behind ten normal heads.',\n          left=ax, top=body_top + 0.85, width=aw, height=1.35, size=16, color_rgb=INK_RGB, font=SANS_FONT)\n_add_text(slide, 'Triage AI scores every scan and lifts the likely bleeds to the TOP, so the dangerous ones are read first.',\n          left=ax, top=body_top + 2.25, width=aw, height=1.35, size=16, color_rgb=INK_RGB, font=SANS_FONT)\n_add_text(slide, 'Real tools do this with AUCs above 0.90 and cut time-to-treatment.',\n          left=ax, top=body_top + 3.65, width=aw, height=1.1, size=16, color_rgb=BLUEVIOLET_RGB, font=SANS_FONT, italic=True)",
         "lede": "",
-        "notes": "This is the pivot from 'cool tool' to 'the real lesson'. A fairness check is a comparison ACROSS groups, so\nit needs the grouping columns to exist. The Datasheets for Datasets idea (Gebru 2021) proposes every dataset\nship a standard sheet answering who is in it, how it was labeled, and its limits. Reviews (Tripathi 2023)\nfind radiology datasets routinely leave those blank. Left figure: the six things a datasheet asks vs. the two\nour brain-CT set actually has -- four demographic rows are empty. Transition: and empty rows mean unfillable\naudit bars.",
+        "notes": "The concrete benefit before the catch. Left: seven scans in arrival order, two bleeds buried in the middle; right: after AI triage the bleeds jump to the top, flagged 'read first'. This is the real, deployed job -- Chilamkurthy 2018 hit AUCs above 0.90 -- and it saves the minutes that matter. Transition: so these tools work; what's the problem?",
         "section_label": "Background",
-        "title": "A dataset should tell you who is in it"
+        "title": "Triage AI reads the dangerous scans first"
       },
-      "slide_id": "h1-background/h2-a-dataset-should-tell-you-who-is-in-it"
+      "slide_id": "h1-background/h2-triage-ai-reads-the-dangerous-scans-first"
     },
     {
-      "content_hash": "777844f5b4bb81f85e5ed186096a354ab3045c537fa957ebb8da9b74377acb40",
+      "content_hash": "ab6a7c2056f6126d5ed482f45ebfd4f254ad48d9f76eb10c3b2ffccd89fbd49c",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "fw = body_w * 0.60\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g3_brain_ct/slides/figures/intro_unauditable_bias.png', left=body_l, top=body_top + 0.15, max_w=fw, max_h=body_h - 0.30)\npx = body_l + fw + 0.35\npw = body_w - fw - 0.35\n_add_card(slide, surface_rgb=_rgb('#FFFFFF'), label='Blank bars',\n          body='Real audits found imaging AI that missed disease more often in female, Black, and low-income patients (Seyyed-Kalantari 2021), and models that secretly lean on demographic shortcuts (Yang 2024). You can only SEE those failures if the data records the groups. When it does not, every per-group accuracy bar is a blank you cannot fill.',\n          left=px, top=body_top + 0.20, width=pw, height=body_h - 0.55, accent_rgb=accent_rgb)",
+        "code": "_add_text(slide, 'A model can work on average and still hide who it fails.',\n          left=body_l, top=body_top + 0.15, width=body_w, height=1.0,\n          size=27, color_rgb=TURQUOISE_RGB, font=MONO_FONT, bold=True, align=PP_ALIGN.CENTER)\ngap = 0.5\ncw = (body_w - gap) / 2\nctop = body_top + 1.55\nch = body_h - 1.75\ncards = [('WORKS ON AVERAGE', 'A detector can hit a strong overall AUC and still be much worse for one group of patients -- a hidden failure.', TURQUOISE_RGB),\n         ('BUT UN-CHECKABLE', 'If age, sex, race, and scanner were never recorded, there is nothing to group by. The audit that would catch it cannot even run.', DEEPPINK_RGB)]\nfor i, (lab, body, col) in enumerate(cards):\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=ctop, width=cw, height=ch, fill_rgb=WHITE_RGB)\n    _add_rect(slide, left=x, top=ctop, width=cw, height=0.12, fill_rgb=col)\n    _add_text(slide, lab, left=x + 0.32, top=ctop + 0.4, width=cw - 0.64, height=0.5,\n              size=19, color_rgb=col, font=MONO_FONT, bold=True)\n    _add_text(slide, body, left=x + 0.32, top=ctop + 1.15, width=cw - 0.64, height=ch - 1.5,\n              size=16.5, color_rgb=INK_RGB, font=SANS_FONT)",
         "lede": "",
-        "notes": "Make the abstract concrete with real findings. Seyyed-Kalantari 2021 (Nature Medicine): chest-X-ray AI gave\nmore false 'no finding' calls for female, Black, and low-income patients -- underdiagnosis that only showed\nup BECAUSE those datasets recorded the groups. Yang 2024 (Nature Medicine): imaging AI often rides demographic\nshortcuts, so fairness measured on one hospital does not transfer. The figure equates missing metadata with a\nblind spot: one measurable bar, the rest drawn as empty dashed outlines labeled 'no data -- cannot measure'.\nTransition: now our own build, on exactly such a dataset.",
+        "notes": "The spine of the whole talk, stated once. Read the top line slowly: a model can score well on average and still fail a subgroup badly. Left card: that hidden failure is real. Right card: you can only SEE it if the data records the groups -- otherwise there is nothing to group by and the audit cannot run. Everything after this is a demonstration of this one sentence. Transition: so it comes down to what the data records.",
         "section_label": "Background",
-        "title": "You can’t audit a bias you can’t see"
+        "title": "The catch: a dataset can hide who is in it"
       },
-      "slide_id": "h1-background/h2-you-can-t-audit-a-bias-you-can-t-see"
+      "slide_id": "h1-background/h2-the-catch-a-dataset-can-hide-who-is-in-it"
     },
     {
-      "content_hash": "6d31f4e259270667e8ee574d6c4e5e648f02fa4a9874453f92bbc9ac7bcdf10b-divider",
+      "content_hash": "7afb5fad15beed5ec921925bdd98d1f20d379372832130f7efd8a96d8dd397da-divider",
       "kind": "section-divider",
       "params": {
         "accent_hex": "#FF1493",
-        "label": "Methods",
-        "notes": "Now we pin down exactly what we built: the classification task, the bare dataset we were handed, and the one reusable idea -- transfer learning -- that makes it work on so few scans. A short setup section before the results."
+        "label": "The data",
+        "notes": "The raw material, and the contrast that IS the lesson. Two datasets: brain-CT images with no patient facts, and a tabular stroke set that records sex, age, and history. Only the second can be audited for fairness. Transition: what a good dataset should have recorded."
       },
-      "slide_id": "divider-h1-methods"
+      "slide_id": "divider-h1-the-data"
     },
     {
-      "content_hash": "99fd3ac36b9aa3428f70634acad3a07da77911bd729393c7a4ce23eeb0693a5c",
+      "content_hash": "35034da2fb21ccff2ddde71e419f7c6704c187d789c649e7c55583c0f3eba3a2",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "gap = 0.35\ncw = (body_w - 2 * gap) / 3\nh = body_h * 0.50\ny = body_top + 0.12\n_add_card(slide, surface_rgb=_rgb('#FFFFFF'), label='Task', body='Classify one 64x64 brain CT slice as normal or stroke -- a clean, well-posed binary question, exactly the kind transfer learning handles well.', left=body_l, top=y, width=cw, height=h, accent_rgb=TURQUOISE_RGB)\n_add_card(slide, surface_rgb=_rgb('#FFFFFF'), label='Given', body='The CT image, and a normal / stroke label. That is the entire dataset -- one picture in, one word out.', left=body_l + cw + gap, top=y, width=cw, height=h, accent_rgb=AMBER_RGB)\n_add_card(slide, surface_rgb=_rgb('#FFFFFF'), label='Missing', body='Age, sex, race, scanner, site, time-since-injury -- every field a fairness audit would need. Not one of them was recorded.', left=body_l + 2 * (cw + gap), top=y, width=cw, height=h, accent_rgb=DEEPPINK_RGB)\nry = y + h + body_h * 0.10\n_add_rect(slide, left=body_l, top=ry, width=0.07, height=body_h * 0.20, fill_rgb=DEEPPINK_RGB)\n_add_text(slide, 'Hold onto that empty \"Missing\" column -- it turns out to be the whole finding of this project.', left=body_l + 0.30, top=ry, width=body_w - 0.30, height=body_h * 0.20, size=18, color_rgb=INK_RGB, font=SANS_FONT, italic=True, anchor=MSO_ANCHOR.MIDDLE)",
+        "code": "gap = 0.5\ncw = (body_w - gap) / 2\nch = body_h - 0.1\npairs = [('BRAIN CT', 'normal vs. stroke', 'Real head-CT slices, one label each. That is ALL the dataset records -- no age, sex, race, or scanner.', 'you can train it -- but not audit who it fails', DEEPPINK_RGB),\n         ('TABULAR STROKE', '5,109 patients', 'One row per patient, and it records sex, age, hypertension, glucose, and smoking -- the facts an audit needs.', 'you can audit AND fix it', TURQUOISE_RGB)]\nfor i, (lab, sub, body, tag, col) in enumerate(pairs):\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=ch, fill_rgb=WHITE_RGB)\n    _add_rect(slide, left=x, top=body_top, width=0.14, height=ch, fill_rgb=col)\n    _add_text(slide, lab, left=x + 0.4, top=body_top + 0.35, width=cw - 0.7, height=0.5,\n              size=21, color_rgb=col, font=MONO_FONT, bold=True)\n    _add_text(slide, sub, left=x + 0.4, top=body_top + 0.95, width=cw - 0.7, height=0.45,\n              size=15, color_rgb=MUTED_RGB, font=MONO_FONT)\n    _add_text(slide, body, left=x + 0.4, top=body_top + 1.7, width=cw - 0.7, height=ch - 3.0,\n              size=17, color_rgb=INK_RGB, font=SANS_FONT)\n    _add_rect(slide, left=x + 0.4, top=body_top + ch - 1.05, width=cw - 0.8, height=0.02, fill_rgb=_rgb('#E4E1D9'))\n    _add_text(slide, tag, left=x + 0.4, top=body_top + ch - 0.9, width=cw - 0.7, height=0.6,\n              size=15, color_rgb=col, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)",
         "lede": "",
-        "notes": "State the problem and, deliberately, the absence. The task is a clean binary: normal vs. stroke on a 64x64\nbrain slice. What the model is GIVEN is only the image and the label. What is MISSING is every field a\nfairness audit needs -- age, sex, race, scanner, site, time-since-injury. The pink 'Missing' card is the one\nto linger on; it is the whole story of this project set up in advance. Transition: how we actually build the\ndetector.",
-        "section_label": "Methods",
-        "title": "The task and the data"
+        "notes": "The centerpiece of the data section. Two datasets, side by side. Left (pink): the brain-CT set -- images and a label, nothing else, so you can train but not audit. Right (turquoise): the tabular stroke set -- one row per patient WITH sex, age, and history, so you can audit and fix. Same disease, opposite documentation. The bottom tags say it plainly. Transition: what a proper dataset SHOULD have recorded.",
+        "section_label": "The data",
+        "title": "Two datasets, documented very differently"
       },
-      "slide_id": "h1-methods/h2-the-task-and-the-data"
+      "slide_id": "h1-the-data/h2-two-datasets-documented-very-differently"
     },
     {
-      "content_hash": "c3de6d1b0543adc1798d170efe8cfacd7c03f6c237d3853d29e9055605da4989",
+      "content_hash": "18f34b386e9611c684d7485e80d7130ecda9f2e39db9bf0cdf8ac31afb04bd50",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "_add_text(slide, 'The same trick that won Day 1. Rather than teach a network to see from zero on a few hundred scans, we take a ResNet18 already trained on a million everyday photos, freeze what it learned about edges and texture, and train only a small new head to map those features to normal vs. stroke. Borrowed knowledge beats from-scratch when data is small.', left=body_l, top=body_top + 0.10, width=body_w, height=1.25, size=16, color_rgb=INK_RGB, font=SANS_FONT)\nsteps = ['Pretrained ResNet18', 'Freeze the body', 'Train a new 2-class head']\nsubs = ['Learned edges, shapes, and texture from ~1M everyday photos.', 'Keep those features frozen -- do not spend our few scans re-learning them.', 'Train only this small layer to map features to normal vs. stroke.']\ncols = [TURQUOISE_RGB, AMBER_RGB, DEEPPINK_RGB]\ngap = 0.55\ncw = (body_w - 2 * gap) / 3\ny = body_top + 1.70\nch = body_h * 0.30\nfor i in range(3):\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=y, width=cw, height=ch, fill_rgb=SURFACE_RGB)\n    _add_rect(slide, left=x, top=y, width=cw, height=0.10, fill_rgb=cols[i])\n    _add_text(slide, steps[i], left=x + 0.22, top=y + 0.26, width=cw - 0.44, height=0.5, size=15, color_rgb=INK_RGB, font=MONO_FONT, bold=True)\n    _add_text(slide, subs[i], left=x + 0.22, top=y + 0.80, width=cw - 0.44, height=ch - 0.90, size=12, color_rgb=INK_RGB, font=SANS_FONT)\n    if i < 2:\n        _add_text(slide, '>', left=x + cw + 0.13, top=y + ch * 0.30, width=0.35, height=0.5, size=24, color_rgb=cols[i], font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\nty = y + ch + body_h * 0.08\n_add_rect(slide, left=body_l, top=ty, width=0.07, height=body_h * 0.17, fill_rgb=TURQUOISE_RGB)\n_add_text(slide, 'The habit: when data is small, start from something already pretrained -- never train a big network from scratch.', left=body_l + 0.30, top=ty, width=body_w - 0.30, height=body_h * 0.17, size=17, color_rgb=INK_RGB, font=SANS_FONT, anchor=MSO_ANCHOR.MIDDLE)",
+        "code": "fw = body_w * 0.56\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g3_brain_ct/slides/figures/intro_datasheet_checklist.png', left=body_l + body_w - fw, top=body_top + 0.3, max_w=fw, max_h=body_h - 0.4)\naw = body_w - fw - 0.5\nbullets = [('SIX QUESTIONS', 'A datasheet asks who is in the data -- age, sex, race, scanner, label source, consent -- so you know its limits before you trust it.', TURQUOISE_RGB),\n           ('TWO ANSWERS', 'Our brain-CT set answers only two: the image, and a stroke / normal label. The four demographic rows are simply blank.', DEEPPINK_RGB)]\ny = body_top + 0.35\nfor lab, body, col in bullets:\n    _add_rect(slide, left=body_l, top=y, width=0.12, height=1.7, fill_rgb=col)\n    _add_text(slide, lab, left=body_l + 0.3, top=y, width=aw - 0.3, height=0.45,\n              size=16, color_rgb=col, font=MONO_FONT, bold=True)\n    _add_text(slide, body, left=body_l + 0.3, top=y + 0.55, width=aw - 0.3, height=1.5,\n              size=16, color_rgb=INK_RGB, font=SANS_FONT)\n    y += 2.35",
         "lede": "",
-        "notes": "One transferable idea, echoed from Day 1: transfer learning. On a few hundred scans you cannot teach a network\nto see from scratch, so you borrow a ResNet18 already trained on a million ImageNet photos, freeze the body\nthat learned generic edges and textures, and train only a small new 2-class head. The chip flow makes the\nthree moves concrete: pretrained backbone, freeze, new head. Emphasize the habit: when data is small, start\nfrom something pretrained. Transition: does it work? Grade it honestly.",
-        "section_label": "Methods",
-        "title": "The idea: reuse a pretrained network"
+        "notes": "The Datasheets-for-Datasets idea (Gebru 2021): every dataset should ship a standard record of who is in it, so users know its makeup before trusting a model built on it. Left: the six questions a datasheet asks. Right figure: our set checks only two boxes -- image and label -- the four demographic rows are empty. That emptiness is what disarms the fairness audit later. Transition: now the model itself.",
+        "section_label": "The data",
+        "title": "What a datasheet should record"
       },
-      "slide_id": "h1-methods/h2-the-idea-reuse-a-pretrained-network"
+      "slide_id": "h1-the-data/h2-what-a-datasheet-should-record"
+    },
+    {
+      "content_hash": "4ad649ac4fc7cb41e24a930e262600a5a7f4d2c9e5a01196f266bcf547508734-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#8A2BE2",
+        "label": "The model",
+        "notes": "How we build both halves. For the scans, transfer learning with a CAFormer backbone; a reproducible recipe. For the table, a four-model bake-off, won on held-out AUC, deploying CatBoost because we can explain and audit it. Transition: first, borrow a brain."
+      },
+      "slide_id": "divider-h1-the-model"
+    },
+    {
+      "content_hash": "c484ec14a9f5c7f3b3638f2bdba4af4061ab89318d3784f6313f131507d40073",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "stages = [('PRETRAINED', 'a CAFormer already trained on millions of everyday photos', 'it knows edges, texture, shape', TURQUOISE_RGB),\n          ('FINE-TUNE', 'freeze that body; train only a small new head on our 224px CT slices', 'it learns the look of a bleed', DEEPPINK_RGB),\n          ('DETECT', 'ask the fine-tuned network for one call on a new scan', 'normal, or stroke', BLUEVIOLET_RGB)]\ngap = 1.0\ncw = (body_w - gap * 2) / 3\nch = body_h - 1.1\nctop = body_top + 0.1\nfor i, (lab, body, det, col) in enumerate(stages):\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=ctop, width=cw, height=ch, fill_rgb=_rgb('#EDEAE1'))\n    _add_rect(slide, left=x, top=ctop, width=cw, height=0.12, fill_rgb=col)\n    _add_text(slide, lab, left=x + 0.28, top=ctop + 0.45, width=cw - 0.56, height=0.5,\n              size=19, color_rgb=col, font=MONO_FONT, bold=True)\n    _add_text(slide, body, left=x + 0.28, top=ctop + 1.25, width=cw - 0.56, height=ch - 2.6,\n              size=15.5, color_rgb=INK_RGB, font=SANS_FONT)\n    _add_text(slide, det, left=x + 0.28, top=ctop + ch - 0.8, width=cw - 0.56, height=0.6,\n              size=14, color_rgb=col, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n    if i < 2:\n        _add_text(slide, '\\u2192', left=x + cw + 0.05, top=ctop + ch / 2 - 0.45, width=gap - 0.1, height=0.9,\n                  size=40, color_rgb=INK_RGB, font=MONO_FONT, bold=True, align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)\n_add_text(slide, 'Borrowed knowledge is why a network can learn stroke from a few hundred scans, not a few million.',\n          left=body_l, top=ctop + ch + 0.18, width=body_w, height=0.55, size=15,\n          color_rgb=BLUEVIOLET_RGB, font=SANS_FONT, italic=True, align=PP_ALIGN.CENTER)",
+        "lede": "",
+        "notes": "The one modeling idea for the images. We have hundreds of scans, not millions, so we borrow a brain: take a CAFormer pretrained on everyday photos, freeze its sense of edges and texture, and train only a small new head on our CT slices. Walk the three stages left to right. Same transfer-learning trick as Day 1. Transition: here is the exact recipe.",
+        "section_label": "The model",
+        "title": "Borrow a brain: transfer learning for the scans"
+      },
+      "slide_id": "h1-the-model/h2-borrow-a-brain-transfer-learning-for-the-scans"
+    },
+    {
+      "content_hash": "00a679175cf12481dbb71eec655a41e9f73be23a47ed1b6b71321d542227ea98",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "steps = [('1', 'MODEL', 'caformer_s18, pretrained, backbone FROZEN, a fresh 2-class head trained on top', TURQUOISE_RGB),\n         ('2', 'RESIZE', 'each CT slice decoded to 3-channel color and resized to 224 x 224 pixels', DEEPPINK_RGB),\n         ('3', 'NORMALIZE', 'pixels rescaled to the mean/scale the backbone was trained on; light flips augment TRAIN only', AMBER_RGB),\n         ('4', 'BALANCE', 'stroke vs. normal framed as one binary call, graded on sensitivity, not just accuracy', BLUEVIOLET_RGB),\n         ('5', 'SPLIT', 'separate train / val / test; every number we report is on the held-out test set', TURQUOISE_RGB)]\nn = len(steps)\ngap = 0.25\nrh = (body_h - gap * (n - 1)) / n\nfor i, (num, lab, body, col) in enumerate(steps):\n    y = body_top + i * (rh + gap)\n    _add_rect(slide, left=body_l, top=y, width=0.9, height=rh, fill_rgb=col)\n    _add_text(slide, num, left=body_l, top=y, width=0.9, height=rh,\n              size=26, color_rgb=_text_on(col), font=MONO_FONT, bold=True, align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, lab, left=body_l + 1.15, top=y, width=2.6, height=rh,\n              size=17, color_rgb=col, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, body, left=body_l + 3.9, top=y, width=body_w - 3.9, height=rh,\n              size=15, color_rgb=INK_RGB, font=SANS_FONT, anchor=MSO_ANCHOR.MIDDLE)",
+        "lede": "",
+        "notes": "The reproducibility slide -- read it as a recipe, not trivia. Five steps: (1) a frozen CAFormer with a fresh 2-class head; (2) every slice resized to 224x224; (3) normalized to the backbone's range, train-only augmentation; (4) framed as one stroke/normal call, graded on sensitivity; (5) a clean train/val/test split, all reporting on held-out data. Any one done wrong quietly breaks the result. Transition: the images were the easy half -- the table needs a model choice.",
+        "section_label": "The model",
+        "title": "The CT recipe, so it is reproducible"
+      },
+      "slide_id": "h1-the-model/h2-the-ct-recipe-so-it-is-reproducible"
+    },
+    {
+      "content_hash": "52b4f01d6ee4f2e440051d00c73e306147eb832ea848bd53e4629c8de32ac854",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "fw = body_w * 0.56\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g3_brain_ct/slides/figures/stroke_model_choice.png', left=body_l, top=body_top, max_w=fw, max_h=body_h)\nax = body_l + fw + 0.45\naw = body_w - fw - 0.45\n_add_rect(slide, left=ax, top=body_top + 0.15, width=aw, height=body_h - 0.35, fill_rgb=WHITE_RGB)\n_add_rect(slide, left=ax, top=body_top + 0.15, width=aw, height=0.1, fill_rgb=TURQUOISE_RGB)\n_add_text(slide, 'WE TESTED, WE DID NOT GUESS', left=ax + 0.3, top=body_top + 0.45, width=aw - 0.6, height=0.4,\n          size=14, color_rgb=TURQUOISE_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, '0.81', left=ax + 0.3, top=body_top + 1.0, width=aw - 0.6, height=0.9,\n          size=52, color_rgb=INK_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, 'CatBoost AUC. Four models all cleared 0.80, so the honest choice is not the top decimal.',\n          left=ax + 0.3, top=body_top + 2.0, width=aw - 0.6, height=1.3, size=15.5, color_rgb=INK_RGB, font=SANS_FONT)\n_add_text(slide, 'We deploy CatBoost because it is a tree we can explain with SHAP and audit by sex.',\n          left=ax + 0.3, top=body_top + 3.35, width=aw - 0.6, height=1.3, size=15.5, color_rgb=BLUEVIOLET_RGB, font=SANS_FONT, italic=True)",
+        "lede": "",
+        "notes": "The 'which model?' decision, made honestly. We ran a bake-off: Logistic Regression, Random Forest, CatBoost, TabPFN, judged by held-out AUC. All four cleared the 0.80 line -- a tight race -- so we did not chase the top decimal. We deploy CatBoost (0.81) because it is a gradient-boosted TREE, which means we can read it with SHAP and audit it by sex, both of which we do next. The teachable habit: pick for the job, not the leaderboard. Transition: on to results.",
+        "section_label": "The model",
+        "title": "For the table: we ran a bake-off"
+      },
+      "slide_id": "h1-the-model/h2-for-the-table-we-ran-a-bake-off"
     },
     {
       "content_hash": "9d386fbbaab59eb494f4c12cf1b23fd4b5c5347b03eb22c1c97fb04f41376eef-divider",
@@ -94,107 +143,136 @@
       "params": {
         "accent_hex": "#F0C840",
         "label": "Results",
-        "notes": "Three honest checks on the model we trained: does it catch strokes, is it looking at the right pixels, and does it survive a noisier scan. The theme is honest evaluation -- we report the weaknesses, not just the headline accuracy."
+        "notes": "The payoff in two acts. Act one: the CT detector works (AUC 0.817), reads mostly the right regions, but hits a wall -- no demographics, so the fairness audit cannot run. Act two: the tabular model records sex, so we audit AND fix a real gap. Transition: how do you grade a detector?"
       },
       "slide_id": "divider-h1-results"
     },
     {
-      "content_hash": "9bf4dc3db1a179b215e86d7240a58023e836edb93891ebb46ae09060864de6f6",
+      "content_hash": "4fbcf89989e91bbbdbc6b6840c34cb2a73a7871048e4867bf68976ff97929fcd",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "fw = body_w * 0.50\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g3_brain_ct/slides/figures/confusion.png', left=body_l, top=body_top + 0.15, max_w=fw, max_h=body_h - 0.30)\npx = body_l + fw + 0.40\npw = body_w - fw - 0.40\n_add_text(slide, '0.84', left=px, top=body_top + 0.15, width=pw, height=1.15,\n          size=66, color_rgb=DEEPPINK_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, 'sensitivity -- of the real strokes, the share we CAUGHT', left=px, top=body_top + 1.35,\n          width=pw, height=0.7, size=15, color_rgb=INK_RGB, font=SANS_FONT)\n_add_text(slide, 'Accuracy is only ~0.71 and specificity ~0.60, so it false-alarms on many normal scans. For a safety-net triage tool, catching bleeds matters more than the false alarms -- and one accuracy number alone would have hidden that split.',\n          left=px, top=body_top + 2.15, width=pw, height=body_h - 2.35, size=14, color_rgb=INK_RGB, font=SANS_FONT)",
+        "code": "fw = body_w * 0.50\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g3_brain_ct/slides/figures/roc.png', left=body_l + body_w - fw, top=body_top, max_w=fw, max_h=body_h)\naw = body_w - fw - 0.5\n_add_text(slide, '0.817', left=body_l, top=body_top + 0.2, width=aw, height=1.3,\n          size=84, color_rgb=AMBER_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, 'AUC -- the area under the ROC curve', left=body_l, top=body_top + 1.55, width=aw, height=0.5,\n          size=17, color_rgb=INK_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, 'The ROC curve sweeps every cut-off and plots strokes caught against false alarms. AUC is the area underneath.',\n          left=body_l, top=body_top + 2.2, width=aw, height=1.4, size=15.5, color_rgb=INK_RGB, font=SANS_FONT)\n_add_text(slide, '0.5 = a coin flip     1.0 = perfect', left=body_l, top=body_top + 3.75, width=aw, height=0.5,\n          size=15, color_rgb=BLUEVIOLET_RGB, font=MONO_FONT, bold=True)\n_add_text(slide, 'The curve hugs the top-left corner -- a genuinely working detector.',\n          left=body_l, top=body_top + 4.3, width=aw, height=0.6, size=15, color_rgb=INK_RGB, font=SANS_FONT, italic=True)",
         "lede": "",
-        "notes": "The honest-evaluation slide, and the metric lesson. On the held-out test set overall accuracy is ~0.71, but\nthat is the wrong headline for screening. Break it into the two error types: sensitivity ~0.84 means it\ncatches most real strokes (the error we most want to avoid), while specificity ~0.60 means it false-alarms on\nmany normal scans. The confusion matrix shows the same split as a picture. Point: for a triage safety-net you\nwould tune toward sensitivity on purpose -- crying wolf beats missing a bleed -- and a single accuracy number\nwould have hidden it. Transition: but is it right for the right reason?",
+        "notes": "Name the metric before the number. A detector outputs a score, not a yes/no, so we grade it with the ROC curve -- every cut-off, plotting strokes caught against false alarms -- and AUC, the area underneath (0.5 coin flip, 1.0 perfect). We use AUC, not accuracy, because accuracy is fooled by the rare positive. Ours is 0.817 and the curve hugs the top-left: a real, working detector. Transition: but grade the two error types apart.",
         "section_label": "Results",
-        "title": "It catches most strokes — but cries wolf"
+        "title": "The CT detector works"
       },
-      "slide_id": "h1-results/h2-it-catches-most-strokes-but-cries-wolf"
+      "slide_id": "h1-results/h2-the-ct-detector-works"
     },
     {
-      "content_hash": "1fd65868be42f713532fa2554896fc1c2da74b1af5dd265a434e3e28bc8f723d",
+      "content_hash": "6f73a060c0dca416da8c4fc46698c589206ebcb3e189a63b640af21132f836a6",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "fw = body_w * 0.60\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g3_brain_ct/slides/figures/gradcam.png', left=body_l, top=body_top + 0.15, max_w=fw, max_h=body_h - 0.30)\npx = body_l + fw + 0.35\npw = body_w - fw - 0.35\n_add_card(slide, surface_rgb=_rgb('#FFFFFF'), label='Right for the wrong reason?',\n          body='Grad-CAM paints WHERE the network looked. Some heat lands on brain tissue, but some drifts to the skull edge and the image border -- a classic shortcut that works on this dataset and would break on a new scanner (Yang 2024). Worth saying out loud, not hiding.',\n          left=px, top=body_top + 0.20, width=pw, height=body_h - 0.55, accent_rgb=accent_rgb)",
+        "code": "fw = body_w * 0.50\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g3_brain_ct/slides/figures/confusion.png', left=body_l, top=body_top + 0.15, max_w=fw, max_h=body_h - 0.3)\nax = body_l + fw + 0.45\naw = body_w - fw - 0.45\nrows = [('65%', 'of real STROKES caught (sensitivity) -- most, but not all', DEEPPINK_RGB),\n        ('81%', 'of real NORMALS cleared (specificity) -- few false alarms', TURQUOISE_RGB),\n        ('the dial', 'for a safety-net triage tool, lower the threshold to catch more strokes, accepting more false alarms', BLUEVIOLET_RGB)]\nrh = 1.42\nfor i, (num, lab, col) in enumerate(rows):\n    y = body_top + 0.15 + i * (rh + 0.18)\n    _add_rect(slide, left=ax, top=y, width=0.14, height=rh, fill_rgb=col)\n    _add_text(slide, num, left=ax + 0.3, top=y, width=1.9, height=rh,\n              size=34, color_rgb=col, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)\n    _add_text(slide, lab, left=ax + 2.3, top=y, width=aw - 2.3, height=rh,\n              size=15, color_rgb=INK_RGB, font=SANS_FONT, anchor=MSO_ANCHOR.MIDDLE)",
         "lede": "",
-        "notes": "Transparency audit. A model can be right for the wrong reason, so Grad-CAM overlays where the network actually\nlooked to make each call. Honest read of our figure: some heat is on brain tissue, but some sits on the skull\nedge and the black border -- a shortcut. Tie it to Yang 2024: shortcut-learning is exactly why 'fair here'\ndoes not generalize. The teaching move is to SAY this out loud; naming a weakness is a stronger talk than\nhiding it. Transition: and it is brittle when the image gets messy.",
+        "notes": "Read the confusion matrix out loud -- rows are truth, columns are what the model said. Diagonal is correct; off-diagonal is the two error types, and they are NOT equal. Sensitivity ~0.65: it catches about two-thirds of real strokes. Specificity ~0.81: it clears most normals, so false alarms are modest. A missed bleed is the deadly error, so for triage you would lower the threshold to catch more strokes on purpose. One accuracy number would have hidden this split. Transition: is it looking at the right place?",
+        "section_label": "Results",
+        "title": "Read the two errors apart"
+      },
+      "slide_id": "h1-results/h2-read-the-two-errors-apart"
+    },
+    {
+      "content_hash": "9835e6dc6b3c4f7165fd031b0fd86fcb7688057e51664393b6cf549e929abef1",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "img_h = body_h - 1.0\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g3_brain_ct/slides/figures/gradcam.png', left=body_l, top=body_top, max_w=body_w, max_h=img_h)\nband_y = body_top + img_h + 0.12\n_add_rect(slide, left=body_l, top=band_y, width=body_w, height=0.8, fill_rgb=_rgb('#EDEAE1'))\n_add_text(slide, 'Grad-CAM = feature importance for an image: some heat sits on brain tissue (good), but some drifts to the SKULL EDGE and border -- a shortcut that works here and would break on a new scanner.',\n          left=body_l + 0.3, top=band_y + 0.1, width=body_w - 0.6, height=0.6,\n          size=14.5, color_rgb=INK_RGB, font=SANS_FONT, anchor=MSO_ANCHOR.MIDDLE)",
+        "lede": "",
+        "notes": "The image version of feature importance. For a table we'd ask SHAP which columns mattered; for a scan we use Grad-CAM, which highlights WHERE the model looked. Top row: scans; bottom row: the heat overlay. Honest read: some heat lands on brain tissue, but some bleeds onto the skull edge and image border -- a classic shortcut. The model is partly reading anatomy and partly cheating off shape cues, which would fail on a different scanner. Worth saying out loud. Transition: and now the wall.",
         "section_label": "Results",
         "title": "Is it reading the brain, or cheating off the skull?"
       },
       "slide_id": "h1-results/h2-is-it-reading-the-brain-or-cheating-off-the-skull"
     },
     {
-      "content_hash": "bf5284e8e35e3b1abe09bcc1116ccea6420bce3daaeb48272aad5f261e23aa87",
+      "content_hash": "5ec6269003f938456204eecf185eb877acc155c142b6af9000ea7c8f00adac9a",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "fw = body_w * 0.58\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g3_brain_ct/slides/figures/noise_robustness.png', left=body_l, top=body_top + 0.15, max_w=fw, max_h=body_h - 0.30)\npx = body_l + fw + 0.35\npw = body_w - fw - 0.35\n_add_card(slide, surface_rgb=_rgb('#FFFFFF'), label='Brittle under noise',\n          body='Training images are clean; a real ER scanner is noisier -- motion, low dose, different machines. Adding random noise to the test scans makes accuracy sag fast. A deployable tool would need augmentation, far more data, and live monitoring after it ships.',\n          left=px, top=body_top + 0.20, width=pw, height=body_h - 0.55, accent_rgb=accent_rgb)",
+        "code": "fw = body_w * 0.48\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g3_brain_ct/slides/figures/missing_metadata.png', left=body_l + body_w - fw, top=body_top + 0.2, max_w=fw, max_h=body_h - 1.4)\naw = body_w - fw - 0.5\n_add_text(slide, 'We can audit by CLASS (normal vs. stroke) because the label exists. But the audit that matters -- older vs. younger, women vs. men, one scanner vs. another -- we cannot run at all.',\n          left=body_l, top=body_top + 0.2, width=aw, height=2.0, size=16.5, color_rgb=INK_RGB, font=SANS_FONT)\n_add_text(slide, 'Not because it is hard: the dataset never recorded those fields, so there is nothing to group by.',\n          left=body_l, top=body_top + 2.35, width=aw, height=1.3, size=16.5, color_rgb=INK_RGB, font=SANS_FONT)\ncy = body_top + body_h - 1.55\n_add_rect(slide, left=body_l, top=cy, width=body_w, height=1.5, fill_rgb=DEEPPINK_RGB)\ntc = _text_on(DEEPPINK_RGB)\n_add_text(slide, 'DISQUALIFYING, NOT A FOOTNOTE', left=body_l + 0.35, top=cy + 0.22, width=body_w - 0.7, height=0.5,\n          size=17, color_rgb=tc, font=MONO_FONT, bold=True)\n_add_text(slide, 'The detector might be far worse for some group of patients, and we would have no way to know. For a tool that touches patients, an un-runnable fairness audit sinks it on its own.',\n          left=body_l + 0.35, top=cy + 0.78, width=body_w - 0.7, height=0.65, size=15, color_rgb=tc, font=SANS_FONT)",
         "lede": "",
-        "notes": "Robustness / monitoring audit. Training data is clean; deployed scanners are messy (motion, low dose, other\nmachines). We simulate that by adding increasing noise to the test images and watching accuracy -- it drops\nquickly, so this toy model is brittle. The real-world lesson: a shipped model meets drift, so it needs\naugmentation, more data, and live monitoring, not a one-time score. Transition: now the audit we cannot run\nat all -- the point of the whole project.",
+        "notes": "The gap that IS the finding. The figure is deliberately mostly blank -- a picture of metadata that does not exist. We CAN audit by class (the label is there), but the fairness audit -- who does it fail? -- cannot run, because age, sex, race, and scanner were never recorded. The pink bar drives it home: this is not a small caveat. A detector that might be far worse for some patients, with no way to check, is disqualified on its own (Gebru 2021; Seyyed-Kalantari 2021). Transition: so let's use a dataset that DID record demographics.",
         "section_label": "Results",
-        "title": "Does it survive a messier scan?"
+        "title": "The wall: the audit we cannot run"
       },
-      "slide_id": "h1-results/h2-does-it-survive-a-messier-scan"
+      "slide_id": "h1-results/h2-the-wall-the-audit-we-cannot-run"
     },
     {
-      "content_hash": "01c70c0f666bf9394debac8f55a448d4780255f497a88208ece4d89b469c74e1-divider",
-      "kind": "section-divider",
-      "params": {
-        "accent_hex": "#8A2BE2",
-        "label": "The gap that IS the finding",
-        "notes": "This is the turn. Everything so far was a normal ML project; now we name the thing this dataset makes impossible -- a fairness audit -- and argue that the missing metadata is not a footnote but the headline finding."
-      },
-      "slide_id": "divider-h1-the-gap-that-is-the-finding"
-    },
-    {
-      "content_hash": "4dd455c616a3e1fbb90bf7b423685b35a7dff1db857c0dd948c9e996459f9527",
+      "content_hash": "1cf698072b94fa18cee87441388c12186941531d794f79c62021bd79cba7d1b2",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "fw = body_w * 0.58\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g3_brain_ct/slides/figures/missing_metadata.png', left=body_l, top=body_top + 0.15, max_w=fw, max_h=body_h - 0.30)\npx = body_l + fw + 0.35\npw = body_w - fw - 0.35\n_add_card(slide, surface_rgb=_rgb('#FFFFFF'), label='Nothing to group by',\n          body='We CAN audit fairness by class, because the label exists. But the audit that matters -- does it work as well for older patients as younger, women as men, one scanner as another -- cannot run at all. The dataset never recorded age, sex, race, or scanner. There is literally nothing to group by.',\n          left=px, top=body_top + 0.20, width=pw, height=body_h - 0.55, accent_rgb=accent_rgb)",
+        "code": "fw = body_w * 0.56\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g3_brain_ct/slides/figures/stroke_fairness_fix.png', left=body_l, top=body_top, max_w=fw, max_h=body_h)\nax = body_l + fw + 0.45\naw = body_w - fw - 0.45\n_add_rect(slide, left=ax, top=body_top + 0.15, width=aw, height=1.7, fill_rgb=TURQUOISE_RGB)\ntc = _text_on(TURQUOISE_RGB)\n_add_text(slide, '76% \\u2192 83%', left=ax + 0.28, top=body_top + 0.32, width=aw - 0.56, height=0.75,\n          size=34, color_rgb=tc, font=MONO_FONT, bold=True)\n_add_text(slide, \"women's strokes caught, after a group-aware threshold (men held at 85%)\",\n          left=ax + 0.28, top=body_top + 1.12, width=aw - 0.56, height=0.6, size=13.5, color_rgb=tc, font=SANS_FONT)\n_add_rect(slide, left=ax, top=body_top + 2.05, width=aw, height=1.5, fill_rgb=BLUEVIOLET_RGB)\ntc2 = _text_on(BLUEVIOLET_RGB)\n_add_text(slide, 'gap 9% \\u2192 2%', left=ax + 0.28, top=body_top + 2.2, width=aw - 0.56, height=0.7,\n          size=30, color_rgb=tc2, font=MONO_FONT, bold=True)\n_add_text(slide, 'recording sex made the gap visible AND closable', left=ax + 0.28,\n          top=body_top + 2.95, width=aw - 0.56, height=0.5, size=13.5, color_rgb=tc2, font=SANS_FONT)\n_add_text(slide, 'The audit the CT scans made impossible -- run, and fixed.',\n          left=ax, top=body_top + 3.75, width=aw, height=1.0, size=15, color_rgb=INK_RGB, font=SANS_FONT, italic=True)",
         "lede": "",
-        "notes": "The climax figure: a deliberately near-blank slide, a picture of metadata that does not exist. Draw the\ndistinction crisply: we CAN audit by class (normal vs. stroke) because the label is recorded, but the audit\nthat actually matters for fairness -- across age, sex, race, scanner -- cannot be run at all, because there is\nnothing to group by. Not hard; impossible. Let the emptiness of the figure do the work. Transition: why that\nsilence is disqualifying, not a caveat.",
-        "section_label": "The gap that IS the finding",
-        "title": "The audit we literally cannot run"
+        "notes": "The payoff of the second dataset, and the whole thesis in one before/after. Because the table records SEX, we ran the audit the scans blocked. At a threshold tuned to catch 80% of strokes overall, women's strokes were caught only 76% of the time vs men's 85% -- a real 9-point gap (grey bars). The fix: give each sex its own threshold, equalizing UP -- women rise to 83% (turquoise bars), the gap all but closes. Recording sex made the gap both visible and fixable. That contrast with the CT wall is the point of the talk. Transition: and we can read WHY it predicts.",
+        "section_label": "Results",
+        "title": "Now a dataset that records sex: audit, then fix"
       },
-      "slide_id": "h1-the-gap-that-is-the-finding/h2-the-audit-we-literally-cannot-run"
+      "slide_id": "h1-results/h2-now-a-dataset-that-records-sex-audit-then-fix"
     },
     {
-      "content_hash": "566feac5064900a9eafa6fc327b58f5754fe47902c8eb39e5f24854d3ec938b7",
+      "content_hash": "0934306e990f0795b4aa00d2f20628ea0c5ad3b37bc23e27d227914215e487d5",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "_add_text(slide, 'An un-runnable fairness audit is not a footnote.', left=body_l, top=body_top + body_h * 0.20, width=body_w, height=1.1, size=30, color_rgb=accent_rgb, font=MONO_FONT, bold=True, align=PP_ALIGN.CENTER)\n_add_rect(slide, left=body_l + body_w * 0.42, top=body_top + body_h * 0.42, width=body_w * 0.16, height=0.035, fill_rgb=accent_rgb)\n_add_text(slide, 'Our detector might be much worse for some group of patients, and we would have no way to know. Datasheets work and radiology-AI reviews say a dataset should document who is in it; real audits show hidden bias appears exactly along age, sex, race, and scanner lines -- and only where those labels exist. For a tool that would touch patients, that silence is the headline.', left=body_l + 1.0, top=body_top + body_h * 0.52, width=body_w - 2.0, height=body_h * 0.40, size=16, color_rgb=INK_RGB, font=SANS_FONT, align=PP_ALIGN.CENTER)",
+        "code": "fw = body_w * 0.55\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g3_brain_ct/slides/figures/stroke_shap.png', left=body_l + body_w - fw, top=body_top, max_w=fw, max_h=body_h)\naw = body_w - fw - 0.5\n_add_text(slide, 'SHAP = feature importance for a table: how much each column moves the prediction.',\n          left=body_l, top=body_top + 0.2, width=aw, height=1.1, size=16, color_rgb=INK_RGB, font=SANS_FONT)\nranks = [('age', 'by far the strongest driver', DEEPPINK_RGB),\n         ('bmi + glucose', 'the next tier of risk', AMBER_RGB),\n         ('sex', 'barely moves the score -- yet it mattered for FAIRNESS', BLUEVIOLET_RGB)]\ny = body_top + 1.5\nfor lab, note, col in ranks:\n    _add_text(slide, lab, left=body_l, top=y, width=aw, height=0.45,\n              size=18, color_rgb=col, font=MONO_FONT, bold=True)\n    _add_text(slide, note, left=body_l, top=y + 0.48, width=aw, height=0.7,\n              size=15, color_rgb=INK_RGB, font=SANS_FONT)\n    y += 1.25",
         "lede": "",
-        "notes": "Land the thesis. Say it plainly: the model could be far worse for some group and we could not detect it. The\nliterature agrees on both halves -- datasheets/reviews (Gebru 2021, Tripathi 2023) say document who is in the\ndata; audits (Seyyed-Kalantari 2021, Yang 2024) show bias hides along demographic and scanner lines and is\nonly visible where those labels exist. So for anything that would touch a patient, an un-runnable fairness\naudit is not a caveat you note at the end -- it is the finding. This is the sentence to end the talk on.\nTransition: the sources behind all of this.",
-        "section_label": "The gap that IS the finding",
-        "title": "Why that silence is disqualifying"
+        "notes": "Feature importance for the table. SHAP measures how much each column moves each prediction. Age dominates -- unsurprising for stroke -- with BMI and glucose next. The quiet point: SEX barely moves the risk SCORE, yet it mattered enormously for the fairness audit two slides ago. That is why you audit by group directly rather than trusting that a small feature-importance means a small disparity. A model you can read like this is one you can question and trust. Transition: pull it together.",
+        "section_label": "Results",
+        "title": "What drives the risk score: age dominates"
       },
-      "slide_id": "h1-the-gap-that-is-the-finding/h2-why-that-silence-is-disqualifying"
+      "slide_id": "h1-results/h2-what-drives-the-risk-score-age-dominates"
     },
     {
-      "content_hash": "dd24868b7b6fc880b2d69f84839816bb8ebf7609e3e03c2b5b93e25028eeff66-divider",
+      "content_hash": "4715973bb4a776cf4b1afcf791928f799047c42a1780e4ae973909bed6dde812-divider",
       "kind": "section-divider",
       "params": {
         "accent_hex": "#40E0D0",
-        "label": "References",
-        "notes": "The sources behind every claim, grouped by the role each plays: the real triage systems that motivate the task, the dataset-documentation argument, and the fairness audits that only work when metadata exists."
+        "label": "The takeaway",
+        "notes": "Land the one idea the rubric rewards: recording demographics is what makes fairness auditable and fixable. Recap the contrast, credit the papers, and leave them with the rule -- a model you can audit is the real bar."
       },
-      "slide_id": "divider-h1-references"
+      "slide_id": "divider-h1-the-takeaway"
     },
     {
-      "content_hash": "1758250628a09e6162ac4e1899e2fdb4f6f5b6bd54b078e9bdafbcf44efa6cae",
+      "content_hash": "0cce75d3633f2cecc779ba08dd56be7622840cf99fe3dd1e34cb899d38f0722f",
       "kind": "freeform",
       "params": {
         "_provenance": "agent",
-        "code": "gap = 0.35\ncw = (body_w - 2 * gap) / 3\nh = body_h * 0.52\ny = body_top + 0.22\n_add_card(slide, surface_rgb=_rgb('#FFFFFF'), label='Head-CT triage AI', body='Chilamkurthy 2018 (The Lancet); Flanders 2020 (Radiology: AI, RSNA challenge); Seyam 2022 (Radiology: AI).', left=body_l, top=y, width=cw, height=h, accent_rgb=TURQUOISE_RGB)\n_add_card(slide, surface_rgb=_rgb('#FFFFFF'), label='Datasets & documentation', body='Gebru 2021 (Communications of the ACM, Datasheets for Datasets); Tripathi 2023 (J Am Coll Radiol).', left=body_l + cw + gap, top=y, width=cw, height=h, accent_rgb=DEEPPINK_RGB)\n_add_card(slide, surface_rgb=_rgb('#FFFFFF'), label='Fairness audits that need metadata', body='Seyyed-Kalantari 2021 (Nature Medicine); Yang 2024 (Nature Medicine).', left=body_l + 2 * (cw + gap), top=y, width=cw, height=h, accent_rgb=AMBER_RGB)\nry = y + h + body_h * 0.09\n_add_rect(slide, left=body_l, top=ry, width=0.07, height=body_h * 0.16, fill_rgb=TURQUOISE_RGB)\n_add_text(slide, 'Every claim in this deck traces back to one of these sources.', left=body_l + 0.30, top=ry, width=body_w - 0.30, height=body_h * 0.16, size=17, color_rgb=INK_RGB, font=SANS_FONT, anchor=MSO_ANCHOR.MIDDLE)",
+        "code": "cards = [('CT: WORKS, CAN\\'T AUDIT', 'AUC 0.817 -- a real detector. But the dataset records only image + label, so the who-does-it-fail audit simply cannot run.', 'no demographics = no audit', DEEPPINK_RGB),\n         ('TABULAR: AUDITED + FIXED', 'AUC 0.81, and because it records sex we found a real gap (76% vs 85%) and closed it (to 83% vs 85%) with a group-aware threshold.', 'metadata = auditable + fixable', TURQUOISE_RGB),\n         ('THE RULE', 'A model that runs is easy. A model you can AUDIT is the real bar -- and recording who is in the data is what makes it possible.', 'audit is the bar', BLUEVIOLET_RGB)]\ngap = 0.35\ncw = (body_w - gap * 2) / 3\nch = body_h - 0.1\nby = body_top + 0.55\nfor i, (lab, body, tag, col) in enumerate(cards):\n    x = body_l + i * (cw + gap)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=ch, fill_rgb=WHITE_RGB)\n    _add_rect(slide, left=x, top=body_top, width=cw, height=0.1, fill_rgb=col)\n    _add_text(slide, lab, left=x + 0.28, top=by, width=cw - 0.56, height=0.85,\n              size=16, color_rgb=col, font=MONO_FONT, bold=True)\n    _add_text(slide, body, left=x + 0.28, top=by + 1.05, width=cw - 0.56, height=ch - 2.6,\n              size=15.5, color_rgb=INK_RGB, font=SANS_FONT)\n    _add_rect(slide, left=x, top=body_top + ch - 1.0, width=cw, height=0.02, fill_rgb=_rgb('#E4E1D9'))\n    _add_text(slide, tag, left=x + 0.28, top=body_top + ch - 0.85, width=cw - 0.56, height=0.6,\n              size=14.5, color_rgb=col, font=MONO_FONT, bold=True, anchor=MSO_ANCHOR.MIDDLE)",
         "lede": "",
-        "notes": "The evidence base, grouped by role. Left: the real head-CT triage AI that motivates the task (Chilamkurthy\n2018, Flanders/RSNA 2020, Seyam 2022). Middle: the datasheets/documentation argument (Gebru 2021, Tripathi\n2023). Right: the fairness audits that only work when metadata exists (Seyyed-Kalantari 2021, Yang 2024).\nEvery claim in the deck traces to one of these.",
-        "section_label": "References",
+        "notes": "The recap the rubric rewards, three cards. Pink: the CT model works (0.817) but cannot be audited -- no demographics. Turquoise: the tabular model works (0.81) AND, because it records sex, we audited and fixed a real gap (76 to 83 percent). Purple: the rule -- a model that runs is easy, a model you can audit is the real bar, and recording who is in the data is what makes it possible. Say the through-line one more time: imaging can hide who's in it; metadata is what lets you check fairness. Transition: the papers behind it.",
+        "section_label": "The takeaway",
+        "title": "Recording demographics makes fairness auditable – and fixable"
+      },
+      "slide_id": "h1-the-takeaway/h2-recording-demographics-makes-fairness-auditable-and-fixable"
+    },
+    {
+      "content_hash": "97a780f4ea40a18d7cae72d97801a88f1076e1ce09f4a77b51f061cfa9c65fc4",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "colw = (body_w - 1.2) / 3\nc1 = ('HEAD-CT TRIAGE AI', '[1] Chilamkurthy 2018, The Lancet -- critical findings on head CT.\\n\\n[2] Flanders 2020, Radiology: AI -- the RSNA hemorrhage challenge.\\n\\n[3] Seyam 2022, Radiology: AI -- a deployed tool in the clinic.', TURQUOISE_RGB)\nc2 = ('DATA & DOCUMENTATION', '[4] Gebru 2021, Comms of the ACM -- Datasheets for Datasets.\\n\\n[5] Tripathi 2023, J Am Coll Radiol -- biases in radiology-AI data.\\n\\n[8] Kim 2022, BMC Med Imaging -- transfer learning.', DEEPPINK_RGB)\nc3 = ('FAIRNESS NEEDS METADATA', '[6] Seyyed-Kalantari 2021, Nature Medicine -- underdiagnosis bias.\\n\\n[7] Yang 2024, Nature Medicine -- limits of fair imaging AI.\\n\\nSaver 2006, Stroke -- \"Time Is Brain\".', BLUEVIOLET_RGB)\nfor i, (head, body, col) in enumerate([c1, c2, c3]):\n    x = body_l + i * (colw + 0.6)\n    _add_text(slide, head, left=x, top=body_top + 0.05, width=colw, height=0.8,\n              size=14.5, color_rgb=col, font=MONO_FONT, bold=True)\n    _add_text(slide, body, left=x, top=body_top + 0.95, width=colw, height=body_h - 1.05,\n              size=13.5, color_rgb=INK_RGB, font=SANS_FONT)",
+        "lede": "",
+        "notes": "Give credit and show the trail, in three groups. Left: the head-CT triage work that shows the clinical job is real [1][2][3]. Middle: the datasets-and-documentation papers -- Datasheets [4], the radiology-data review [5], transfer learning [8]. Right: the fairness audits that only worked because the data recorded groups [6][7], plus Saver 2006 for 'time is brain'. Point out that [4] and [6] are the backbone of our whole argument. Transition: the one sentence to remember.",
+        "section_label": "The takeaway",
         "title": "References"
       },
-      "slide_id": "h1-references/h2-references"
+      "slide_id": "h1-the-takeaway/h2-references"
+    },
+    {
+      "content_hash": "e7224d703cefcd151afb8c253761bfda06c27d0d91a1f1f478130b4ef20a7ef0",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "q_top = body_top + body_h * 0.22\n_add_text(slide, 'An imaging dataset can hide who is in it.',\n          left=body_l, top=q_top, width=body_w, height=1.0,\n          size=30, color_rgb=TURQUOISE_RGB, font=MONO_FONT, bold=True, align=PP_ALIGN.CENTER)\nrule_w = 2.6\n_add_rect(slide, left=body_l + (body_w - rule_w) / 2, top=q_top + 1.35, width=rule_w, height=0.05, fill_rgb=TURQUOISE_RGB)\n_add_text(slide, 'Recording demographics is what turns fairness from a hope into something you can measure -- and fix. That is the finding, not the footnote.',\n          left=body_l + 1.0, top=q_top + 1.9, width=body_w - 2.0, height=1.3,\n          size=19, color_rgb=INK_RGB, font=SANS_FONT, align=PP_ALIGN.CENTER)",
+        "lede": "",
+        "notes": "Land the deck on one idea: an imaging dataset can hide who is in it, and recording demographics is what turns fairness from a hope into something you can measure and fix. Our two datasets proved it -- the CT model worked but could not be audited; the tabular model was audited AND fixed. Leave them with the working rule of medical AI: a model you can check honestly beats a fancy one nobody can. Thank them.",
+        "section_label": "The takeaway",
+        "title": "The honest bottom line"
+      },
+      "slide_id": "h1-the-takeaway/h2-the-honest-bottom-line"
     }
   ],
   "theme": "bone",
