@@ -71,14 +71,15 @@ Making a call and pressure-testing it with Claude is the whole point of today.
 
 both(code("""
 # Setup: on Colab, grab the course files. Locally this is a no-op.
-import os, sys, subprocess
+import os, sys, subprocess   # tools for files, paths, and running shell commands
+# if common.py isn't here, we're on a fresh Colab machine that needs the course code
 if not os.path.exists("common.py"):
-    os.system("git clone -q https://github.com/jinchiwei/outset-ai-healthcare.git")
-    os.chdir("outset-ai-healthcare/notebooks/day2_multimodal")
+    os.system("git clone -q https://github.com/jinchiwei/outset-ai-healthcare.git")  # download the repo
+    os.chdir("outset-ai-healthcare/notebooks/day2_multimodal")   # move into today's folder
 else:
     os.system("git pull -q 2>/dev/null")   # already cloned -> refresh the course code
-sys.path.insert(0, ".")
-sys.path.insert(0, "../_shared")
+sys.path.insert(0, ".")            # let Python import files from this folder (e.g. common.py)
+sys.path.insert(0, "../_shared")   # ...and shared helpers one folder up
 
 # TabPFN weights: PIN 2.2.1. Newer (8.x) releases -- what Colab grabs by default --
 # gate the weight download behind a license token that can't be accepted on Colab
@@ -86,26 +87,29 @@ sys.path.insert(0, "../_shared")
 # Belt-and-suspenders: also set a throwaway course token, so that even if a newer
 # TabPFN ends up loaded, its license check passes. (Disposable 30-day key; harmless
 # for 2.2.1, which ignores it. Instructor: let it expire / revoke after the course.)
+# set a license token only if one isn't already set (setdefault won't overwrite)
 os.environ.setdefault("TABPFN_TOKEN", "tabpfn_sk_wHI64x4RQU89RmBI8R-JUGSy18LeLHHNuSm0VgVCRbw")
+# install the exact TabPFN version we tested with (quiet, don't crash if it fails)
 subprocess.run([sys.executable, "-m", "pip", "install", "-q", "tabpfn==2.2.1"], check=False)
+# if a different TabPFN was already loaded into memory, the pin above won't take effect yet
 if "tabpfn" in sys.modules and not getattr(sys.modules["tabpfn"], "__version__", "2.2").startswith("2.2"):
-    print("\\n*** ACTION NEEDED: an old TabPFN is still loaded in memory.")
+    print("\\n*** ACTION NEEDED: an old TabPFN is still loaded in memory.")   # warn the student
     print("    Go to  Runtime -> Restart session , then  Runtime -> Run all .  ***\\n")
 
-import colab_setup
-colab_setup.ensure(*colab_setup.DAY2)
+import colab_setup                       # course helper that downloads any missing data files
+colab_setup.ensure(*colab_setup.DAY2)    # make sure all of Day 2's datasets are present
 """))
 
 both(code("""
-import os, sys
-import numpy as np
-import pandas as pd
-import common
+import os, sys                # file and path helpers
+import numpy as np            # fast number crunching (arrays, math)
+import pandas as pd           # tables (DataFrames), like a spreadsheet in code
+import common                 # this course's shared helper functions
 # nbfig lives in notebooks/_shared; add it relative to common.py so this cell
 # works even if the setup cell above wasn't run, and from any working directory.
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(common.__file__)), "..", "_shared"))
 import nbfig          # Colab-safe branded plotting (matches the slide figures)
-nbfig.use()
+nbfig.use()           # turn on the course's plot styling (fonts, colors)
 """))
 
 # =========================================================================== #
@@ -124,20 +128,24 @@ before you read the label.
 """))
 
 both(code("""
-import json
-from PIL import Image
+import json                 # read/write JSON (text-based data files)
+from PIL import Image        # open and handle image files
 
+# load the radiology reports file into a Python dictionary keyed by case id
 reports = json.loads(open("../../datasets/openi_sample_reports.json").read())
 sample_ids = ["3840", "1164", "3187"]   # the three we shipped images for
 
-fig, axes = nbfig.fig(1, 3, figsize=(11, 4.2))
-for ax, cid in zip(axes, sample_ids):
+fig, axes = nbfig.fig(1, 3, figsize=(11, 4.2))   # a figure with 3 side-by-side panels
+for ax, cid in zip(axes, sample_ids):            # pair each panel with a case id
+    # load the X-ray, convert to grayscale ("L"), and draw it in gray colors
     ax.imshow(Image.open(f"sample_images/{cid}.png").convert("L"), cmap="gray")
+    # pick the title text based on whether this case is labeled cardiomegaly
     lab = "CARDIOMEGALY" if reports[cid]["label"] else "normal heart"
+    # set the title; pink for cardiomegaly, dark ink for normal
     ax.set_title(lab, fontsize=12, color=(nbfig.DEEPPINK if reports[cid]["label"] else nbfig.INK),
                  family="DejaVu Sans Mono")
-    ax.axis("off")
-nbfig.show(fig, "Three real chest X-rays")
+    ax.axis("off")               # hide the x/y axis ticks around the image
+nbfig.show(fig, "Three real chest X-rays")   # render the figure with a caption
 """))
 
 both(md("""
@@ -149,13 +157,14 @@ recorded. Read one real report below.
 """))
 
 both(code("""
-cid = "3840"
-rec = reports[cid]
+cid = "3840"                 # pick one case id to look at
+rec = reports[cid]           # grab that case's report record (a dictionary)
+# print the case id and whether it's labeled cardiomegaly or normal
 print(f"CASE {cid}   (label: {'cardiomegaly' if rec['label'] else 'normal'})")
-print("=" * 64)
-print("FINDINGS:   ", rec["findings"])
-print("IMPRESSION: ", rec["impression"])
-print("MeSH tags:  ", rec["mesh_majors"])
+print("=" * 64)              # a divider line of 64 equals signs
+print("FINDINGS:   ", rec["findings"])       # the radiologist's detailed observations
+print("IMPRESSION: ", rec["impression"])     # the short summary/conclusion
+print("MeSH tags:  ", rec["mesh_majors"])    # standardized medical keyword tags
 """))
 
 both(md("""
@@ -171,25 +180,33 @@ with the true label? Keep that observation, it's the trap you'll spring in Secti
 """))
 
 both(code("""
+# define a function that prints everything we know about one patient (default = first case)
 def show_patient(case=list(reports)[0]):
-    rec = reports[case]
-    print("=" * 68)
+    rec = reports[case]                # that patient's report record
+    print("=" * 68)                    # divider line
     print("THE REPORT (free text the LLM read):")
+    # print the findings, or "(none)" if empty, trimmed to the first 280 characters
     print("  FINDINGS:  ", (rec["findings"] or "(none)")[:280])
+    # same for the impression, trimmed to 200 characters
     print("  IMPRESSION:", (rec["impression"] or "(none)")[:200])
-    print("-" * 68)
+    print("-" * 68)                    # thinner divider line
     print("LLM-EXTRACTED TEXT FEATURES (numbers):")
+    # loop over each yes/no finding the LLM pulled from this report
     for k, v in common.load_cached_llm_features(case).items():
-        print(f"    {k:28s} {v}")
-    print("DEMOGRAPHICS:", common.load_demographics(case))
+        print(f"    {k:28s} {v}")       # print name (padded to 28 chars) then value
+    print("DEMOGRAPHICS:", common.load_demographics(case))   # age, sex, smoker
+    # print the image model's probability, rounded to 3 decimals
     print("IMAGE VOTE  : img_pred =", round(common.load_cached_image_pred(case)["img_pred"], 3))
     print("-" * 68)
+    # finally the ground-truth answer we're trying to predict
     print("TRUE LABEL  :", "CARDIOMEGALY" if rec["label"] else "normal (no cardiomegaly)")
 
 try:
-    from ipywidgets import interact, Dropdown
+    from ipywidgets import interact, Dropdown   # interactive widgets (Colab/Jupyter only)
+    # build a dropdown of all cases; picking one re-runs show_patient for it
     interact(show_patient, case=Dropdown(options=list(reports), description="patient"))
 except ImportError:
+    # no widgets installed -> just show one patient as a fallback
     print("(no dropdown -- ipywidgets missing; showing the first patient)\\n")
     show_patient()
 """))
@@ -203,16 +220,18 @@ sharpest lesson of the day (Section 6).
 """))
 
 both(code("""
-df = pd.read_csv("../../datasets/openi_features.csv")
-counts = df.label.value_counts().sort_index()
+df = pd.read_csv("../../datasets/openi_features.csv")   # load the full feature table
+counts = df.label.value_counts().sort_index()   # count rows per label (0 then 1)
 
-fig, ax = nbfig.fig(figsize=(5.2, 3.2))
+fig, ax = nbfig.fig(figsize=(5.2, 3.2))          # one plot panel
+# draw two bars: normal (turquoise) and cardiomegaly (pink)
 bars = ax.bar(["normal", "cardiomegaly"], counts.values, color=[nbfig.TURQUOISE, nbfig.DEEPPINK])
-for b, c in zip(bars, counts.values):
+for b, c in zip(bars, counts.values):            # pair each bar with its count
+    # write the count number just above the top of each bar
     ax.text(b.get_x() + b.get_width() / 2, c, str(c), ha="center", va="bottom",
             fontweight="bold", family="DejaVu Sans Mono")
-ax.set_ylabel("patients")
-nbfig.show(fig, f"A balanced dataset: {len(df)} patients")
+ax.set_ylabel("patients")                        # label the vertical axis
+nbfig.show(fig, f"A balanced dataset: {len(df)} patients")   # render with caption
 print("balanced on purpose, so accuracy is a meaningful number (50% = coin flip).")
 """))
 
@@ -230,25 +249,30 @@ at text. Let's start with a real radiology report.
 """))
 
 both(code("""
+# a short fake radiology report to demonstrate tokenizing (two strings joined into one)
 report = ("FINDINGS: The heart is enlarged. There is a small left pleural effusion. "
           "No pneumothorax. IMPRESSION: Cardiomegaly with small effusion.")
 
 # A model can't read letters; text is chopped into *tokens* (word-pieces), then numbers.
+# put spaces before "." and ":" so they split off, then break on spaces into a word list
 tokens = report.replace(".", " .").replace(":", " :").split()
-print(f"{len(tokens)} rough tokens")
+print(f"{len(tokens)} rough tokens")   # how many pieces we got
 
 # Visualize the report as a strip of tokens -- the sequence the model actually sees.
-from matplotlib.patches import FancyBboxPatch
-show = tokens[:16]
-fig, ax = nbfig.fig(figsize=(11, 1.7))
+from matplotlib.patches import FancyBboxPatch   # rounded rectangle shape for the boxes
+show = tokens[:16]                              # only draw the first 16 tokens
+fig, ax = nbfig.fig(figsize=(11, 1.7))          # a wide, short panel
+# hide axes, size the drawing area to fit the tokens, turn off gridlines
 ax.axis("off"); ax.set_xlim(0, len(show)); ax.set_ylim(0, 1); ax.grid(False)
-for i, t in enumerate(show):
-    c = nbfig.palette(len(show))[i]
+for i, t in enumerate(show):                    # go through each token with its index i
+    c = nbfig.palette(len(show))[i]             # pick a distinct color for this token
+    # draw a rounded colored box for the token at horizontal position i
     ax.add_patch(FancyBboxPatch((i + 0.05, 0.25), 0.9, 0.5, boxstyle="round,pad=0.02,rounding_size=0.1",
                                 facecolor=c, edgecolor="none"))
+    # write the token's text centered in its box, in a readable color for that background
     ax.text(i + 0.5, 0.5, t, ha="center", va="center", fontsize=9,
             color=nbfig.txt_on(c), family="DejaVu Sans Mono")
-nbfig.show(fig, "Text becomes a sequence of tokens")
+nbfig.show(fig, "Text becomes a sequence of tokens")   # render with caption
 """))
 
 both(md("""
@@ -276,13 +300,14 @@ real report next to the structured findings the LLM pulled out of it.
 
 both(code("""
 # A real report (free text) -> the LLM's structured findings (numbers we can model).
-cid = "3840"
+cid = "3840"                              # the case we'll display
 print("THE REPORT THE LLM READ:")
-print(" ", reports[cid]["findings"])
-print(" ", reports[cid]["impression"])
+print(" ", reports[cid]["findings"])      # the raw findings text
+print(" ", reports[cid]["impression"])    # the raw impression text
 print("\\nWHAT THE LLM RETURNED (cached):")
+# loop over the yes/no findings the LLM extracted and print each one
 for k, v in common.load_cached_llm_features(cid).items():
-    print(f"  {k:28s} {v}")
+    print(f"  {k:28s} {v}")               # name padded to 28 chars, then its value
 """))
 
 both(md("""
@@ -293,14 +318,17 @@ Cardiomegaly itself sits near 50% -- because we balanced the dataset on exactly 
 """))
 
 both(code("""
+# gather the yes/no finding columns (names start with "llm_" and end with "_present")
 llm_cols = [c for c in df.columns if c.startswith("llm_") and c.endswith("_present")]
-rates = df[llm_cols].mean().sort_values()
+rates = df[llm_cols].mean().sort_values()   # each column's average = fraction marked present
 
-fig, ax = nbfig.fig(figsize=(7.5, 3.4))
+fig, ax = nbfig.fig(figsize=(7.5, 3.4))     # one plot panel
+# horizontal bars; clean up each column name for the label, one color per bar
 ax.barh([c.replace("llm_", "").replace("_present", "") for c in rates.index], rates.values,
         color=nbfig.palette(len(rates)))
+# label the x-axis and fix its range to 0..1 (a fraction)
 ax.set_xlabel("fraction of patients where the LLM marked it present"); ax.set_xlim(0, 1)
-nbfig.show(fig, "How common is each finding?")
+nbfig.show(fig, "How common is each finding?")   # render with caption
 """))
 
 # =========================================================================== #
@@ -333,20 +361,21 @@ each patient scored by a model trained only on the *others*. (See
 """))
 
 both(code("""
-from pathlib import Path
-import json
+from pathlib import Path       # convenient way to work with file paths
+import json                     # read JSON data files
 
 # The classic handcrafted way (radiomics) -- shown once for contrast:
-sample = sorted(Path("sample_images").glob("*.png"))[0]
-feats = common.extract_image_features(sample)
+sample = sorted(Path("sample_images").glob("*.png"))[0]   # grab the first X-ray file
+feats = common.extract_image_features(sample)             # compute ~12 texture/brightness numbers
 print("radiomics: ~12 handcrafted numbers per image (the old way)")
-for k, v in list(feats.items())[:4]:
-    print(f"  {k:22s} {v:.4f}")
+for k, v in list(feats.items())[:4]:      # show just the first 4 of those numbers
+    print(f"  {k:22s} {v:.4f}")           # name padded to 22 chars, value to 4 decimals
 print("  ...")
 
 # What we actually use: the trained image model's single out-of-fold vote.
-img_preds = json.loads(Path("../../datasets/openi_image_preds.json").read_text())
+img_preds = json.loads(Path("../../datasets/openi_image_preds.json").read_text())   # load cached votes
 print(f"\\nimg_pred: one probability per case (we use THIS). {len(img_preds)} cached.")
+# print the first 3 case->probability pairs as examples
 print("  examples:", {k: img_preds[k] for k in list(img_preds)[:3]})
 """))
 
@@ -361,13 +390,13 @@ The instructor pre-built the table: one row per patient, all three signals plus 
 """))
 
 both(code("""
-df = pd.read_csv("../../datasets/openi_features.csv")
-print("table shape:", df.shape)
+df = pd.read_csv("../../datasets/openi_features.csv")   # load the table (rows=patients)
+print("table shape:", df.shape)          # (number of rows, number of columns)
 print("\\ncolumn groups:")
-print("  image:", [c for c in df.columns if c == "img_pred"])
-print("  text :", [c for c in df.columns if c.startswith("llm_")])
-print("  demo :", [c for c in df.columns if c in ("age", "sex_male", "smoker")])
-df.head(3)
+print("  image:", [c for c in df.columns if c == "img_pred"])          # the image vote column
+print("  text :", [c for c in df.columns if c.startswith("llm_")])     # the LLM finding columns
+print("  demo :", [c for c in df.columns if c in ("age", "sex_male", "smoker")])   # demographics
+df.head(3)                               # display the first 3 rows
 """))
 
 both(md("""
@@ -381,10 +410,11 @@ about them. Print a few rows and answer these for yourself (out loud with your p
 """))
 
 both(code("""
+# build a short list of columns to display: label, image vote, 3 text findings, demographics
 show_cols = (["label", "img_pred"]
              + [c for c in df.columns if c.startswith("llm_")][:3]
              + ["age", "sex_male", "smoker"])
-print(df[show_cols].head(6).to_string())
+print(df[show_cols].head(6).to_string())   # print the first 6 rows of just those columns
 print("\\n^ 'label' is what we PREDICT. everything else is what we predict FROM.")
 print("  does llm_cardiomegaly_present always equal label? scroll up and check every row.")
 """))
@@ -398,11 +428,14 @@ we add the other signals.)
 """))
 
 both(code("""
-fig, ax = nbfig.fig(figsize=(7, 3.4))
+fig, ax = nbfig.fig(figsize=(7, 3.4))    # one plot panel
+# histogram of image votes for the normal patients (label 0), semi-transparent turquoise
 ax.hist(df.loc[df.label == 0, "img_pred"], bins=20, alpha=0.7, color=nbfig.TURQUOISE, label="no cardiomegaly")
+# histogram of image votes for the cardiomegaly patients (label 1), pink, overlaid
 ax.hist(df.loc[df.label == 1, "img_pred"], bins=20, alpha=0.7, color=nbfig.DEEPPINK, label="cardiomegaly")
+# label the axes and show the legend that names the two colors
 ax.set_xlabel("img_pred (image model's probability)"); ax.set_ylabel("patients"); ax.legend()
-nbfig.show(fig, "The image vote separates the classes -- partly")
+nbfig.show(fig, "The image vote separates the classes -- partly")   # render with caption
 """))
 
 both(md("""
@@ -421,10 +454,12 @@ was pretrained on, or the exact architecture? why?"** Then run the cell.
 """))
 
 both(code("""
-from sklearn.metrics import roc_auc_score
+from sklearn.metrics import roc_auc_score   # AUC: how well scores rank sick above healthy
+# compare the two image models: generic ImageNet vs domain chest-X-ray pretraining
 for col, label in [("img_pred_imagenet", "ImageNet-pretrained (generic)"),
                    ("img_pred",          "chest-X-ray-pretrained (domain)")]:
-    p = df[col].values
+    p = df[col].values                       # this model's probability for every patient
+    # accuracy = fraction correct when we threshold at 0.5; also print the AUC
     print(f"{label:34s}: accuracy={((p >= 0.5).astype(int) == df.label.values).mean():.3f}   "
           f"AUC={roc_auc_score(df.label.values, p):.3f}")
 print("\\nSame task, same pixels. The model that learned on chest X-rays wins by a mile.")
@@ -445,11 +480,13 @@ text, or demographics? Now assemble the inputs: `X` is every feature column; `y`
 
 both(code("""
 # assemble the inputs: X = every feature column, y = the label
+# keep every column except the id, the answer, and the baseline image vote we're not using
 feature_cols = [c for c in df.columns if c not in ("case_id", "label", "img_pred_imagenet")]
-X = df[feature_cols].fillna(0).values
-y = df["label"].values
+X = df[feature_cols].fillna(0).values   # feature matrix; fill any missing cells with 0
+y = df["label"].values                  # the answers (0 = normal, 1 = cardiomegaly)
+# report the matrix size and how many positive (cardiomegaly) cases we have
 print("X:", X.shape, " positives:", int(y.sum()), "/", len(y))
-print("feature columns:", feature_cols)
+print("feature columns:", feature_cols)   # list which columns went into X
 """))
 
 both(md("""
@@ -465,14 +502,16 @@ scratch would overfit ~700 rows; TabPFN's pretraining is exactly what a tiny dat
 """))
 
 both(code("""
-from sklearn.model_selection import train_test_split
-from tabpfn import TabPFNClassifier
+from sklearn.model_selection import train_test_split   # splits data into train/test parts
+from tabpfn import TabPFNClassifier                     # the tabular foundation model
 
 # hold out 25% to grade on -- the model never sees these during fit
+# stratify=y keeps the same class balance in both parts; random_state=0 makes it repeatable
 Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.25, random_state=0, stratify=y)
 
 clf = TabPFNClassifier()   # the foundation model you chose above
 clf.fit(Xtr, ytr)          # "fit" = it just studies your examples (seconds, no real training)
+# predict on the held-out set and compute the fraction it got right
 acc_all = (clf.predict(Xte) == yte).mean()
 print(f"multimodal (image + text + demographics) accuracy: {acc_all:.3f}")
 """))
@@ -491,14 +530,15 @@ Run a few combinations and watch closely, one thing will jump out:
 """))
 
 both(code("""
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier
-from catboost import CatBoostClassifier
-from tabpfn import TabPFNClassifier
+from sklearn.linear_model import LogisticRegression      # simple linear classifier
+from sklearn.ensemble import RandomForestClassifier      # many decision trees, voting
+from catboost import CatBoostClassifier                  # gradient-boosted trees
+from tabpfn import TabPFNClassifier                       # tabular foundation model
 
 # the two branches of the late-fusion pipeline, each with real choices:
 IMAGE_BRANCH = {"chest-X-ray model (domain)": "img_pred",        # DenseNet, ~500k CXRs
                 "ImageNet model (baseline)": "img_pred_imagenet"} # ResNet18, everyday photos
+# a menu of tabular models; each value is a function that builds a fresh model when called
 MODELS = {   # the tabular branch
     "Logistic Regression": lambda: LogisticRegression(max_iter=1000),
     "Random Forest":       lambda: RandomForestClassifier(n_estimators=200, random_state=0),
@@ -506,32 +546,36 @@ MODELS = {   # the tabular branch
     "TabPFN (foundation)": lambda: TabPFNClassifier(),
 }
 
+# one function that builds and grades a model from the choices the student picks
 def build_my_model(signals=("image", "text", "demographics"),
                    image_model="chest-X-ray model (domain)",
                    tabular_model="TabPFN (foundation)", test_percent=25):
-    cols = []
+    cols = []                                            # collect the chosen feature columns
     if "image" in signals:        cols += [IMAGE_BRANCH[image_model]]   # your chosen image branch
-    if "text" in signals:         cols += [c for c in df.columns if c.startswith("llm_")]
-    if "demographics" in signals: cols += ["age", "sex_male", "smoker"]
-    if not cols:
+    if "text" in signals:         cols += [c for c in df.columns if c.startswith("llm_")]  # LLM findings
+    if "demographics" in signals: cols += ["age", "sex_male", "smoker"]   # demographics
+    if not cols:                                         # guard: at least one signal is required
         print("Pick at least one signal!"); return
-    Xc, yc = df[cols].fillna(0).values, df["label"].values
+    Xc, yc = df[cols].fillna(0).values, df["label"].values   # build the feature matrix and labels
+    # split into train/test using the chosen test percentage, keeping class balance
     Xa, Xb, ya, yb = train_test_split(Xc, yc, test_size=test_percent / 100, random_state=0, stratify=yc)
     try:
-        m = MODELS[tabular_model](); m.fit(Xa, ya)
+        m = MODELS[tabular_model](); m.fit(Xa, ya)       # build the chosen model and train it
         pred = np.asarray(m.predict(Xb)).ravel()   # CatBoost returns 2D; flatten to be safe
-        acc = (pred == yb).mean()
-        print(f"signals:       {', '.join(signals)}")
-        if "image" in signals:
+        acc = (pred == yb).mean()                        # fraction of test predictions correct
+        print(f"signals:       {', '.join(signals)}")    # echo the choices made
+        if "image" in signals:                           # only mention the image branch if used
             print(f"image branch:  {image_model}")
         print(f"tabular model: {tabular_model}")
         print(f"test {test_percent}% ({len(yb)} patients)   ->   ACCURACY = {acc:.3f}")
+        # draw a confusion matrix comparing true vs predicted labels
         nbfig.confusion(yb, pred, ["no cardiomegaly", "cardiomegaly"], text=f"{tabular_model}").show()
-    except Exception:
+    except Exception:                                    # some combos are too small/flat to train
         print("That combination wouldn't train (too few / too flat features). Add a signal and retry.")
 
 try:
-    from ipywidgets import interact_manual, SelectMultiple, RadioButtons, IntSlider
+    from ipywidgets import interact_manual, SelectMultiple, RadioButtons, IntSlider   # widgets
+    # wire up the widgets: a multi-select for signals, radios for the models, a slider for test %
     interact_manual(build_my_model,
         signals=SelectMultiple(options=["image", "text", "demographics"],
                                value=("image", "text", "demographics"), description="signals"),
@@ -539,6 +583,7 @@ try:
         tabular_model=RadioButtons(options=list(MODELS), value="TabPFN (foundation)", description="tabular"),
         test_percent=IntSlider(value=25, min=10, max=40, step=5, description="test %"))
 except ImportError:
+    # no widgets -> just run two example builds so the student still sees output
     print("(no widgets -- ipywidgets missing; showing example builds)\\n")
     build_my_model(("image", "demographics"), "chest-X-ray model (domain)", "TabPFN (foundation)", 25)
     build_my_model(("image", "demographics"), "ImageNet model (baseline)", "TabPFN (foundation)", 25)
@@ -580,27 +625,30 @@ how much do you think accuracy falls? Write down a guess, then run the cell and 
 
 both(code("""
 # drop the report (llm_) columns, keep image + demographics
-no_text_cols = [c for c in feature_cols if not c.startswith("llm_")]
-Xnt = df[no_text_cols].fillna(0).values
+no_text_cols = [c for c in feature_cols if not c.startswith("llm_")]   # keep non-text features
+Xnt = df[no_text_cols].fillna(0).values   # feature matrix without the text findings
+# split the same way as before so results are comparable (same seed and test size)
 Xnt_tr, Xnt_te, _, _ = train_test_split(Xnt, y, test_size=0.25, random_state=0, stratify=y)
 
-clf2 = TabPFNClassifier()
-clf2.fit(Xnt_tr, ytr)
-acc_no_text = (clf2.predict(Xnt_te) == yte).mean()
+clf2 = TabPFNClassifier()                 # a fresh model
+clf2.fit(Xnt_tr, ytr)                     # train on image + demographics only
+acc_no_text = (clf2.predict(Xnt_te) == yte).mean()   # accuracy without the text
 print(f"image + demographics only: {acc_no_text:.3f}")
-print(f"with text:                 {acc_all:.3f}")
-print(f"the text features were worth {acc_all - acc_no_text:+.3f}")
+print(f"with text:                 {acc_all:.3f}")        # the earlier full-model score
+print(f"the text features were worth {acc_all - acc_no_text:+.3f}")   # the difference
 """))
 
 both(code("""
-fig, ax = nbfig.fig(figsize=(6, 3.6))
+fig, ax = nbfig.fig(figsize=(6, 3.6))    # one plot panel
+# two bars comparing accuracy without text vs with text
 bars = ax.bar(["image + demo", "+ text"], [acc_no_text, acc_all],
               color=[nbfig.TURQUOISE, nbfig.DEEPPINK], width=0.55)
-for b, a in zip(bars, [acc_no_text, acc_all]):
+for b, a in zip(bars, [acc_no_text, acc_all]):   # pair each bar with its accuracy value
+    # write the accuracy as a percentage just above each bar
     ax.text(b.get_x() + b.get_width() / 2, a + 0.01, f"{a:.0%}", ha="center",
             fontweight="bold", family="DejaVu Sans Mono")
-ax.set_ylabel("test accuracy"); ax.set_ylim(0, 1)
-nbfig.show(fig, "Adding the text features looks amazing")
+ax.set_ylabel("test accuracy"); ax.set_ylim(0, 1)   # label y-axis, fix range 0..1
+nbfig.show(fig, "Adding the text features looks amazing")   # render with caption
 """))
 
 both(md("""
@@ -614,6 +662,7 @@ both(md("""
 """))
 
 both(code("""
+# draw a confusion matrix: true labels vs the full model's predictions on the test set
 nbfig.confusion(yte, clf.predict(Xte), ["no cardiomegaly", "cardiomegaly"],
                 text="Multimodal model").show()
 """))
@@ -629,40 +678,45 @@ read the accuracy. Try to answer with experiments, not guesses:
 """))
 
 both(code("""
-from sklearn.model_selection import train_test_split
-from tabpfn import TabPFNClassifier
+from sklearn.model_selection import train_test_split   # train/test splitter
+from tabpfn import TabPFNClassifier                     # tabular foundation model
 
+# train a TabPFN using only the signals the student toggles on, and report accuracy
 def try_signals(use_image=True, use_text=True, use_demographics=True):
-    cols = []
-    if use_image:        cols += ["img_pred"]
-    if use_text:         cols += [c for c in df.columns if c.startswith("llm_")]
-    if use_demographics: cols += ["age", "sex_male", "smoker"]
-    if not cols:
+    cols = []                                    # collect chosen feature columns
+    if use_image:        cols += ["img_pred"]                                     # image vote
+    if use_text:         cols += [c for c in df.columns if c.startswith("llm_")]  # text findings
+    if use_demographics: cols += ["age", "sex_male", "smoker"]                    # demographics
+    if not cols:                                 # need at least one signal to model
         print("Pick at least one signal!"); return
-    Xc = df[cols].fillna(0).values
-    yc = df["label"].values
+    Xc = df[cols].fillna(0).values               # feature matrix from chosen columns
+    yc = df["label"].values                      # the labels
+    # split into train/test, keeping class balance and using a fixed seed
     Xa, Xb, ya, yb = train_test_split(Xc, yc, test_size=0.25, random_state=0, stratify=yc)
+    # build a readable string listing which signals were turned on
     used = ', '.join(c for c, u in [('image', use_image), ('text', use_text), ('demographics', use_demographics)] if u)
     try:
-        m = TabPFNClassifier(); m.fit(Xa, ya)
-        acc = (m.predict(Xb) == yb).mean()
+        m = TabPFNClassifier(); m.fit(Xa, ya)    # build and train the model
+        acc = (m.predict(Xb) == yb).mean()       # test accuracy
         print(f"signals used: {used}")
         print(f"  -> {len(cols)} feature columns,  test accuracy = {acc:.3f}")
-    except Exception:
+    except Exception:                            # too little variation to train on
         # TabPFN refuses a set with too little variation (e.g. our synthetic demographics alone).
         print(f"signals used: {used}")
         print("  -> TabPFN couldn't train on just this -- too few / too flat features.")
         print("     That's itself a finding: demographics alone barely move the needle. Add another signal.")
 
 try:
-    from ipywidgets import interact_manual, Checkbox
+    from ipywidgets import interact_manual, Checkbox   # checkbox widgets
+    # one checkbox per signal; hitting Run Interact re-runs try_signals with the ticked ones
     interact_manual(try_signals, use_image=Checkbox(True, description="image"),
                     use_text=Checkbox(True, description="text"),
                     use_demographics=Checkbox(True, description="demographics"))
 except ImportError:
+    # no widgets -> run a handful of preset combinations instead
     print("(no checkboxes -- ipywidgets missing; running a few combos)\\n")
     for combo in [(True, False, False), (False, True, False), (False, False, True), (True, False, True)]:
-        try_signals(*combo)
+        try_signals(*combo)                      # unpack the tuple into the three arguments
 """))
 
 both(md("""
@@ -673,11 +727,12 @@ the model was just memorizing noise. **Predict:** what accuracy will the shuffle
 """))
 
 both(code("""
-import numpy as np
+import numpy as np                                       # array tools
 y_shuffled = np.random.RandomState(1).permutation(y)   # same features, scrambled answers
+# split the scrambled data the same way; features stay real but labels are now random
 Xs_tr, Xs_te, ys_tr, ys_te = train_test_split(X, y_shuffled, test_size=0.25, random_state=0, stratify=y_shuffled)
-clf_shuf = TabPFNClassifier(); clf_shuf.fit(Xs_tr, ys_tr)
-acc_shuf = (clf_shuf.predict(Xs_te) == ys_te).mean()
+clf_shuf = TabPFNClassifier(); clf_shuf.fit(Xs_tr, ys_tr)   # train on the scrambled labels
+acc_shuf = (clf_shuf.predict(Xs_te) == ys_te).mean()        # accuracy on the scrambled test set
 
 print(f"accuracy with REAL labels    : {acc_all:.3f}")
 print(f"accuracy with SHUFFLED labels: {acc_shuf:.3f}   (~0.50 = pure chance)")
@@ -710,16 +765,19 @@ Let's see just how much the model is leaning on that one finding.
 """))
 
 both(code("""
-llm_cols = [c for c in df.columns if c.startswith("llm_")]
+llm_cols = [c for c in df.columns if c.startswith("llm_")]   # all the text-finding columns
+# for each finding, measure how strongly it correlates with the true label (-1..+1)
 corrs = {c.replace("llm_", ""): np.corrcoef(df[c], df["label"])[0, 1] for c in llm_cols}
 
-fig, ax = nbfig.fig(figsize=(7.5, 3.4))
-names = list(corrs); vals = [corrs[n] for n in names]
+fig, ax = nbfig.fig(figsize=(7.5, 3.4))     # one plot panel
+names = list(corrs); vals = [corrs[n] for n in names]   # finding names and their correlations
+# color a bar pink if its correlation is very high (>0.7), otherwise turquoise
 colors = [nbfig.DEEPPINK if abs(v) > 0.7 else nbfig.TURQUOISE for v in vals]
-ax.barh(names, vals, color=colors)
-ax.set_xlabel("correlation with the true label"); ax.set_xlim(-0.1, 1)
-ax.axvline(0, color=nbfig.MUTED, lw=0.8)
-nbfig.show(fig, "The 'cardiomegaly' finding basically restates the answer")
+ax.barh(names, vals, color=colors)          # horizontal bars, one per finding
+ax.set_xlabel("correlation with the true label"); ax.set_xlim(-0.1, 1)   # label and range
+ax.axvline(0, color=nbfig.MUTED, lw=0.8)    # a thin reference line at zero correlation
+nbfig.show(fig, "The 'cardiomegaly' finding basically restates the answer")   # render
+# print the standout: the cardiomegaly finding's correlation, rounded to 2 decimals
 print("cardiomegaly_present vs label:", round(corrs.get("cardiomegaly_present", float('nan')), 2))
 """))
 
@@ -733,12 +791,13 @@ patient's demographics.
 
 both(code("""
 always_available = [c for c in feature_cols if not c.startswith("llm_")]   # image vote + demographics
-Xa2 = df[always_available].fillna(0).values
+Xa2 = df[always_available].fillna(0).values   # feature matrix without any report text
+# split the same way so the score is comparable to the full model
 Xa_tr, Xa_te, _, _ = train_test_split(Xa2, y, test_size=0.25, random_state=0, stratify=y)
 
-clf_robust = TabPFNClassifier()
-clf_robust.fit(Xa_tr, ytr)
-acc_robust = (clf_robust.predict(Xa_te) == yte).mean()
+clf_robust = TabPFNClassifier()               # a fresh model
+clf_robust.fit(Xa_tr, ytr)                    # train on only always-available features
+acc_robust = (clf_robust.predict(Xa_te) == yte).mean()   # its test accuracy
 print(f"with the full report (text present): {acc_all:.3f}")
 print(f"report GONE, image + demographics:   {acc_robust:.3f}")
 print(f"\\nso if the report disappears, this system still works at {acc_robust:.0%} -- it degrades, it doesn't die.")
@@ -782,34 +841,40 @@ and think about which version you could actually ship.)
 """))
 
 both(code("""
+# the full menu of features a student can choose to keep: image, all text findings, demographics
 ALL_FEATURES = ["img_pred"] + [c for c in df.columns if c.startswith("llm_")] + ["age", "sex_male", "smoker"]
 
+# train a model on only the features the student decides to trust, then grade it
 def build_honest_model(keep_features=("img_pred", "age", "sex_male", "smoker")):
-    if not keep_features:
+    if not keep_features:                        # need at least one feature
         print("Select at least one feature."); return
-    cols = list(keep_features)
-    Xh = df[cols].fillna(0).values
+    cols = list(keep_features)                    # the chosen feature columns
+    Xh = df[cols].fillna(0).values                # feature matrix from those columns
+    # split into train/test, keeping the class balance and a fixed seed
     Xa, Xb, ya, yb = train_test_split(Xh, df["label"].values, test_size=0.25, random_state=0, stratify=df["label"].values)
-    m = TabPFNClassifier(); m.fit(Xa, ya)
-    pred = np.asarray(m.predict(Xb)).ravel()
-    acc = (pred == yb).mean()
+    m = TabPFNClassifier(); m.fit(Xa, ya)         # build and train the model
+    pred = np.asarray(m.predict(Xb)).ravel()      # predictions on the test set (flattened)
+    acc = (pred == yb).mean()                     # test accuracy
     print("features you kept:", cols)
     print(f"accuracy: {acc:.3f}   (the everything-in model got {acc_all:.3f})")
-    if any(c.startswith("llm_") for c in cols):
+    if any(c.startswith("llm_") for c in cols):   # did they keep any report-text features?
         print("\\n  you're depending on the report findings -- great WHEN the report exists,")
         print("  but this model breaks the moment it doesn't. powerful, but fragile.")
-    else:
+    else:                                         # only always-available features kept
         print("\\n  image + demographics only: lower, but it runs on data you ALWAYS have at")
         print("  imaging time. this is the version you could actually deploy for screening.")
+    # show the confusion matrix for this student-designed model
     nbfig.confusion(yb, pred, ["no cardiomegaly", "cardiomegaly"], text="Your model").show()
 
 try:
-    from ipywidgets import interact_manual, SelectMultiple
+    from ipywidgets import interact_manual, SelectMultiple   # multi-select widget
+    # a multi-select box of all features; ticked ones get passed to build_honest_model
     interact_manual(build_honest_model,
         keep_features=SelectMultiple(options=ALL_FEATURES,
                                      value=("img_pred", "age", "sex_male", "smoker"),
                                      rows=len(ALL_FEATURES), description="keep"))
 except ImportError:
+    # no widgets -> build the deployable default (image + demographics, no report text)
     print("(no widgets -- ipywidgets missing; building the deployable default (image + demographics))\\n")
     build_honest_model(("img_pred", "age", "sex_male", "smoker"))
 """))
