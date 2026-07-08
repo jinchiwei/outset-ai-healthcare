@@ -1,0 +1,189 @@
+{
+  "deck_md_hash": "55ef04e7b8479796038cdee553768f1dea1251cb71bf527abd0745d45bbb228f",
+  "mode": "expressive",
+  "shake_seed": "88047242e0ed403eb6c43a34b1c35ea5",
+  "slides": [
+    {
+      "content_hash": "28395391a8ae10db36d317a4157a69a916ba02c4899cb66cae293ffd5f76d294-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#40E0D0",
+        "label": "Background"
+      },
+      "slide_id": "divider-h1-background"
+    },
+    {
+      "content_hash": "4d2bd6f349578b42ba7d6237306e448b0249e399013dfb9daa364474ca9b2705",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_add_text(slide, 'Skin-cancer AI is pitched as a way to reach the roughly three billion people with little access to a dermatologist. That promise is real, and so is the catch: a model only learns what it is shown, and the images these models learn from are badly skewed toward light skin.', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=0.98, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "lede": "",
+        "section_label": "Background",
+        "title": "A promise, and a catch"
+      },
+      "slide_id": "h1-background/h2-a-promise-and-a-catch"
+    },
+    {
+      "content_hash": "edea0dd29ab235108d12c0ef0acfbfb61243258a1adc80a5d46ca46d7285cef7",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "fw = body_w*0.56\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g4_skin_access/slides/figures/intro_dataset_skew.png', left=body_l, top=body_top+0.10, max_w=body_w*0.56, max_h=body_h-0.25)\npx = body_l + fw + 0.40\npw = body_w - fw - 0.40\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=body_h-0.15, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=0.09, fill_rgb=accent_rgb)\n_add_rect(slide, left=px+0.22, top=body_top+0.37, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'A review of twenty-one public skin datasets, over a hundred thousand images, found almost all came from Europe, North America, and Oceania, with almost none labeled as darker skin. On the Fitzpatrick scale the training data piles up on the left and nearly vanishes on the right.', left=px+0.44, top=body_top+0.30, width=pw-0.62, height=1.56, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "lede": "",
+        "section_label": "Background",
+        "title": "The AI mostly practiced on light skin"
+      },
+      "slide_id": "h1-background/h2-the-ai-mostly-practiced-on-light-skin"
+    },
+    {
+      "content_hash": "a3dc37d17f192c882884bc78ee17ecb5ca36ffa1d9932db840f05dfd72704a32",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "fw = body_w*0.56\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g4_skin_access/slides/figures/intro_accuracy_by_group.png', left=body_l, top=body_top+0.10, max_w=body_w*0.56, max_h=body_h-0.25)\npx = body_l + fw + 0.40\npw = body_w - fw - 0.40\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=body_h-0.15, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=0.09, fill_rgb=accent_rgb)\n_add_rect(slide, left=px+0.22, top=body_top+0.37, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'Groh showed a model is most accurate on the skin types it saw most; Daneshjou showed top models drop sharply on dark skin. Same model, very different results depending on who you are, and the single average number a report shows sits in between and hides it.', left=px+0.44, top=body_top+0.30, width=pw-0.62, height=1.56, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "lede": "",
+        "section_label": "Background",
+        "title": "Same model, one number hides who it fails"
+      },
+      "slide_id": "h1-background/h2-same-model-one-number-hides-who-it-fails"
+    },
+    {
+      "content_hash": "793dfabf57afe919e2b0b14facd89ac43073d59524b4a87c0a71f3397e96bdd1",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "fw = body_w*0.56\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g4_skin_access/slides/figures/intro_proxy_gone_wrong.png', left=body_l, top=body_top+0.10, max_w=body_w*0.56, max_h=body_h-0.25)\npx = body_l + fw + 0.40\npw = body_w - fw - 0.40\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=body_h-0.15, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=0.09, fill_rgb=accent_rgb)\n_add_rect(slide, left=px+0.22, top=body_top+0.37, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'Obermeyer studied a health algorithm used on millions of patients that looked fair on paper but underserved Black patients, because it was trained to predict cost as a stand-in for illness. It scored well on the wrong target. That is the exact suspicion we bring to our own model.', left=px+0.44, top=body_top+0.30, width=pw-0.62, height=1.56, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "lede": "",
+        "section_label": "Background",
+        "title": "Accurate on average can still be unfair"
+      },
+      "slide_id": "h1-background/h2-accurate-on-average-can-still-be-unfair"
+    },
+    {
+      "content_hash": "6d31f4e259270667e8ee574d6c4e5e648f02fa4a9874453f92bbc9ac7bcdf10b-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#FF1493",
+        "label": "Methods"
+      },
+      "slide_id": "divider-h1-methods"
+    },
+    {
+      "content_hash": "68b7064fa632b7822924d1966174469fb301d0a7095fa335112953a46f6871e8",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_add_text(slide, 'We use the exact same DermaMNIST skin-lesion model as the screening group: a ResNet18 pretrained on ordinary photos, with a fresh head, sorting images into seven skin conditions. We change nothing about the model. We change the question we ask of it.', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=0.76, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "lede": "",
+        "section_label": "Methods",
+        "title": "The same model, a harder question"
+      },
+      "slide_id": "h1-methods/h2-the-same-model-a-harder-question"
+    },
+    {
+      "content_hash": "e858759ba0345ea7d7a9834f11a69c3c5794c9d38114e8076303efe9b2ccf2a8",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_add_text(slide, 'The screening group asks how good the model is. We ask a harder question: good for whom? A single accuracy number is a blend, and a blend can hide that one group is being carried by another. So we refuse to trust the average and split the score apart by condition.', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=0.76, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "lede": "",
+        "section_label": "Methods",
+        "title": "The equity lens: break the average apart"
+      },
+      "slide_id": "h1-methods/h2-the-equity-lens-break-the-average-apart"
+    },
+    {
+      "content_hash": "9d386fbbaab59eb494f4c12cf1b23fd4b5c5347b03eb22c1c97fb04f41376eef-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#F0C840",
+        "label": "Results"
+      },
+      "slide_id": "divider-h1-results"
+    },
+    {
+      "content_hash": "e4466859d10d42fd30641c6c199871560f5b9849185e984becfc756e85fb905b",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_add_text(slide, 'Trained and tested on held-out images, the model lands at about sixty-eight percent overall accuracy. Not amazing, not embarrassing, the kind of number you would quietly accept and move on. This is exactly the moment the equity lens says stop and break it apart.', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=0.76, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "lede": "",
+        "section_label": "Results",
+        "title": "The headline number looks fine"
+      },
+      "slide_id": "h1-results/h2-the-headline-number-looks-fine"
+    },
+    {
+      "content_hash": "fd1ec4f6e120df9e20eb86baeb4c5234bf56761648c925e2db4cbe4c5e59f9e0",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "fw = body_w*0.56\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g4_skin_access/slides/figures/equity_per_class.png', left=body_l, top=body_top+0.10, max_w=body_w*0.56, max_h=body_h-0.25)\npx = body_l + fw + 0.40\npw = body_w - fw - 0.40\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=body_h-0.15, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=0.09, fill_rgb=accent_rgb)\n_add_rect(slide, left=px+0.22, top=body_top+0.37, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'Splitting the same score by condition, the average was hiding a near-total failure', left=px+0.44, top=body_top+0.30, width=pw-0.62, height=0.71, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)\n_add_rect(slide, left=px+0.22, top=body_top+1.22, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'Ordinary moles, the giant class, are caught almost perfectly at ninety-nine percent and prop the average up. Several rarer conditions are caught almost never, some flat at zero.', left=px+0.44, top=body_top+1.15, width=pw-0.62, height=1.14, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "lede": "",
+        "section_label": "Results",
+        "title": "Break it apart: a whole condition is failed"
+      },
+      "slide_id": "h1-results/h2-break-it-apart-a-whole-condition-is-failed"
+    },
+    {
+      "content_hash": "6ffbd588c80d703dc5343783cb252f73aaf627bfc6a8d0e6d8ba692d338faacd",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "fw = body_w*0.56\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g4_skin_access/slides/figures/train_imbalance.png', left=body_l, top=body_top+0.10, max_w=body_w*0.56, max_h=body_h-0.25)\npx = body_l + fw + 0.40\npw = body_w - fw - 0.40\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=body_h-0.15, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=0.09, fill_rgb=accent_rgb)\n_add_rect(slide, left=px+0.22, top=body_top+0.37, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'The gap is not mysterious', left=px+0.44, top=body_top+0.30, width=pw-0.62, height=0.28, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)\n_add_rect(slide, left=px+0.22, top=body_top+0.79, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'One class has thousands of training images and the rare conditions have only dozens. Whatever the model sees most, it gets best at. This is the same skew the literature describes for skin tone, along the axis DermaMNIST actually labels.', left=px+0.44, top=body_top+0.72, width=pw-0.62, height=1.35, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "lede": "",
+        "section_label": "Results",
+        "title": "Why: the model sees some conditions far more"
+      },
+      "slide_id": "h1-results/h2-why-the-model-sees-some-conditions-far-more"
+    },
+    {
+      "content_hash": "7efd7bda589e883f5c89961a8a4115eb77589151e6fddc755349f75cf3334e36",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "fw = body_w*0.56\n_fit_image(slide, '/home/jiwei/outset-ai-healthcare/solutions/g4_skin_access/slides/figures/skin_tone_gap.png', left=body_l, top=body_top+0.10, max_w=body_w*0.56, max_h=body_h-0.25)\npx = body_l + fw + 0.40\npw = body_w - fw - 0.40\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=body_h-0.15, fill_rgb=(SURFACE_RGB if SURFACE_RGB else PAPER_RGB))\n_add_rect(slide, left=px, top=body_top+0.05, width=pw, height=0.09, fill_rgb=accent_rgb)\n_add_rect(slide, left=px+0.22, top=body_top+0.37, width=0.10, height=0.10, fill_rgb=accent_rgb)\n_add_text(slide, 'The gap the literature warns about most is along skin tone, and DermaMNIST ships no skin-tone labels. It records the lesion type and nothing about the patient. So we cannot check the real skin-tone gap here. We can demonstrate the risk of a blind spot, not measure it, and saying so is part of doing this honestly.', left=px+0.44, top=body_top+0.30, width=pw-0.62, height=1.78, size=13, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "lede": "",
+        "section_label": "Results",
+        "title": "The blind spot we cannot measure"
+      },
+      "slide_id": "h1-results/h2-the-blind-spot-we-cannot-measure"
+    },
+    {
+      "content_hash": "7c0dc2d925d36d99296a4ce7cc3eaa774cb534f4b5c34fe2b804bdb2ad0a2caf-divider",
+      "kind": "section-divider",
+      "params": {
+        "accent_hex": "#40E0D0",
+        "label": "Being honest"
+      },
+      "slide_id": "divider-h1-being-honest"
+    },
+    {
+      "content_hash": "53f9455d17c4d0e5a10689dae563097eaa7cde90bb2cd8627d5fc5bdc25b2bb0",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_add_text(slide, 'The people the pitch was meant to help most are the ones most likely missing from the data. Skin-cancer AI aimed at the three billion with little access serves people disproportionately in regions and skin types barely present in training sets. A tool that is worst where care is scarcest can widen the gap it was sold to close.', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=0.98, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "lede": "",
+        "section_label": "Being honest",
+        "title": "Who gets left out"
+      },
+      "slide_id": "h1-being-honest/h2-who-gets-left-out"
+    },
+    {
+      "content_hash": "f69115f75aec29a53d0a36f6e7a4f5ebb8f13dbd5fa39cb47765a225645b1b6e",
+      "kind": "freeform",
+      "params": {
+        "_provenance": "agent",
+        "code": "_add_text(slide, 'The equity lens on dermatology AI rests on a specific body of work, from the Fitzpatrick scale that names the groups to the studies that measured the gaps and the proxy-bias case that explains why a fair-looking number can still be unfair.', left=body_l+0.1, top=body_top+0.20, width=body_w-0.2, height=0.76, size=14, color_rgb=(WHITE_RGB if ON_DARK else INK_RGB), font=SANS_FONT)",
+        "lede": "",
+        "section_label": "Being honest",
+        "title": "References"
+      },
+      "slide_id": "h1-being-honest/h2-references"
+    }
+  ],
+  "theme": "bone",
+  "version": 1
+}
