@@ -53,3 +53,8 @@ slides/realimg/.cover_*
 
 # CatBoost training-log artifact (written to cwd during smoke tests)
 catboost_info/
+
+# solution deck QA renders (throwaway)
+solutions/**/slides/qa/
+solutions/**/catboost_info/
+solutions/_common/slurm_logs/

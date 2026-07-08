@@ -1,0 +1,179 @@
+"""Generate the G1 CRISPR SOLUTION notebook (the worked answer key).
+
+Comprehensive, HS-accessible, and EVERY line of code is commented. Runs top to bottom and
+reproduces the real results (one-hot beats k-mer; the model's importance peaks at the seed).
+Edit this script + rebuild; never hand-edit the .ipynb.
+"""
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "scripts"))
+from nbutil import code, md, new_nb, save  # noqa: E402
+
+HERE = Path(__file__).resolve().parent
+
+
+def build():
+    nb = new_nb()
+    nb.cells = [
+        md("""
+# G1 SOLUTION — Predicting good CRISPR guides
+
+**This is the worked answer key.** It runs top to bottom and shows the whole project: the biology,
+the idea, the code (every line commented), the result, and an honest look at the limits.
+
+You do **not** need to memorize the Python. You *do* need to be able to say, in plain English, what
+each cell is for. Anything unclear — highlight the line and ask Claude "explain this."
+"""),
+        md("""
+## 1. Background: what are we predicting?
+
+**CRISPR-Cas9** is a pair of molecular scissors. You aim it at one spot in DNA using a 20-letter
+**guide** (letters A/C/G/T). Where the guide matches, the scissors cut — that's how scientists turn a
+gene off or fix a mutation.
+
+The problem: some guides cut great, some barely cut, even when they look similar. Testing each one in
+the lab costs weeks. So scientists **predict** cutting efficiency from the 20 letters instead — the
+best-known tool is Doench 2016's "Rule Set 2" / Azimuth [1], and that's exactly the dataset we use.
+
+**The key biology:** Cas9 grabs a landmark called the **PAM**, then checks the ~10 letters right next
+to it — the **seed**. Guides that mismatch there usually fail [3][4]. So letters near the PAM should
+matter most. Keep that in mind — our model will rediscover it.
+"""),
+        code("""
+# Load the course helper that knows how to read the CRISPR data + featurize sequences + train models.
+import sys                                            # sys lets us tell Python where to find our helper file
+sys.path.insert(0, "../../notebooks/day3_capstone")  # add that folder to the search path
+import capstone_seq as cs                             # import it under the short name "cs"
+
+df, meta = cs.load_guides()                           # df = a table of guides; meta = notes about it
+print("guides:", len(df), " genes:", df["gene"].nunique())   # how many guides / genes we have
+df[["guide20", "gene", "gc_content", "efficiency", "high_efficiency"]].head()  # peek at the first 5 rows
+"""),
+        md("""
+Each row is one guide. `guide20` is the 20-letter sequence, `efficiency` is how well it cut (0–1), and
+`high_efficiency` is 1 for the best cutters. Notice only about **1 in 5** guides is high-efficiency —
+that imbalance will matter when we grade the model.
+"""),
+        md("""
+## 2. The one idea: turning letters into numbers
+
+A computer can't do math on the letter "A", so we convert each guide to numbers. Two ways:
+
+- **one-hot** — 4 switches per position (A/C/G/T), flip the right one on. Keeps *where* each letter sits.
+- **k-mer** — just count how many of each letter/pair. Throws the *order* away.
+
+"LISTEN" and "SILENT" have the same letters — k-mer can't tell them apart; one-hot can. Since biology
+cares *where* a letter is (the seed!), one-hot should win. Let's test it.
+"""),
+        code("""
+# Turn every guide into numbers two different ways, and look at how big each table of numbers is.
+X_onehot, _ = cs.featurize(df, mode="onehot", seq_col="guide20")   # order-aware: 20 positions x 4 = 80 numbers
+X_kmer,   _ = cs.featurize(df, mode="kmer",   seq_col="guide20")   # order-blind: letter + pair counts
+print("one-hot shape:", X_onehot.shape)   # (rows, 80)  -> keeps position
+print("k-mer shape:  ", X_kmer.shape)     # (rows, 21)  -> just counts
+"""),
+        md("""
+## 3. Result #1 — keeping the letter order wins
+
+We train the **same four models** on each representation and compare their **AUC** (0.5 = coin flip,
+1.0 = perfect). We use AUC, *not* accuracy: since 80% of guides are "low", a lazy model that always
+says "low" scores 80% accuracy and is useless. AUC ignores that trick.
+"""),
+        code("""
+from sklearn.model_selection import train_test_split   # splits data into a study set + a held-out test set
+from sklearn.metrics import roc_auc_score               # the AUC score we'll compare on
+
+y = df["high_efficiency"].astype(int).values            # the yes/no answer we're trying to predict (1 = good guide)
+rows = []                                                # we'll collect one result per (representation, model)
+for mode, X in [("one-hot", X_onehot), ("k-mer", X_kmer)]:      # try both ways of making numbers
+    Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.25, # hold back 25% as the test set...
+                                          random_state=0, stratify=y)   # ...same split every run; keep class balance
+    for name, make in cs.make_classifiers().items():    # loop over the 4 models (logreg, forest, MLP, catboost)
+        model = make()                                  # create a fresh model
+        model.fit(Xtr, ytr)                             # train it on the study set
+        prob = model.predict_proba(Xte)[:, 1]           # its predicted probability of "good guide" on the test set
+        rows.append({"model": name, "representation": mode,     # record the model, the representation...
+                     "AUC": roc_auc_score(yte, prob)})  # ...and how well it ranked good vs bad guides (AUC)
+
+import pandas as pd                                     # pandas makes the results into a tidy table
+results = pd.DataFrame(rows)                             # build that table
+print(results.pivot(index="model", columns="representation", values="AUC").round(3))  # show one-hot vs k-mer per model
+"""),
+        md("""
+Every model does **better with one-hot than with k-mer**. That's the whole lesson: *how you prepared
+the data mattered more than which model you picked.* one-hot won because it kept the letter order — and
+order (the seed region) is exactly where the signal lives.
+"""),
+        md("""
+## 4. Result #2 — the model rediscovered CRISPR biology
+
+Now the payoff. We ask a simple model: *which positions along the guide did you rely on?* If it leans on
+the letters near the PAM (the seed), it found real biology on its own — nobody told it about seeds.
+"""),
+        code("""
+from sklearn.linear_model import LogisticRegression     # a simple, explainable model
+import numpy as np                                       # for array math
+
+lr = LogisticRegression(max_iter=2000).fit(X_onehot, y)  # train on the order-aware numbers, using all guides
+weights = np.abs(lr.coef_[0]).reshape(20, 4).sum(axis=1) # each position had 4 switches; add up their importance
+top = int(np.argmax(weights)) + 1                        # which position mattered most (1-based)
+
+import matplotlib.pyplot as plt                          # for the bar chart
+plt.figure(figsize=(8, 3))                               # set the picture size
+colors = ["#FF1493" if p >= 16 else "#40E0D0" for p in range(1, 21)]  # pink = seed (near PAM), turquoise = rest
+plt.bar(range(1, 21), weights, color=colors)             # one bar per position
+plt.xlabel("position along the guide  (20 = next to the PAM)")   # label the x-axis
+plt.ylabel("importance"); plt.title(f"Most important: position {top} of 20")  # y-axis + title
+plt.show()                                               # draw it
+print("The tall bars sit near the PAM end -- the seed region. The model rediscovered real CRISPR biology.")
+"""),
+        md("""
+The tall bars cluster at the **PAM end** — the seed. Compare that to the biology on slide-1 of the
+background: the model agrees with decades of CRISPR science, having only ever seen sequences and
+cut-scores. **A model you can explain, that matches known science, is one people will trust.**
+"""),
+        md("""
+## 5. Predicting the exact score (regression)
+
+"High vs low" throws away detail; the real target is a number from 0 to 1. **R²** tells us how much of
+the ups-and-downs the model explains (0 = no better than guessing the average, 1.0 = perfect).
+"""),
+        code("""
+from sklearn.metrics import r2_score                     # the R^2 score for predicting a number
+
+yv = df["efficiency"].astype(float).values               # the real 0-1 efficiency (a number, not yes/no)
+Xtr, Xte, ytr, yte = train_test_split(X_onehot, yv, test_size=0.25, random_state=0)  # split again for this task
+reg = cs.make_regressors()["Random Forest"]()            # a Random Forest that predicts a number
+reg.fit(Xtr, ytr)                                        # train it
+pred = reg.predict(Xte)                                  # predict on the held-out guides
+print("R^2 =", round(r2_score(yte, pred), 3),            # how much variation we explained...
+      " correlation =", round(float(np.corrcoef(yte, pred)[0, 1]), 3))   # ...and the predicted-vs-true correlation
+"""),
+        md("""
+Real signal, but far from perfect — **exactly like the professional tools** [1][5][6], whose own
+predicted-vs-measured plots also scatter. That honesty is the point: a model can be useful without
+being right every time.
+
+## 6. Honest limits
+
+- **It can** show that sequence carries real signal and that the seed matters — on the same data the pros use [1].
+- **It cannot** match a production tool, or handle cell-type / chromatin effects in a real cell [7].
+- **It cannot** say anything about *off-target* safety (does the guide also cut the wrong places?) [8].
+
+**Bottom line:** use this to build intuition; use a validated tool and the lab to actually pick a guide.
+
+## References
+[1] Doench et al. 2016, *Nat Biotechnol* · [2] Doench et al. 2014, *Nat Biotechnol* ·
+[3] Hsu, Lander & Zhang 2014, *Cell* · [4] Zheng et al. 2017, *Sci Rep* ·
+[5] Chuai et al. 2018, *Genome Biol* · [6] Kim et al. 2019, *Sci Adv* ·
+[7] Konstantakos et al. 2022, *NAR* · [8] Abbaszadeh & Shahlai 2025, *arXiv*.
+"""),
+    ]
+    save(nb, HERE / "solution.ipynb")
+    print("wrote solution.ipynb")
+
+
+if __name__ == "__main__":
+    build()

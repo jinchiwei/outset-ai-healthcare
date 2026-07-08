@@ -1,0 +1,4 @@
+,accuracy
+all 13 features,0.8133333333333334
+cholesterol only,0.52
+everything except chol,0.8

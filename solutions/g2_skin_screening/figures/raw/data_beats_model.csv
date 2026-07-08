@@ -1,0 +1,4 @@
+setup,accuracy
+scratch,0.6798004987531172
+pretrained,0.683291770573566
+pretrained+augment,0.6783042394014963

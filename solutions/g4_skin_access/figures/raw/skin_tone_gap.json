@@ -1,0 +1,11 @@
+{
+  "recorded": [
+    "lesion type"
+  ],
+  "missing": [
+    "skin tone",
+    "age",
+    "sex",
+    "country"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "n": 297,
+  "positive": "heart disease",
+  "model_acc": {
+    "Logistic Regression": 0.8133333333333334,
+    "Random Forest": 0.7866666666666666,
+    "CatBoost": 0.7866666666666666,
+    "TabPFN (foundation)": 0.7866666666666666
+  },
+  "best_acc": 0.8133333333333334,
+  "ablation": {
+    "all 13 features": 0.8133333333333334,
+    "cholesterol only": 0.52,
+    "everything except chol": 0.8
+  },
+  "fairness_by_sex": {
+    "female": 0.875,
+    "male": 0.7843137254901961
+  },
+  "fairness_gap": 0.09068627450980393,
+  "sex_balance": {
+    "female": 96,
+    "male": 201
+  }
+}

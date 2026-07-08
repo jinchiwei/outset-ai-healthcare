@@ -1,0 +1,18 @@
+{
+  "dataset": "dermamnist",
+  "n_classes": 7,
+  "melanoma_index": 4,
+  "scratch_acc": 0.6798004987531172,
+  "baseline_acc": 0.683291770573566,
+  "improved_acc": 0.6783042394014963,
+  "melanoma_recall": 0.04484304932735426,
+  "per_class_acc": {
+    "actinic": 0.015151515151515152,
+    "basal": 0.038834951456310676,
+    "benign": 0.1409090909090909,
+    "dermatofib": 0.0,
+    "melanoma": 0.04484304932735426,
+    "melanocyti": 0.9798657718120806,
+    "vascular": 0.0
+  }
+}

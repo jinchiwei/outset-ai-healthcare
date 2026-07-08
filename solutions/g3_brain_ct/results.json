@@ -1,0 +1,10 @@
+{
+  "dataset": "brainct",
+  "classes": [
+    "normal",
+    "stroke"
+  ],
+  "accuracy": 0.7111111111111111,
+  "sensitivity": 0.8372093023255814,
+  "specificity": 0.5957446808510638
+}

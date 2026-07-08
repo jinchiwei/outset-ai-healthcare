@@ -1,0 +1,13 @@
+{
+  "n": 739,
+  "cohort": "women 60+, NHANES 2013-14",
+  "raw_mean_user": 51.810344827586206,
+  "raw_mean_nonuser": 43.71636363636364,
+  "crude": -0.3344460253688678,
+  "adjusted": -0.11167636198990369,
+  "shrink_pct": 66.6085545891199,
+  "fairness_by_group": {
+    "never used": 0.6527777777777778,
+    "used estrogen": 0.7256637168141593
+  }
+}

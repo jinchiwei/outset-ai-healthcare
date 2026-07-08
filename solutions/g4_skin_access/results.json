@@ -1,0 +1,17 @@
+{
+  "dataset": "dermamnist",
+  "n_classes": 7,
+  "accuracy": 0.6783042394014963,
+  "per_class_acc": {
+    "actinic": 0.0,
+    "basal": 0.06796116504854369,
+    "benign": 0.09090909090909091,
+    "dermatofib": 0.0,
+    "melanoma": 0.04932735426008968,
+    "melanocyti": 0.9858314690529456,
+    "vascular": 0.0
+  },
+  "worst_class": "actinic",
+  "best_class": "melanocyti",
+  "equity_gap": 0.9858314690529456
+}

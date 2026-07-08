@@ -1,0 +1,5 @@
+model,accuracy
+Logistic Regression,0.8133333333333334
+Random Forest,0.7866666666666666
+CatBoost,0.7866666666666666
+TabPFN (foundation),0.7866666666666666

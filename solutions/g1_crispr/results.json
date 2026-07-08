@@ -1,0 +1,14 @@
+{
+  "n_guides": 5310,
+  "n_genes": 17,
+  "high_eff_frac": 0.19943502824858758,
+  "gc_corr": -0.058292616726930764,
+  "best_auc": 0.7711904719643586,
+  "best_model": "Random Forest",
+  "best_representation": "onehot",
+  "onehot_mean_auc": 0.7311307442446618,
+  "kmer_mean_auc": 0.6801798043983742,
+  "reg_r2": 0.363633619415777,
+  "reg_corr": 0.6125990975490218,
+  "top_position": 20
+}

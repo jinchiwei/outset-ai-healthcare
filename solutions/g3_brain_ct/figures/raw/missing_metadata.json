@@ -1,0 +1,14 @@
+{
+  "given": [
+    "image",
+    "normal/stroke label"
+  ],
+  "missing": [
+    "age",
+    "sex",
+    "race / ethnicity",
+    "scanner model",
+    "hospital / site",
+    "time since injury"
+  ]
+}
