@@ -42,7 +42,7 @@ def skin_tone_exam():
     patch_y = 7.7                                                   # vertical center of the skin patches
     r = 1.05                                                        # half-width of each square skin patch
     bar_bot = 0.7                                                   # baseline of the training-data bars
-    bar_max = 5.2                                                   # height of the tallest bar
+    bar_max = 4.6                                                   # height of the tallest bar (headroom for the axis label)
 
     ax.text(9.0, 10.55, "The same exam, far less practice on dark skin", ha="center", fontsize=15,
             family="Geist Mono", color=sf.INK, fontweight="bold")  # headline
@@ -75,8 +75,8 @@ def skin_tone_exam():
         ax.text(x, h + 0.18, lab, ha="center", fontsize=9.5, family="Geist Mono",
                 color=sf.DEEPPINK if rep <= 20 else sf.INK, fontweight="bold" if rep <= 20 else "normal")
 
-    ax.text(0.2, bar_max + 0.35, "training images", ha="left", fontsize=9.5,
-            family="Geist Mono", color=sf.MUTED)                   # y-axis-style label for the bar zone
+    ax.text(0.2, 5.5, "training images", ha="left", fontsize=9.5,
+            family="Geist Mono", color=sf.MUTED)                   # y-axis-style label, clear above the bar-count numbers
 
     # call out the near-empty dark end (V-VI), pointing at those tiny bars
     darkx = (xs[4] + xs[5]) / 2                                     # midpoint of the V and VI columns

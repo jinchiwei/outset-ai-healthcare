@@ -43,8 +43,9 @@ def tone_distribution():
                 fontsize=13 if crisis else 11, family="Geist Mono",
                 color=sf.DEEPPINK if crisis else sf.INK, fontweight="bold")
     # call out the dark bar: 11 patients is far too few to validate a screen on
+    # arrow lands on the LEFT edge/top of the tiny dark bar, clear of the centered "11" count label
     ax.annotate("only 11 patients --\nyou cannot validate\na screen on this",
-                xy=(2, 11), xytext=(1.35, 430), fontsize=10.5, family="Geist Mono",
+                xy=(1.72, 11), xytext=(1.35, 430), fontsize=10.5, family="Geist Mono",
                 color=sf.DEEPPINK, va="center",
                 arrowprops=dict(arrowstyle="-|>", color=sf.DEEPPINK, lw=1.8))
     ax.set_ylabel("patients in the dataset")
