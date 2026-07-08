@@ -23,6 +23,10 @@ DAY1 = [
 # no per-student setup -- and gives identical results.
 DAY2 = ["pandas", "numpy", "scipy", "scikit-learn", "scikit-image", "matplotlib", "pillow",
         "tabpfn==2.2.1", "catboost"]
+# Day 3 capstone, tabular groups (heart / estrogen): sklearn model zoo + tabular foundation model.
+DAY3_TABULAR = ["ucimlrepo", "catboost", "tabpfn==2.2.1", "scikit-learn", "pandas", "numpy", "matplotlib"]
+# Day 3 capstone, CRISPR sequence group: a guide is a short string, so no torch/GPU needed.
+DAY3_SEQ = ["scikit-learn", "catboost", "pandas", "numpy", "matplotlib"]
 
 REQUIRED = DAY1  # default = the Day 1 set
 

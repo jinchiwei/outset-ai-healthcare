@@ -5,22 +5,44 @@ the sprint improving a model, not fighting downloads. The baseline is transfer l
 with a frozen ResNet18 + new head -- the same trick that won Day 1.
 """
 from __future__ import annotations
+from pathlib import Path
 
 import numpy as np
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, TensorDataset
 import torchvision.transforms as T
+
+
+# Locally-built datasets (not on MedMNIST). flag -> (npz filename, task description).
+# brainct: Group 3's brain-CT set, built by datasets/build_brain_ct.py.
+LOCAL_NPZ = {"brainct": ("brain_ct.npz", "normal vs stroke on a brain CT slice")}
+
+
+def _npz_path(flag: str) -> Path:
+    return Path(__file__).resolve().parents[2] / "datasets" / LOCAL_NPZ[flag][0]
+
+
+def class_names(flag: str):
+    """Human-readable class names for a dataset flag (MedMNIST key or a LOCAL_NPZ flag)."""
+    if flag in LOCAL_NPZ:
+        d = np.load(_npz_path(flag), allow_pickle=True)
+        return [str(x) for x in d["class_names"]]
+    from medmnist import INFO
+    return list(INFO[flag]["label"].values())
 
 
 def get_loaders(flag: str = "pneumoniamnist", size: int = 64, batch_size: int = 64,
                 augment: bool = False):
-    """Return (train, val, test) loaders + (n_classes, task) for a MedMNIST dataset.
+    """Return (train, val, test) loaders + (n_classes, task) for an image dataset.
 
-    `flag` is any 2D MedMNIST key, e.g. 'pneumoniamnist', 'dermamnist', 'retinamnist',
-    'bloodmnist', 'organamnist', 'pathmnist'.
-    `augment=True` adds light flips/rotations to the TRAIN split only.
+    `flag` is any 2D MedMNIST key ('pneumoniamnist', 'dermamnist', 'retinamnist',
+    'bloodmnist', 'organamnist', 'pathmnist', ...) OR a locally-built set in LOCAL_NPZ
+    (e.g. 'brainct'). `augment=True` adds light flips/rotations to the TRAIN split only.
     """
+    if flag in LOCAL_NPZ:
+        return _local_npz_loaders(flag, size, batch_size, augment)
+
     import medmnist
     from medmnist import INFO
 
@@ -41,6 +63,37 @@ def get_loaders(flag: str = "pneumoniamnist", size: int = 64, batch_size: int = 
 
     return (loader("train", True, train_tfm), loader("val", False, eval_tfm),
             loader("test", False, eval_tfm), n_classes, info["task"])
+
+
+def _local_npz_loaders(flag, size, batch_size, augment):
+    """Loaders for a locally-built grayscale-uint8 npz (X:[N,H,W], y:[N]).
+
+    Splits 70/15/15 stratified into train/val/test, replicates to 3 channels, resizes and
+    normalizes exactly like the MedMNIST path so the model code is identical either way.
+    """
+    d = np.load(_npz_path(flag), allow_pickle=True)
+    X, y = d["X"], d["y"].astype(np.int64)
+    n_classes = int(y.max()) + 1
+
+    rng = np.random.default_rng(0)
+    idx = rng.permutation(len(y))
+    n_tr, n_va = int(0.70 * len(idx)), int(0.15 * len(idx))
+    splits = {"train": idx[:n_tr], "val": idx[n_tr:n_tr + n_va], "test": idx[n_tr + n_va:]}
+
+    aug = [T.RandomHorizontalFlip(), T.RandomRotation(15)] if augment else []
+    train_tfm = T.Compose([T.ToPILImage(), T.Resize((size, size)), *aug, T.Grayscale(3),
+                           T.ToTensor(), T.Normalize([0.5] * 3, [0.5] * 3)])
+    eval_tfm = T.Compose([T.ToPILImage(), T.Resize((size, size)), T.Grayscale(3),
+                          T.ToTensor(), T.Normalize([0.5] * 3, [0.5] * 3)])
+
+    def loader(split, shuffle, tfm):
+        sel = splits[split]
+        imgs = torch.stack([tfm(X[i]) for i in sel])                 # (n,3,size,size)
+        labels = torch.from_numpy(y[sel]).unsqueeze(1)               # (n,1) like MedMNIST
+        return DataLoader(TensorDataset(imgs, labels), batch_size=batch_size, shuffle=shuffle)
+
+    return (loader("train", True, train_tfm), loader("val", False, eval_tfm),
+            loader("test", False, eval_tfm), n_classes, "binary-class")
 
 
 # backbones offered in the interactive model builder (timm names)

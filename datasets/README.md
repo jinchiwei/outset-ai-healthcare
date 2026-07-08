@@ -26,3 +26,13 @@ D2 anchor: **Open-i Indiana University CXR** — real chest X-ray images with re
 - **MedMNIST** (cross-modality variety): pip-installable, no auth.
 
 Pairs may propose off-menu options at the start of D3 (e.g., ECG arrhythmia on PTB-XL, multimodal extension). Instructor green-lights if reasonable.
+
+## D3 — Per-group tailored datasets
+
+The six tailored capstone starters (`notebooks/day3_capstone/projects/`) use these:
+
+- `crispr_guides.csv` (**committed**, ~230 KB) — G1. Doench et al., *Nature Biotechnology* 2016 (the Azimuth training set), 5310 CRISPR-Cas9 guides. Columns: `guide30` (30-nt context = 4 nt + 20-nt guide + NGG PAM + 3 nt), `gene`, `efficiency` (0–1, `score_drug_gene_rank`), `high_efficiency` (top-tier cutter, `score_drug_gene_threshold`). Public research data; cite Doench 2016.
+- `brain_ct.npz` (**committed**, ~10 MB) — G3. Balanced brain-CT subset (normal vs stroke, 64px grayscale) built by `build_brain_ct.py` from `little-duck/brain_CT_transform` on the HuggingFace Hub. Deliberately ships **no demographics** — that gap is G3's project. Rebuild: `python datasets/build_brain_ct.py`.
+- G2/G4 skin: DermaMNIST (MedMNIST, pip-installable, no account).
+- G5 heart: UCI Heart Disease, fetched live via `ucimlrepo` (id=45).
+- G6 estrogen: NHANES 2013-14, fetched live from the CDC in `capstone_tabular.load_estrogen()`.
