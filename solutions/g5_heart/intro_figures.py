@@ -55,9 +55,12 @@ def heart_risk_engine():
         ax.add_patch(Circle((1.25, y), 0.2, facecolor=col, edgecolor="none"))            # a colored dot
         ax.text(1.8, y, name, ha="left", va="center", fontsize=11.5, family="Geist Mono",
                 color=sf.INK)                                                             # the factor name
-        # a converging arrow from each chip into the heart at the centre
+        # a converging arrow from each chip into the heart at the centre; curve OUTWARD (away from
+        # the chip text) -- flip the arc sign for chips below the heart so the line never loops back
+        # over its own label ("Chest-pain type")
+        rad = 0.16 if y > 5.5 else -0.16
         ax.add_patch(FancyArrowPatch((4.95, y), (8.35, 5.5), arrowstyle="-|>", mutation_scale=13,
-                                     color=col, lw=1.8, connectionstyle="arc3,rad=0.16", zorder=2, alpha=0.9))
+                                     color=col, lw=1.8, connectionstyle=f"arc3,rad={rad}", zorder=2, alpha=0.9))
     ax.text(2.65, 9.5, "routine checkup", ha="center", fontsize=10.5, family="Geist Mono",
             color=sf.INK, fontweight="bold")                                              # section label
     ax.text(2.65, 1.55, "...and 9 more measurements", ha="center", fontsize=9,
