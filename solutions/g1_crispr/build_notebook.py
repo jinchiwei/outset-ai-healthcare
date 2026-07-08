@@ -253,6 +253,27 @@ nothing to be unfair *about*. So there is no fairness gap to audit -- and saying
 than forcing a fake analysis, is the honest move. (The real fairness question for CRISPR lives one step
 later, in *which* patients a therapy is tested on and reaches -- outside this sequence model.)
 """),
+        md("""
+### Where equity *really* lives in genome editing
+
+Our data is guide sequences, so per-guide fairness does not apply -- but genome editing does have a
+real equity problem, one step up. **Reference genomes and variant databases skew heavily European**
+(GWAS participants are about **78%** European [10]), so a guide designed and validated on the reference
+is not automatically safe or effective for everyone.
+
+Here is the mechanism: a variant that is **common in some ancestries but rare in the reference** can sit
+right under the guide or the **PAM**. That can create a *mismatch* (the guide cuts less well), an
+*altered PAM* (Cas9 cannot grab on), or a **new off-target site** (the guide now cuts somewhere it
+should not). So the same guide can be less effective, or less safe, for people of under-represented
+ancestries [9][10].
+
+The encouraging part: the data to *check* this already exists. **gnomAD** and **1000 Genomes** carry
+ancestry-labeled variant frequencies -- the raw material to flag guides that overlap ancestry-variable
+sites *before* anyone reaches the lab. That is exactly the kind of equity audit that fits genome
+editing, even though our per-guide model has no demographics to audit.
+
+![A guide validated on the mostly-European reference can mismatch a variant common in an under-represented ancestry](figures/intro_equity_ancestry.png)
+"""),
         # ---------------------------------------------------------------- 5. CONCLUSION
         md("""
 ## 5. Conclusion: honest limits
@@ -264,6 +285,9 @@ later, in *which* patients a therapy is tested on and reaches -- outside this se
 - **But** it cannot match a production tool like Azimuth [1], or capture cell-type / chromatin effects
   in a real cell [5][7], and it says nothing about **off-target** safety -- does the guide also cut the
   wrong places? [8].
+- **And equity lives one step up** -- not in our per-guide model (it has no patients), but in the
+  mostly-European reference and variant databases a guide is validated against, which may not transfer
+  to under-represented ancestries [9][10].
 
 **Bottom line:** use this to build intuition and shortlist candidates; use a validated tool and the lab
 to actually choose and confirm a guide.
@@ -277,6 +301,8 @@ to actually choose and confirm a guide.
 [6] Kim et al. 2019, *Sci Adv* -- DeepSpCas9: more data + neural nets push accuracy further.
 [7] Konstantakos et al. 2022, *NAR* -- survey of guide-efficiency predictors.
 [8] Abbaszadeh & Shahlai 2025, *arXiv* -- explainable AI for guide design + off-target safety.
+[9] Popejoy & Fullerton 2016, *Nature* 538:161-164 -- "Genomics is failing on diversity."
+[10] Sirugo, Williams & Tishkoff 2019, *Cell* 177:26-31 -- "The Missing Diversity in Human Genetic Studies."
 """),
     ]
     save(nb, HERE / "solution.ipynb")

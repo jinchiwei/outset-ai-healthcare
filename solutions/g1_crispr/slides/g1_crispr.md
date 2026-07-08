@@ -148,6 +148,23 @@ It cannot match a production tool, handle cell-type effects, or say anything abo
 
 ---
 
+## Where equity lives in genome editing
+
+Our data is guide sequences -- no patients -- so per-guide fairness does not apply. But genome editing does have a real equity problem, one step up: reference genomes and variant databases skew heavily European, so a guide validated on the reference can behave differently in people of under-represented ancestries.
+
+![A guide validated on the mostly-European reference can mismatch a variant common in an under-represented ancestry](figures/intro_equity_ancestry.png)
+
+### The mechanism
+A variant that is common in some ancestries but rare in the reference can sit under the guide or the PAM -- creating a mismatch, an altered PAM, or a new off-target site. So the same guide may cut less well, or less safely, for those patients.
+
+### The data that could check it
+gnomAD and 1000 Genomes carry ancestry-labeled variant frequencies -- the raw material to flag guides that overlap ancestry-variable sites before anyone reaches the lab.
+
+### Sources
+[9] Popejoy and Fullerton 2016, Nature -- "Genomics is failing on diversity." [10] Sirugo, Williams and Tishkoff 2019, Cell -- "The Missing Diversity in Human Genetic Studies."
+
+---
+
 ## References
 
 The eight papers behind this project, from the landmark models to the plain-language reviews.
@@ -157,6 +174,9 @@ The eight papers behind this project, from the landmark models to the plain-lang
 
 ### Methods and reviews
 [5] Chuai et al. 2018, Genome Biol (DeepCRISPR). [6] Kim et al. 2019, Sci Adv (DeepSpCas9). [7] Konstantakos et al. 2022, NAR. [8] Abbaszadeh and Shahlai 2025, arXiv.
+
+### Equity and diversity in genomics
+[9] Popejoy and Fullerton 2016, Nature 538:161-164. [10] Sirugo, Williams and Tishkoff 2019, Cell 177:26-31.
 
 ---
 

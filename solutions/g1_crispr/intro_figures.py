@@ -15,6 +15,10 @@ every PNG drops straight onto a slide canvas.
                                                                      (adapted from Zheng et al. 2017 / Doench 2016)
   doench_scatter   -- the benchmark redraw: a sequence-only model captures real signal without being
                       perfect (predicted vs measured scatters)       (adapted from Doench et al. 2016)
+  equity_ancestry  -- where equity REALLY lives in genome editing: a guide validated on the (mostly
+                      European) reference genome can mismatch a variant that is common in an under-
+                      represented ancestry -- so it may cut less well, or open a new off-target site,
+                      for those patients                             (Popejoy & Fullerton 2016; Sirugo et al. 2019)
 """
 import sys                                                           # sys lets us extend the import path
 from pathlib import Path                                            # Path builds file locations safely
@@ -233,10 +237,125 @@ def doench_scatter():
     sf.save_raw(sf.pd.DataFrame({"predicted": x, "measured": y}), HERE, "intro_doench_scatter")
 
 
+def _equity_strand(ax, y, variant=False):
+    """Draw one DNA target strand with the SAME 20-letter guide base-paired over it + its PAM.
+    If `variant`, recolor one seed-region base amber and mark it with an X (a common variant)."""
+    ax.plot([2.4, 14.8], [y, y], color=DNA, lw=8, solid_capstyle="round", zorder=2)   # DNA target strand
+    x0, x1 = 4.5, 12.5                                              # the 20-nt protospacer span
+    ax.plot([x0, x1], [y + 0.42, y + 0.42], color=sf.TURQUOISE, lw=5,
+            solid_capstyle="round", zorder=4)                      # the guide RNA (turquoise)
+    xs = np.linspace(x0 + 0.15, x1 - 0.15, 20)                     # 20 base-pair rungs
+    vpos = 16                                                      # a seed-region base (near the PAM)
+    for i, x in enumerate(xs):
+        if variant and i == vpos:
+            ax.plot([x, x], [y + 0.02, y + 0.48], color=sf.AMBER, lw=2.6, zorder=6)   # the mismatched base
+            ax.plot([x - 0.16, x + 0.16], [y + 0.62, y + 0.9], color=sf.AMBER, lw=2.0, zorder=6)  # X mark
+            ax.plot([x + 0.16, x - 0.16], [y + 0.62, y + 0.9], color=sf.AMBER, lw=2.0, zorder=6)
+        else:
+            ax.plot([x, x], [y + 0.08, y + 0.42], color=RUNG, lw=1.2, zorder=3)       # a healthy base pair
+    # PAM: solid pink on the reference, cracked/muted on the variant strand
+    if variant:
+        ax.add_patch(FancyBboxPatch((12.75, y - 0.28), 1.4, 0.66, boxstyle="round,pad=0.02,rounding_size=0.1",
+                                    facecolor=sf.MUTED, edgecolor=sf.DEEPPINK, lw=1.4, alpha=0.85, zorder=5))
+        ax.plot([13.45, 13.45], [y - 0.24, y + 0.34], color=sf.AMBER, lw=1.8, zorder=6)   # a crack through the PAM
+    else:
+        ax.add_patch(FancyBboxPatch((12.75, y - 0.28), 1.4, 0.66, boxstyle="round,pad=0.02,rounding_size=0.1",
+                                    facecolor=sf.DEEPPINK, edgecolor="none", zorder=5))
+    ax.text(13.45, y - 0.62, "PAM", ha="center", va="center", fontsize=8.5, family="Geist Mono",
+            color=sf.DEEPPINK, fontweight="bold", zorder=8)
+    return xs[vpos]                                                # x of the variant base (for the callout arrow)
+
+
+def equity_ancestry():
+    """Where equity REALLY lives in genome editing: a guide validated on the (mostly European)
+    reference genome can mismatch a variant common in an under-represented ancestry."""
+    fig = plt.figure(figsize=(8.4, 7.7))
+    gs = fig.add_gridspec(2, 1, height_ratios=[1.62, 1.0], hspace=0.30)
+
+    # ============================ TOP: the schematic ============================
+    ax = fig.add_subplot(gs[0]); ax.axis("off")
+    ax.set_xlim(0, 20); ax.set_ylim(0, 10)
+
+    y_ref, y_pat = 7.6, 2.5                                        # baselines for the two strands
+
+    # --- reference strand: the guide matches, Cas9 cuts ---
+    ax.text(1.9, y_ref + 1.55, "REFERENCE GENOME", ha="left", fontsize=11, family="Geist Mono",
+            color=sf.INK, fontweight="bold")
+    ax.text(1.9, y_ref + 1.12, "what the guide was designed and validated on", ha="left",
+            fontsize=9, family="Geist Mono", color=sf.MUTED, style="italic")
+    _equity_strand(ax, y_ref, variant=False)
+    ax.add_patch(FancyBboxPatch((15.4, y_ref - 0.32), 4.2, 0.9, boxstyle="round,pad=0.45,rounding_size=0.14",
+                                facecolor="#DDF3EF", edgecolor=sf.TURQUOISE, lw=1.4, zorder=5))
+    ax.text(17.5, y_ref + 0.13, "guide matches\n-> Cas9 cuts", ha="center", va="center", fontsize=9.5,
+            family="Geist Mono", color="#1F9E92", fontweight="bold", zorder=8)
+
+    # --- patient strand: a common variant sits under the seed -> mismatch ---
+    ax.text(1.9, y_pat - 0.95, "UNDER-REPRESENTED ANCESTRY", ha="left", fontsize=11,
+            family="Geist Mono", color=sf.DEEPPINK, fontweight="bold")
+    ax.text(1.9, y_pat - 1.38, "carries variants the reference never captured", ha="left",
+            fontsize=9, family="Geist Mono", color=sf.MUTED, style="italic")
+    vx = _equity_strand(ax, y_pat, variant=True)
+    ax.add_patch(FancyBboxPatch((15.4, y_pat - 0.42), 4.2, 1.1, boxstyle="round,pad=0.45,rounding_size=0.14",
+                                facecolor="#FBEFD6", edgecolor=sf.AMBER, lw=1.4, zorder=5))
+    ax.text(17.5, y_pat + 0.13, "may cut less well --\nor hit a NEW\noff-target site", ha="center", va="center",
+            fontsize=9.5, family="Geist Mono", color="#B8860B", fontweight="bold", zorder=8)
+
+    # --- the "same guide" tie between the two strands ---
+    ax.annotate("", xy=(3.0, y_pat + 0.55), xytext=(3.0, y_ref - 0.1),
+                arrowprops=dict(arrowstyle="-", color=sf.INK, lw=1.2, linestyle=(0, (3, 3))), zorder=2)
+    ax.text(3.25, (y_ref + y_pat) / 2 + 0.15, "same\nguide", ha="left", va="center",
+            fontsize=9, family="Geist Mono", color=sf.INK, zorder=8)
+
+    # --- the variant callout, boxed, arrow down to the mismatched seed base ---
+    ax.add_patch(FancyBboxPatch((5.4, 4.5), 7.7, 1.6, boxstyle="round,pad=0.45,rounding_size=0.14",
+                                facecolor=sf.CANVAS, edgecolor=sf.AMBER, lw=1.6, zorder=7))
+    ax.text(9.25, 5.3, "a variant common in some ancestries\n(absent from the reference)\nsits under the seed",
+            ha="center", va="center", fontsize=9.5, family="Geist Mono", color=sf.INK, zorder=8)
+    ax.annotate("", xy=(vx, y_pat + 0.95), xytext=(vx, 4.45),
+                arrowprops=dict(arrowstyle="-|>", color=sf.AMBER, lw=1.8, mutation_scale=14), zorder=7)
+
+    # ============================ BOTTOM: the database skew ============================
+    ax2 = fig.add_subplot(gs[1]); ax2.axis("off")
+    ax2.set_xlim(0, 100); ax2.set_ylim(0, 10)
+    ax2.text(2, 9.0, "WHO IS ACTUALLY IN THE GENOMIC DATABASES", ha="left", fontsize=11,
+             family="Geist Mono", color=sf.INK, fontweight="bold")
+
+    # one 100%-stacked bar -- the tiny bright slivers are the under-represented groups
+    segs = [("European", 78, sf.MUTED), ("Asian", 10, sf.TURQUOISE), ("African", 2, sf.DEEPPINK),
+            ("Hispanic / Latino", 1, sf.GOLD), ("other / unknown", 9, sf.BLUEVIOLET)]
+    x0, scale, ybar, bh = 3.0, 0.94, 4.6, 2.0                      # bar geometry (94 units wide = 100%)
+    cx = x0
+    for name, pct, col in segs:
+        w = pct * scale
+        ax2.add_patch(Rectangle((cx, ybar), w, bh, facecolor=col, edgecolor=sf.CANVAS, lw=1.2))
+        if pct >= 15:                                             # label the big block inside it
+            ax2.text(cx + w / 2, ybar + bh / 2, f"European ~{pct}%", ha="center", va="center",
+                     fontsize=12, family="Geist Mono", color="white", fontweight="bold")
+        cx += w
+    # a compact legend for the small slivers, below the bar
+    lx = x0
+    for name, pct, col in segs[1:]:
+        ax2.add_patch(Rectangle((lx, 2.1), 2.3, 1.1, facecolor=col, edgecolor="none"))
+        ax2.text(lx + 3.0, 2.65, f"{name} {pct}%", ha="left", va="center", fontsize=9.5,
+                 family="Geist Mono", color=sf.INK)
+        lx += 3.0 + (len(name) + 4) * 1.35
+    ax2.text(3.0, 0.55, "GWAS participants ~78% European (Sirugo et al. 2019); reference + variant "
+             "panels (gnomAD / 1000 Genomes) skew the same way", ha="left", fontsize=8.2,
+             family="Geist Mono", color=sf.MUTED, style="italic")
+
+    fig.text(0.5, 0.015, "adapted from Popejoy & Fullerton 2016 and Sirugo, Williams & Tishkoff 2019",
+             ha="center", fontsize=9, style="italic", color=sf.MUTED)
+    sf.save(fig, HERE, "intro_equity_ancestry")
+    sf.save_raw(sf.pd.DataFrame({"ancestry": [s[0] for s in segs],
+                                 "percent_of_participants": [s[1] for s in segs]}),
+                HERE, "intro_equity_ancestry")
+
+
 if __name__ == "__main__":
     cas9_cutting()                                                 # the molecular scene
     therapy_stakes()                                               # gene editing as therapy
     pick_before_lab()                                              # the picking bottleneck
     seed_importance()                                              # the seed intuition
     doench_scatter()                                               # the Doench benchmark redraw
+    equity_ancestry()                                              # where equity really lives in editing
     print("G1 intro figures done")                                # confirm success
