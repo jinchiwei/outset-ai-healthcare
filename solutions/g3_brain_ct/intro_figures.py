@@ -167,8 +167,8 @@ def datasheet_checklist():
         ax.text(7.25, y + 0.09, label, fontsize=11.5,
                 color=sf.INK if ok else sf.MUTED)
 
-    ax.axvline(6.0, color="#D8D6CC", lw=1.2)                        # divider between the two columns
-    ax.text(9.0, 0.55, "Four of the six questions have no answer -- so we cannot check who the model fails.",
+    ax.plot([6.0, 6.0], [1.4, 7.6], color="#D8D6CC", lw=1.2)        # divider (stops above the caption)
+    ax.text(6.0, 0.55, "Four of the six questions have no answer -- so we cannot check who the model fails.",
             ha="center", fontsize=9.5, style="italic", color=sf.MUTED)
     ax.text(6.0, -0.15, "concept from Gebru et al. 2021 (Datasheets for Datasets) / Tripathi et al. 2023",
             ha="center", fontsize=8.5, style="italic", color=sf.MUTED)
