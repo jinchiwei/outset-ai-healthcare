@@ -236,47 +236,57 @@ print(f"\\nbaseline TEST accuracy: {test_acc:.3f}")   # e.g. 0.800 = right 80% o
         md("""
 ### Now build your OWN model (interactive -- no coding needed)
 
-**What this does:** gives you dials. **Pick options, press "Run Interact", read the test accuracy.**
-Change **one dial at a time** so you can tell what actually helped. Write every result down --
-that log is half your presentation.
+**What this does:** gives you dials. The dials come **pre-set to a strong recipe** -- just press
+**"Run Interact"** once and you should already get a good number (give it a minute or two to train).
+*Then* change **one dial at a time** to learn what actually matters. Write every result down -- that
+log is half your presentation.
 
 **What each dial means, in plain terms:**
 - **backbone** -- which "brain" to borrow. `resnet18` is small and fast; the others are bigger
   (sometimes smarter, sometimes just slower).
 - **pretrained** -- ON = start from the brain that already learned to see (usually much better).
   OFF = start from a *blank* brain. With only a few thousand images, blank is like learning to read
-  and diagnose at the same time -- too much at once, so it does worse. **Try toggling this; it's the
-  single biggest lesson here.**
-- **unfreeze** -- also re-train the borrowed brain, not just the head. More power, but easier to
-  **overfit** (memorize instead of learn).
+  and diagnose at the same time -- too much at once, so it does worse. **Toggle it to see the drop.**
+- **unfreeze** -- also re-train the borrowed brain, not just the head. This is what pushes results
+  from "okay" to "great" -- but only if you pair it with a **small learning rate** (see below).
 - **augment** -- show each image flipped/rotated. Teaches "the lesion," not "the lesion is top-left."
-- **epochs** -- how many times it studies the whole set. More isn't always better (it can start memorizing).
+- **learn rate** -- how big a step the model takes each update. **The #1 reason results disappoint:**
+  when you **unfreeze**, use a *small* rate like **0.0001** (0.001 is too big and wrecks the borrowed
+  brain). When the backbone is **frozen**, **0.001** is fine.
+- **epochs** -- how many times it studies the whole set (you can go up to 100). More usually helps
+  when unfrozen, up to a point -- then it starts memorizing (overfitting).
 
-**How to choose (a real strategy, not random clicking):** change **pretrained** first -- it usually
-matters most. Then try **augment**, then a bigger **backbone**. **One dial at a time**, or you won't
-know which change helped. And prefer the *simplest* setup that hits your goal: a smaller model you
-understand beats a bigger one you can't explain.
+**The recipe that works (already the default):** pretrained ON, unfreeze ON, augment ON,
+learn rate **0.0001**, **~15+ epochs**. That combination -- fine-tuning a pretrained model, gently,
+for long enough -- is how you get results that actually land. If yours "can't come close," it's
+almost always: froze the backbone, or used too big a learning rate, or trained too few epochs.
 """),
         code("""
 from ipywidgets import interact_manual, Dropdown, Checkbox, IntSlider
 
-def build_model(backbone="resnet18", pretrained=True, unfreeze_backbone=False, augment=False, epochs=3):
+# The defaults below are ALREADY a strong recipe (pretrained + unfrozen + augmented + a low learning
+# rate + enough epochs). Just press "Run Interact" and you should get a good number -- THEN start
+# experimenting one dial at a time to understand why it works.
+def build_model(backbone="resnet18", pretrained=True, unfreeze_backbone=True, augment=True,
+                learning_rate=1e-4, epochs=15):
     global model, train_loader, val_loader, test_loader
     train_loader, val_loader, test_loader, n_cls, _ = cc.get_loaders(FLAG, size=64, augment=augment)
     model = cc.make_model(n_cls, backbone=backbone, pretrained=pretrained, unfreeze_backbone=unfreeze_backbone)
-    model = cc.train(model, train_loader, val_loader,
-                     epochs=epochs, lr=(1e-4 if unfreeze_backbone else 1e-3), device=device)
+    model = cc.train(model, train_loader, val_loader, epochs=epochs, lr=learning_rate, device=device)
     acc = cc.evaluate(model, test_loader, device=device)["accuracy"]
-    print(f"\\n>>> TEST accuracy = {acc:.3f}   "
-          f"[{backbone}, pretrained={pretrained}, unfreeze={unfreeze_backbone}, augment={augment}, {epochs}ep]")
+    print(f"\\n>>> TEST accuracy = {acc:.3f}   [{backbone}, pretrained={pretrained}, "
+          f"unfreeze={unfreeze_backbone}, augment={augment}, lr={learning_rate}, {epochs}ep]")
 
 try:
     interact_manual(build_model,
         backbone=Dropdown(options=cc.BACKBONES, value="resnet18", description="backbone"),
         pretrained=Checkbox(value=True, description="pretrained"),
-        unfreeze_backbone=Checkbox(value=False, description="unfreeze"),
-        augment=Checkbox(value=False, description="augment"),
-        epochs=IntSlider(value=3, min=1, max=10, description="epochs"))
+        unfreeze_backbone=Checkbox(value=True, description="unfreeze"),
+        augment=Checkbox(value=True, description="augment"),
+        learning_rate=Dropdown(options=[("0.0001  (best when UNFROZEN)", 1e-4), ("0.0003", 3e-4),
+                                        ("0.001  (best when frozen)", 1e-3), ("0.003", 3e-3)],
+                               value=1e-4, description="learn rate", style={"description_width": "initial"}),
+        epochs=IntSlider(value=15, min=1, max=100, step=1, description="epochs"))
 except ImportError:
     build_model()
 """),
